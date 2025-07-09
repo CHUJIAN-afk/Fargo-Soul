@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "First.fargo_soul.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "fargo_soul.refmap.json",
+  "mixins": [
+    "VillagerMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

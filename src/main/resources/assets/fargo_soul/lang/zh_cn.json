@@ -1,0 +1,12 @@
+{
+  "itemGroup.fargo_soul": "Example Mod Tab",
+  "block.fargo_soul.example_block": "Example Block",
+  "item.fargo_soul.wood_soul": "木魔石",
+  "item.fargo_soul.pine_wood_soul": "针叶木魔石",
+  "item.fargo_soul.rose_wood_soul": "红木魔石",
+  "item.fargo_soul.ebony_wood_soul": "乌木魔石",
+  "item.fargo_soul.shadow_wood_soul": "阴影木魔石",
+  "item.fargo_soul.palm_wood_soul": "棕榈木魔石",
+  "item.fargo_soul.pearl_wood_soul": "珍珠木魔石",
+  "item.fargo_soul.forest_power": "森林之力"
+}
