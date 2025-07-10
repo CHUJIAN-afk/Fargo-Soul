@@ -35,11 +35,9 @@ public class ParticleUtils {
     }
 
 
-
-
-
-
-
+    public static void spawnParticleSphere(ServerLevel level, double centerX, double centerY, double centerZ, ParticleOptions particle, float maxRadius, int totalParticles, float innerRatio) {
+        spawnParticleSphere(level, centerX, centerY, centerZ, particle, maxRadius, totalParticles, innerRatio, 0);
+    }
 
 
 
@@ -64,7 +62,8 @@ public class ParticleUtils {
                                            ParticleOptions particle,
                                            float maxRadius,
                                            int totalParticles,
-                                           float innerRatio) {
+                                           float innerRatio,
+                                           float speed) {
 
         // 球面环绕粒子（80%）
         int surfaceParticles = (int) (totalParticles * (1 - innerRatio));
@@ -93,7 +92,7 @@ public class ParticleUtils {
             double y = centerY + r * Math.sin(phi) * Math.sin(theta);
             double z = centerZ + r * Math.cos(phi);
 
-            level.sendParticles(particle, x, y, z, 1, 0, 0, 0, 0);
+            level.sendParticles(particle, x, y, z, 1, 0, 0, 0, speed);
         }
     }
 }

@@ -8,6 +8,15 @@
     "fargo_soul:shadow_wood_soul",
     "fargo_soul:palm_wood_soul",
     "fargo_soul:pearl_wood_soul",
-    "fargo_soul:forest_power"
+    "fargo_soul:forest_power",
+    "fargo_soul:copper_soul",
+    "fargo_soul:tin_soul",
+    "fargo_soul:iron_soul",
+    "fargo_soul:lead_soul",
+    "fargo_soul:silver_soul",
+    "fargo_soul:tungsten_soul",
+    "fargo_soul:ash_wood",
+    "fargo_soul:obsidian_soul",
+    "fargo_soul:terra_power"
   ]
 }

@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "fargo_soul:item/shadow_wood_soul"
-  }
-}
