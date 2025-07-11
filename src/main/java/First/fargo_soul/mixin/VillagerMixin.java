@@ -16,7 +16,7 @@ public abstract class VillagerMixin {
     @ModifyExpressionValue(method = "updateSpecialPrices", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/npc/Villager;getPlayerReputation(Lnet/minecraft/world/entity/player/Player;)I"))
     private int WoodSoul(int original, Player player) {
         if (CurioUtils.isEquipped(player, WoodSoul.get())) {
-            return (int) (original * 1.5);
+            return Math.max((int) (original * 1.5), 5);
         }
         return original;
     }

@@ -49,7 +49,7 @@ public class CurioUtils {
             result.add(item);
             List<SoulItem> soulItems = item.getCurioItemList();
             if (!soulItems.isEmpty()) {
-                result.addAll(getAllCurioItems(item.getCurioItemList()));
+                result.addAll(getAllCurioItems(soulItems));
             }
         }
         return result;

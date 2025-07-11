@@ -17,7 +17,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
@@ -38,19 +37,33 @@ public class SoulRenderer implements ICurioRenderer {
                 ResourceLocation resourceLocation = BuiltInRegistries.ITEM.getKey(soulItem);
                 BakedModel model = modelManager.getModel(ModelResourceLocation.inventory(resourceLocation));
                 matrixStack.pushPose();
-                double random = new Random(soulItem.hashCode() + soulItemList.indexOf(soulItem)).nextDouble();
-                double angle = ageInTicks * (random * 4.5 + 0.5);
-                double semiMajorAxis = 0.2 + random * 3.0f;
-                double semiMinorAxis = 0.2 + random * 2.0f;
+                //去除玩家视角影响
+                Quaternionf playerRotation = new Quaternionf();
+                matrixStack.last().pose().getNormalizedRotation(playerRotation);
+                playerRotation.conjugate();
+                matrixStack.mulPose(playerRotation);
+                //计算坐标偏移
+                int hashCode = soulItem.hashCode();
+                double random = new Random(hashCode + soulItemList.indexOf(soulItem)).nextDouble();
+                double angle = ageInTicks * (random * 4 + 1);
+                double semiMajorAxis = 0.6 + random * 2.4f;
+                double semiMinorAxis = 0.4 + random * 1.6f;
                 float x = (float) (Math.cos(Math.toRadians(angle)) * semiMajorAxis);
+                float y = (float) Math.sin(Math.toRadians(angle)) * 0.5f;
                 float z = (float) (Math.sin(Math.toRadians(angle)) * semiMinorAxis);
-                float y = (float) Math.sin(Math.toRadians(angle * 2)) * 0.3f;
-                matrixStack.translate(x, y, z);
+                if (hashCode % 2 == 0) x *= -1;
+                if (hashCode % 3 == 0) z *= -1;
+                if (hashCode % 5 == 0) z *= -1;
+                //模型坐标
+                matrixStack.translate(x, y * 2, z);
+                //物品旋转角度
                 matrixStack.mulPose(new Quaternionf().rotateX(x));
                 matrixStack.mulPose(new Quaternionf().rotateY(y));
                 matrixStack.mulPose(new Quaternionf().rotateZ(z));
-                Minecraft.getInstance().getItemRenderer().render(
-                        stack,
+                //物品模型缩放
+                matrixStack.scale(0.5f, 0.5f, 0.5f);
+                minecraft.getItemRenderer().render(
+                        soulItem.getDefaultInstance(),
                         ItemDisplayContext.HEAD,
                         false,
                         matrixStack,

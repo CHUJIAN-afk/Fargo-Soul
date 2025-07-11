@@ -1,12 +1,24 @@
 package First.fargo_soul.Curios.Soul.ForestPower.SoulStone;
 
 import First.fargo_soul.Curios.SoulItem;
+import First.fargo_soul.Utils.CurioUtils;
+import First.fargo_soul.Utils.MathUtils;
+import First.fargo_soul.Utils.ParticleUtils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.List;
+
+import static First.fargo_soul.Curios.Souls.ShadowWoodSoul;
 
 public class ShadowWoodSoul extends SoulItem {
 
@@ -16,7 +28,7 @@ public class ShadowWoodSoul extends SoulItem {
 
     public List<Component> AttributeList = List.of(
             Component.literal("召唤一圈鲜血光环").withStyle(ChatFormatting.BLUE),
-            Component.literal("在鲜血光环内的敌人有概率会喷出血液，同时有概率为你恢复生命值").withStyle(ChatFormatting.BLUE)
+            Component.literal("在鲜血光环内的敌人对你造成伤害的10%转化为生命值恢复").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
@@ -34,4 +46,28 @@ public class ShadowWoodSoul extends SoulItem {
         return tooltips;
     }
 
+
+    public static void ShadowWoodSoulTickHandler(PlayerTickEvent.Post event){
+        if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, ShadowWoodSoul.get()) && player.tickCount % 60 == 0){
+            ParticleUtils.spawnParticleSphere(
+                    player.serverLevel(),
+                    player.getX(),
+                    player.getY(),
+                    player.getZ(),
+                    ParticleTypes.FLAME,
+                    4.0f,
+                    120,
+                    0.0f
+            );
+        }
+    }
+
+    public static void ShadowWoodSoulDamageHandler(LivingIncomingDamageEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, ShadowWoodSoul.get()) && event.getSource().getEntity() instanceof LivingEntity livingEntity) {
+            float distance = player.distanceTo(livingEntity);
+            if (distance <= 4) {
+                player.heal(event.getAmount() * 0.1f);
+            }
+        }
+    }
 }

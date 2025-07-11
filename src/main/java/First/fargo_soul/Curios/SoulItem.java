@@ -17,6 +17,7 @@ public class SoulItem extends Item implements ICurioItem {
     }
 
     public static final List<SoulItem> SOUL_ITEM_LIST = new ArrayList<>();
+
     public List<SoulItem> getCurioItemList() {
         return SOUL_ITEM_LIST;
     }
@@ -36,7 +37,7 @@ public class SoulItem extends Item implements ICurioItem {
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack itemStack) {
         LivingEntity livingEntity = slotContext.entity();
-        return !CurioUtils.isEquipped(livingEntity, itemStack.getItem());
+        return !CurioUtils.findCurio(livingEntity, itemStack);
     }
 
     @Override

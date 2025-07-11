@@ -1,16 +1,23 @@
 package First.fargo_soul.Curios.Soul.ForestPower.SoulStone;
 
 import First.fargo_soul.Curios.SoulItem;
+import First.fargo_soul.Utils.CurioUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 
 import java.util.List;
 
-public class RosewoodSoul extends SoulItem {
+import static First.fargo_soul.Curios.Souls.RosewoodSoul;
 
-    public RosewoodSoul(Properties properties) {
+public class RoseWoodSoul extends SoulItem {
+
+    public RoseWoodSoul(Properties properties) {
         super(properties);
     }
 
@@ -33,4 +40,14 @@ public class RosewoodSoul extends SoulItem {
         return tooltips;
     }
 
+    public static void RosewoodSoulDamageHandler(LivingIncomingDamageEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player && !player.onGround() && CurioUtils.isEquipped(player, RosewoodSoul.get())) {
+            event.setAmount(event.getAmount() * 0.9f);
+            if (event.getSource().getEntity() instanceof LivingEntity livingEntity) {
+                livingEntity.hurt(player.damageSources().playerAttack(player), event.getAmount() * 0.5f);
+                Vec3 delta = player.position().subtract(livingEntity.position()).normalize();
+                livingEntity.addDeltaMovement(delta);
+            }
+        }
+    }
 }

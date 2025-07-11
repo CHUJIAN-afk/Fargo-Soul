@@ -6,7 +6,6 @@
   "refmap": "fargo_soul.refmap.json",
   "mixins": [
     "LivingEntityMixin",
-    "PlayerMixin",
     "VillagerMixin"
   ],
   "client": [

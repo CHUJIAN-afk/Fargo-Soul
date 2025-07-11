@@ -1,10 +1,19 @@
 package First.fargo_soul.Curios.Soul.TerraPower.SoulStone;
 
 import First.fargo_soul.Curios.SoulItem;
+import First.fargo_soul.Curios.Souls;
+import First.fargo_soul.Utils.CurioUtils;
+import First.fargo_soul.Utils.MathUtils;
+import First.fargo_soul.Utils.ParticleUtils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 
 import java.util.List;
 
@@ -15,10 +24,10 @@ public class TinSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("无法通过跳跃造成暴击").withStyle(ChatFormatting.BLUE),
-            Component.literal("将你的暴击率设为5%，暴击伤害设为250%").withStyle(ChatFormatting.BLUE),
-            Component.literal("每次暴击时都会增加5%暴击率，暴击率的最大值为100%").withStyle(ChatFormatting.BLUE),
-            Component.literal("受伤会使暴击率减半，最低为5%").withStyle(ChatFormatting.BLUE)
+            Component.literal("移除跳跃暴击").withStyle(ChatFormatting.BLUE),
+            Component.literal("将你的暴击率设为10%，暴击伤害设为200%").withStyle(ChatFormatting.BLUE),
+            Component.literal("每次暴击时都会增加10%暴击率，暴击率的最大值为60%").withStyle(ChatFormatting.BLUE),
+            Component.literal("受伤会使暴击率减半，最低为10%").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
@@ -35,6 +44,38 @@ public class TinSoul extends SoulItem {
         tooltips.addAll(AttributeList);
         tooltips.addAll(TooltipList);
         return tooltips;
+    }
+
+    public static void TinSoulLivingDamageHandler(LivingIncomingDamageEvent event) {
+        if (!event.isCanceled() && event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, Souls.TinSoul.get())) {
+            double TinSoul = player.getPersistentData().getDouble("TinSoul");
+            TinSoul = Math.max(TinSoul, 0.1);
+            TinSoul = Math.min(TinSoul, 0.6);
+            if (MathUtils.random.nextDouble() < TinSoul && event.getEntity() instanceof LivingEntity livingEntity) {
+                player.getPersistentData().putDouble("TinSoul", TinSoul + 0.1);
+                event.setAmount(event.getAmount() * 2.0f);
+                ParticleUtils.spawnParticleSphere(
+                        player.serverLevel(),
+                        livingEntity.getX(),
+                        livingEntity.getY(),
+                        livingEntity.getZ(),
+                        ParticleTypes.CRIT,
+                        0.5f,
+                        8,
+                        0.5f,
+                        0.01f
+                );
+            }
+        }
+    }
+
+    public static void TinSoulLivingDamageHandler2(LivingIncomingDamageEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, Souls.TinSoul.get())) {
+            double TinSoul = player.getPersistentData().getDouble("TinSoul");
+            TinSoul = Math.max(TinSoul, 0.1);
+            TinSoul = Math.min(TinSoul, 0.6);
+            player.getPersistentData().putDouble("TinSoul", TinSoul);
+        }
     }
 
 }
