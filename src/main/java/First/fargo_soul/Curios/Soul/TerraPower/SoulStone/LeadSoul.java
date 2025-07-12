@@ -46,7 +46,7 @@ public class LeadSoul extends SoulItem {
     }
 
     public static void LeadSoulDamageHandler(LivingIncomingDamageEvent event) {
-        if (!event.isCanceled() && event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, LeadSoul.get()) && event.getEntity() instanceof LivingEntity livingEntity) {
+        if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, LeadSoul.get()) && event.getEntity() instanceof LivingEntity livingEntity) {
             if (MathUtils.random.nextDouble() < 0.1) {
                 livingEntity.addEffect(new MobEffectInstance(EffectRegister.LeadPoisoning, 200, 0));
             }
@@ -54,7 +54,7 @@ public class LeadSoul extends SoulItem {
     }
 
     public static void LeadSoulDamageHandler2(LivingIncomingDamageEvent event) {
-        if (!event.isCanceled() && event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, LeadSoul.get()) && event.getSource().getEntity() instanceof LivingEntity livingEntity) {
+        if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, LeadSoul.get()) && event.getSource().getEntity() instanceof LivingEntity livingEntity) {
             LivingEntity lastHurtByMob = player.getLastHurtByMob();
             if (lastHurtByMob != null && lastHurtByMob.equals(livingEntity)) {
                 event.setAmount(event.getAmount() * 0.9f);

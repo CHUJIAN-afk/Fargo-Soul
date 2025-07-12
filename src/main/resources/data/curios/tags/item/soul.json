@@ -1,6 +1,14 @@
 {
   "replace": false,
   "values": [
+    "fargo_soul:ancient_cobalt_soul",
+    "fargo_soul:cobalt_soul",
+    "fargo_soul:palladium_soul",
+    "fargo_soul:mithril_soul",
+    "fargo_soul:orichalcum_soul",
+    "fargo_soul:adamantite_soul",
+    "fargo_soul:titanium_soul",
+    "fargo_soul:earth_power",
     "fargo_soul:wood_soul",
     "fargo_soul:pine_wood_soul",
     "fargo_soul:rose_wood_soul",

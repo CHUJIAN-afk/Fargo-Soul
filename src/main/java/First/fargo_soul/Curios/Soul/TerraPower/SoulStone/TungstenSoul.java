@@ -34,6 +34,7 @@ public class TungstenSoul extends SoulItem {
 
     public List<Component> AttributeList = List.of(
             Component.literal("增加50%实体触及距离").withStyle(ChatFormatting.BLUE),
+            Component.literal("手持物品大小+100%").withStyle(ChatFormatting.BLUE),
             Component.literal("攻击命中敌人时会产生一个基础伤害为当次攻击50%的爆炸，此效果有2.5秒冷却时间").withStyle(ChatFormatting.BLUE)
     );
 
@@ -55,10 +56,10 @@ public class TungstenSoul extends SoulItem {
 
     public static void TungstenSoulDamageHandler(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, TungstenSoul.get()) && event.getEntity() instanceof LivingEntity livingEntity) {
-            int TungstenSoul = player.getPersistentData().getInt("TungstenSoul");
-            int tickCount = player.tickCount;
+            long TungstenSoul = player.getPersistentData().getLong("TungstenSoul");
+            long tickCount = player.level().getGameTime();
             if (TungstenSoul < tickCount) {
-                player.getPersistentData().putInt("TungstenSoul", tickCount + 50);
+                player.getPersistentData().putLong("TungstenSoul", tickCount + 50);
                 List<LivingEntity> livingEntityList = livingEntity.level().getEntitiesOfClass(LivingEntity.class, livingEntity.getBoundingBox().inflate(3));
                 livingEntityList.removeIf(livingEntity1 -> livingEntity1.equals(player));
                 for (LivingEntity entity : livingEntityList) {
@@ -72,7 +73,7 @@ public class TungstenSoul extends SoulItem {
                         livingEntity.getZ(),
                         ParticleTypes.EXPLOSION,
                         (float) 3,
-                        livingEntityList.size() * 2,
+                        (int) (event.getAmount() * 0.5f),
                         0.2f
                 );
                 level.playSound(

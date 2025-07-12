@@ -10,7 +10,10 @@ import First.fargo_soul.Effect.HarmfulEffect.*;
 public class EffectRegister {
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, Fargo_soul.MODID);
 
-    public static final Holder<MobEffect> LeadPoisoning = EFFECTS.register("lead_poisoning_effect", LeadPoisoningEffect::new);
-    public static final Holder<MobEffect> AmazingMoment = EFFECTS.register("amazing_moment_effect", AmazingMomentEffect::new);
+    public static final Holder<MobEffect> LeadPoisoning = EFFECTS.register("lead_poisoning", LeadPoisoningEffect::new);
+    public static final Holder<MobEffect> AmazingMoment = EFFECTS.register("amazing_moment", AmazingMomentEffect::new);
+    public static final Holder<MobEffect> Oil = EFFECTS.register("oil", OilEffect::new);
+    public static final Holder<MobEffect> OrichalcumPoisoning = EFFECTS.register("orichalcum_poisoning", OrichalcumPoisoningEffect::new);
+
 
 }

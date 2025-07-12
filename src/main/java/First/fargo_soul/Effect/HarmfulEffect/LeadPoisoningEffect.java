@@ -12,7 +12,7 @@ import java.util.List;
 
 public class LeadPoisoningEffect extends MobEffect {
     public LeadPoisoningEffect() {
-        super(MobEffectCategory.HARMFUL, 0x4E9331);
+        super(MobEffectCategory.HARMFUL, 0x5A5A5A);
     }
 
     @Override

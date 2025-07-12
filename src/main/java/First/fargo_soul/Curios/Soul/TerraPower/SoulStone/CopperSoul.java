@@ -60,8 +60,8 @@ public class CopperSoul extends SoulItem {
                         player.getEyePosition().add(0, 0.5, 0),
                         livingEntity.getEyePosition(),
                         ParticleTypes.ELECTRIC_SPARK,
-                        20,
-                        0.1f
+                        100,
+                        0.0f
                 );
                 livingEntity.hurt(player.damageSources().lightningBolt(), event.getAmount() * 0.5f);
                 List<LivingEntity> livingEntityList = livingEntity.level().getEntitiesOfClass(LivingEntity.class, livingEntity.getBoundingBox().inflate(5));
@@ -75,8 +75,8 @@ public class CopperSoul extends SoulItem {
                             livingEntity.getEyePosition().add(0, 0.5, 0),
                             livingEntity1.getEyePosition(),
                             ParticleTypes.ELECTRIC_SPARK,
-                            5,
-                            0.2f
+                            50,
+                            0.1f
                     );
                 }
             }

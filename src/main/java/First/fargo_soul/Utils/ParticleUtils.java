@@ -9,6 +9,24 @@ public class ParticleUtils {
     private static final RandomSource RANDOM = RandomSource.create();
 
     /**
+     * 生成飞向目标的单个粒子
+     * @param level 世界
+     * @param startPos 起点坐标
+     * @param targetPos 终点坐标
+     * @param particleType 粒子类型
+     * @param speed 速度
+     */
+    public static void spawnMovingParticle(ServerLevel level, Vec3 startPos, Vec3 targetPos, ParticleOptions particleType, float speed) {
+        Vec3 direction = targetPos.subtract(startPos).normalize();
+        Vec3 velocity = direction.scale(speed);
+        level.addParticle(
+                particleType,
+                startPos.x, startPos.y, startPos.z,
+                velocity.x, velocity.y, velocity.z
+        );
+    }
+
+    /**
      * 生成两点之间的直线粒子
      * @param level      世界
      * @param start      起点坐标

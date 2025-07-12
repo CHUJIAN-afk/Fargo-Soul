@@ -42,7 +42,7 @@ public class SoulRenderer implements ICurioRenderer {
                 matrixStack.last().pose().getNormalizedRotation(playerRotation);
                 playerRotation.conjugate();
                 matrixStack.mulPose(playerRotation);
-                //计算坐标偏移
+                //坐标偏移
                 int hashCode = soulItem.hashCode();
                 double random = new Random(hashCode + soulItemList.indexOf(soulItem)).nextDouble();
                 double angle = ageInTicks * (random * 4 + 1);
@@ -52,7 +52,7 @@ public class SoulRenderer implements ICurioRenderer {
                 float y = (float) Math.sin(Math.toRadians(angle)) * 0.5f;
                 float z = (float) (Math.sin(Math.toRadians(angle)) * semiMinorAxis);
                 if (hashCode % 2 == 0) x *= -1;
-                if (hashCode % 3 == 0) z *= -1;
+                if (hashCode % 3 == 0) y *= -1;
                 if (hashCode % 5 == 0) z *= -1;
                 //模型坐标
                 matrixStack.translate(x, y * 2, z);

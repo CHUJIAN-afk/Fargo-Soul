@@ -21,6 +21,7 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import java.util.List;
 
 import static First.fargo_soul.Curios.Souls.AshWoodSoul;
+import static First.fargo_soul.Utils.MathUtils.random;
 
 public class AshWoodSoul extends SoulItem {
 
@@ -64,20 +65,23 @@ public class AshWoodSoul extends SoulItem {
             if (monster != null) {
                 double rand = 0.5 - MathUtils.random.nextDouble(1);
                 Vec3 toMonster = monster.position().add(rand * MathUtils.random.nextDouble(), rand * MathUtils.random.nextDouble() - 1, rand * MathUtils.random.nextDouble()).subtract(player.getX(), player.getY(), player.getZ()).normalize();
+                double x = player.getX() + (1 - random.nextDouble());
+                double y = player.getY() + 2;
+                double z = player.getZ() + (1 - random.nextDouble());
                 SmallFireball fireball = new SmallFireball(
                         player.level(),
-                        player.getX(),
-                        player.getY() + 2.0,
-                        player.getZ(),
+                        x,
+                        y,
+                        z,
                         toMonster
                 );
                 fireball.setOwner(player);
                 player.level().addFreshEntity(fireball);
                 ParticleUtils.spawnParticleSphere(
                         player.serverLevel(),
-                        player.getX() + rand * MathUtils.random.nextDouble(),
-                        player.getY() + 2.0,
-                        player.getZ() + rand * MathUtils.random.nextDouble(),
+                        x,
+                        y,
+                        z,
                         ParticleTypes.LAVA,
                         0.2f,
                         5,

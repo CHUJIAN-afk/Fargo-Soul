@@ -50,14 +50,14 @@ public class EbonyWoodSoul extends SoulItem {
     public static void EbonyWoodDamageHandler(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, EbonyWoodSoul.get())) {
             int size = player.level().getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(10)).size();
-            event.setAmount(event.getAmount() + Math.min(size, 5));
+            event.setAmount(event.getAmount() + Math.min(size / 2, 5));
         }
     }
 
     public static void EbonyWoodDamageHandler2(LivingIncomingDamageEvent event) {
         if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, EbonyWoodSoul.get())) {
             int size = player.level().getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(10)).size();
-            event.setAmount(event.getAmount() * (100 - (float) Math.min(size, 5) / 100));
+            event.setAmount(event.getAmount() * ((100 - (float) Math.min(size / 2, 5)) / 100));
         }
     }
 

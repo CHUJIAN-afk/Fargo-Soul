@@ -1,6 +1,6 @@
 {
-  "itemGroup.fargo_soul": "Example Mod Tab",
-  "block.fargo_soul.example_block": "Example Block",
+  "itemGroup.fargo_soul": "示例模组标签",
+  "block.fargo_soul.example_block": "示例方块",
   "item.fargo_soul.wood_soul": "木魔石",
   "item.fargo_soul.pine_wood_soul": "针叶木魔石",
   "item.fargo_soul.rose_wood_soul": "红木魔石",
@@ -17,5 +17,13 @@
   "item.fargo_soul.tungsten_soul": "钨魔石",
   "item.fargo_soul.ash_wood_soul": "灰烬木魔石",
   "item.fargo_soul.obsidian_soul": "黑曜石魔石",
-  "item.fargo_soul.terra_power": "泰拉之力"
+  "item.fargo_soul.terra_power": "泰拉之力",
+  "item.fargo_soul.ancient_cobalt_soul": "远古钴魔石",
+  "item.fargo_soul.cobalt_soul": "钴蓝魔石",
+  "item.fargo_soul.palladium_soul": "钯金魔石",
+  "item.fargo_soul.mithril_soul": "秘银魔石",
+  "item.fargo_soul.orichalcum_soul": "山铜魔石",
+  "item.fargo_soul.adamantite_soul": "精金魔石",
+  "item.fargo_soul.titanium_soul": "钛金魔石",
+  "item.fargo_soul.earth_power": "大地之力"
 }
