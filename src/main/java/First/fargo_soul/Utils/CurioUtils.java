@@ -9,7 +9,9 @@ import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class CurioUtils {
 
@@ -28,7 +30,7 @@ public class CurioUtils {
         return false;
     }
 
-    private static @NotNull List<SoulItem> getSoulInventory(LivingEntity livingEntity) {
+    public static @NotNull List<SoulItem> getSoulInventory(LivingEntity livingEntity) {
         List<SoulItem> OringinCurioList = new ArrayList<>();
         Optional<ICuriosItemHandler> curiosItemHandler = CuriosApi.getCuriosInventory(livingEntity);
         if (curiosItemHandler.isPresent()) {

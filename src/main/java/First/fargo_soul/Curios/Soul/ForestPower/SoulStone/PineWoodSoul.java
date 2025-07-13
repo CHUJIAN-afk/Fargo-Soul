@@ -2,7 +2,6 @@ package First.fargo_soul.Curios.Soul.ForestPower.SoulStone;
 
 import First.fargo_soul.Curios.SoulItem;
 import First.fargo_soul.Utils.CurioUtils;
-import First.fargo_soul.Utils.MathUtils;
 import First.fargo_soul.Utils.ParticleUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
@@ -14,7 +13,6 @@ import net.minecraft.world.entity.projectile.Snowball;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.List;

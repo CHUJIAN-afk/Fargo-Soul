@@ -7,7 +7,6 @@ import First.fargo_soul.Curios.Soul.ForestPower.SoulStone.*;
 import First.fargo_soul.Curios.Soul.TerraPower.SoulStone.*;
 import First.fargo_soul.Curios.Soul.TerraPower.SoulStone.ObsidianSoulStone.AshWoodSoul;
 import First.fargo_soul.Fargo_soul;
-
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
@@ -86,7 +85,5 @@ public class SoulEvent {
         //大地之力
         PalladiumSoul.PalladiumSoulHealHandler(event);
     }
-
-
 
 }

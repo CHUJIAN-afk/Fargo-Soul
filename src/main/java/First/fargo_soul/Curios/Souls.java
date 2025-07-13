@@ -3,18 +3,19 @@ package First.fargo_soul.Curios;
 import First.fargo_soul.Curios.Soul.EarthPower.EarthPower;
 import First.fargo_soul.Curios.Soul.EarthPower.SoulStone.*;
 import First.fargo_soul.Curios.Soul.EarthPower.SoulStone.CobaltSoulStone.AncientCobaltSoul;
+import First.fargo_soul.Curios.Soul.ForestPower.ForestPower;
+import First.fargo_soul.Curios.Soul.ForestPower.SoulStone.*;
 import First.fargo_soul.Curios.Soul.TerraPower.SoulStone.*;
 import First.fargo_soul.Curios.Soul.TerraPower.SoulStone.ObsidianSoulStone.AshWoodSoul;
 import First.fargo_soul.Curios.Soul.TerraPower.TerraPower;
 import First.fargo_soul.Fargo_soul;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import First.fargo_soul.Curios.Soul.ForestPower.*;
-import First.fargo_soul.Curios.Soul.ForestPower.SoulStone.*;
 public class Souls {
 
     public static final DeferredRegister.Items SoulItems = DeferredRegister.createItems(Fargo_soul.MODID);

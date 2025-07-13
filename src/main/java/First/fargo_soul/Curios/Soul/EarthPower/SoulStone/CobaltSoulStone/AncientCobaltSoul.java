@@ -18,7 +18,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
@@ -34,7 +33,7 @@ public class AncientCobaltSoul extends SoulItem {
 
     public List<Component> AttributeList = List.of(
             Component.literal("跳跃时产生爆炸并造成浸油减益，此效果有1.5秒冷却时间").withStyle(ChatFormatting.BLUE),
-            Component.literal("浸油：受到的火焰伤害+100%").withStyle(ChatFormatting.BLUE),
+            Component.literal("被浸油影响的敌人受到的火焰伤害大幅增加").withStyle(ChatFormatting.BLUE),
             Component.literal("按住潜行键快速下落").withStyle(ChatFormatting.BLUE)
     );
 
@@ -56,10 +55,10 @@ public class AncientCobaltSoul extends SoulItem {
 
     public static void AncientCobaltSoulJumpHandler(LivingEvent.LivingJumpEvent event) {
         if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, Souls.AncientCobaltSoul.get())) {
-            int AncientCobaltSoul = player.getPersistentData().getInt("AncientCobaltSoul");
-            int TickCount = player.server.getTickCount();
+            long AncientCobaltSoul = player.getPersistentData().getLong("AncientCobaltSoul");
+            long TickCount = player.serverLevel().getGameTime();
             if (AncientCobaltSoul < TickCount) {
-                player.getPersistentData().putInt("AncientCobaltSoul", TickCount + 30);
+                player.getPersistentData().putLong("AncientCobaltSoul", TickCount + 30);
                 List<LivingEntity> livingEntityList = player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(3));
                 livingEntityList.removeIf(livingEntity1 -> livingEntity1.equals(player));
                 for (LivingEntity entity : livingEntityList) {

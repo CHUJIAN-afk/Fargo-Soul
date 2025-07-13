@@ -2,11 +2,15 @@ package First.fargo_soul.Utils;
 
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import static First.fargo_soul.Utils.MathUtils.random;
+
 public class ParticleUtils {
-    private static final RandomSource RANDOM = RandomSource.create();
 
     /**
      * 生成飞向目标的单个粒子
@@ -43,23 +47,105 @@ public class ParticleUtils {
             Vec3 pos = start.lerp(end, ratio);
             if (jitter > 0) {
                 pos = pos.add(
-                        (RANDOM.nextDouble() - 0.5) * jitter,
-                        (RANDOM.nextDouble() - 0.5) * jitter,
-                        (RANDOM.nextDouble() - 0.5) * jitter
+                        (random.nextDouble() - 0.5) * jitter,
+                        (random.nextDouble() - 0.5) * jitter,
+                        (random.nextDouble() - 0.5) * jitter
                 );
             }
             level.sendParticles(particle, pos.x, pos.y, pos.z, 1, 0, 0, 0, 0.01);
         }
     }
+    /**
+     * 生成逐渐向外扩散的水平粒子群（圆形环绕 + 圆内随机粒子）
+     * @param level          世界
+     * @param centerX        圆心X
+     * @param centerY        圆心Y（高度）
+     * @param centerZ        圆心Z
+     * @param particle       粒子类型
+     * @param maxRadius      最大半径
+     * @param totalParticles 总粒子数（圆形+内部）
+     * @param innerRatio     内部粒子占比（0.2 = 20%粒子在内部）
+     * @param speed          粒子速度
+     * @param steps          扩散步数
+     * @param interval       每步之间的间隔时间（毫秒）
+     */
+    public static void spawnExpandingParticleCircle(ServerLevel level,
+                                                    double centerX,
+                                                    double centerY,
+                                                    double centerZ,
+                                                    ParticleOptions particle,
+                                                    float maxRadius,
+                                                    int totalParticles,
+                                                    float innerRatio,
+                                                    float speed,
+                                                    int steps,
+                                                    long interval) {
+        for (int step = 0; step < steps; step++) {
+            float currentRadius = step * (maxRadius / steps);
+            ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+            executorService.schedule(() -> spawnParticleCircle(level, centerX, centerY, centerZ, particle, currentRadius, totalParticles, innerRatio, speed), step * interval, TimeUnit.MILLISECONDS);
+        }
+    }
+
+    public static void spawnParticleCircle(ServerLevel level, double centerX, double centerY, double centerZ, ParticleOptions particle, float maxRadius, int totalParticles, float innerRatio) {
+        spawnParticleCircle(level, centerX, centerY, centerZ, particle, maxRadius, totalParticles, innerRatio, 0);
+    }
+
+    /**
+     * 生成水平粒子群（圆形环绕 + 圆内随机粒子）
+     *
+     * @param level          世界
+     * @param centerX        圆心X
+     * @param centerY        圆心Y（高度）
+     * @param centerZ        圆心Z
+     * @param particle       粒子类型
+     * @param maxRadius      最大半径
+     * @param totalParticles 总粒子数（圆形+内部）
+     * @param innerRatio     内部粒子占比（0.2 = 20%粒子在内部）
+     * @param speed          粒子速度
+     */
+    public static void spawnParticleCircle(ServerLevel level,
+                                           double centerX,
+                                           double centerY,
+                                           double centerZ,
+                                           ParticleOptions particle,
+                                           float maxRadius,
+                                           int totalParticles,
+                                           float innerRatio,
+                                           float speed) {
+
+        // 圆形环绕粒子（80%）
+        int surfaceParticles = (int) (totalParticles * (1 - innerRatio));
+        for (int i = 0; i < surfaceParticles; i++) {
+            // 随机圆形坐标（均匀分布）
+            double theta = random.nextDouble() * 2 * Math.PI; // 水平角
+            double r = maxRadius * (0.8 + 0.2 * random.nextDouble()); // 随机半径波动
+
+            double x = centerX + r * Math.cos(theta);
+            double z = centerZ + r * Math.sin(theta);
+
+            level.sendParticles(particle, x, centerY, z, 1, 0.1, 0, 0.1, 0.02);
+        }
+
+        // 圆内随机粒子（20%）
+        int innerParticles = totalParticles - surfaceParticles;
+        for (int i = 0; i < innerParticles; i++) {
+            // 随机圆内坐标（均匀分布）
+            double r = maxRadius * Math.sqrt(random.nextDouble()); // 平方根保证均匀
+            double theta = random.nextDouble() * 2 * Math.PI;
+
+            double x = centerX + r * Math.cos(theta);
+            double z = centerZ + r * Math.sin(theta);
+
+            level.sendParticles(particle, x, centerY, z, 1, 0, 0, 0, speed);
+        }
+    }
+
 
 
     public static void spawnParticleSphere(ServerLevel level, double centerX, double centerY, double centerZ, ParticleOptions particle, float maxRadius, int totalParticles, float innerRatio) {
         spawnParticleSphere(level, centerX, centerY, centerZ, particle, maxRadius, totalParticles, innerRatio, 0);
     }
-
-
-
-
 
     /**
      * 生成3D球形粒子群（球面环绕 + 球体内随机粒子）
@@ -87,9 +173,9 @@ public class ParticleUtils {
         int surfaceParticles = (int) (totalParticles * (1 - innerRatio));
         for (int i = 0; i < surfaceParticles; i++) {
             // 随机球面坐标（均匀分布）
-            double theta = RANDOM.nextDouble() * 2 * Math.PI; // 水平角
-            double phi = Math.acos(2 * RANDOM.nextDouble() - 1); // 俯仰角
-            double r = maxRadius * (0.8 + 0.2 * RANDOM.nextDouble()); // 随机半径波动
+            double theta = random.nextDouble() * 2 * Math.PI; // 水平角
+            double phi = Math.acos(2 * random.nextDouble() - 1); // 俯仰角
+            double r = maxRadius * (0.8 + 0.2 * random.nextDouble()); // 随机半径波动
 
             double x = centerX + r * Math.sin(phi) * Math.cos(theta);
             double y = centerY + r * Math.sin(phi) * Math.sin(theta);
@@ -102,9 +188,9 @@ public class ParticleUtils {
         int innerParticles = totalParticles - surfaceParticles;
         for (int i = 0; i < innerParticles; i++) {
             // 随机球体内坐标（均匀分布）
-            double r = maxRadius * Math.pow(RANDOM.nextDouble(), 1 / 3.0); // 立方根保证均匀
-            double theta = RANDOM.nextDouble() * 2 * Math.PI;
-            double phi = Math.acos(2 * RANDOM.nextDouble() - 1);
+            double r = maxRadius * Math.pow(random.nextDouble(), 1 / 3.0); // 立方根保证均匀
+            double theta = random.nextDouble() * 2 * Math.PI;
+            double phi = Math.acos(2 * random.nextDouble() - 1);
 
             double x = centerX + r * Math.sin(phi) * Math.cos(theta);
             double y = centerY + r * Math.sin(phi) * Math.sin(theta);

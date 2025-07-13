@@ -37,7 +37,7 @@ public class SoulItem extends Item implements ICurioItem {
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack itemStack) {
         LivingEntity livingEntity = slotContext.entity();
-        return !CurioUtils.findCurio(livingEntity, itemStack);
+        return !CurioUtils.isEquipped(livingEntity, itemStack.getItem());
     }
 
     @Override

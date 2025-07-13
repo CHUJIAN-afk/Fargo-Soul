@@ -47,7 +47,7 @@ public class CopperSoul extends SoulItem {
 
     public static void CopperSoulDamageHandler(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, CopperSoul.get()) && event.getEntity() instanceof LivingEntity livingEntity) {
-            long serverTickCount = player.server.getTickCount();
+            long serverTickCount = player.serverLevel().getGameTime();
             long LastCopperSoul = player.getPersistentData().getLong("LastCopperSoul");
             double random = 0.1;
             if ((player.level().canSeeSky(livingEntity.blockPosition()) && player.level().isRaining() || livingEntity.isInWater())) {
