@@ -1,5 +1,6 @@
 package First.fargo_soul.Utils;
 
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
@@ -11,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import static First.fargo_soul.Utils.MathUtils.random;
 
 public class ParticleUtils {
+    public static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
     /**
      * 生成飞向目标的单个粒子
@@ -20,7 +22,7 @@ public class ParticleUtils {
      * @param particleType 粒子类型
      * @param speed 速度
      */
-    public static void spawnMovingParticle(ServerLevel level, Vec3 startPos, Vec3 targetPos, ParticleOptions particleType, float speed) {
+    public static void spawnMovingParticle(ClientLevel level, Vec3 startPos, Vec3 targetPos, ParticleOptions particleType, float speed) {
         Vec3 direction = targetPos.subtract(startPos).normalize();
         Vec3 velocity = direction.scale(speed);
         level.addParticle(
@@ -28,6 +30,32 @@ public class ParticleUtils {
                 startPos.x, startPos.y, startPos.z,
                 velocity.x, velocity.y, velocity.z
         );
+    }
+    /**
+     * 逐渐生成两点之间的直线粒子
+     * @param level      世界
+     * @param start      起点坐标
+     * @param end        终点坐标
+     * @param particle   粒子类型
+     * @param density    粒子密度（每格距离的粒子数）
+     * @param jitter     位置随机偏移量（0=完全直线）
+     * @param speed      粒子速度
+     * @param steps      扩散步数
+     * @param interval   每步之间的间隔时间（毫秒）
+     */
+    public static void spawnMovingParticleLine(ServerLevel level,
+                                         Vec3 start,
+                                         Vec3 end,
+                                         ParticleOptions particle,
+                                         double density,
+                                         float jitter,
+                                         double speed,
+                                         int steps,
+                                         long interval) {
+        for (int step = 1; step <= steps; step++) {
+            Vec3 currentEnd = start.lerp(end, step / (double) steps);
+            executorService.schedule(() -> spawnParticleLine(level, start, currentEnd, particle, density, jitter, speed), step * interval, TimeUnit.MILLISECONDS);
+        }
     }
 
     /**
@@ -38,8 +66,9 @@ public class ParticleUtils {
      * @param particle   粒子类型
      * @param density    粒子密度（每格距离的粒子数）
      * @param jitter     位置随机偏移量（0=完全直线）
+     * @param speed      粒子速度
      */
-    public static void spawnParticleLine(ServerLevel level, Vec3 start, Vec3 end, ParticleOptions particle, double density, float jitter) {
+    public static void spawnParticleLine(ServerLevel level, Vec3 start, Vec3 end, ParticleOptions particle, double density, float jitter, double speed) {
         double distance = start.distanceTo(end);
         int particles = (int) (distance * density);
         for (int i = 0; i <= particles; i++) {
@@ -52,19 +81,24 @@ public class ParticleUtils {
                         (random.nextDouble() - 0.5) * jitter
                 );
             }
-            level.sendParticles(particle, pos.x, pos.y, pos.z, 1, 0, 0, 0, 0.01);
+            level.sendParticles(particle, pos.x, pos.y, pos.z, 1, 0, 0, 0, speed);
         }
     }
+
+    public static void spawnParticleLine(ServerLevel level, Vec3 start, Vec3 end, ParticleOptions particle, double density, float jitter) {
+        spawnParticleLine(level, start, end, particle, density, jitter, 0);
+    }
+
     /**
      * 生成逐渐向外扩散的水平粒子群（圆形环绕 + 圆内随机粒子）
      * @param level          世界
      * @param centerX        圆心X
-     * @param centerY        圆心Y（高度）
+     * @param centerY        圆心Y
      * @param centerZ        圆心Z
      * @param particle       粒子类型
      * @param maxRadius      最大半径
-     * @param totalParticles 总粒子数（圆形+内部）
-     * @param innerRatio     内部粒子占比（0.2 = 20%粒子在内部）
+     * @param totalParticles 每步的粒子数（圆形+内部）
+     * @param innerRatio     内部粒子占比
      * @param speed          粒子速度
      * @param steps          扩散步数
      * @param interval       每步之间的间隔时间（毫秒）
@@ -82,7 +116,6 @@ public class ParticleUtils {
                                                     long interval) {
         for (int step = 0; step < steps; step++) {
             float currentRadius = step * (maxRadius / steps);
-            ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
             executorService.schedule(() -> spawnParticleCircle(level, centerX, centerY, centerZ, particle, currentRadius, totalParticles, innerRatio, speed), step * interval, TimeUnit.MILLISECONDS);
         }
     }
@@ -141,7 +174,9 @@ public class ParticleUtils {
         }
     }
 
-
+    public static void spawnParticleSphere(ServerLevel level, Vec3 vec3, ParticleOptions particle, float maxRadius, int totalParticles, float innerRatio) {
+        spawnParticleSphere(level, vec3.x(), vec3.y(), vec3.z(), particle, maxRadius, totalParticles, innerRatio, 0);
+    }
 
     public static void spawnParticleSphere(ServerLevel level, double centerX, double centerY, double centerZ, ParticleOptions particle, float maxRadius, int totalParticles, float innerRatio) {
         spawnParticleSphere(level, centerX, centerY, centerZ, particle, maxRadius, totalParticles, innerRatio, 0);

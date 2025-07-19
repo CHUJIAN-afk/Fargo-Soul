@@ -1,9 +1,7 @@
 package First.fargo_soul.Effect;
 
-import First.fargo_soul.Effect.HarmfulEffect.AmazingMomentEffect;
-import First.fargo_soul.Effect.HarmfulEffect.LeadPoisoningEffect;
-import First.fargo_soul.Effect.HarmfulEffect.OilEffect;
-import First.fargo_soul.Effect.HarmfulEffect.OrichalcumPoisoningEffect;
+import First.fargo_soul.Effect.Harmful.*;
+import First.fargo_soul.Effect.Neutral.*;
 import First.fargo_soul.Fargo_soul;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -17,6 +15,14 @@ public class EffectRegister {
     public static final Holder<MobEffect> AmazingMoment = EFFECTS.register("amazing_moment", AmazingMomentEffect::new);
     public static final Holder<MobEffect> Oil = EFFECTS.register("oil", OilEffect::new);
     public static final Holder<MobEffect> OrichalcumPoisoning = EFFECTS.register("orichalcum_poisoning", OrichalcumPoisoningEffect::new);
+    public static final Holder<MobEffect> ScarletHeals = EFFECTS.register("scarlet_heals", ScarletHealsEffect::new);
+    public static final Holder<MobEffect> Freezing = EFFECTS.register("freezing", FreezingEffect::new);
+    public static final Holder<MobEffect> Frostbite = EFFECTS.register("frostbite", FrostbiteEffect::new);
+    public static final Holder<MobEffect> FungalEmpowerment = EFFECTS.register("fungal_empowerment", FungalEmpowermentEffect::new);
+    public static final Holder<MobEffect> Honey = EFFECTS.register("honey", HoneyEffect::new);
+    public static final Holder<MobEffect> BeetleMight = EFFECTS.register("beetle_might", BeetleMightEffect::new);
+    public static final Holder<MobEffect> BeetleEndurance = EFFECTS.register("beetle_endurance", BeetleEnduranceEffect::new);
+    public static final Holder<MobEffect> ShellDefense = EFFECTS.register("shell_defense", ShellDefenseEffect::new);
 
 
 }

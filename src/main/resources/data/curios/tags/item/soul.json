@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "fargo_soul:terra_soul",
     "fargo_soul:ancient_cobalt_soul",
     "fargo_soul:cobalt_soul",
     "fargo_soul:palladium_soul",
@@ -25,6 +26,26 @@
     "fargo_soul:tungsten_soul",
     "fargo_soul:ash_wood_soul",
     "fargo_soul:obsidian_soul",
-    "fargo_soul:terra_power"
+    "fargo_soul:terra_power",
+    "fargo_soul:crimson_soul",
+    "fargo_soul:lava_soul",
+    "fargo_soul:rain_cloud_soul",
+    "fargo_soul:frost_soul",
+    "fargo_soul:green_soul",
+    "fargo_soul:mushroom_soul",
+    "fargo_soul:nature_power",
+    "fargo_soul:bee_soul",
+    "fargo_soul:beetle_soul",
+    "fargo_soul:pumpkin_soul",
+    "fargo_soul:spider_soul",
+    "fargo_soul:turtle_soul",
+    "fargo_soul:cactus_soul",
+    "fargo_soul:life_power",
+    "fargo_soul:forbidden_soul",
+    "fargo_soul:holy_soul",
+    "fargo_soul:ancient_holy_soul",
+    "fargo_soul:teke_soul",
+    "fargo_soul:ghost_soul",
+    "fargo_soul:spirit_power"
   ]
 }

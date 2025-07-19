@@ -8,7 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-import static First.fargo_soul.Curios.Souls.WoodSoul;
+import static First.fargo_soul.Item.Soul.Souls.WoodSoul;
 
 @Mixin(Villager.class)
 public abstract class VillagerMixin {

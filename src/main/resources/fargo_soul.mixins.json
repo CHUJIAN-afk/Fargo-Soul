@@ -5,7 +5,6 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "fargo_soul.refmap.json",
   "mixins": [
-    "LivingEntityMixin",
     "VillagerMixin"
   ],
   "client": [

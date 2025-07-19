@@ -1,0 +1,181 @@
+package First.fargo_soul.Item.Soul.LifePower.SoulStone;
+
+import First.fargo_soul.Effect.EffectRegister;
+import First.fargo_soul.Item.Soul.SoulItem;
+import First.fargo_soul.Item.Soul.Souls;
+import First.fargo_soul.Utils.CurioUtils;
+import First.fargo_soul.Utils.MathUtils;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.player.Input;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.Bee;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.FlowerBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
+import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+
+import java.util.List;
+
+public class BeeSoul extends SoulItem {
+    public BeeSoul(Properties properties) {
+        super(properties);
+    }
+
+    public List<Component> AttributeList = List.of(
+            Component.literal("使附近的蜜蜂逐渐恢复生命值，蜜蜂永远对你友好").withStyle(ChatFormatting.BLUE),
+            Component.literal("允许短时间飞行，免疫摔落伤害").withStyle(ChatFormatting.BLUE),
+            Component.literal("接触花朵可提供蜂蜜增益，偶尔产生一群蜜蜂").withStyle(ChatFormatting.BLUE),
+            Component.literal("在你周围的花朵被敌怪接触时可能会产生蜂群攻击敌人").withStyle(ChatFormatting.BLUE)
+    );
+
+    public List<Component> TooltipList = List.of(
+            Component.literal("“根据目前所知的所有航空原理，蜜蜂应该根本不可能会飞”").withStyle(ChatFormatting.DARK_GRAY)
+    );
+
+    @Override
+    public List<Component> getAttributeList() {
+        return this.AttributeList;
+    }
+
+    @Override
+    public List<Component> getAttributesTooltip(List<Component> tooltips, Item.TooltipContext context, ItemStack stack) {
+        tooltips.addAll(AttributeList);
+        tooltips.addAll(TooltipList);
+        return tooltips;
+    }
+
+    public static void BeeSoulTickHandler1(PlayerTickEvent.Post event) {
+        if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, Souls.BeeSoul.get())) {
+            if (player.tickCount % 20 == 0) {
+                List<Bee> beeList = player.serverLevel().getEntitiesOfClass(Bee.class, player.getBoundingBox().inflate(10), bee -> {
+                    if (bee.getTarget() != null) {
+                        return !bee.getTarget().equals(player);
+                    }
+                    return true;
+                });
+                for (Bee bee : beeList) {
+                    bee.heal(1);
+                }
+            }
+        }
+    }
+
+    public static void BeeSoulTickHandler2(PlayerTickEvent.Post event) {
+        if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, Souls.BeeSoul.get())) {
+            BlockState blockState = player.level().getBlockState(player.blockPosition());
+            if (blockState.getBlock() instanceof FlowerBlock) {
+                if (player.getEffect(EffectRegister.Honey) == null) {
+                    player.addEffect(new MobEffectInstance(EffectRegister.Honey, 19));
+                }
+                if (player.tickCount % 1200 == 0) {
+                    ServerLevel serverLevel = player.serverLevel();
+                    int size = serverLevel.getEntitiesOfClass(Bee.class, player.getBoundingBox().inflate(6)).size();
+                    if (size < 12) {
+                        for (int i = 0; i < 3; i++) {
+                            Bee bee = new Bee(EntityType.BEE, serverLevel);
+                            double x = player.getRandomX(2);
+                            double y = player.getRandomY();
+                            double z = player.getRandomZ(2);
+                            bee.setPos(x, y, z);
+                            serverLevel.addFreshEntity(bee);
+                        }
+                        serverLevel.playSound(
+                                null,
+                                player.getX(), player.getY(), player.getZ(),
+                                SoundEvents.BEE_LOOP,
+                                SoundSource.NEUTRAL,
+                                1.0f,
+                                MathUtils.random.nextFloat() * 0.4f + 0.4f
+                        );
+                    }
+                }
+            }
+        }
+    }
+
+    public static void BeeSoulTickHandler3(PlayerTickEvent.Post event) {
+        if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, Souls.BeeSoul.get())) {
+            if (player.tickCount % 200 == 0) {
+                ServerLevel serverLevel = player.serverLevel();
+                int size = serverLevel.getEntitiesOfClass(Bee.class, player.getBoundingBox().inflate(6), bee -> bee.getTarget() != null).size();
+                if (size < 24) {
+                    List<Monster> livingEntityList = serverLevel.getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(10));
+                    for (Monster monster : livingEntityList) {
+                        BlockState blockState = serverLevel.getBlockState(monster.blockPosition());
+                        if (blockState.getBlock() instanceof FlowerBlock) {
+                            for (int i = 0; i < 3; i++) {
+                                Bee bee = new Bee(EntityType.BEE, serverLevel);
+                                double x = monster.getRandomX(1);
+                                double y = monster.getRandomY();
+                                double z = monster.getRandomZ(1);
+                                bee.setPos(x, y, z);
+                                bee.setTarget(monster);
+                                serverLevel.addFreshEntity(bee);
+                            }
+                            serverLevel.playSound(
+                                    null,
+                                    player.getX(), player.getY(), player.getZ(),
+                                    SoundEvents.BEE_LOOP,
+                                    SoundSource.NEUTRAL,
+                                    1.0f,
+                                    MathUtils.random.nextFloat() * 0.4f + 0.4f
+                            );
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    public static void BeeSoulChangeTargetHandler(LivingChangeTargetEvent event) {
+        if (event.getEntity() instanceof Bee && event.getNewAboutToBeSetTarget() instanceof ServerPlayer player && CurioUtils.isEquipped(player, Souls.BeeSoul.get())) {
+            event.setCanceled(true);
+        }
+    }
+
+    public static void BeeSoulMovementInputHandler(MovementInputUpdateEvent event) {
+        if (event.getEntity() instanceof LocalPlayer player && CurioUtils.isEquipped(player, Souls.BeeSoul.get())) {
+            Input input = event.getInput();
+            int beeFlightTime = player.getPersistentData().getInt("BeeSoul");
+            if (input.jumping && beeFlightTime < 60) {
+                Vec3 deltaMovement = player.getDeltaMovement();
+                Vec3 newDeltaMovement = new Vec3(
+                        deltaMovement.x(),
+                        Math.min(deltaMovement.y() + 0.1, 0.5),
+                        deltaMovement.z()
+                );
+                player.setDeltaMovement(newDeltaMovement);
+                player.getPersistentData().putInt("BeeSoul", beeFlightTime + 1);
+            } else if (player.onGround()) {
+                player.getPersistentData().remove("BeeSoul");
+            }
+        }
+    }
+
+    public static void BeeSoulDamageHandler2(LivingIncomingDamageEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, Souls.BeeSoul.get())) {
+            if (event.getSource().is(DamageTypes.FALL)) {
+                event.setCanceled(true);
+            }
+        }
+    }
+
+
+
+
+}

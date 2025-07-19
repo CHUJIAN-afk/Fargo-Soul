@@ -1,6 +1,6 @@
 package First.fargo_soul.Utils;
 
-import First.fargo_soul.Curios.SoulItem;
+import First.fargo_soul.Item.Soul.SoulItem;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;

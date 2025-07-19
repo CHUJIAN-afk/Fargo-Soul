@@ -1,7 +1,7 @@
 package First.fargo_soul.mixin;
 
 
-import First.fargo_soul.Curios.Souls;
+import First.fargo_soul.Item.Soul.Souls;
 import First.fargo_soul.Utils.CurioUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.ItemInHandRenderer;
