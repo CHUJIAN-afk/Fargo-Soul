@@ -1,6 +1,11 @@
 package First.fargo_soul.Item.Soul;
 
 import First.fargo_soul.Fargo_soul;
+import First.fargo_soul.Item.Soul.CosmicPower.CosmicPower;
+import First.fargo_soul.Item.Soul.CosmicPower.SoulStone.*;
+import First.fargo_soul.Item.Soul.DeathPower.DeathPower;
+import First.fargo_soul.Item.Soul.DeathPower.SoulStone.*;
+import First.fargo_soul.Item.Soul.DeathPower.SoulStone.PenetratingNinjaSoulStone.MonkSoul;
 import First.fargo_soul.Item.Soul.EarthPower.EarthPower;
 import First.fargo_soul.Item.Soul.EarthPower.SoulStone.*;
 import First.fargo_soul.Item.Soul.EarthPower.SoulStone.CobaltSoulStone.AncientCobaltSoul;
@@ -16,6 +21,8 @@ import First.fargo_soul.Item.Soul.SpiritPower.SpiritPower;
 import First.fargo_soul.Item.Soul.TerraPower.SoulStone.*;
 import First.fargo_soul.Item.Soul.TerraPower.SoulStone.ObsidianSoulStone.AshWoodSoul;
 import First.fargo_soul.Item.Soul.TerraPower.TerraPower;
+import First.fargo_soul.Item.Soul.WillPower.Soulstone.*;
+import First.fargo_soul.Item.Soul.WillPower.WillPower;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -77,7 +84,31 @@ public class Souls {
     public static final DeferredItem<SoulItem> TekeSoul = SoulItems.registerItem("teke_soul", TekeSoul::new);
     public static final DeferredItem<SoulItem> GhostSoul = SoulItems.registerItem("ghost_soul", GhostSoul::new);
     public static final DeferredItem<SoulItem> SpiritPower = SoulItems.registerItem("spirit_power", SpiritPower::new);
-
+    //死亡之力
+    public static final DeferredItem<SoulItem> AncientShadowSoul = SoulItems.registerItem("ancient_shadow_soul", AncientShadowSoul::new);
+    public static final DeferredItem<SoulItem> NinjaSoul = SoulItems.registerItem("ninja_soul", NinjaSoul::new);
+    public static final DeferredItem<SoulItem> CrystalAssassinSoul = SoulItems.registerItem("crystal_assassin_soul", CrystalAssassinSoul::new);
+    public static final DeferredItem<SoulItem> DarkArtistSoul = SoulItems.registerItem("dark_artist_soul", DarkArtistSoul::new);
+    public static final DeferredItem<SoulItem> GloomySoul = SoulItems.registerItem("gloomy_soul", GloomySoul::new);
+    public static final DeferredItem<SoulItem> NecromancerSoul = SoulItems.registerItem("necromancer_soul", NecromancerSoul::new);
+    public static final DeferredItem<SoulItem> MonkSoul = SoulItems.registerItem("monk_soul", MonkSoul::new);
+    public static final DeferredItem<SoulItem> PenetratingNinjaSoul = SoulItems.registerItem("penetrating_ninja_soul", PenetratingNinjaSoul::new);
+    public static final DeferredItem<SoulItem> DeathPower = SoulItems.registerItem("death_power", DeathPower::new);
+    //意志之力
+    public static final DeferredItem<SoulItem> GoldSoul = SoulItems.registerItem("gold_soul", GoldSoul::new);
+    public static final DeferredItem<SoulItem> PlatinumSoul = SoulItems.registerItem("platinum_soul", PlatinumSoul::new);
+    public static final DeferredItem<SoulItem> GladiatorSoul = SoulItems.registerItem("gladiator_soul", GladiatorSoul::new);
+    public static final DeferredItem<SoulItem> RedRidingSoul = SoulItems.registerItem("red_riding_soul", RedRidingSoul::new);
+    public static final DeferredItem<SoulItem> ValhallaKnightSoul = SoulItems.registerItem("valhalla_knight_soul", ValhallaKnightSoul::new);
+    public static final DeferredItem<SoulItem> WillPower = SoulItems.registerItem("will_power", WillPower::new);
+    //宇宙之力
+    public static final DeferredItem<SoulItem> MeteorSoul = SoulItems.registerItem("meteor_soul", MeteorSoul::new);
+    public static final DeferredItem<SoulItem> WizardSoul = SoulItems.registerItem("wizard_soul", WizardSoul::new);
+    public static final DeferredItem<SoulItem> BlazeSoul = SoulItems.registerItem("blaze_soul", BlazeSoul::new);
+    public static final DeferredItem<SoulItem> StardustSoul = SoulItems.registerItem("stardust_soul", StardustSoul::new);
+    public static final DeferredItem<SoulItem> NebulaSoul = SoulItems.registerItem("nebula_soul", NebulaSoul::new);
+    public static final DeferredItem<SoulItem> VortexSoul = SoulItems.registerItem("vortex_soul", VortexSoul::new);
+    public static final DeferredItem<SoulItem> CosmicPower = SoulItems.registerItem("cosmic_power", CosmicPower::new);
     //泰拉之魂
     public static final DeferredItem<SoulItem> TerraSoul = SoulItems.registerItem("terra_soul", TerraSoul::new);
 
@@ -86,7 +117,7 @@ public class Souls {
             CreativeModeTab.builder()
                     .title(Component.literal("Fargo Soul"))
                     .withTabsBefore(CreativeModeTabs.COMBAT)
-                    .icon(() -> WoodSoul.get().getDefaultInstance())
+                    .icon(() -> TerraSoul.get().getDefaultInstance())
                     .displayItems((parameters, output) -> {
                         //泰拉之魂
                         output.accept(TerraSoul.get());
@@ -141,6 +172,31 @@ public class Souls {
                         output.accept(TekeSoul.get());
                         output.accept(GhostSoul.get());
                         output.accept(SpiritPower.get());
+                        //死亡之力
+                        output.accept(NinjaSoul.get());
+                        output.accept(AncientShadowSoul.get());
+                        output.accept(CrystalAssassinSoul.get());
+                        output.accept(DarkArtistSoul.get());
+                        output.accept(GloomySoul.get());
+                        output.accept(NecromancerSoul.get());
+                        output.accept(MonkSoul.get());
+                        output.accept(PenetratingNinjaSoul.get());
+                        output.accept(DeathPower.get());
+                        //意志之力
+                        output.accept(GoldSoul.get());
+                        output.accept(PlatinumSoul.get());
+                        output.accept(GladiatorSoul.get());
+                        output.accept(RedRidingSoul.get());
+                        output.accept(ValhallaKnightSoul.get());
+                        output.accept(WillPower.get());
+                        //宇宙之力
+                        output.accept(MeteorSoul.get());
+                        output.accept(WizardSoul.get());
+                        output.accept(BlazeSoul.get());
+                        output.accept(StardustSoul.get());
+                        output.accept(NebulaSoul.get());
+                        output.accept(VortexSoul.get());
+                        output.accept(CosmicPower.get());
 
                     })
                     .build()

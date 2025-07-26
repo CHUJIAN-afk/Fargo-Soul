@@ -63,6 +63,7 @@ public class TungstenSoul extends SoulItem {
                 livingEntityList.removeIf(livingEntity1 -> livingEntity1.equals(player));
                 for (LivingEntity entity : livingEntityList) {
                     entity.hurt(player.damageSources().playerAttack(player), event.getAmount() * 0.5f);
+                    entity.invulnerableTime = 0;
                 }
                 ServerLevel level = player.serverLevel();
                 ParticleUtils.spawnParticleSphere(

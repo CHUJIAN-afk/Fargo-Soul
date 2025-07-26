@@ -2,6 +2,7 @@ package First.fargo_soul.Item.Soul.EarthPower.SoulStone;
 
 import First.fargo_soul.Item.Soul.SoulItem;
 import First.fargo_soul.Item.Soul.Souls;
+import First.fargo_soul.Utils.AttributeUtils;
 import First.fargo_soul.Utils.CurioUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -48,22 +49,12 @@ public class MithrilSoul extends SoulItem {
 
     public static void MithrilSoulDamageHandler(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, Souls.MithrilSoul.get())) {
-            if ((player.getLastHurtMobTimestamp() < (player.tickCount - 100) || player.getLastHurtMobTimestamp() > player.tickCount) && player.getAttribute(Attributes.ATTACK_SPEED) instanceof AttributeInstance attributeInstance) {
+            long MithrilSoulLastDamage = player.getPersistentData().getLong("MithrilSoulLastDamage");
+            player.getPersistentData().putLong("MithrilSoulLastDamage", player.serverLevel().getGameTime() + 100);
+            if (MithrilSoulLastDamage < player.serverLevel().getGameTime()) {
                 ResourceLocation resourceLocation = Souls.MithrilSoul.getId();
-                AttributeModifier modifier = new AttributeModifier(
-                        resourceLocation,
-                        0.5,
-                        AttributeModifier.Operation.ADD_MULTIPLIED_BASE
-                );
-                if (attributeInstance.getModifier(resourceLocation) == null) {
-                    attributeInstance.addPermanentModifier(modifier);
-                    ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-                    executor.schedule(() -> {
-                        if (attributeInstance.getModifier(resourceLocation) != null){
-                            attributeInstance.removeModifier(modifier);
-                        }
-                    }, 3, TimeUnit.SECONDS);
-                }
+                AttributeUtils.addAttributeModifier(player, Attributes.ATTACK_SPEED, resourceLocation, 0.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+                AttributeUtils.executorService.schedule(() -> AttributeUtils.removeAttributeModifier(player, Attributes.ATTACK_SPEED, resourceLocation), 3, TimeUnit.SECONDS);
             }
         }
     }

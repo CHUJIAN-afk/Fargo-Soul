@@ -53,7 +53,8 @@ public class OrichalcumSoul extends SoulItem {
                 event.setAmount(event.getAmount() * 3.5f);
             }
             livingEntity.hurt(player.damageSources().magic(), event.getAmount() * 0.05f);
-            livingEntity.addEffect(new MobEffectInstance(EffectRegister.OrichalcumPoisoning));
+            livingEntity.invulnerableTime = 0;
+            livingEntity.addEffect(new MobEffectInstance(EffectRegister.OrichalcumPoisoning, 100));
             Random random = MathUtils.random;
             ParticleUtils.spawnMovingParticleLine(
                     player.serverLevel(),

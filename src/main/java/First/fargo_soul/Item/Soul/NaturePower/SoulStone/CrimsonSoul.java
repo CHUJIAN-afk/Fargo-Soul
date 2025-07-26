@@ -11,6 +11,8 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.List;
 
@@ -40,6 +42,16 @@ public class CrimsonSoul extends SoulItem {
         tooltips.addAll(AttributeList);
         tooltips.addAll(TooltipList);
         return tooltips;
+    }
+
+
+    public static void CrimsonSoulMobEffectExpiredHandler(MobEffectEvent.Expired event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            if (event.getEffectInstance() instanceof MobEffectInstance mobEffectInstance && mobEffectInstance.is(EffectRegister.ScarletHeals)) {
+                player.heal(player.getPersistentData().getFloat("CrimsonSoul"));
+                player.getPersistentData().remove("CrimsonSoul");
+            }
+        }
     }
 
     public static void CrimsonSoulDamageHandler2(LivingIncomingDamageEvent event) {

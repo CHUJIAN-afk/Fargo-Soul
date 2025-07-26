@@ -34,8 +34,10 @@ public class NeedleProjectile extends AbstractArrow {
     @Override
     protected void onHitEntity(@NotNull EntityHitResult result) {
         if (this.level() instanceof ServerLevel && result.getEntity() instanceof LivingEntity livingEntity) {
-            livingEntity.hurt(this.damageSources().thrown(this, this.getOwner()), 1.0f);
-            this.discard();
+            if (!livingEntity.equals(this.getOwner())) {
+                livingEntity.hurt(this.damageSources().thrown(this, this.getOwner()), 1.0f);
+                this.discard();
+            }
         }
     }
 
@@ -43,6 +45,14 @@ public class NeedleProjectile extends AbstractArrow {
     protected void onHitBlock(@NotNull BlockHitResult result) {
         super.onHitBlock(result);
         this.discard();
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (this.tickCount >= 100) {
+            this.discard();
+        }
     }
 
     @Override

@@ -6,6 +6,7 @@ import First.fargo_soul.Utils.CurioUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -68,10 +69,14 @@ public class ObsidianSoul extends SoulItem {
 
     public static void ObsidianSoulDamageHandler(LivingIncomingDamageEvent event) {
         if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, ObsidianSoul.get())) {
-            if (event.getSource().type().msgId().contains("fire")) {
+            DamageSource source = event.getSource();
+            if (source.type().msgId().contains("fire")) {
                 event.setCanceled(true);
             }
-            if (event.getSource().is(DamageTypes.LAVA)) {
+            if (source.is(DamageTypes.LAVA)) {
+                event.setCanceled(true);
+            }
+            if (source.is(DamageTypes.ON_FIRE) || source.is(DamageTypes.IN_FIRE)) {
                 event.setCanceled(true);
             }
         }

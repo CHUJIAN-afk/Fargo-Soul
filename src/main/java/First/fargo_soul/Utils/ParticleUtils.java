@@ -124,6 +124,12 @@ public class ParticleUtils {
         spawnParticleCircle(level, centerX, centerY, centerZ, particle, maxRadius, totalParticles, innerRatio, 0);
     }
 
+    public static void spawnParticleCircle(ServerLevel level, Vec3 vec3, ParticleOptions particle, float maxRadius, int totalParticles) {
+        spawnParticleCircle(level, vec3.x(), vec3.y(), vec3.z(), particle, maxRadius, totalParticles, 0, 0);
+    }
+
+
+
     /**
      * 生成水平粒子群（圆形环绕 + 圆内随机粒子）
      *
@@ -176,6 +182,10 @@ public class ParticleUtils {
 
     public static void spawnParticleSphere(ServerLevel level, Vec3 vec3, ParticleOptions particle, float maxRadius, int totalParticles, float innerRatio) {
         spawnParticleSphere(level, vec3.x(), vec3.y(), vec3.z(), particle, maxRadius, totalParticles, innerRatio, 0);
+    }
+
+    public static void spawnParticleSphere(ServerLevel level, Vec3 vec3, ParticleOptions particle, float maxRadius, int totalParticles, float innerRatio, float speed) {
+        spawnParticleSphere(level, vec3.x(), vec3.y(), vec3.z(), particle, maxRadius, totalParticles, innerRatio, speed);
     }
 
     public static void spawnParticleSphere(ServerLevel level, double centerX, double centerY, double centerZ, ParticleOptions particle, float maxRadius, int totalParticles, float innerRatio) {

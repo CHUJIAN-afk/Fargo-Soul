@@ -8,10 +8,8 @@ import First.fargo_soul.Utils.CurioUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelManager;
@@ -91,11 +89,7 @@ public class FrostSoul extends SoulItem {
         }
     }
 
-    public static <T extends LivingEntity, M extends EntityModel<T>> void FrostSoulRendererHnadler(ItemStack stack, SlotContext slotContext,
-                                                                                                   PoseStack matrixStack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource renderTypeBuffer,
-                                                                                                   int light, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks,
-                                                                                                   float netHeadYaw, float headPitch) {
-
+    public static void FrostSoulRendererHnadler(SlotContext slotContext, PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int light, float ageInTicks) {
         if (slotContext.entity() instanceof LocalPlayer player && CurioUtils.isEquipped(player, Souls.FrostSoul.get())) {
             int frostSoulCount = player.getPersistentData().getInt("FrostSoul");
             if (frostSoulCount > 0) {

@@ -1,8 +1,14 @@
 package First.fargo_soul;
 
+import First.fargo_soul.Attribute.AttributeRegister;
 import First.fargo_soul.Effect.EffectRegister;
 import First.fargo_soul.Entity.AbstractArrow.AbstractArrowRegister;
+import First.fargo_soul.Entity.AbstractArrow.Banner.BannerRenderer;
+import First.fargo_soul.Entity.AbstractArrow.Bone.BoneRenderer;
+import First.fargo_soul.Entity.AbstractArrow.NebulaEmpoweredFlame.NebulaEmpoweredFlameRenderer;
 import First.fargo_soul.Entity.AbstractArrow.NeedleProjectile.NeedleRenderer;
+import First.fargo_soul.Entity.AbstractArrow.SoulProjectile.SoulProjectileRenderer;
+import First.fargo_soul.Entity.AbstractArrow.Spear.SpearRenderer;
 import First.fargo_soul.Entity.Projectile.IceSpike.IceSpikeRenderer;
 import First.fargo_soul.Entity.Projectile.ProjectileRegister;
 import First.fargo_soul.Item.ProjectileItem.ProjectileItems;
@@ -28,6 +34,8 @@ public class Fargo_soul {
         ProjectileRegister.SoulProjectile.register(eventBus);
         ProjectileItems.Projectiles.register(eventBus);
         AbstractArrowRegister.SoulAbstractArrow.register(eventBus);
+        AttributeRegister.ATTRIBUTE_DEFERRED_REGISTER.register(eventBus);
+        //EntityRegister.ENTITY_TYPE_DEFERRED_REGISTER.register(eventBus);
         eventBus.addListener(this::clientSetup);
     }
 
@@ -37,5 +45,24 @@ public class Fargo_soul {
         //渲染器
         EntityRenderers.register(ProjectileRegister.IceSpike.get(), IceSpikeRenderer::new);
         EntityRenderers.register(AbstractArrowRegister.Needle.get(), NeedleRenderer::new);
+        EntityRenderers.register(AbstractArrowRegister.Soul.get(), SoulProjectileRenderer::new);
+        EntityRenderers.register(AbstractArrowRegister.Bone.get(), BoneRenderer::new);
+        EntityRenderers.register(AbstractArrowRegister.Abstract.get(), SpearRenderer::new);
+        EntityRenderers.register(AbstractArrowRegister.Banner.get(), BannerRenderer::new);
+        EntityRenderers.register(AbstractArrowRegister.NebulaEmpoweredFlame.get(), NebulaEmpoweredFlameRenderer::new);
+
+
+
     }
+
+
+
+
+
+
+
+
+
+
+
 }

@@ -4,6 +4,7 @@ import First.fargo_soul.Utils.CurioUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -109,7 +110,7 @@ public class SoulItem extends Item implements ICurioItem {
                         false,
                         matrixStack,
                         renderTypeBuffer,
-                        light,
+                        CurioUtils.isEquipped(minecraft.player, Souls.WizardSoul.get()) ? LightTexture.FULL_BRIGHT : light,
                         OverlayTexture.NO_OVERLAY,
                         model
                 );

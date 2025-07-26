@@ -99,8 +99,7 @@ public class GreenSoul extends SoulItem {
         } else if (sprintingTime > 0) {
             if (zza == Movement.UP && input.forwardImpulse >= 0.8) {
                 Vec3 viewVector = player.getLookAngle();
-                double speedBoost = 3.0;
-                player.setDeltaMovement(player.getDeltaMovement().add(viewVector.x * speedBoost, 0, viewVector.z * speedBoost));
+                player.addDeltaMovement(viewVector.scale(1.2));
                 zza = Movement.NONE;
                 cooldown = 20;
             }
@@ -180,14 +179,13 @@ public class GreenSoul extends SoulItem {
             ItemStack stack = ProjectileItems.GreenCrystal.get().getDefaultInstance();
             Minecraft minecraft = Minecraft.getInstance();
             float floatingOffset = (float) Math.sin(ageInTicks * 0.1f) * 0.2f + 1.0f;
-            float rotationAngle = ageInTicks % 360;
             poseStack.pushPose();
             Quaternionf playerRotation = new Quaternionf();
             poseStack.last().pose().getNormalizedRotation(playerRotation);
             playerRotation.conjugate();
             poseStack.mulPose(playerRotation);
             poseStack.translate(0, floatingOffset, 0);
-            poseStack.mulPose(Axis.YP.rotationDegrees(rotationAngle));
+            poseStack.mulPose(Axis.YP.rotationDegrees(ageInTicks));
             poseStack.scale(1.5f, 1.5f, 1.5f);
             minecraft.getItemRenderer().render(
                     stack,

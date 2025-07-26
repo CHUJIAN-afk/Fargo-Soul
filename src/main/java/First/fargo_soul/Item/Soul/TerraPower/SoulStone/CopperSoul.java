@@ -55,6 +55,8 @@ public class CopperSoul extends SoulItem {
             }
             if (serverTickCount > LastCopperSoul && MathUtils.random.nextDouble() < random) {
                 player.getPersistentData().putLong("LastCopperSoul", serverTickCount + 100);
+                livingEntity.hurt(player.damageSources().lightningBolt(), event.getAmount() * 0.75f);
+                livingEntity.invulnerableTime = 0;
                 ParticleUtils.spawnParticleLine(
                         player.serverLevel(),
                         player.getEyePosition().add(0, 0.5, 0),
@@ -63,9 +65,8 @@ public class CopperSoul extends SoulItem {
                         100,
                         0.0f
                 );
-                livingEntity.hurt(player.damageSources().lightningBolt(), event.getAmount() * 0.5f);
                 List<LivingEntity> livingEntityList = livingEntity.level().getEntitiesOfClass(LivingEntity.class, livingEntity.getBoundingBox().inflate(5));
-                livingEntityList.removeIf(livingEntity1 -> livingEntity1.equals(player));
+                livingEntityList.removeIf(livingEntity1 -> livingEntity1.equals(player) || livingEntity1.equals(livingEntity));
                 if (livingEntityList.isEmpty()) return;
                 for (int i = 0; i < Math.min(livingEntityList.size(), 5); i++) {
                     LivingEntity livingEntity1 = livingEntityList.get(i);

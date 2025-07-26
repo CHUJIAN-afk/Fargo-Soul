@@ -1,6 +1,5 @@
 package First.fargo_soul.Item.Soul;
 
-import First.fargo_soul.Item.Soul.NaturePower.SoulStone.FrostSoul;
 import First.fargo_soul.Utils.RenderUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;
@@ -15,12 +14,7 @@ public class SoulRenderer implements ICurioRenderer {
 
     @Override
     public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack stack, SlotContext slotContext, PoseStack matrixStack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource renderTypeBuffer, int light, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-
-
         SoulItem.SoulItemRendererHnadler(stack, slotContext, matrixStack, renderLayerParent, renderTypeBuffer, light, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
-        FrostSoul.FrostSoulRendererHnadler(stack, slotContext, matrixStack, renderLayerParent, renderTypeBuffer, light, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
-        RenderUtils.RenderHandler(stack, slotContext, matrixStack, renderTypeBuffer, light, ageInTicks);
-
-
+        RenderUtils.RenderHandler(stack, slotContext, matrixStack, renderTypeBuffer, light, ageInTicks, partialTicks);
     }
 }

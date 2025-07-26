@@ -2,6 +2,7 @@ package First.fargo_soul.Item.Soul.EarthPower.SoulStone;
 
 import First.fargo_soul.Item.Soul.SoulItem;
 import First.fargo_soul.Item.Soul.Souls;
+import First.fargo_soul.Utils.AttributeUtils;
 import First.fargo_soul.Utils.CurioUtils;
 import First.fargo_soul.Utils.MathUtils;
 import First.fargo_soul.Utils.ParticleUtils;
@@ -20,7 +21,8 @@ import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.List;
-import java.util.Random;
+
+import static First.fargo_soul.Utils.MathUtils.random;
 
 
 public class AdamantiteSoul extends SoulItem {
@@ -30,9 +32,8 @@ public class AdamantiteSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("持续攻击会提高攻击速度，最高增加30%攻击速度，随时间逐渐衰减").withStyle(ChatFormatting.BLUE),
-            Component.literal("攻击速度增益达到最大值时，溢出混乱粒子").withStyle(ChatFormatting.BLUE),
-            Component.literal("混乱粒子会干扰附近敌人的索敌目标").withStyle(ChatFormatting.BLUE)
+            Component.literal("持续攻击会提高攻击速度，最高增加30%攻击速度，五秒不攻击清空").withStyle(ChatFormatting.BLUE),
+            Component.literal("攻击速度增益达到最大值时，附近以你为目标的敌人有概率被混乱粒子干扰，使他们短暂丢失目标").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
@@ -52,36 +53,35 @@ public class AdamantiteSoul extends SoulItem {
     }
 
     public static void AdamantiteSoulDamageHandler(LivingIncomingDamageEvent event) {
-        if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, Souls.AdamantiteSoul.get()) && player.getAttribute(Attributes.ATTACK_SPEED) instanceof AttributeInstance attributeInstance) {
-            int AdamantiteSoul = player.getPersistentData().getInt("AdamantiteSoul");
-            player.getPersistentData().putInt("AdamantiteSoul", Math.min(AdamantiteSoul + 1, 30));
-            ResourceLocation resourceLocation = Souls.AdamantiteSoul.getId();
-            AttributeModifier modifier = new AttributeModifier(
-                    resourceLocation,
-                    AdamantiteSoul / 100d,
-                    AttributeModifier.Operation.ADD_MULTIPLIED_BASE
-            );
-            if (attributeInstance.getModifier(resourceLocation) != null) {
-                attributeInstance.removeModifier(resourceLocation);
+        if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, Souls.AdamantiteSoul.get())) {
+            if (event.getSource().getWeaponItem() != null) {
+                player.getPersistentData().putLong("AdamantiteSoulLastDamage", player.serverLevel().getGameTime() + 100);
+                int AdamantiteSoul = player.getPersistentData().getInt("AdamantiteSoul");
+                player.getPersistentData().putInt("AdamantiteSoul", Math.min(AdamantiteSoul + 5, 30));
+                ResourceLocation resourceLocation = Souls.AdamantiteSoul.getId();
+                AttributeUtils.addAttributeModifier(player, Attributes.ATTACK_SPEED, resourceLocation, AdamantiteSoul / 100d, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
             }
-            attributeInstance.addPermanentModifier(modifier);
         }
     }
 
     public static void AdamantiteSoulTickHandler(PlayerTickEvent.Post event) {
-        if (event.getEntity() instanceof ServerPlayer player && player.getAttribute(Attributes.ATTACK_SPEED) instanceof AttributeInstance attributeInstance) {
+        if (event.getEntity() instanceof ServerPlayer player) {
             ResourceLocation resourceLocation = Souls.AdamantiteSoul.getId();
             if (CurioUtils.isEquipped(player, Souls.AdamantiteSoul.get())) {
                 int AdamantiteSoul = player.getPersistentData().getInt("AdamantiteSoul");
-                Random random = MathUtils.random;
-                if (AdamantiteSoul == 30) {
+                long lastDamage = player.getPersistentData().getLong("AdamantiteSoulLastDamage");
+                if (lastDamage < player.serverLevel().getGameTime()) {
+                    player.getPersistentData().remove("AdamantiteSoul");
+                    AttributeUtils.removeAttributeModifier(player, Attributes.ATTACK_SPEED, resourceLocation);
+                }
+                if (AdamantiteSoul == 30 && player.tickCount % 40 == 0) {
                     List<Monster> monsterList = player.level().getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(5));
-                    monsterList.removeIf(monster -> monster.getTarget() == null);
+                    monsterList.removeIf(monster -> !player.equals(monster.getTarget()));
                     for (Monster monster : monsterList) {
                         if (random.nextDouble() < 0.2) {
                             ParticleUtils.spawnParticleLine(
                                     player.serverLevel(),
-                                    player.position().add((1 - random.nextDouble(2)), (1 - random.nextDouble(2)), (1 - random.nextDouble(2))),
+                                    player.getBoundingBox().getCenter(),
                                     monster.position(),
                                     ParticleTypes.PORTAL,
                                     20,
@@ -91,22 +91,8 @@ public class AdamantiteSoul extends SoulItem {
                         }
                     }
                 }
-                if (random.nextDouble() < 0.05) {
-                    player.getPersistentData().putInt("AdamantiteSoul", Math.max(AdamantiteSoul - 1, 0));
-                }
-                AttributeModifier modifier = new AttributeModifier(
-                        resourceLocation,
-                        Math.min(AdamantiteSoul / 100d, 0.3),
-                        AttributeModifier.Operation.ADD_MULTIPLIED_BASE
-                );
-                if (attributeInstance.getModifier(resourceLocation) != null) {
-                    attributeInstance.removeModifier(resourceLocation);
-                }
-                attributeInstance.addPermanentModifier(modifier);
             } else {
-                if (attributeInstance.getModifier(resourceLocation) != null) {
-                    attributeInstance.removeModifier(resourceLocation);
-                }
+                AttributeUtils.removeAttributeModifier(player, Attributes.ATTACK_SPEED, resourceLocation);
             }
         }
     }

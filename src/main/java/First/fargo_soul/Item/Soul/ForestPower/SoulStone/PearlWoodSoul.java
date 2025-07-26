@@ -52,6 +52,7 @@ public class PearlWoodSoul extends SoulItem {
                 if (!monsterList.isEmpty()) {
                     LivingEntity monster = monsterList.get(MathUtils.random.nextInt(monsterList.size()));
                     monster.hurt(player.damageSources().magic(), event.getAmount());
+                    monster.invulnerableTime = 0;
                     ParticleUtils.spawnParticleLine(
                             player.serverLevel(),
                             livingEntity.getEyePosition(),

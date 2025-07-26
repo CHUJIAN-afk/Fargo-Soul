@@ -3,6 +3,11 @@ package First.fargo_soul.Event;
 
 import First.fargo_soul.Attribute.AttributeRegister;
 import First.fargo_soul.Fargo_soul;
+import First.fargo_soul.Item.Soul.CosmicPower.SoulStone.BlazeSoul;
+import First.fargo_soul.Item.Soul.CosmicPower.SoulStone.MeteorSoul;
+import First.fargo_soul.Item.Soul.CosmicPower.SoulStone.NebulaSoul;
+import First.fargo_soul.Item.Soul.DeathPower.SoulStone.*;
+import First.fargo_soul.Item.Soul.DeathPower.SoulStone.PenetratingNinjaSoulStone.MonkSoul;
 import First.fargo_soul.Item.Soul.EarthPower.SoulStone.*;
 import First.fargo_soul.Item.Soul.EarthPower.SoulStone.CobaltSoulStone.AncientCobaltSoul;
 import First.fargo_soul.Item.Soul.ForestPower.SoulStone.*;
@@ -10,23 +15,33 @@ import First.fargo_soul.Item.Soul.LifePower.SoulStone.*;
 import First.fargo_soul.Item.Soul.LifePower.SoulStone.TurtleSoulStone.CactusSoul;
 import First.fargo_soul.Item.Soul.NaturePower.SoulStone.*;
 import First.fargo_soul.Item.Soul.SoulItem;
+import First.fargo_soul.Item.Soul.SpiritPower.SoulStone.ForbiddenSoul;
+import First.fargo_soul.Item.Soul.SpiritPower.SoulStone.GhostSoul;
+import First.fargo_soul.Item.Soul.SpiritPower.SoulStone.HolySoul;
+import First.fargo_soul.Item.Soul.SpiritPower.SoulStone.TekeSoul;
 import First.fargo_soul.Item.Soul.TerraPower.SoulStone.*;
 import First.fargo_soul.Item.Soul.TerraPower.SoulStone.ObsidianSoulStone.AshWoodSoul;
+import First.fargo_soul.Item.Soul.WillPower.Soulstone.*;
+import net.minecraft.world.entity.EntityType;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
+import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 @EventBusSubscriber(modid = Fargo_soul.MODID, bus = EventBusSubscriber.Bus.GAME)
 public class SoulEvent {
+    //属性注册
 
     @SubscribeEvent
-    public static void DamageEvent(LivingIncomingDamageEvent event) {
-        //去除非玩家实体的，无受击武器时的无敌帧
+    public static void LivingIncomingDamageEvent(LivingIncomingDamageEvent event) {
+
+        //无敌帧
         SoulItem.invulnerableTimeHandler(event);
-        //关于暴击率等属性处理
+        //属性处理
         AttributeRegister.CriticalHandler(event);
         AttributeRegister.DamageHandler(event);
         //森林之力
@@ -57,6 +72,7 @@ public class SoulEvent {
         TitaniumSoul.TitaniumSoulDamageHandler2(event);
         //自然之力
         CrimsonSoul.CrimsonSoulDamageHandler2(event);
+        LavaSoul.LavaSoulDamageHandler(event);
         MushroomSoul.MushroomSoulDamageHandler(event);
         RainCloudSoul.RainCloudSoulDamageHandler2(event);
         //生命之力
@@ -66,12 +82,44 @@ public class SoulEvent {
         SpiderSoul.SpiderSoulDamageHandler(event);
         CactusSoul.CactusSoulDamageHandler2(event);
         TurtleSoul.TurtleSoulDamageHandler2(event);
+        //心灵之力
+        GhostSoul.GhostSoulDamageHnadler(event);
+        //死亡之力
+        AncientShadowSoul.AncientShadowSoulDamageHandler(event);
+        CrystalAssassinSoul.CrystalAssassinSoulDamageHandler(event);
+        DarkArtistSoul.DarkArtistSoulDamageHandler(event);
+        GloomySoul.GloomySoulDamageHandler(event);
+        NecromancerSoul.NecromancerSoulDamageHandler(event);
+        //意志之力
+        GladiatorSoul.GladiatorSoulDamageHandler(event);
+        GladiatorSoul.GladiatorSoulDamageHandler2(event);
+        GoldSoul.GoldSoulDamageHandler(event);
+        RedRidingSoul.RedRidingSoulDamageHandler(event);
+        ValhallaKnightSoul.ValhallaKnightSoulDamageHandler2(event);
+        //宇宙之力
+        BlazeSoul.BlazeSoulDamageHandler(event);
+        BlazeSoul.BlazeSoulDamageHandler2(event);
+        MeteorSoul.MeteorSoulDamageHandler(event);
+        NebulaSoul.NebulaSoulDamageHandler(event);
+        NebulaSoul.NebulaSoulDamageHandler2(event);
     }
 
     @SubscribeEvent
-    public static void LivingDeathEvent(LivingDeathEvent event){
+    public static void LivingDamageEvent(LivingDamageEvent.Post event) {
+        //生命之力
+        CactusSoul.CactusSoulDamageHandler2(event);
+    }
+
+    @SubscribeEvent
+    public static void LivingDeathEvent(LivingDeathEvent event) {
         //生命之力
         CactusSoul.CactusSoulDeathHandler(event);
+        //心灵之力
+        GhostSoul.GhostSoulDeathHnadler(event);
+        //死亡之力
+        NecromancerSoul.NecromancerSoulDeathHandler(event);
+        //意志之力
+        GoldSoul.GoldSoulDeathHandler(event);
     }
 
     @SubscribeEvent
@@ -103,12 +151,27 @@ public class SoulEvent {
         PumpkinSoul.PumpkinSoulTickHandler2(event);
         SpiderSoul.SpiderSoulTickHnadler(event);
         TurtleSoul.TurtleSoulTickHnadler(event);
+        //心灵之力
+        ForbiddenSoul.ForbiddenSoulTickHandler(event);
+        GhostSoul.GhostSoulTickHnadler(event);
+        TekeSoul.TekeSoulTickHandler(event);
+        //死亡之力
+        NinjaSoul.NinjaSoulTickHandler(event);
+        MonkSoul.MonkSoulMovementTickHandler(event);
+        //意志之力
+        GladiatorSoul.GladiatorSoulTickHandler(event);
+        ValhallaKnightSoul.ValhallaKnightSoulTickHandler(event);
+        //宇宙之力
+        //BlazeSoul.BlazeSoulTickHandler(event);
+        NebulaSoul.NebulaSoulTickHandler(event);
     }
 
     @SubscribeEvent
     public static void ItemEntityPickupEvent(ItemEntityPickupEvent.Post event){
         //泰拉之力
         IronSoul.IronSoulPickupHandler(event);
+        //死亡之力
+        NecromancerSoul.NecromancerSoulPickupHandler(event);
     }
 
     @SubscribeEvent
@@ -122,6 +185,10 @@ public class SoulEvent {
     public static void LivingHealEvent(LivingHealEvent event){
         //大地之力
         PalladiumSoul.PalladiumSoulHealHandler(event);
+        //心灵之力
+        HolySoul.HolySoulHealHandler(event);
+        //意志之力
+        ValhallaKnightSoul.ValhallaKnightSoulHealHandler(event);
     }
 
     @SubscribeEvent
@@ -129,6 +196,12 @@ public class SoulEvent {
         //自然之力
         GreenSoul.GreenSoulMovementInputHandler(event);
         BeeSoul.BeeSoulMovementInputHandler(event);
+        //死亡之力
+        CrystalAssassinSoul.CrystalAssassinSoulMovementInputHandler(event);
+        MonkSoul.MonkSoulMovementInputHandler(event);
+        //宇宙之力
+        MeteorSoul.MeteorSoulMovementInputHandler(event);
+
     }
 
     @SubscribeEvent
@@ -140,6 +213,31 @@ public class SoulEvent {
     public static void ChangeTargetEvent(LivingChangeTargetEvent event){
         //生命之力
         BeeSoul.BeeSoulChangeTargetHandler(event);
+        //死亡之力
+        AncientShadowSoul.AdamantiteSoulChangeTargetHandler(event);
+        NinjaSoul.NinjaSoulChangeTargetHandler(event);
     }
+
+    @SubscribeEvent
+    public static void EntityInteractEvent(PlayerInteractEvent.EntityInteract event){
+        //心灵之力
+        TekeSoul.TekeSoulEntityInteractHandler(event);
+    }
+
+
+    @SubscribeEvent
+    public static void LivingDropsEvent(LivingDropsEvent event){
+        //意志之力
+        PlatinumSoul.PlatinumSoulDropsEvent(event);
+    }
+
+    @SubscribeEvent
+    public static void LivingDropsEvent(MobEffectEvent.Expired event){
+        //宇宙之力
+        BlazeSoul.BlazeSoulMobEffectExpiredHandler(event);
+        CrimsonSoul.CrimsonSoulMobEffectExpiredHandler(event);
+    }
+
+
 
 }

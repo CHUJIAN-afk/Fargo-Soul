@@ -1,5 +1,6 @@
 package First.fargo_soul.Effect;
 
+import First.fargo_soul.Effect.Beneficial.MidasEffect;
 import First.fargo_soul.Effect.Harmful.*;
 import First.fargo_soul.Effect.Neutral.*;
 import First.fargo_soul.Fargo_soul;
@@ -23,6 +24,14 @@ public class EffectRegister {
     public static final Holder<MobEffect> BeetleMight = EFFECTS.register("beetle_might", BeetleMightEffect::new);
     public static final Holder<MobEffect> BeetleEndurance = EFFECTS.register("beetle_endurance", BeetleEnduranceEffect::new);
     public static final Holder<MobEffect> ShellDefense = EFFECTS.register("shell_defense", ShellDefenseEffect::new);
+    public static final Holder<MobEffect> Ghost = EFFECTS.register("ghost", GhostEffect::new);
+    public static final Holder<MobEffect> PreemptiveStrike = EFFECTS.register("preemptive_strike", PreemptiveStrikeEffect::new);
+    public static final Holder<MobEffect> ShadowFire = EFFECTS.register("shadow_fire", ShadowFireEffect::new);
+    public static final Holder<MobEffect> Midas = EFFECTS.register("midas", MidasEffect::new);
+    public static final Holder<MobEffect> SunburstEruption = EFFECTS.register("sunburst_eruption", SunburstEruptionEffect::new);
+    public static final Holder<MobEffect> Flare = EFFECTS.register("flare", FlareEffect::new);
+    public static final Holder<MobEffect> VitalityBoostedBlaze = EFFECTS.register("vitality_boosted_blaze", VitalityBoostedBlaze::new);
+    public static final Holder<MobEffect> WrathFire = EFFECTS.register("wrath_fire", WrathFire::new);
 
 
 }

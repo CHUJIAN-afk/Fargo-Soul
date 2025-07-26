@@ -1,0 +1,121 @@
+package First.fargo_soul.Item.Soul.WillPower.Soulstone;
+
+import First.fargo_soul.Client.KeyBinding;
+import First.fargo_soul.Effect.EffectRegister;
+import First.fargo_soul.Item.Soul.SoulItem;
+import First.fargo_soul.Item.Soul.Souls;
+import First.fargo_soul.Network.Packet.GoldSoulPacket;
+import First.fargo_soul.Utils.CurioUtils;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
+import top.theillusivec4.curios.api.SlotContext;
+
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import static First.fargo_soul.Utils.MathUtils.random;
+
+public class GoldSoul extends SoulItem {
+
+    public GoldSoul(Properties properties) {
+        super(properties);
+    }
+
+    public List<Component> AttributeList = List.of(
+            Component.literal("攻击会造成迈达斯减益").withStyle(ChatFormatting.BLUE),
+            Component.literal("受迈达斯影响的敌人在死亡时会掉落一些金粒").withStyle(ChatFormatting.BLUE),
+            Component.literal("按下“金身”键会将你包裹在一个黄金壳中").withStyle(ChatFormatting.BLUE),
+            Component.literal("被包裹时你无法移动或攻击，但你免疫所有伤害").withStyle(ChatFormatting.BLUE),
+            //Component.literal("再次按下“金身”键会使你提前离开黄金壳").withStyle(ChatFormatting.BLUE),
+            Component.literal("该效果持续5秒冷却时间为60秒").withStyle(ChatFormatting.BLUE)
+    );
+
+    public List<Component> TooltipList = List.of(
+            Component.literal("“有钱能使鬼推磨”").withStyle(ChatFormatting.DARK_GRAY)
+    );
+
+    @Override
+    public List<Component> getAttributeList() {
+        return this.AttributeList;
+    }
+
+    @Override
+    public List<Component> getAttributesTooltip(List<Component> tooltips, Item.TooltipContext context, ItemStack stack) {
+        tooltips.addAll(AttributeList);
+        tooltips.addAll(TooltipList);
+        return tooltips;
+    }
+
+    public static void GoldSoulInputHandler(InputEvent.Key event) {
+        if (KeyBinding.GoldSoulKey.consumeClick() && Minecraft.getInstance().player instanceof LocalPlayer player && CurioUtils.isEquipped(player, Souls.GoldSoul.get())) {
+            long GoldSoul = player.getPersistentData().getLong("GoldSoul");
+            long gameTime = player.level().getGameTime();
+            if (GoldSoul < gameTime) {
+                PacketDistributor.sendToServer(new GoldSoulPacket());
+                player.getPersistentData().putLong("GoldSoul", gameTime + 1100);
+                if (!player.getPersistentData().getBoolean("GoldSoulDamage")) {
+                    player.getPersistentData().putBoolean("GoldSoulDamage", true);
+                    ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+                    executorService.schedule(() -> player.getPersistentData().remove("GoldSoulDamage"), 5, TimeUnit.SECONDS);
+                }
+            }
+        }
+    }
+
+    public static void GoldSoulDamageHandler(LivingIncomingDamageEvent event) {
+        if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, Souls.GoldSoul.get()) && event.getEntity() instanceof LivingEntity livingEntity) {
+            livingEntity.addEffect(new MobEffectInstance(EffectRegister.Midas, 200));
+            if (player.getPersistentData().getBoolean("GoldSoulDamage")) {
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    public static void GoldSoulDeathHandler(LivingDeathEvent event) {
+        if (event.getEntity() instanceof LivingEntity livingEntity && livingEntity.getEffect(EffectRegister.Midas) != null) {
+            livingEntity.spawnAtLocation(new ItemStack(Items.GOLD_NUGGET, random.nextInt(8)));
+        }
+    }
+
+    public static void GoldSoulRenderHnadler(SlotContext slotContext, PoseStack poseStack, MultiBufferSource renderTypeBuffer) {
+        if (slotContext.entity() instanceof LocalPlayer player && CurioUtils.isEquipped(player, Souls.GoldSoul.get())) {
+            if (player.getPersistentData().getBoolean("GoldSoulDamage")) {
+                ItemStack itemStack = Items.GOLD_BLOCK.getDefaultInstance();
+                Minecraft minecraft = Minecraft.getInstance();
+                poseStack.pushPose();
+                poseStack.scale(3, 6, 3f);
+                minecraft.getItemRenderer().renderStatic(
+                        itemStack,
+                        ItemDisplayContext.FIXED,
+                        LightTexture.FULL_BRIGHT,
+                        OverlayTexture.NO_OVERLAY,
+                        poseStack,
+                        renderTypeBuffer,
+                        player.level(),
+                        0
+                );
+                poseStack.popPose();
+            }
+        }
+    }
+
+}

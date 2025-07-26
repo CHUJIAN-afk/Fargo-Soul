@@ -1,10 +1,21 @@
 package First.fargo_soul.Item.Soul.SpiritPower.SoulStone;
 
+import First.fargo_soul.Item.ProjectileItem.ProjectileItems;
 import First.fargo_soul.Item.Soul.SoulItem;
+import First.fargo_soul.Item.Soul.Souls;
+import First.fargo_soul.Utils.CurioUtils;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import top.theillusivec4.curios.api.SlotContext;
 
 import java.util.List;
 
@@ -15,9 +26,8 @@ public class AncientHolySoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("召唤一柄泰拉棱镜，跟随你并攻击敌怪").withStyle(ChatFormatting.BLUE),
-            Component.literal("用剑切割敌对射弹会将其反射至敌人身上").withStyle(ChatFormatting.BLUE),
-            Component.literal("反射有15秒冷却时间，且只能切割造成伤害低于150点的敌对射弹").withStyle(ChatFormatting.BLUE)
+            Component.literal("召唤一柄泰拉棱镜跟随你").withStyle(ChatFormatting.BLUE),
+            Component.literal("潜行时，你的剑总是会进行满蓄力的横扫攻击").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
@@ -36,4 +46,25 @@ public class AncientHolySoul extends SoulItem {
         return tooltips;
     }
 
+    public static void AncientHolySoulRenderHnadler(SlotContext slotContext, PoseStack poseStack, MultiBufferSource renderTypeBuffer, float ageInTicks) {
+        if (slotContext.entity() instanceof LocalPlayer player && CurioUtils.isEquipped(player, Souls.AncientHolySoul.get())) {
+            ItemStack itemStack = ProjectileItems.TerraPrism.get().getDefaultInstance();
+            Minecraft minecraft = Minecraft.getInstance();
+            poseStack.pushPose();
+            poseStack.scale(2.0f, 2.0f, 2.0f);
+            float floatingOffset = (float) Math.sin(ageInTicks * 0.1f) * 0.05f;
+            poseStack.translate(0, floatingOffset, 0.3);
+            minecraft.getItemRenderer().renderStatic(
+                    itemStack,
+                    ItemDisplayContext.FIXED,
+                    LightTexture.FULL_BRIGHT,
+                    OverlayTexture.NO_OVERLAY,
+                    poseStack,
+                    renderTypeBuffer,
+                    player.level(),
+                    0
+            );
+            poseStack.popPose();
+        }
+    }
 }

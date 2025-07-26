@@ -44,7 +44,8 @@ public class RoseWoodSoul extends SoulItem {
         if (event.getEntity() instanceof ServerPlayer player && !player.onGround() && CurioUtils.isEquipped(player, RosewoodSoul.get())) {
             event.setAmount(event.getAmount() * 0.9f);
             if (event.getSource().getEntity() instanceof LivingEntity livingEntity) {
-                livingEntity.hurt(player.damageSources().playerAttack(player), event.getAmount() * 0.5f);
+                livingEntity.hurt(player.damageSources().magic(), event.getAmount() * 0.5f);
+                livingEntity.invulnerableTime = 0;
                 Vec3 delta = player.position().subtract(livingEntity.position()).normalize();
                 livingEntity.addDeltaMovement(delta);
             }

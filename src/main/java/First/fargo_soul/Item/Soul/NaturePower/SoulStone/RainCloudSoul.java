@@ -38,7 +38,7 @@ public class RainCloudSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("召唤一把可反射上方射弹的雨伞").withStyle(ChatFormatting.BLUE),
+            Component.literal("召唤一把可反弹射弹的雨伞").withStyle(ChatFormatting.BLUE),
             Component.literal("雨伞反射射弹的伤害合计超过20点后会破裂，每2分钟尝试恢复或修复雨伞").withStyle(ChatFormatting.BLUE),
             Component.literal("获得缓降药水的效果").withStyle(ChatFormatting.BLUE),
             Component.literal("免疫雷击伤害").withStyle(ChatFormatting.BLUE)
@@ -65,16 +65,13 @@ public class RainCloudSoul extends SoulItem {
             //反射
             float RainCloudSoul = player.getPersistentData().getFloat("RainCloudSoul");
             if (event.getSource().getDirectEntity() instanceof Projectile projectile && RainCloudSoul < 20) {
-                if (player instanceof ServerPlayer) {
-                    if (event.getSource().getEntity() instanceof LivingEntity livingEntity) {
-                        projectile.setOwner(player);
-                        Vec3 toMonster = livingEntity.getBoundingBox().getCenter().subtract(projectile.getX(), projectile.getY(), projectile.getZ()).normalize();
-                        projectile.shoot(toMonster.x, toMonster.y, toMonster.z, 10f, 0.0f);
-                    } else {
-                        projectile.setOwner(player);
-                        Vec3 deltaMovement = projectile.getDeltaMovement();
-                        projectile.setDeltaMovement(-deltaMovement.x() * 3, -deltaMovement.y() * 3, -deltaMovement.z() * 3);
-                    }
+                if (event.getSource().getEntity() instanceof LivingEntity livingEntity) {
+                    projectile.setOwner(player);
+                    Vec3 toMonster = livingEntity.getBoundingBox().getCenter().subtract(projectile.position()).normalize();
+                    projectile.shoot(toMonster.x, toMonster.y, toMonster.z, 10f, 0.0f);
+                } else {
+                    Vec3 deltaMovement = projectile.getDeltaMovement();
+                    projectile.setDeltaMovement(-deltaMovement.x() * 3, -deltaMovement.y() * 3, -deltaMovement.z() * 3);
                 }
                 event.setCanceled(true);
                 float damage = event.getAmount();
@@ -88,7 +85,7 @@ public class RainCloudSoul extends SoulItem {
     }
 
     public static void RainCloudSoulTickHnadler(PlayerTickEvent.Post event) {
-        if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, Souls.RainCloudSoul.get())) {
+        if (event.getEntity() instanceof Player player && CurioUtils.isEquipped(player, Souls.RainCloudSoul.get())) {
             //恢复雨伞
             if (player.tickCount % 1200 == 0) {
                 player.getPersistentData().remove("RainCloudSoul");

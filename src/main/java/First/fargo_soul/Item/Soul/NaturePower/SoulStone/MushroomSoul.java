@@ -61,6 +61,7 @@ public class MushroomSoul extends SoulItem {
                 livingEntityList.add(livingEntity);
                 for (LivingEntity livingEntity1 : livingEntityList) {
                     livingEntity1.hurt(player.damageSources().magic(), 0.5f);
+                    livingEntity1.invulnerableTime = 0;
                 }
                 ParticleUtils.spawnParticleSphere(
                         player.serverLevel(),

@@ -26,8 +26,8 @@ public class PalladiumSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("对敌怪造成伤害后给予或延长生命恢复增益，增益持续时间为所造成伤害的10%").withStyle(ChatFormatting.BLUE),
-            Component.literal("延长生命恢复时间上限为5秒，每次获取增益有0.5秒间隔").withStyle(ChatFormatting.BLUE),
+            Component.literal("对敌怪造成伤害后给予或延长生命恢复增益，增益持续时间为所造成伤害的35%").withStyle(ChatFormatting.BLUE),
+            Component.literal("延长生命恢复时间上限为5秒，每次获取增益有0.25秒间隔").withStyle(ChatFormatting.BLUE),
             Component.literal("每恢复8点生命值便会生成一个伤害性的生命光束攻击附近敌人").withStyle(ChatFormatting.BLUE)
     );
 
@@ -49,14 +49,19 @@ public class PalladiumSoul extends SoulItem {
 
     public static void PalladiumSoulDamageHandler(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, Souls.PalladiumSoul.get())) {
-            if (player.getLastHurtMobTimestamp() < (player.tickCount - 10)) {
-                int duration = (int) (event.getAmount() * 0.1);
-                int amplifier = 0;
-                if (player.getEffect(MobEffects.REGENERATION) instanceof MobEffectInstance mobEffectInstance) {
-                    duration += mobEffectInstance.getDuration();
-                    amplifier = mobEffectInstance.getAmplifier();
+            if (event.getSource().getWeaponItem() != null) {
+                long PalladiumSoulLastDamage = player.getPersistentData().getLong("PalladiumSoulLastDamage");
+                long gameTime = player.serverLevel().getGameTime();
+                if (PalladiumSoulLastDamage < gameTime) {
+                    player.getPersistentData().putLong("PalladiumSoulLastDamage", gameTime + 5);
+                    int duration = (int) (event.getAmount() * 0.35 * 20);
+                    int amplifier = 0;
+                    if (player.getEffect(MobEffects.REGENERATION) instanceof MobEffectInstance mobEffectInstance) {
+                        duration += mobEffectInstance.getDuration();
+                        amplifier = mobEffectInstance.getAmplifier();
+                    }
+                    player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, Math.min(duration, 100), amplifier));
                 }
-                player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, Math.min(duration, 100), amplifier));
             }
         }
     }

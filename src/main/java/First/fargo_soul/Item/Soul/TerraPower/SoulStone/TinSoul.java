@@ -56,9 +56,7 @@ public class TinSoul extends SoulItem {
                 event.setAmount(event.getAmount() * 2.0f);
                 ParticleUtils.spawnParticleSphere(
                         player.serverLevel(),
-                        livingEntity.getX(),
-                        livingEntity.getY(),
-                        livingEntity.getZ(),
+                        livingEntity.getBoundingBox().getCenter(),
                         ParticleTypes.CRIT,
                         0.5f,
                         8,

@@ -5,6 +5,12 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "fargo_soul.refmap.json",
   "mixins": [
+    "ArrowMixin",
+    "CombatRulesMixin",
+    "EntityMixin",
+    "ItemEntityMixin",
+    "LivingEntityMixin",
+    "PlayerMixin",
     "VillagerMixin"
   ],
   "client": [
