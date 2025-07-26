@@ -27,9 +27,15 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class Souls {
 
     public static final DeferredRegister.Items SoulItems = DeferredRegister.createItems(Fargo_soul.MODID);
@@ -119,6 +125,7 @@ public class Souls {
                     .withTabsBefore(CreativeModeTabs.COMBAT)
                     .icon(() -> TerraSoul.get().getDefaultInstance())
                     .displayItems((parameters, output) -> {
+
                         //泰拉之魂
                         output.accept(TerraSoul.get());
                         //森林之力

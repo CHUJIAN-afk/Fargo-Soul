@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -78,7 +79,7 @@ public class RainCloudSoul extends SoulItem {
                 player.getPersistentData().putFloat("RainCloudSoul", RainCloudSoul + damage);
             }
             //免疫雷击
-            if (player instanceof ServerPlayer && event.getSource().is(DamageTypes.LIGHTNING_BOLT)) {
+            if (player instanceof ServerPlayer && event.getSource().is(DamageTypeTags.IS_LIGHTNING)) {
                 event.setCanceled(true);
             }
         }

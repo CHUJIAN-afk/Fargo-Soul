@@ -6,10 +6,12 @@ import First.fargo_soul.Utils.CurioUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 
 import java.util.List;
@@ -40,10 +42,9 @@ public class ObsidianSoul extends SoulItem {
                     .collect(Collectors.toList());
 
     public List<Component> list2 = List.of(
-            Component.literal("免疫岩浆块与岩浆伤害").withStyle(ChatFormatting.BLUE),
             //Component.literal("你可以在熔岩中正常移动和游泳").withStyle(ChatFormatting.BLUE),
             //Component.literal("在熔岩中攻击会产生爆炸").withStyle(ChatFormatting.BLUE),
-            Component.literal("火系伤害对你无效").withStyle(ChatFormatting.BLUE)
+            Component.literal("免疫火焰类伤害以及岩浆伤害").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> AttributeList = Stream.concat(
@@ -70,13 +71,7 @@ public class ObsidianSoul extends SoulItem {
     public static void ObsidianSoulDamageHandler(LivingIncomingDamageEvent event) {
         if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, ObsidianSoul.get())) {
             DamageSource source = event.getSource();
-            if (source.type().msgId().contains("fire")) {
-                event.setCanceled(true);
-            }
-            if (source.is(DamageTypes.LAVA)) {
-                event.setCanceled(true);
-            }
-            if (source.is(DamageTypes.ON_FIRE) || source.is(DamageTypes.IN_FIRE)) {
+            if (source.is(DamageTypeTags.IS_FIRE)) {
                 event.setCanceled(true);
             }
         }

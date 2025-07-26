@@ -66,6 +66,7 @@ public class DarkArtistSoul extends SoulItem {
                 player.getPersistentData().putLong("DarkArtistSoul", player.serverLevel().getGameTime() + 200);
                 for (int i = 0; i < 8; i++) {
                     Arrow arrow = new Arrow(EntityType.ARROW, player.serverLevel());
+                    arrow.getPersistentData().putBoolean("soul", true);
                     Vec3 Pos = new Vec3(livingEntity.getRandomX(4), livingEntity.getRandomY() + 2, livingEntity.getRandomZ(4));
                     arrow.setPos(Pos);
                     arrow.setBaseDamage(event.getAmount() * 0.20);

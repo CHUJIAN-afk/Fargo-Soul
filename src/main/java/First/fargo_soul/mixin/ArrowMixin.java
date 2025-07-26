@@ -9,10 +9,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Arrow.class)
 public class ArrowMixin {
 
-    @Inject(method = "tick",at = @At("HEAD"))
-    public void tick(CallbackInfo ci){
-
-
+    @Inject(method = "tick", at = @At("HEAD"))
+    public void tick(CallbackInfo ci) {
+        Arrow arrow = (Arrow) (Object) this;
+        if (arrow.getPersistentData().getBoolean("soul") && arrow.tickCount > 160) {
+            arrow.discard();
+        }
     }
 
 }

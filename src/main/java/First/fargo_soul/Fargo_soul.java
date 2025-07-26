@@ -1,6 +1,7 @@
 package First.fargo_soul;
 
 import First.fargo_soul.Attribute.AttributeRegister;
+import First.fargo_soul.Dadageneeator.ModRecipeProvider;
 import First.fargo_soul.Effect.EffectRegister;
 import First.fargo_soul.Entity.AbstractArrow.AbstractArrowRegister;
 import First.fargo_soul.Entity.AbstractArrow.Banner.BannerRenderer;
@@ -35,6 +36,7 @@ public class Fargo_soul {
         ProjectileItems.Projectiles.register(eventBus);
         AbstractArrowRegister.SoulAbstractArrow.register(eventBus);
         AttributeRegister.ATTRIBUTE_DEFERRED_REGISTER.register(eventBus);
+
         //EntityRegister.ENTITY_TYPE_DEFERRED_REGISTER.register(eventBus);
         eventBus.addListener(this::clientSetup);
     }

@@ -13,8 +13,4 @@ public class ProjectileItems {
     public static final DeferredItem<Item> TerraPrism = Projectiles.registerItem("terra_prism", Item::new);
     public static final DeferredItem<Item> Spear = Projectiles.registerItem("spear", Item::new);
     public static final DeferredItem<Item> Flame = Projectiles.registerItem("flame", Item::new);
-
-
-
-
 }

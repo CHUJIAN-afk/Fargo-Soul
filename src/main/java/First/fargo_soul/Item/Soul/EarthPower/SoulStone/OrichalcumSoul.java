@@ -10,10 +10,12 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 
 import java.util.List;
@@ -49,7 +51,7 @@ public class OrichalcumSoul extends SoulItem {
 
     public static void OrichalcumSoulDamageHandler(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, Souls.OrichalcumSoul.get()) && event.getEntity() instanceof LivingEntity livingEntity) {
-            if (event.getSource().getMsgId().contains("poison") && livingEntity.getEffect(EffectRegister.OrichalcumPoisoning) != null) {
+            if (event.getSource().is(Tags.DamageTypes.IS_POISON) && livingEntity.getEffect(EffectRegister.OrichalcumPoisoning) != null) {
                 event.setAmount(event.getAmount() * 3.5f);
             }
             livingEntity.hurt(player.damageSources().magic(), event.getAmount() * 0.05f);

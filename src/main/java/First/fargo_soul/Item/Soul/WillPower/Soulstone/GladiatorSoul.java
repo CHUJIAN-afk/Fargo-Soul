@@ -90,6 +90,7 @@ public class GladiatorSoul extends SoulItem {
                 }
                 for (int i = 0; i < size; i++) {
                     Arrow arrow = new Arrow(EntityType.ARROW, player.serverLevel());
+                    arrow.getPersistentData().putBoolean("soul", true);
                     Vec3 Pos = new Vec3(livingEntity.getRandomX(4), livingEntity.getRandomY() + 6, livingEntity.getRandomZ(4));
                     arrow.setPos(Pos);
                     arrow.setBaseDamage(1);
