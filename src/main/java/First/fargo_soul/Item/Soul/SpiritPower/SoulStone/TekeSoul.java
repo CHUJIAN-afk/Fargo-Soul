@@ -26,12 +26,12 @@ public class TekeSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("增加20%近战攻击范围与实体交互范围").withStyle(ChatFormatting.BLUE),
-            Component.literal("交互你的召唤物可以使它们的攻击和击退提高至120%").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.teke_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.teke_soul.attribute.2").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“Aku Aku!”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.teke_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

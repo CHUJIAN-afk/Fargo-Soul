@@ -23,14 +23,14 @@ public class TinSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("移除跳跃暴击能力，获得锡暴击能力").withStyle(ChatFormatting.BLUE),
-            Component.literal("将你的锡暴击率设为10%，锡暴击伤害设为200%").withStyle(ChatFormatting.BLUE),
-            Component.literal("每次锡暴击时都会增加10%锡暴击率，锡暴击率的最大值为60%").withStyle(ChatFormatting.BLUE),
-            Component.literal("受伤会使锡暴击率减半，最低为10%").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.tin_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.tin_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.tin_soul.attribute.3").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.tin_soul.attribute.4").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“暴击回归”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.tin_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

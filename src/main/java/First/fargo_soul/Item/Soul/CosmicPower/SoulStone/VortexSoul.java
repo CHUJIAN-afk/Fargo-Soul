@@ -22,14 +22,14 @@ public class VortexSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("按下“传送”键传送至目视的位置").withStyle(ChatFormatting.BLUE),
-            Component.literal("在传送位置产生一个漩涡，持续吸引并伤害附近的敌人").withStyle(ChatFormatting.BLUE),
-            Component.literal("最大传送距离为512格，大于此距离无法传送").withStyle(ChatFormatting.BLUE),
-            Component.literal("传送冷却时间为15秒").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.vortex_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.vortex_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.vortex_soul.attribute.3").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.vortex_soul.attribute.4").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“撕裂现实”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.vortex_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

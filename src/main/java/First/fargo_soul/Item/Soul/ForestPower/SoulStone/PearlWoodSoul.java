@@ -24,12 +24,12 @@ public class PearlWoodSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("攻击有10%概率造成使伤害+50%，并对附近随机一个敌人造成该次攻击的等量魔法伤害").withStyle(ChatFormatting.BLUE),
-            Component.literal("造成魔法伤害时为你恢复5%生命值").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.pearl_wood_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.pearl_wood_soul.attribute.2").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“太少了，太晚了……”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.pearl_wood_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

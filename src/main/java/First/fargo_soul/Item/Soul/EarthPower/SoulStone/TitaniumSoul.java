@@ -26,12 +26,12 @@ public class TitaniumSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("一段时间不受伤害后生成一个钛金护盾，免疫下次受到伤害").withStyle(ChatFormatting.BLUE),
-            Component.literal("钛金护盾未生成时，剩余生命值比例越低，闪避率越高，最大15%").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.titanium_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.titanium_soul.attribute.2").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“有了绝对防御后，谁还需要躲避呢？”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.titanium_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

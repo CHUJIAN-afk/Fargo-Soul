@@ -21,8 +21,6 @@ import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 
 public class BlazeSoul extends SoulItem {
@@ -32,18 +30,18 @@ public class BlazeSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("攻击时积攒日耀能量，增加的日曜能量为伤害值的15%").withStyle(ChatFormatting.BLUE),
-            Component.literal("日耀能量最大值为玩家最大生命值的2000%，根据积攒比例可提供最高20%伤害减免").withStyle(ChatFormatting.BLUE),
-            Component.literal("攒满日耀能量获得日耀喷发能力，每次攻击会释放大型日耀喷发，同时消耗50日耀能量").withStyle(ChatFormatting.BLUE),
-            Component.literal("大型日耀喷发会对范围内的所有敌人造成太阳耀斑减益并造成大量火焰伤害").withStyle(ChatFormatting.BLUE),
-            Component.literal("太阳耀斑减益每秒造成敌人最大生命值1.6%的火焰伤害").withStyle(ChatFormatting.BLUE),
-            Component.literal("太阳耀斑减益在结束时，产生日耀喷发，对附近的敌人造成火焰伤害").withStyle(ChatFormatting.BLUE),
-            Component.literal("日曜喷发能力持续期间，免疫低于最大生命值8%的伤害，免疫击退").withStyle(ChatFormatting.BLUE),
-            Component.literal("日耀喷发能力最多持续10秒，结束时清空日耀能量，或在日耀能量耗尽时提前结束").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.blaze_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.blaze_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.blaze_soul.attribute.3").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.blaze_soul.attribute.4").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.blaze_soul.attribute.5").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.blaze_soul.attribute.6").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.blaze_soul.attribute.7").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.blaze_soul.attribute.8").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“烫手魔石”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.blaze_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

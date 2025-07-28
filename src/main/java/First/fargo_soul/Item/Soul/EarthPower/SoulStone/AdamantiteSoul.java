@@ -4,14 +4,12 @@ import First.fargo_soul.Item.Soul.SoulItem;
 import First.fargo_soul.Item.Soul.Souls;
 import First.fargo_soul.Utils.AttributeUtils;
 import First.fargo_soul.Utils.CurioUtils;
-import First.fargo_soul.Utils.MathUtils;
 import First.fargo_soul.Utils.ParticleUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
@@ -31,13 +29,14 @@ public class AdamantiteSoul extends SoulItem {
         super(properties);
     }
 
+
     public List<Component> AttributeList = List.of(
-            Component.literal("持续攻击会提高攻击速度，最高增加30%攻击速度，五秒不攻击清空").withStyle(ChatFormatting.BLUE),
-            Component.literal("攻击速度增益达到最大值时，附近以你为目标的敌人有概率被混乱粒子干扰，使他们短暂丢失目标").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.adamantite_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.adamantite_soul.attribute.2").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“混乱”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.adamantite_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

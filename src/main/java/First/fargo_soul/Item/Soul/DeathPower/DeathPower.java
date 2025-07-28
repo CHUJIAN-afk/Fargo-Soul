@@ -41,8 +41,9 @@ public class DeathPower extends SoulItem {
         return this.AttributeList;
     }
 
+
     public List<Component> TooltipList = List.of(
-            Component.literal("“黑暗，更黑暗，还是更黑暗”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.death_power.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

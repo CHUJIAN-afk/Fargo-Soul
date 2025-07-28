@@ -34,8 +34,9 @@ public class PenetratingNinjaSoul extends SoulItem {
                     .flatMap(curioItem -> curioItem.getAttributeList().stream())
                     .collect(Collectors.toList());
 
+
     public List<Component> list2 = List.of(
-            Component.literal("冲刺后的1秒内可以穿过墙壁").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.penetrating_ninja_soul.attribute.1").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> AttributeList = Stream.concat(
@@ -49,7 +50,7 @@ public class PenetratingNinjaSoul extends SoulItem {
     }
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“藏匿于墙中的村庄”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.penetrating_ninja_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

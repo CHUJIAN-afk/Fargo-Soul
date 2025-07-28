@@ -39,15 +39,15 @@ public class FrostSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("每秒在玩家周围生成冰锥，最多可同时存在10个").withStyle(ChatFormatting.BLUE),
-            Component.literal("冰锥每0.5秒自动锁定周围敌人发射").withStyle(ChatFormatting.BLUE),
-            Component.literal("冰锥会对其击中的敌人造成0.25秒的冰冻和6秒的冻伤，冰锥的基础伤害对烈焰人提高至600%").withStyle(ChatFormatting.BLUE),
-            Component.literal("敌人被冻结时无法移动，已经被冻结的敌人不会被再次冰冻或延长冰冻时间").withStyle(ChatFormatting.BLUE),
-            Component.literal("被冻伤影响的敌人会持续受到寒冷伤害，降低最大生命值10%，降低20%移动速度").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.frost_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.frost_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.frost_soul.attribute.3").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.frost_soul.attribute.4").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.frost_soul.attribute.5").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“让我们给这个世界披上一层厚厚的冰衣”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.frost_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

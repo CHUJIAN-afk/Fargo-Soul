@@ -27,15 +27,15 @@ public class MonkSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("使你获得冲刺能力").withStyle(ChatFormatting.BLUE),
-            Component.literal("双击前进键进行冲刺").withStyle(ChatFormatting.BLUE),
-            Component.literal("冲刺后的1秒内免疫一切伤害").withStyle(ChatFormatting.BLUE),
-            Component.literal("冲刺撞击敌人可对敌人造成玩家50%最大生命值的近战伤害与大量击退").withStyle(ChatFormatting.BLUE),
-            Component.literal("冲刺冷却为20秒").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.monk_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.monk_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.monk_soul.attribute.3").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.monk_soul.attribute.4").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.monk_soul.attribute.5").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“返本还僧”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.monk_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

@@ -13,7 +13,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-
+        //魔石
         basicItem(Souls.WoodSoul.get());
         basicItem(Souls.PineWoodSoul.get());
         basicItem(Souls.RosewoodSoul.get());
@@ -89,5 +89,18 @@ public class ModItemModelProvider extends ItemModelProvider {
         basicItem(Souls.NebulaSoul.get());
         basicItem(Souls.VortexSoul.get());
         basicItem(Souls.CosmicPower.get());
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

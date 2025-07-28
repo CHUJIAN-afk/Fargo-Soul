@@ -41,7 +41,7 @@ public class CosmicPower extends SoulItem {
     }
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“自宇宙大爆炸以来就一直存在””").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.cosmic_power.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

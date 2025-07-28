@@ -23,12 +23,12 @@ public class HolySoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("治疗效果增加40%").withStyle(ChatFormatting.BLUE),
-            Component.literal("治疗时会产生冲击波，可击落附近的敌对射弹").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.holy_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.holy_soul.attribute.2").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("《尽管放马过来》").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.holy_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

@@ -30,13 +30,13 @@ public class AncientShadowSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("攻击有几率造成黑暗或失明减益").withStyle(ChatFormatting.BLUE),
-            Component.literal("攻击有几率使敌人丢失目标").withStyle(ChatFormatting.BLUE),
-            Component.literal("身处极黑暗的环境下，除非主动攻击，否则敌人不会发现你").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.ancient_shadow_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.ancient_shadow_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.ancient_shadow_soul.attribute.3").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“十分古老，却非常实用”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.ancient_shadow_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

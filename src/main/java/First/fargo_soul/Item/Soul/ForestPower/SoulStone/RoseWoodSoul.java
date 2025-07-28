@@ -22,11 +22,11 @@ public class RoseWoodSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("不在地面时受到伤害，你将获得10%伤害减免和50%的荆棘效果，并将攻击者向自身位置牵引一小段距离").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.rose_wood_soul.attribute.1").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“保证钩到你”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.rose_wood_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

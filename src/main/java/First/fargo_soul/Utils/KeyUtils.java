@@ -1,5 +1,6 @@
 package First.fargo_soul.Utils;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;
 import net.minecraft.server.level.ServerPlayer;
 

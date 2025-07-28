@@ -15,7 +15,6 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -39,14 +38,14 @@ public class RainCloudSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("召唤一把可反弹射弹的雨伞").withStyle(ChatFormatting.BLUE),
-            Component.literal("雨伞反射射弹的伤害合计超过20点后会破裂，每2分钟尝试恢复或修复雨伞").withStyle(ChatFormatting.BLUE),
-            Component.literal("获得缓降药水的效果").withStyle(ChatFormatting.BLUE),
-            Component.literal("免疫雷击伤害").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.rain_cloud_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.rain_cloud_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.rain_cloud_soul.attribute.3").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.rain_cloud_soul.attribute.4").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“改日再来”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.rain_cloud_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

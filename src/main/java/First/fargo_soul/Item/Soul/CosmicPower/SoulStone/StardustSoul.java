@@ -21,12 +21,13 @@ public class StardustSoul extends SoulItem {
         super(properties);
     }
 
+
     public List<Component> AttributeList = List.of(
-            Component.literal("按下“冻结”键后会冻结时间，持续6秒，该效果有3600秒冷却时间").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.stardust_soul.attribute.1").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“你成为了替身使者”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.stardust_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

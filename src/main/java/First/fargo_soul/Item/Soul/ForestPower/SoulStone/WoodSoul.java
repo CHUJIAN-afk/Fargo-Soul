@@ -15,12 +15,12 @@ public class WoodSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("村民折扣增加，你在村庄中永远拥有好声望").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.wood_soul.attribute.1").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("被店主们讨厌的诡计").withStyle(ChatFormatting.DARK_GRAY),
-            Component.literal("卑微的开始……").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.wood_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY),
+            Component.translatable("item.fargo_soul.wood_soul.tooltip.2").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

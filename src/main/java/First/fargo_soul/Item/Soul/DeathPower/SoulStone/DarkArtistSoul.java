@@ -39,12 +39,12 @@ public class DarkArtistSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("召唤一个爆炸烈焰召唤物，在玩家攻击时也会随之攻击，该效果有2秒冷却").withStyle(ChatFormatting.BLUE),
-            Component.literal("攻击时，在敌人头上召唤一堆箭矢作为辅助攻击，箭矢伤害基础为当次攻击的20%，该效果有10秒冷却时间").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.dark_artist_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.dark_artist_soul.attribute.2").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“阴影蕴含之物远超其表象”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.dark_artist_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

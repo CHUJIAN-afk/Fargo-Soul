@@ -29,15 +29,15 @@ public class NecromancerSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("战斗时有几率爆出一堆骨头并对敌人造成伤害").withStyle(ChatFormatting.BLUE),
-            Component.literal("爆出骨头的数量等同于当次造成的伤害，最多50个").withStyle(ChatFormatting.BLUE),
-            Component.literal("爆出骨头的基础伤害为当次造成的伤害的25%，最大10点").withStyle(ChatFormatting.BLUE),
-            Component.literal("拾取骨头时恢复35%已损生命值，该效果有10秒冷却").withStyle(ChatFormatting.BLUE),
-            Component.literal("杀死骷髅或凋零骷髅必定掉落头颅").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.necromancer_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.necromancer_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.necromancer_soul.attribute.3").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.necromancer_soul.attribute.4").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.necromancer_soul.attribute.5").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“欢迎来到骸骨领域”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.necromancer_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

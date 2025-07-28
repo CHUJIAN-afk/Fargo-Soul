@@ -24,11 +24,11 @@ public class PlatinumSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("敌人死亡时有20%的几率获得五倍的战利品").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.platinum_soul.attribute.1").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“无价之宝”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.platinum_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

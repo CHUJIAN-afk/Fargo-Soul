@@ -31,14 +31,14 @@ public class GhostSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("生命值降低至0时复活，复活血量为最大生命值20%，清除减益效果并产生多个灵魂，该效果有600秒冷却").withStyle(ChatFormatting.BLUE),
-            Component.literal("复活后移动速度更快，可以无限飞行，持续5秒").withStyle(ChatFormatting.BLUE),
-            Component.literal("每次攻击会产生一个灵魂").withStyle(ChatFormatting.BLUE),
-            Component.literal("触碰灵魂，每个灵魂可治疗2生命值并将其送往最近的敌人，造成伤害").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.ghost_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.ghost_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.ghost_soul.attribute.3").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.ghost_soul.attribute.4").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“他们的生命力将毁灭他们自己”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.ghost_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

@@ -48,12 +48,14 @@ public class TerraSoul extends SoulItem {
         return this.AttributeList;
     }
 
+
     public List<Component> TooltipList = List.of(
-            Component.literal("“泰拉之主，天地共证”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.terra_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     private long lastUpdateTick = 0;
     private List<Component> cachedRandomTips = List.of();
+    private int maxLength = 0;
 
     @Override
     public List<Component> getAttributesTooltip(List<Component> tooltips, Item.TooltipContext context, ItemStack stack) {
@@ -62,15 +64,17 @@ public class TerraSoul extends SoulItem {
             if (currentTick - lastUpdateTick >= 3 || cachedRandomTips.isEmpty()) {
                 List<Component> shuffledList = new ArrayList<>(AttributeList);
                 Collections.shuffle(shuffledList, random);
-                cachedRandomTips = shuffledList.subList(0, Math.min(7, shuffledList.size()));
+                cachedRandomTips = shuffledList.subList(0, Math.min(9, shuffledList.size()));
                 lastUpdateTick = currentTick;
+            }
+            if (maxLength == 0) {
+                for (Component component : cachedRandomTips) {
+                    maxLength = Math.max(maxLength, component.toString().length());
+                }
             }
             tooltips.addAll(cachedRandomTips);
         }
-        //tooltips.addAll(AttributeList);
-        tooltips.add(Component.literal("                                                                                                                                                                                                                             "));
         tooltips.addAll(TooltipList);
-        tooltips.add(Component.literal("                                                                                                                                                                                                                             "));
         return tooltips;
     }
 

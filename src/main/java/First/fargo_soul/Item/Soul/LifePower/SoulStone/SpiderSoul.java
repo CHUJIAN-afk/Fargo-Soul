@@ -25,13 +25,13 @@ public class SpiderSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("你的仆从可以造成暴击，仆从暴击率为25%，暴击伤害为150%").withStyle(ChatFormatting.BLUE),
-            Component.literal("通过召唤暴击增加的伤害上限为100点").withStyle(ChatFormatting.BLUE),
-            Component.literal("增加10%暴击率").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.spider_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.spider_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.spider_soul.attribute.3").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“蜘蛛恐惧者？作为惩罚，让他被蜘蛛干掉吧！”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.spider_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

@@ -14,6 +14,7 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -64,7 +65,9 @@ public class SoulItem extends Item implements ICurioItem {
 
     public static void invulnerableTimeHandler(LivingIncomingDamageEvent event) {
         if (!(event.getEntity() instanceof Player) && event.getEntity() instanceof LivingEntity livingEntity && event.getSource().getWeaponItem() == null) {
-            livingEntity.invulnerableTime = 0;
+            if (!event.getSource().is(DamageTypes.IN_WALL) && !event.getSource().is(DamageTypes.CRAMMING)) {
+                livingEntity.invulnerableTime = 0;
+            }
         }
     }
 

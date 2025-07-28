@@ -26,12 +26,12 @@ public class AncientHolySoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("召唤一柄泰拉棱镜跟随你").withStyle(ChatFormatting.BLUE),
-            Component.literal("潜行时，你的剑总是会进行满蓄力的横扫攻击").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.ancient_holy_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.ancient_holy_soul.attribute.2").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“你有足够的力量驾驭我吗？”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.ancient_holy_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

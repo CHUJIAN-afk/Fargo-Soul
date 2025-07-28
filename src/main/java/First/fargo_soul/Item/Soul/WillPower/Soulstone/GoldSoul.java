@@ -41,16 +41,15 @@ public class GoldSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("攻击会造成迈达斯减益").withStyle(ChatFormatting.BLUE),
-            Component.literal("受迈达斯影响的敌人在死亡时会掉落一些金粒").withStyle(ChatFormatting.BLUE),
-            Component.literal("按下“金身”键会将你包裹在一个黄金壳中").withStyle(ChatFormatting.BLUE),
-            Component.literal("被包裹时你无法移动或攻击，但你免疫所有伤害").withStyle(ChatFormatting.BLUE),
-            //Component.literal("再次按下“金身”键会使你提前离开黄金壳").withStyle(ChatFormatting.BLUE),
-            Component.literal("该效果持续5秒冷却时间为60秒").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.gold_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.gold_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.gold_soul.attribute.3").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.gold_soul.attribute.4").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.gold_soul.attribute.5").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“有钱能使鬼推磨”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.gold_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

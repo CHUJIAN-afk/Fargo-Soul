@@ -31,15 +31,15 @@ public class GladiatorSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("箭雨将倾泄在被攻击的敌人身上，造成远程伤害，该效果有2秒冷却").withStyle(ChatFormatting.BLUE),
-            Component.literal("双击潜行键召唤一个持续15秒的旗子，该效果有10秒冷却").withStyle(ChatFormatting.BLUE),
-            Component.literal("靠近旗子会大幅增强箭雨").withStyle(ChatFormatting.BLUE),
-            Component.literal("靠近旗子时可免疫击退，获得8%伤害减免和8%伤害加成").withStyle(ChatFormatting.BLUE),
-            Component.literal("旗子同时只能存在一个").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.gladiator_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.gladiator_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.gladiator_soul.attribute.3").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.gladiator_soul.attribute.4").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.gladiator_soul.attribute.5").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“你不觉得刺激吗？”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.gladiator_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

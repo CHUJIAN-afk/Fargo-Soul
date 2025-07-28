@@ -21,17 +21,16 @@ import static First.fargo_soul.Item.Soul.Souls.PineWoodSoul;
 import static First.fargo_soul.Utils.MathUtils.random;
 
 public class PineWoodSoul extends SoulItem {
-
     public PineWoodSoul(Properties properties) {
         super(properties);
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("定期释放雪球攻击敌人").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.pine_wood_soul.attribute.1").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“又冷又酷”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.pine_wood_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

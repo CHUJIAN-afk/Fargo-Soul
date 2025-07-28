@@ -34,14 +34,14 @@ public class NebulaSoul  extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("召唤星云射击，对敌人造成魔法伤害，该效果有三秒冷却时间").withStyle(ChatFormatting.BLUE),
-            Component.literal("星云射击命中敌人时产生星云强化焰，玩家靠近时可吸取强化焰").withStyle(ChatFormatting.BLUE),
-            Component.literal("星云强化焰分为生命强化焰和伤害强化焰，生命强化焰增加1每秒生命恢复，伤害强化焰增加15%伤害").withStyle(ChatFormatting.BLUE),
-            Component.literal("强化增益叠加上限为3，已有强化焰时拾取强化焰会刷新持续时间").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.nebula_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.nebula_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.nebula_soul.attribute.3").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.nebula_soul.attribute.4").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“创生之柱照耀着你”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.nebula_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

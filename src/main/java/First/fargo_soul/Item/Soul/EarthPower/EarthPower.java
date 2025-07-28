@@ -41,7 +41,7 @@ public class EarthPower extends SoulItem {
     }
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“盖亚的祝福照耀着你”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.earth_power.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override
