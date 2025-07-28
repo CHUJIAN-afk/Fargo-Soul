@@ -31,14 +31,15 @@ public class AncientCobaltSoul extends SoulItem {
         super(properties);
     }
 
+
     public List<Component> AttributeList = List.of(
-            Component.literal("跳跃时产生爆炸并造成浸油减益，此效果有1.5秒冷却时间").withStyle(ChatFormatting.BLUE),
-            Component.literal("被浸油影响的敌人受到的火焰伤害大幅增加").withStyle(ChatFormatting.BLUE),
-            Component.literal("按住潜行键快速下落").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.ancient_cobalt_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.ancient_cobalt_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.ancient_cobalt_soul.attribute.3").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“远古酷波德”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.ancient_cobalt_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

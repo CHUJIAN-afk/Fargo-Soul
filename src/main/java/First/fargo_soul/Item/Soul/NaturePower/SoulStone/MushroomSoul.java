@@ -26,12 +26,12 @@ public class MushroomSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("食用蘑菇煲能恢复5生命值，并获得蘑菇力量，持续20秒，蘑菇力量可增加20%伤害和暴击率").withStyle(ChatFormatting.BLUE),
-            Component.literal("弹射物在击中敌人时生成一团蘑菇孢子，造成魔法伤害，冷却时间很短").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.mushroom_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.mushroom_soul.attribute.2").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“是用真的蘑菇做的！”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.mushroom_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

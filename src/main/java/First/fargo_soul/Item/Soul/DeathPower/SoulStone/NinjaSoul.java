@@ -26,12 +26,12 @@ public class NinjaSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("当玩家潜行时，降低被周围敌人发现的范围").withStyle(ChatFormatting.BLUE),
-            Component.literal("当玩家潜行时暴击率逐渐增加，最高可达20%").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.ninja_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.ninja_soul.attribute.2").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“等待正确的时机......”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.ninja_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

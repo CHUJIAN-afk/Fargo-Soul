@@ -48,14 +48,14 @@ public class GreenSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("召唤叶绿水晶攻击附近的敌人").withStyle(ChatFormatting.BLUE),
-            Component.literal("使用鞘翅进行飞行时，你周围会不断生成孢子云雾，使云雾中的敌人中毒").withStyle(ChatFormatting.BLUE),
-            Component.literal("双击前进键，你将进行短程冲刺，该效果有1秒冷却").withStyle(ChatFormatting.BLUE),
-            Component.literal("冲刺加速适用于鞘翅，会使你获得向视角方向的加速度").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.green_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.green_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.green_soul.attribute.3").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.green_soul.attribute.4").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“丛林的精华在你周围凝结成晶体”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.green_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

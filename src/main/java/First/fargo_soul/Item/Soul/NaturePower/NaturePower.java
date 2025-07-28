@@ -40,8 +40,9 @@ public class NaturePower extends SoulItem {
         return this.AttributeList;
     }
 
+
     public List<Component> TooltipList = List.of(
-            Component.literal("“走遍荒野的每一个秘密角落”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.nature_power.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

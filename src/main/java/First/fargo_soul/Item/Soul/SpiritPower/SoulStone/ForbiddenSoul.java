@@ -34,12 +34,12 @@ public class ForbiddenSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("双击潜行键会在准星方块位置召唤风暴，持续吸引附近的敌人持续4秒，该效果有20秒冷却").withStyle(ChatFormatting.BLUE),
-            Component.literal("你穿过风暴时获得速度加成，持续2秒").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.forbidden_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.forbidden_soul.attribute.2").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“走路像个埃及人”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.forbidden_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

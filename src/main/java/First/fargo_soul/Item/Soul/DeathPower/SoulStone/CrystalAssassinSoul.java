@@ -35,14 +35,14 @@ public class CrystalAssassinSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("获得冲刺能力").withStyle(ChatFormatting.BLUE),
-            Component.literal("攻击时如果敌人没有以你为目标，则获得持续10秒的先发制人增益").withStyle(ChatFormatting.BLUE),
-            Component.literal("先发制人增益会使你下次攻击必定暴击且造成150%伤害，并降低目标10点防御力持续10秒").withStyle(ChatFormatting.BLUE),
-            Component.literal("先发制人效果有20秒冷却时间，冲刺能力有1秒冷却时间").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.crystal_assassin_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.crystal_assassin_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.crystal_assassin_soul.attribute.3").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.crystal_assassin_soul.attribute.4").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“登顶”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.crystal_assassin_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

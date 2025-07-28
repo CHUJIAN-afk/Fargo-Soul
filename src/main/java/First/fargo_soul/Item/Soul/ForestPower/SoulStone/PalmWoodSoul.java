@@ -29,7 +29,6 @@ public class PalmWoodSoul extends SoulItem {
     public List<Component> TooltipList = List.of(
             Component.literal("“出奇的宁静”").withStyle(ChatFormatting.DARK_GRAY)
     );
-
     @Override
     public List<Component> getAttributeList() {
         return this.AttributeList;

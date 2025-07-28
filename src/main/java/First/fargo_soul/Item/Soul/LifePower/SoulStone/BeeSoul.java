@@ -36,14 +36,14 @@ public class BeeSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("使附近的蜜蜂逐渐恢复生命值，蜜蜂永远对你友好").withStyle(ChatFormatting.BLUE),
-            Component.literal("允许短时间飞行，免疫摔落伤害").withStyle(ChatFormatting.BLUE),
-            Component.literal("接触花朵可提供蜂蜜增益，偶尔产生一群蜜蜂").withStyle(ChatFormatting.BLUE),
-            Component.literal("在你周围的花朵被敌怪接触时可能会产生蜂群攻击敌人").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.bee_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.bee_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.bee_soul.attribute.3").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.bee_soul.attribute.4").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“根据目前所知的所有航空原理，蜜蜂应该根本不可能会飞”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.bee_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

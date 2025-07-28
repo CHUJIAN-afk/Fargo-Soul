@@ -41,8 +41,9 @@ public class ForestPower extends SoulItem {
         return this.AttributeList;
     }
 
+
     public List<Component> TooltipList = List.of(
-            Component.literal("“很硬”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.forest_power.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

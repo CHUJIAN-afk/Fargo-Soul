@@ -32,13 +32,13 @@ public class TungstenSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("增加50%实体触及距离").withStyle(ChatFormatting.BLUE),
-            Component.literal("手持物品大小+100%").withStyle(ChatFormatting.BLUE),
-            Component.literal("攻击命中敌人时会产生一个基础伤害为当次攻击50%的爆炸，此效果有2.5秒冷却时间").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.tungsten_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.tungsten_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.tungsten_soul.attribute.3").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“大就是好”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.tungsten_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

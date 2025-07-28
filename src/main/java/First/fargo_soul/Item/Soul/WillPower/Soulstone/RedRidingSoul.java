@@ -14,7 +14,6 @@ import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 
 import java.util.List;
@@ -28,16 +27,16 @@ public class RedRidingSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("攻击忽略2点敌怪防御力并额外造成1点伤害").withStyle(ChatFormatting.BLUE),
-            Component.literal("每次连续攻击会额外忽略2点防御力并多造成1点伤害").withStyle(ChatFormatting.BLUE),
-            Component.literal("如果忽略防御力大于敌人防御力，每1点溢出值还会提供1%的伤害加成").withStyle(ChatFormatting.BLUE),
-            Component.literal("在累计10次攻击后，生成一阵箭雨，造成远程伤害并重置加成").withStyle(ChatFormatting.BLUE),
-            Component.literal("追踪武器和召唤物不会增加这些加成").withStyle(ChatFormatting.BLUE),
-            Component.literal("1秒内没有进行攻击重置加成").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.red_riding_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.red_riding_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.red_riding_soul.attribute.3").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.red_riding_soul.attribute.4").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.red_riding_soul.attribute.5").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.red_riding_soul.attribute.6").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“小红帽，大坏蛋！”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.red_riding_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

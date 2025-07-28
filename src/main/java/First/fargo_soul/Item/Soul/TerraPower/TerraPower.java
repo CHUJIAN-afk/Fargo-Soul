@@ -41,8 +41,9 @@ public class TerraPower extends SoulItem {
         return this.AttributeList;
     }
 
+
     public List<Component> TooltipList = List.of(
-            Component.literal("“大地赐予它力量”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.terra_power.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

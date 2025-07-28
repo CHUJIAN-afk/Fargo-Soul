@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "fargo_soul:ancient_shadow_soul"
+    },
+    {
+      "item": "fargo_soul:crystal_assassin_soul"
+    },
+    {
+      "item": "fargo_soul:dark_artist_soul"
+    },
+    {
+      "item": "fargo_soul:gloomy_soul"
+    },
+    {
+      "item": "fargo_soul:necromancer_soul"
+    },
+    {
+      "item": "fargo_soul:ninja_soul"
+    },
+    {
+      "item": "fargo_soul:penetrating_ninja_soul"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:death_power"
+  }
+}

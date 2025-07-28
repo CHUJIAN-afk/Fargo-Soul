@@ -8,7 +8,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
@@ -16,8 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class MithrilSoul extends SoulItem {
@@ -27,12 +24,12 @@ public class MithrilSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("在一段时间不攻击后开始攻击会短暂地提高50%攻击速度").withStyle(ChatFormatting.BLUE),
-            Component.literal("使用速度加成会在攻击后3秒消失，并在5秒不攻击后恢复").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.mithril_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.mithril_soul.attribute.2").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“你感觉武器的知识渗透进你的脑海中”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.mithril_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

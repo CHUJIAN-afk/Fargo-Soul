@@ -24,12 +24,12 @@ public class IronSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("物品的吸附范围扩大").withStyle(ChatFormatting.BLUE),
-            Component.literal("拾取物品后的5秒内增加20%伤害减免").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.iron_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.iron_soul.attribute.2").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“趁热打铁”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.iron_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

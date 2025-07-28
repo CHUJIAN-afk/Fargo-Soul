@@ -25,12 +25,12 @@ public class CactusSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("受到攻击时，你会释放出一堆仙人掌，被你的仙人掌扎死的敌人会爆裂出更多仙人掌").withStyle(ChatFormatting.BLUE),
-            Component.literal("使你免受仙人掌伤害").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.cactus_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.cactus_soul.attribute.2").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“多汁解渴！”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.cactus_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

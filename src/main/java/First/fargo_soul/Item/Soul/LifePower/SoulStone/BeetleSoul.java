@@ -22,15 +22,15 @@ public class BeetleSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("对敌人造成伤害时会获得甲虫力量，增加你的伤害和速度").withStyle(ChatFormatting.BLUE),
-            Component.literal("受到伤害时会获得甲虫耐力，在十秒内减少你受到的伤害").withStyle(ChatFormatting.BLUE),
-            Component.literal("甲虫力量每层提供10%伤害和攻击速度加成").withStyle(ChatFormatting.BLUE),
-            Component.literal("甲虫耐力每层提供15%伤害减免").withStyle(ChatFormatting.BLUE),
-            Component.literal("甲虫增益至多叠加两层，刷新时重置持续时间并提高层数").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.beetle_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.beetle_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.beetle_soul.attribute.3").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.beetle_soul.attribute.4").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.beetle_soul.attribute.5").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“你的血管里流淌着看不见的粪便生命”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.beetle_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

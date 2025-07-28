@@ -24,13 +24,13 @@ public class LeadSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("连续受到同一敌人的伤害时，减少10%该敌人对你造成的伤害").withStyle(ChatFormatting.BLUE),
-            Component.literal("攻击有几率造成铅中毒减益").withStyle(ChatFormatting.BLUE),
-            Component.literal("铅中毒减益持续造成伤害并会扩散至周围的敌人").withStyle(ChatFormatting.BLUE)
-            );
+            Component.translatable("item.fargo_soul.lead_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.lead_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.lead_soul.attribute.3").withStyle(ChatFormatting.BLUE)
+    );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“不建议食用”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.lead_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

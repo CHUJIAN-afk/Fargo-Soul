@@ -28,12 +28,12 @@ public class PumpkinSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("如果脚下可以种植南瓜，你在移动时将会种下南瓜种子").withStyle(ChatFormatting.BLUE),
-            Component.literal("踩在成熟的南瓜上时会为你回复5点生命值，并使南瓜产生爆炸").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.pumpkin_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.pumpkin_soul.attribute.2").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“你对南瓜的突发渴望永远不会得到满足”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.pumpkin_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

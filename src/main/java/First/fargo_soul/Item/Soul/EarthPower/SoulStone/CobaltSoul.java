@@ -35,17 +35,20 @@ public class CobaltSoul extends SoulItem {
                     .flatMap(curioItem -> curioItem.getAttributeList().stream())
                     .collect(Collectors.toList());
 
+
     public List<Component> list2 = List.of(
-            Component.literal("从地面跳起时为你提供0.2秒无敌帧，该无敌帧不能叠加").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.ancient_cobalt_soul.attribute.4").withStyle(ChatFormatting.BLUE)
     );
+
 
     public List<Component> AttributeList = Stream.concat(
             list1.stream(),
             list2.stream()
     ).collect(Collectors.toList());
 
+
     public List<Component> TooltipList = List.of(
-            Component.literal("“真不敢相信这竟然不是钯金”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.ancient_cobalt_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

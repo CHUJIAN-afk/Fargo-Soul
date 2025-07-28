@@ -22,10 +22,11 @@ public class GloomySoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("你的仆从攻击附加暗影焰").withStyle(ChatFormatting.BLUE));
+            Component.translatable("item.fargo_soul.gloomy_soul.attribute.1").withStyle(ChatFormatting.BLUE)
+    );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“自1902年以来融化的灵魂”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.gloomy_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

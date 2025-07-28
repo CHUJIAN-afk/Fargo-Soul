@@ -27,14 +27,14 @@ public class ValhallaKnightSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("提升骑乘坐骑的速度和跳跃高度").withStyle(ChatFormatting.BLUE),
-            Component.literal("骑乘坐骑时，你与坐骑获得15点防御").withStyle(ChatFormatting.BLUE),
-            Component.literal("使坐骑免疫坠落伤害并在移动时撞飞敌人").withStyle(ChatFormatting.BLUE),
-            Component.literal("回复生命值时，治疗量增加15%").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.valhalla_knight_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.valhalla_knight_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.valhalla_knight_soul.attribute.3").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.valhalla_knight_soul.attribute.4").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“瓦尔哈拉的呼唤”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.valhalla_knight_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

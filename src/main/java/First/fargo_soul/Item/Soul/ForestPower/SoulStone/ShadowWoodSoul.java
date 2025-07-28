@@ -18,20 +18,18 @@ import java.util.List;
 import static First.fargo_soul.Item.Soul.Souls.ShadowWoodSoul;
 
 public class ShadowWoodSoul extends SoulItem {
-
     public ShadowWoodSoul(Item.Properties properties) {
         super(properties);
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("召唤一圈鲜血光环").withStyle(ChatFormatting.BLUE),
-            Component.literal("在鲜血光环内的敌人对你造成伤害的10%转化为生命值恢复").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.shadow_wood_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.shadow_wood_soul.attribute.2").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“出奇的干净”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.shadow_wood_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
-
     @Override
     public List<Component> getAttributeList() {
         return this.AttributeList;

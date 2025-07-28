@@ -39,8 +39,9 @@ public class WillPower extends SoulItem {
         return this.AttributeList;
     }
 
+
     public List<Component> TooltipList = List.of(
-            Component.literal("“坚不可摧的决心”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.will_power.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

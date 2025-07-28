@@ -27,14 +27,9 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 public class Souls {
 
@@ -121,7 +116,7 @@ public class Souls {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TAB_DEFERRED_REGISTER = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Fargo_soul.MODID);
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FARGO_SOUL_TAB = CREATIVE_MODE_TAB_DEFERRED_REGISTER.register(Fargo_soul.MODID, () ->
             CreativeModeTab.builder()
-                    .title(Component.literal("Fargo Soul"))
+                    .title(Component.translatable("itemGroup.fargo_soul"))
                     .withTabsBefore(CreativeModeTabs.COMBAT)
                     .icon(() -> TerraSoul.get().getDefaultInstance())
                     .displayItems((parameters, output) -> {

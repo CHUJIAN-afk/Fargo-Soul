@@ -14,11 +14,11 @@ public class WizardSoul  extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("让环绕着你的魔石全部发光").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.wizard_soul.attribute.1").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“我们爱施放魔法”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.wizard_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

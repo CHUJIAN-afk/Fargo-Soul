@@ -1,18 +1,8 @@
 package First.fargo_soul.Effect.Harmful;
 
-import First.fargo_soul.Utils.MathUtils;
-import First.fargo_soul.Utils.ParticleUtils;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class FlareEffect extends MobEffect {
 

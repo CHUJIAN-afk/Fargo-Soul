@@ -39,8 +39,9 @@ public class SpiritPower extends SoulItem {
         return this.AttributeList;
     }
 
+
     public List<Component> TooltipList = List.of(
-            Component.literal("“飘飘乎如遗世独立，羽化而登仙”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.spirit_power.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

@@ -26,12 +26,12 @@ public class MeteorSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("增加15%移动速度，按下潜行键大幅增加下落速度").withStyle(ChatFormatting.BLUE),
-            Component.literal("击中敌人时偶尔会落下一颗流星").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.meteor_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.meteor_soul.attribute.2").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("《Drop a draco on 'em》").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.meteor_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

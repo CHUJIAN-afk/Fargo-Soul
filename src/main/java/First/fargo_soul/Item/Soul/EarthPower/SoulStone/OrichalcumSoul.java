@@ -10,7 +10,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
@@ -28,13 +27,13 @@ public class OrichalcumSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("攻击时召唤花瓣落到你攻击的敌人的身上，造成额外伤害和山铜中毒减益").withStyle(ChatFormatting.BLUE),
-            Component.literal("山铜中毒会持续造成魔法伤害").withStyle(ChatFormatting.BLUE),
-            Component.literal("敌人在被山铜中毒影响时，受到的所有毒性伤害+250%").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.orichalcum_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.orichalcum_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.orichalcum_soul.attribute.3").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“自然祝福着你”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.orichalcum_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

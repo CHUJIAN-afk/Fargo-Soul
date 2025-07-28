@@ -36,12 +36,12 @@ public class LavaSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("引燃你附近的敌人").withStyle(ChatFormatting.BLUE),
-            Component.literal("所有敌怪在狱火圈内时多受到20%伤害").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.lava_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.lava_soul.attribute.2").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“他们将感受到地狱的愤怒”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.lava_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

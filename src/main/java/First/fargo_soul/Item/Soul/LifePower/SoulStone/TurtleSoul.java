@@ -35,13 +35,14 @@ public class TurtleSoul extends SoulItem {
                     .flatMap(curioItem -> curioItem.getAttributeList().stream())
                     .collect(Collectors.toList());
 
+
     public List<Component> list2 = List.of(
-            Component.literal("反弹100%接触伤害").withStyle(ChatFormatting.BLUE),
-            Component.literal("在地面上连续按下潜行键时你会缩进壳里").withStyle(ChatFormatting.BLUE),
-            Component.literal("当你缩进壳里时，增加90%伤害减免，减少100%移动速度").withStyle(ChatFormatting.BLUE),
-            Component.literal("同时，你可以摧毁来犯的敌对射弹且额外反弹1000%接触伤害").withStyle(ChatFormatting.BLUE),
-            Component.literal("壳根据你的剩余生命值比例能存在1~2秒，剩余生命值越多持续时间越长").withStyle(ChatFormatting.BLUE),
-            Component.literal("龟壳破碎后有55秒冷却时间").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.turtle_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.turtle_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.turtle_soul.attribute.3").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.turtle_soul.attribute.4").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.turtle_soul.attribute.5").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.turtle_soul.attribute.6").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> AttributeList = Stream.concat(
@@ -51,7 +52,7 @@ public class TurtleSoul extends SoulItem {
 
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“你突然有一种想躲进壳里的冲动”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.turtle_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

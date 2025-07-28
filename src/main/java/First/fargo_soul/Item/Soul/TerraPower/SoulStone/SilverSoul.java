@@ -27,22 +27,20 @@ import static First.fargo_soul.Item.Soul.Souls.SilverSoul;
 import static First.fargo_soul.Utils.MathUtils.random;
 
 public class SilverSoul extends SoulItem {
-
     public SilverSoul(Properties properties) {
         super(properties);
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("举盾状态会增加10点防御力").withStyle(ChatFormatting.BLUE),
-            Component.literal("盾牌格挡如果时机正确，反弹200%当次伤害并获得惊人一刻增益").withStyle(ChatFormatting.BLUE),
-            Component.literal("完美格挡后盾牌进入0.5秒冷却").withStyle(ChatFormatting.BLUE),
-            Component.literal("惊人一刻使下次近战攻击伤害提高至500%").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.silver_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.silver_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.silver_soul.attribute.3").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.silver_soul.attribute.4").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“反射”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.silver_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
-
     @Override
     public List<Component> getAttributeList() {
         return this.AttributeList;

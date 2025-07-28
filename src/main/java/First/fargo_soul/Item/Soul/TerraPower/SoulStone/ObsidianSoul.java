@@ -8,10 +8,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 
 import java.util.List;
@@ -41,10 +39,9 @@ public class ObsidianSoul extends SoulItem {
                     .flatMap(curioItem -> curioItem.getAttributeList().stream())
                     .collect(Collectors.toList());
 
+
     public List<Component> list2 = List.of(
-            //Component.literal("你可以在熔岩中正常移动和游泳").withStyle(ChatFormatting.BLUE),
-            //Component.literal("在熔岩中攻击会产生爆炸").withStyle(ChatFormatting.BLUE),
-            Component.literal("免疫火焰类伤害以及岩浆伤害").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.obsidian_soul.attribute.1").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> AttributeList = Stream.concat(
@@ -52,8 +49,9 @@ public class ObsidianSoul extends SoulItem {
             list2.stream()
     ).collect(Collectors.toList());
 
+
     public List<Component> TooltipList = List.of(
-            Component.literal("“大地在呼唤”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.obsidian_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

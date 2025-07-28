@@ -24,13 +24,13 @@ public class CopperSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("攻击有概率释放闪电攻击敌人，闪电基础伤害为攻击的75%，此效果有5秒冷却").withStyle(ChatFormatting.BLUE),
-            Component.literal("闪电可以连锁攻击附近至多5名其他敌人，但伤害衰减50%").withStyle(ChatFormatting.BLUE),
-            Component.literal("命中有雨中或水中的敌人时释放闪电的概率增加").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.copper_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.copper_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.copper_soul.attribute.3").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“它的音乐还是电音”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.copper_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

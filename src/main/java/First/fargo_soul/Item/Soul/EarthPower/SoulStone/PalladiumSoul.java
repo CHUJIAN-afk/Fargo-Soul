@@ -26,13 +26,13 @@ public class PalladiumSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("对敌怪造成伤害后给予或延长生命恢复增益，增益持续时间为所造成伤害的35%").withStyle(ChatFormatting.BLUE),
-            Component.literal("延长生命恢复时间上限为5秒，每次获取增益有0.25秒间隔").withStyle(ChatFormatting.BLUE),
-            Component.literal("每恢复8点生命值便会生成一个伤害性的生命光束攻击附近敌人").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.palladium_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.palladium_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.palladium_soul.attribute.3").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“你感到你的伤口在慢慢愈合”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.palladium_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

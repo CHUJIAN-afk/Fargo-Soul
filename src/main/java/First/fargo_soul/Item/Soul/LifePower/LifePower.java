@@ -39,10 +39,10 @@ public class LifePower extends SoulItem {
         return this.AttributeList;
     }
 
-    public List<Component> TooltipList = List.of(
-            Component.literal("“罕有生灵敢违背你的意愿”").withStyle(ChatFormatting.DARK_GRAY)
-    );
 
+    public List<Component> TooltipList = List.of(
+            Component.translatable("item.fargo_soul.life_power.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
+    );
     @Override
     public List<Component> getAttributesTooltip(List<Component> tooltips, Item.TooltipContext context, ItemStack stack) {
         tooltips.addAll(AttributeList);

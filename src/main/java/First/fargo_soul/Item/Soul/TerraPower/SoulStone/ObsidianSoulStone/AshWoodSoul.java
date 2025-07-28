@@ -30,12 +30,12 @@ public class AshWoodSoul extends SoulItem {
     }
 
     public List<Component> AttributeList = List.of(
-            Component.literal("定期产生火球攻击附近敌人").withStyle(ChatFormatting.BLUE),
-            Component.literal("极大降低岩浆的接触伤害").withStyle(ChatFormatting.BLUE)
+            Component.translatable("item.fargo_soul.ash_wood_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.ash_wood_soul.attribute.2").withStyle(ChatFormatting.BLUE)
     );
 
     public List<Component> TooltipList = List.of(
-            Component.literal("“你告诉我，这不是木头？”").withStyle(ChatFormatting.DARK_GRAY)
+            Component.translatable("item.fargo_soul.ash_wood_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
     @Override

@@ -15,6 +15,7 @@ import First.fargo_soul.Item.Soul.LifePower.SoulStone.*;
 import First.fargo_soul.Item.Soul.LifePower.SoulStone.TurtleSoulStone.CactusSoul;
 import First.fargo_soul.Item.Soul.NaturePower.SoulStone.*;
 import First.fargo_soul.Item.Soul.SoulItem;
+import First.fargo_soul.Item.Soul.Souls;
 import First.fargo_soul.Item.Soul.SpiritPower.SoulStone.ForbiddenSoul;
 import First.fargo_soul.Item.Soul.SpiritPower.SoulStone.GhostSoul;
 import First.fargo_soul.Item.Soul.SpiritPower.SoulStone.HolySoul;
@@ -22,11 +23,19 @@ import First.fargo_soul.Item.Soul.SpiritPower.SoulStone.TekeSoul;
 import First.fargo_soul.Item.Soul.TerraPower.SoulStone.*;
 import First.fargo_soul.Item.Soul.TerraPower.SoulStone.ObsidianSoulStone.AshWoodSoul;
 import First.fargo_soul.Item.Soul.WillPower.Soulstone.*;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.core.Registry;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
-import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
+import net.neoforged.neoforge.event.LootTableLoadEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
@@ -232,12 +241,29 @@ public class SoulEvent {
     }
 
     @SubscribeEvent
-    public static void LivingDropsEvent(MobEffectEvent.Expired event){
+    public static void LivingDropsEvent(MobEffectEvent.Expired event) {
         //宇宙之力
         BlazeSoul.BlazeSoulMobEffectExpiredHandler(event);
         CrimsonSoul.CrimsonSoulMobEffectExpiredHandler(event);
     }
 
-
+    @SubscribeEvent
+    public static void LootTableLoadEvent(LootTableLoadEvent event) {
+        LootTable lootTable = event.getTable();
+        LootPool.Builder lootPool = LootPool.lootPool().name(Fargo_soul.MODID);
+        Registry<Item> itemRegistry = Souls.SoulItems.getRegistry().get();
+        LootContextParamSet paramSet = lootTable.getParamSet();
+        if (paramSet.equals(LootContextParamSets.CHEST) || paramSet.equals(LootContextParamSets.VAULT)) {
+            lootPool.when(LootItemRandomChanceCondition.randomChance(0.05f));
+            lootPool.setRolls(ConstantValue.exactly(1));
+            lootPool.setBonusRolls(ConstantValue.exactly(itemRegistry.size()));
+            for (Item item : itemRegistry) {
+                if (item.asItem() instanceof SoulItem soulItem && soulItem.getCurioItemList().isEmpty()) {
+                    lootPool.add(LootItem.lootTableItem(soulItem).setWeight(1));
+                }
+            }
+            lootTable.addPool(lootPool.build());
+        }
+    }
 
 }
