@@ -1,7 +1,7 @@
 package First.fargo_soul.Dadageneeator;
 
-import First.fargo_soul.Item.Soul.SoulItem;
-import First.fargo_soul.Item.Soul.Souls;
+import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
+import First.fargo_soul.Item.Soul.SoulsRegister;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -24,16 +24,16 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
     @Override
     protected void buildRecipes(@NotNull RecipeOutput recipeOutput) {
-        addShapelessRecipe(recipeOutput, Souls.EarthPower);
-        addShapelessRecipe(recipeOutput, Souls.ForestPower);
-        addShapelessRecipe(recipeOutput, Souls.LifePower);
-        addShapelessRecipe(recipeOutput, Souls.NaturePower);
-        addShapelessRecipe(recipeOutput, Souls.TerraPower);
-        addShapelessRecipe(recipeOutput, Souls.SpiritPower);
-        addShapelessRecipe(recipeOutput, Souls.DeathPower);
-        addShapelessRecipe(recipeOutput, Souls.WillPower);
-        addShapelessRecipe(recipeOutput, Souls.CosmicPower);
-        addShapelessRecipe(recipeOutput, Souls.TerraSoul);
+        addShapelessRecipe(recipeOutput, SoulsRegister.EarthPower);
+        addShapelessRecipe(recipeOutput, SoulsRegister.ForestPower);
+        addShapelessRecipe(recipeOutput, SoulsRegister.LifePower);
+        addShapelessRecipe(recipeOutput, SoulsRegister.NaturePower);
+        addShapelessRecipe(recipeOutput, SoulsRegister.TerraPower);
+        addShapelessRecipe(recipeOutput, SoulsRegister.SpiritPower);
+        addShapelessRecipe(recipeOutput, SoulsRegister.DeathPower);
+        addShapelessRecipe(recipeOutput, SoulsRegister.WillPower);
+        addShapelessRecipe(recipeOutput, SoulsRegister.CosmicPower);
+        addShapelessRecipe(recipeOutput, SoulsRegister.TerraSoul);
     }
 
     protected void addShapelessRecipe(RecipeOutput recipeOutput, DeferredItem<SoulItem> output) {

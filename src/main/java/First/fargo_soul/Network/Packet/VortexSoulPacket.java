@@ -1,8 +1,8 @@
 package First.fargo_soul.Network.Packet;
 
 import First.fargo_soul.Fargo_soul;
-import First.fargo_soul.Utils.MathUtils;
 import First.fargo_soul.Utils.ParticleUtils;
+import First.fargo_soul.Utils.Utils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,8 +17,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -30,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static First.fargo_soul.Item.Soul.SpiritPower.SoulStone.ForbiddenSoul.executorService;
+import static First.fargo_soul.Item.Soul.TerraSoul.SpiritPower.SoulStone.ForbiddenSoul.executorService;
 
 public record VortexSoulPacket() implements CustomPacketPayload {
 
@@ -59,7 +57,7 @@ public record VortexSoulPacket() implements CustomPacketPayload {
                 long gameTime = level.getGameTime();
                 long VortexSoul = player.getPersistentData().getLong("VortexSoul");
                 if (VortexSoul < gameTime) {
-                    HitResult hitResult = getTargetedBlock(player, 512);
+                    HitResult hitResult = Utils.getTargetedBlock(player, 512);
                     if (hitResult instanceof BlockHitResult blockHitResult) {
                         BlockPos pos = blockHitResult.getBlockPos();
                         if (!level.getBlockState(pos).is(Blocks.AIR) && pos.getY() > level.getMinBuildHeight()) {
@@ -92,7 +90,7 @@ public record VortexSoulPacket() implements CustomPacketPayload {
                                     SoundEvents.ENDERMAN_TELEPORT,
                                     SoundSource.PLAYERS,
                                     1.0f,
-                                    MathUtils.random.nextFloat() * 0.4f + 0.4f
+                                    Utils.random.nextFloat() * 0.4f + 0.4f
                             );
                         }
                     }
@@ -104,13 +102,6 @@ public record VortexSoulPacket() implements CustomPacketPayload {
         });
     }
 
-    public static BlockHitResult getTargetedBlock(Player player, double maxDistance) {
-        Vec3 eyePos = player.getEyePosition();
-        Vec3 lookVec = player.getLookAngle();
-        Vec3 endPos = eyePos.add(lookVec.scale(maxDistance));
-        ClipContext clipContext = new ClipContext(eyePos, endPos, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player);
-        return player.level().clip(clipContext);
-    }
 
 
 

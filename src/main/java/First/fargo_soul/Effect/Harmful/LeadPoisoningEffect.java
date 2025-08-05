@@ -1,7 +1,7 @@
 package First.fargo_soul.Effect.Harmful;
 
 import First.fargo_soul.Effect.EffectRegister;
-import First.fargo_soul.Item.Soul.Souls;
+import First.fargo_soul.Item.Soul.SoulsRegister;
 import First.fargo_soul.Utils.CurioUtils;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -19,7 +19,7 @@ public class LeadPoisoningEffect extends MobEffect {
     public boolean applyEffectTick(LivingEntity entity, int amplifier) {
         entity.hurt(entity.damageSources().magic(), 1.0f);
         List<LivingEntity> livingEntityList = entity.level().getEntitiesOfClass(LivingEntity.class, entity.getBoundingBox().inflate(4));
-        livingEntityList.removeIf(livingEntity -> CurioUtils.isEquipped(livingEntity, Souls.LeadSoul.get()));
+        livingEntityList.removeIf(livingEntity -> CurioUtils.isEquipped(livingEntity, SoulsRegister.LeadSoul.get()));
         for (LivingEntity livingEntity : livingEntityList) {
             MobEffectInstance effect = entity.getEffect(EffectRegister.LeadPoisoning);
             if (effect != null && effect.getDuration() > 1 && livingEntity.getEffect(EffectRegister.LeadPoisoning) == null) {

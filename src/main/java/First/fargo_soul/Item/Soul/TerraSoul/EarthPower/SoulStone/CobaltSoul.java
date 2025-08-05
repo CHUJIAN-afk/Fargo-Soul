@@ -1,0 +1,75 @@
+package First.fargo_soul.Item.Soul.TerraSoul.EarthPower.SoulStone;
+
+import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
+import First.fargo_soul.Item.Soul.SoulsRegister;
+import First.fargo_soul.Utils.CurioUtils;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.event.entity.living.LivingEvent;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+
+public class CobaltSoul extends SoulItem {
+
+    public CobaltSoul(Properties properties) {
+        super(properties);
+    }
+
+    public final List<SoulItem> soulItemList = List.of(
+            SoulsRegister.AncientCobaltSoul.get()
+    );
+
+    @Override
+    public List<SoulItem> getCurioItemList() {
+        return this.soulItemList;
+    }
+
+    public final List<Component> list1 =
+            soulItemList.stream()
+                    .flatMap(curioItem -> curioItem.getAttributeList().stream())
+                    .collect(Collectors.toList());
+
+
+    public final List<Component> list2 = List.of(
+            Component.translatable("item.fargo_soul.ancient_cobalt_soul.attribute.4").withStyle(ChatFormatting.BLUE)
+    );
+
+
+    public final List<Component> AttributeList = Stream.concat(
+            list1.stream(),
+            list2.stream()
+    ).collect(Collectors.toList());
+
+
+    public final List<Component> TooltipList = List.of(
+            Component.translatable("item.fargo_soul.ancient_cobalt_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
+    );
+
+    @Override
+    public List<Component> getAttributeList() {
+        return this.AttributeList;
+    }
+
+    @Override
+    public List<Component> getAttributesTooltip(List<Component> tooltips, Item.TooltipContext context, ItemStack stack) {
+        tooltips.addAll(AttributeList);
+        tooltips.addAll(TooltipList);
+        return tooltips;
+    }
+
+    public static void CobaltSoulJumpHandler(LivingEvent.LivingJumpEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.CobaltSoul.get()) && player.onGround()) {
+            if (player.invulnerableTime < 14) {
+                player.invulnerableTime += 4;
+            }
+        }
+    }
+
+
+}

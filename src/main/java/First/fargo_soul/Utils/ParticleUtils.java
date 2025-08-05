@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static First.fargo_soul.Utils.MathUtils.random;
+import static First.fargo_soul.Utils.Utils.random;
 
 public class ParticleUtils {
     public static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();

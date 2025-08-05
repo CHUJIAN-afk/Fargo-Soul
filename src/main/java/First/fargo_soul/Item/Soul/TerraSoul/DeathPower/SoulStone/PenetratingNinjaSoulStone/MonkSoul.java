@@ -1,0 +1,84 @@
+package First.fargo_soul.Item.Soul.TerraSoul.DeathPower.SoulStone.PenetratingNinjaSoulStone;
+
+import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
+import First.fargo_soul.Item.Soul.SoulsRegister;
+import First.fargo_soul.Item.Soul.TerraSoul.DeathPower.SoulStone.PenetratingNinjaSoul;
+import First.fargo_soul.Network.Packet.MonkSoulPacket;
+import First.fargo_soul.Utils.CurioUtils;
+import First.fargo_soul.Utils.KeyUtils;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
+
+import java.util.List;
+
+
+public class MonkSoul extends SoulItem {
+
+    public MonkSoul(Properties properties) {
+        super(properties);
+    }
+
+    public final List<Component> AttributeList = List.of(
+            Component.translatable("item.fargo_soul.monk_soul.attribute.1").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.monk_soul.attribute.2").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.monk_soul.attribute.3").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.monk_soul.attribute.4").withStyle(ChatFormatting.BLUE),
+            Component.translatable("item.fargo_soul.monk_soul.attribute.5").withStyle(ChatFormatting.BLUE)
+    );
+
+    public final List<Component> TooltipList = List.of(
+            Component.translatable("item.fargo_soul.monk_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
+    );
+
+    @Override
+    public List<Component> getAttributeList() {
+        return this.AttributeList;
+    }
+
+    @Override
+    public List<Component> getAttributesTooltip(List<Component> tooltips, TooltipContext context, ItemStack stack) {
+        tooltips.addAll(AttributeList);
+        tooltips.addAll(TooltipList);
+        return tooltips;
+    }
+
+    public static void MonkSoulMovementTickHandler(PlayerTickEvent.Post event) {
+        if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.MonkSoul.get())) {
+            if (player.getPersistentData().getBoolean("MonkSoulDamage")) {
+                List<LivingEntity> livingEntityList = player.serverLevel().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(1));
+                for (LivingEntity livingEntity : livingEntityList) {
+                    livingEntity.hurt(player.damageSources().playerAttack(player), player.getMaxHealth() * 0.5f);
+                    livingEntity.knockback(5, player.getX(), player.getZ());
+                }
+            }
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void MonkSoulMovementInputHandler(MovementInputUpdateEvent event) {
+        if (event.getEntity() instanceof LocalPlayer player && CurioUtils.isEquipped(player, SoulsRegister.MonkSoul.get())) {
+            long MonkSoul = player.getPersistentData().getLong("MonkSoul");
+            long GamaTime = player.level().getGameTime();
+            if (MonkSoul < GamaTime) {
+                if (KeyUtils.isDoubleTappingForward(event.getInput())) {
+                    player.getPersistentData().putLong("MonkSoul", GamaTime + 400);
+                    PacketDistributor.sendToServer(new MonkSoulPacket());
+                    PenetratingNinjaSoul.PenetratingNinjaHandler(player);
+                    Vec3 viewVector = player.getLookAngle().scale(4.0);
+                    player.addDeltaMovement(viewVector);
+                }
+            }
+        }
+    }
+
+}

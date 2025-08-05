@@ -136,6 +136,8 @@
   "item.fargo_soul.adamantite_soul.attribute.1": "Attacking increases attack speed up to 30% (resets after 5s inactivity)",
   "item.fargo_soul.adamantite_soul.attribute.2": "At max speed, chance to confuse nearby targeting enemies",
   "item.fargo_soul.adamantite_soul.tooltip.1": "\"Chaos\"",
+  "item.fargo_soul.cobalt_soul.attribute.4": "从地面跳起时为你提供0.2秒无敌帧，该无敌帧不能叠加",
+  "item.fargo_soul.cobalt_soul.tooltip.1": "“真不敢相信这竟然不是钯金”",
   "item.fargo_soul.mithril_soul.attribute.1": "After not attacking, first attacks gain +50% speed",
   "item.fargo_soul.mithril_soul.attribute.2": "Speed boost lasts 3s after attacking, recovers after 5s inactivity",
   "item.fargo_soul.mithril_soul.tooltip.1": "\"You feel weapon knowledge seeping into your mind\"",

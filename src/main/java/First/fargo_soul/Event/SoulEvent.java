@@ -3,26 +3,26 @@ package First.fargo_soul.Event;
 
 import First.fargo_soul.Attribute.AttributeRegister;
 import First.fargo_soul.Fargo_soul;
-import First.fargo_soul.Item.Soul.CosmicPower.SoulStone.BlazeSoul;
-import First.fargo_soul.Item.Soul.CosmicPower.SoulStone.MeteorSoul;
-import First.fargo_soul.Item.Soul.CosmicPower.SoulStone.NebulaSoul;
-import First.fargo_soul.Item.Soul.DeathPower.SoulStone.*;
-import First.fargo_soul.Item.Soul.DeathPower.SoulStone.PenetratingNinjaSoulStone.MonkSoul;
-import First.fargo_soul.Item.Soul.EarthPower.SoulStone.*;
-import First.fargo_soul.Item.Soul.EarthPower.SoulStone.CobaltSoulStone.AncientCobaltSoul;
-import First.fargo_soul.Item.Soul.ForestPower.SoulStone.*;
-import First.fargo_soul.Item.Soul.LifePower.SoulStone.*;
-import First.fargo_soul.Item.Soul.LifePower.SoulStone.TurtleSoulStone.CactusSoul;
-import First.fargo_soul.Item.Soul.NaturePower.SoulStone.*;
-import First.fargo_soul.Item.Soul.SoulItem;
-import First.fargo_soul.Item.Soul.Souls;
-import First.fargo_soul.Item.Soul.SpiritPower.SoulStone.ForbiddenSoul;
-import First.fargo_soul.Item.Soul.SpiritPower.SoulStone.GhostSoul;
-import First.fargo_soul.Item.Soul.SpiritPower.SoulStone.HolySoul;
-import First.fargo_soul.Item.Soul.SpiritPower.SoulStone.TekeSoul;
-import First.fargo_soul.Item.Soul.TerraPower.SoulStone.*;
-import First.fargo_soul.Item.Soul.TerraPower.SoulStone.ObsidianSoulStone.AshWoodSoul;
-import First.fargo_soul.Item.Soul.WillPower.Soulstone.*;
+import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
+import First.fargo_soul.Item.Soul.SoulsRegister;
+import First.fargo_soul.Item.Soul.TerraSoul.CosmicPower.SoulStone.BlazeSoul;
+import First.fargo_soul.Item.Soul.TerraSoul.CosmicPower.SoulStone.MeteorSoul;
+import First.fargo_soul.Item.Soul.TerraSoul.CosmicPower.SoulStone.NebulaSoul;
+import First.fargo_soul.Item.Soul.TerraSoul.DeathPower.SoulStone.*;
+import First.fargo_soul.Item.Soul.TerraSoul.DeathPower.SoulStone.PenetratingNinjaSoulStone.MonkSoul;
+import First.fargo_soul.Item.Soul.TerraSoul.EarthPower.SoulStone.*;
+import First.fargo_soul.Item.Soul.TerraSoul.EarthPower.SoulStone.CobaltSoulStone.AncientCobaltSoul;
+import First.fargo_soul.Item.Soul.TerraSoul.ForestPower.SoulStone.*;
+import First.fargo_soul.Item.Soul.TerraSoul.LifePower.SoulStone.*;
+import First.fargo_soul.Item.Soul.TerraSoul.LifePower.SoulStone.TurtleSoulStone.CactusSoul;
+import First.fargo_soul.Item.Soul.TerraSoul.NaturePower.SoulStone.*;
+import First.fargo_soul.Item.Soul.TerraSoul.SpiritPower.SoulStone.ForbiddenSoul;
+import First.fargo_soul.Item.Soul.TerraSoul.SpiritPower.SoulStone.GhostSoul;
+import First.fargo_soul.Item.Soul.TerraSoul.SpiritPower.SoulStone.HolySoul;
+import First.fargo_soul.Item.Soul.TerraSoul.SpiritPower.SoulStone.TekeSoul;
+import First.fargo_soul.Item.Soul.TerraSoul.TerraPower.SoulStone.*;
+import First.fargo_soul.Item.Soul.TerraSoul.TerraPower.SoulStone.ObsidianSoulStone.AshWoodSoul;
+import First.fargo_soul.Item.Soul.TerraSoul.WillPower.Soulstone.*;
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -34,7 +34,6 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCon
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
 import net.neoforged.neoforge.event.LootTableLoadEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
@@ -43,11 +42,9 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 @EventBusSubscriber(modid = Fargo_soul.MODID, bus = EventBusSubscriber.Bus.GAME)
 public class SoulEvent {
-    //属性注册
 
     @SubscribeEvent
     public static void LivingIncomingDamageEvent(LivingIncomingDamageEvent event) {
-
         //无敌帧
         SoulItem.invulnerableTimeHandler(event);
         //属性处理
@@ -68,7 +65,6 @@ public class SoulEvent {
         LeadSoul.LeadSoulDamageHandler2(event);
         ObsidianSoul.ObsidianSoulDamageHandler(event);
         SilverSoul.SilverSoulDamageHandler(event);
-        SilverSoul.SilverSoulDamageHandler2(event);
         TinSoul.TinSoulLivingDamageHandler(event);
         TinSoul.TinSoulLivingDamageHandler2(event);
         TungstenSoul.TungstenSoulDamageHandler(event);
@@ -114,22 +110,19 @@ public class SoulEvent {
     }
 
     @SubscribeEvent
+    public static void LivingShieldBlockEvent(LivingShieldBlockEvent event){
+        //泰拉之力
+        SilverSoul.SilverSoulDamageHandler2(event);
+    }
+
+
+
+    @SubscribeEvent
     public static void LivingDamageEvent(LivingDamageEvent.Post event) {
         //生命之力
         CactusSoul.CactusSoulDamageHandler2(event);
     }
 
-    @SubscribeEvent
-    public static void LivingDeathEvent(LivingDeathEvent event) {
-        //生命之力
-        CactusSoul.CactusSoulDeathHandler(event);
-        //心灵之力
-        GhostSoul.GhostSoulDeathHnadler(event);
-        //死亡之力
-        NecromancerSoul.NecromancerSoulDeathHandler(event);
-        //意志之力
-        GoldSoul.GoldSoulDeathHandler(event);
-    }
 
     @SubscribeEvent
     public static void PlayerTickEvent(PlayerTickEvent.Post event) {
@@ -171,8 +164,20 @@ public class SoulEvent {
         GladiatorSoul.GladiatorSoulTickHandler(event);
         ValhallaKnightSoul.ValhallaKnightSoulTickHandler(event);
         //宇宙之力
-        //BlazeSoul.BlazeSoulTickHandler(event);
         NebulaSoul.NebulaSoulTickHandler(event);
+        MeteorSoul.MeteorSoulTickHandler(event);
+    }
+
+    @SubscribeEvent
+    public static void LivingDeathEvent(LivingDeathEvent event) {
+        //生命之力
+        CactusSoul.CactusSoulDeathHandler(event);
+        //心灵之力
+        GhostSoul.GhostSoulDeathHnadler(event);
+        //死亡之力
+        NecromancerSoul.NecromancerSoulDeathHandler(event);
+        //意志之力
+        GoldSoul.GoldSoulDeathHandler(event);
     }
 
     @SubscribeEvent
@@ -201,23 +206,11 @@ public class SoulEvent {
     }
 
     @SubscribeEvent
-    public static void MovementInputEvent(MovementInputUpdateEvent event){
-        //自然之力
-        GreenSoul.GreenSoulMovementInputHandler(event);
-        BeeSoul.BeeSoulMovementInputHandler(event);
-        //死亡之力
-        CrystalAssassinSoul.CrystalAssassinSoulMovementInputHandler(event);
-        MonkSoul.MonkSoulMovementInputHandler(event);
-        //宇宙之力
-        MeteorSoul.MeteorSoulMovementInputHandler(event);
-
-    }
-
-    @SubscribeEvent
     public static void UseItemFinishEvent(LivingEntityUseItemEvent.Finish event){
         //自然之力
         MushroomSoul.MushroomSoulUseItemFinishHandler(event);
     }
+
     @SubscribeEvent
     public static void ChangeTargetEvent(LivingChangeTargetEvent event){
         //生命之力
@@ -233,7 +226,6 @@ public class SoulEvent {
         TekeSoul.TekeSoulEntityInteractHandler(event);
     }
 
-
     @SubscribeEvent
     public static void LivingDropsEvent(LivingDropsEvent event){
         //意志之力
@@ -241,7 +233,7 @@ public class SoulEvent {
     }
 
     @SubscribeEvent
-    public static void LivingDropsEvent(MobEffectEvent.Expired event) {
+    public static void MobEffectExpired(MobEffectEvent.Expired event) {
         //宇宙之力
         BlazeSoul.BlazeSoulMobEffectExpiredHandler(event);
         CrimsonSoul.CrimsonSoulMobEffectExpiredHandler(event);
@@ -251,19 +243,22 @@ public class SoulEvent {
     public static void LootTableLoadEvent(LootTableLoadEvent event) {
         LootTable lootTable = event.getTable();
         LootPool.Builder lootPool = LootPool.lootPool().name(Fargo_soul.MODID);
-        Registry<Item> itemRegistry = Souls.SoulItems.getRegistry().get();
+        Registry<Item> itemRegistry = SoulsRegister.SoulItems.getRegistry().get();
         LootContextParamSet paramSet = lootTable.getParamSet();
         if (paramSet.equals(LootContextParamSets.CHEST) || paramSet.equals(LootContextParamSets.VAULT)) {
             lootPool.when(LootItemRandomChanceCondition.randomChance(0.05f));
             lootPool.setRolls(ConstantValue.exactly(1));
             lootPool.setBonusRolls(ConstantValue.exactly(itemRegistry.size()));
             for (Item item : itemRegistry) {
-                if (item.asItem() instanceof SoulItem soulItem && soulItem.getCurioItemList().isEmpty()) {
+                if (item.asItem() instanceof SoulItem soulItem && soulItem.getCurioItemList().size() < 2) {
                     lootPool.add(LootItem.lootTableItem(soulItem).setWeight(1));
                 }
             }
             lootTable.addPool(lootPool.build());
         }
     }
+
+
+
 
 }

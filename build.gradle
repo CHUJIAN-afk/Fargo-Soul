@@ -10,11 +10,16 @@ group = mod_group_id
 
 repositories {
     mavenLocal()
-
     maven {
         name = "Illusive Soulworks maven"
         url = "https://maven.theillusivec4.top/"
     }
+    maven {
+        name "org.confluenceReleases"
+        url "https://maven.confluence.ink/snapshots"
+    }
+    maven { url = "https://maven.createmod.net" } // Create, Ponder, Flywheel
+    maven { url = "https://maven.ithundxr.dev/snapshots" } // Registrate
 }
 
 base {
@@ -123,7 +128,17 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
     compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
-    runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
+    //implementation files("libs/[机械动力] create-1.21.1-6.0.6.jar")
+
+    implementation "org.confluence.lib:Confluence-Magic-Lib:0.0.2a-SNAPSHOT"
+
+    implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+    implementation("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}")
+    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
+    runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
+    implementation("com.tterrag.registrate:Registrate:${registrate_version}")
+
+    implementation(jarJar("io.github.llamalad7:mixinextras-neoforge:0.5.0"))
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

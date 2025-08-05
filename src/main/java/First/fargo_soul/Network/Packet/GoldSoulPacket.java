@@ -1,7 +1,7 @@
 package First.fargo_soul.Network.Packet;
 
 import First.fargo_soul.Fargo_soul;
-import First.fargo_soul.Item.Soul.Souls;
+import First.fargo_soul.Item.Soul.SoulsRegister;
 import First.fargo_soul.Utils.AttributeUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.chat.Component;
@@ -48,12 +48,12 @@ public record GoldSoulPacket() implements CustomPacketPayload {
                     if (!player.getPersistentData().getBoolean("GoldSoulDamage")) {
                         player.getPersistentData().putBoolean("GoldSoulDamage", true);
                         player.setInvulnerable(true);
-                        AttributeUtils.addAttributeModifier(player, Attributes.MOVEMENT_SPEED, Souls.GoldSoul.getId(), -1.0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+                        AttributeUtils.addAttributeModifier(player, Attributes.MOVEMENT_SPEED, SoulsRegister.GoldSoul.getId(), -1.0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
                         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
                         executorService.schedule(() -> {
                             player.getPersistentData().remove("GoldSoulDamage");
                             player.setInvulnerable(false);
-                            AttributeUtils.removeAttributeModifier(player, Attributes.MOVEMENT_SPEED, Souls.GoldSoul.getId());
+                            AttributeUtils.removeAttributeModifier(player, Attributes.MOVEMENT_SPEED, SoulsRegister.GoldSoul.getId());
                         }, 5, TimeUnit.SECONDS);
                     }
                 }
