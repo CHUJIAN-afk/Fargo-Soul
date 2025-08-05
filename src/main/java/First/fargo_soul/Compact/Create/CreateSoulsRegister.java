@@ -19,7 +19,6 @@ public class CreateSoulsRegister {
     public static final DeferredItem<SoulItem> Burner_Soul;
     public static final DeferredItem<SoulItem> CogWheel_Soul;
     public static final DeferredItem<SoulItem> Create_Power;
-    public static final DeferredItem<SoulItem> Potato_Soul;
 
     static {
         CreateSouls = DeferredRegister.createItems(Fargo_soul.MODID);
@@ -28,14 +27,11 @@ public class CreateSoulsRegister {
         Goggles_Soul = CreateSouls.registerItem("goggles_soul", GogglesSoul::new);
         Burner_Soul = CreateSouls.registerItem("burner_soul", BurnerSoul::new);
         CogWheel_Soul = CreateSouls.registerItem("cog_wheel_soul", CogWheelSouL::new);
-        Potato_Soul = CreateSouls.registerItem("potato_soul", PotatoSoul::new);
         Create_Power = CreateSouls.registerItem("create_power", CreatePower::new);
     }
 
     public static void register(IEventBus eventBus) {
-        if (CreateCompact.isLoadCreate()) {
-            CreateSouls.register(eventBus);
-        }
+        CreateSouls.register(eventBus);
     }
 
 }

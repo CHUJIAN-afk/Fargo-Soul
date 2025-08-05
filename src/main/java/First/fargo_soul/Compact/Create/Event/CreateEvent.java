@@ -1,16 +1,26 @@
 package First.fargo_soul.Compact.Create.Event;
 
 
+import First.fargo_soul.Client.Renderer.*;
+import First.fargo_soul.Compact.Create.CreateCompact;
 import First.fargo_soul.Compact.Create.CreatePower.SoulStone.BurnerSoul;
 import First.fargo_soul.Compact.Create.CreatePower.SoulStone.DeepDivingSoul;
 import First.fargo_soul.Compact.Create.CreatePower.SoulStone.GogglesSoul;
+import First.fargo_soul.Compact.Create.CreateSoulsRegister;
 import First.fargo_soul.Fargo_soul;
+import First.fargo_soul.Item.Soul.SoulsRegister;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
+import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
+
+import static First.fargo_soul.Entity.EntityRegister.*;
 
 public class CreateEvent {
 
@@ -19,26 +29,60 @@ public class CreateEvent {
 
         @SubscribeEvent
         public static void RightClickBlockEvent(PlayerInteractEvent.RightClickBlock event) {
-            BurnerSoul.BurnerSoulRightClickBlockHandler(event);
+            if (CreateCompact.isLoadCreate()) {
+                BurnerSoul.BurnerSoulRightClickBlockHandler(event);
+            }
         }
 
         @SubscribeEvent
-        public static void RightClickBlockEvent(PlayerTickEvent.Post event) {
-            GogglesSoul.GogglesSoulTickHandler(event);
+        public static void PlayerTickEvent(PlayerTickEvent.Post event) {
+            if (CreateCompact.isLoadCreate()) {
+                GogglesSoul.GogglesSoulTickHandler(event);
+            }
         }
 
-    }
+        @SubscribeEvent
+        public static void LivingBreatheEvent(LivingBreatheEvent event) {
+            if (CreateCompact.isLoadCreate()) {
+                DeepDivingSoul.DeepDivingSoulBreathHandler(event);
+            }
+        }
 
+
+    }
 
     @EventBusSubscriber(modid = Fargo_soul.MODID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
     public static class CreateClientTEvent {
 
         @SubscribeEvent
         public static void RenderFog(ViewportEvent.RenderFog event) {
-            DeepDivingSoul.DeepDivingSoulRenderFogHandler(event);
+            if (CreateCompact.isLoadCreate()) {
+                DeepDivingSoul.DeepDivingSoulRenderFogHandler(event);
+            }
         }
 
     }
+
+
+    @EventBusSubscriber(modid = Fargo_soul.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    public static class ClientModEvent {
+        @SubscribeEvent
+        public static void onClientSetup(FMLClientSetupEvent event) {
+            //机械动力联动
+            if (CreateCompact.isLoadCreate()) {
+                CreateSoulsRegister.CreateSouls.getRegistry().get().forEach(item -> CuriosRendererRegistry.register(item, PlayerRenderer::new));
+            }
+        }
+
+    }
+
+
+
+
+
+
+
+
 
 
 }

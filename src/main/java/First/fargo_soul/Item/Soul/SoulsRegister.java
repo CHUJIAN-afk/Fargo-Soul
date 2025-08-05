@@ -31,7 +31,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class SoulsRegister {
 
-    public static final DeferredRegister.Items SoulItems = DeferredRegister.createItems(Fargo_soul.MODID);
+    public static final DeferredRegister.Items SoulItems;
 
     public static final DeferredItem<SoulItem> WoodSoul;
     public static final DeferredItem<SoulItem> PineWoodSoul;
@@ -104,6 +104,7 @@ public class SoulsRegister {
 
 
     static {
+        SoulItems = DeferredRegister.createItems(Fargo_soul.MODID);
         // 森林之力
         WoodSoul = SoulItems.registerItem("wood_soul", WoodSoul::new);
         PineWoodSoul = SoulItems.registerItem("pine_wood_soul", PineWoodSoul::new);

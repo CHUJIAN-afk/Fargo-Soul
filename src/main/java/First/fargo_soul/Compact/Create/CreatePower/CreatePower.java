@@ -21,8 +21,7 @@ public class CreatePower extends SoulItem {
             CreateSoulsRegister.CardBoard_Soul.get(),
             CreateSoulsRegister.CogWheel_Soul.get(),
             CreateSoulsRegister.DeepDiving_Soul.get(),
-            CreateSoulsRegister.Goggles_Soul.get(),
-            CreateSoulsRegister.Potato_Soul.get()
+            CreateSoulsRegister.Goggles_Soul.get()
 
     );
 

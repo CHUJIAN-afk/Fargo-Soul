@@ -2,6 +2,8 @@ package First.fargo_soul.Client;
 
 
 import First.fargo_soul.Client.Renderer.*;
+import First.fargo_soul.Compact.Create.CreateCompact;
+import First.fargo_soul.Compact.Create.CreateSoulsRegister;
 import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.SoulsRegister;
 import First.fargo_soul.Item.Soul.TerraSoul.CosmicPower.SoulStone.MeteorSoul;
@@ -41,7 +43,7 @@ public class ClientEvent {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             //魂石渲染
-            CuriosRendererRegistry.register(SoulsRegister.TerraSoul.get(), PlayerRenderer::new);
+            SoulsRegister.SoulItems.getRegistry().get().forEach(item -> CuriosRendererRegistry.register(item, PlayerRenderer::new));
             //弹射物渲染
             EntityRenderers.register(IceSpike.get(), IceSpikeRenderer::new);
             EntityRenderers.register(Needle.get(), NeedleRenderer::new);

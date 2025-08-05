@@ -13,7 +13,6 @@
     "create.Mixin.EntityMixin",
     "create.Mixin.GogglesItemMixin",
     "create.Mixin.HandCrankBlockMixin",
-    "create.Mixin.PotatoCannonItemMixin",
     "create.Mixin.SchematicannonBlockEntityMixin",
     "create.Mixin.ToolboxHandlerMixin",
     "fargo.ArrowMixin",

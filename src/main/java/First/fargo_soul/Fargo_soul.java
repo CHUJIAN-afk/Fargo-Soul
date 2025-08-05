@@ -1,6 +1,7 @@
 package First.fargo_soul;
 
 import First.fargo_soul.Attribute.AttributeRegister;
+import First.fargo_soul.Compact.Create.CreateCompact;
 import First.fargo_soul.Compact.Create.CreateSoulsRegister;
 import First.fargo_soul.Effect.EffectRegister;
 import First.fargo_soul.Entity.EntityRegister;
@@ -20,7 +21,15 @@ public class Fargo_soul {
         EntityRegister.register(eventBus);//实体注册
         EffectRegister.register(eventBus);//药水效果注册
         AttributeRegister.register(eventBus);//属性注册
-        CreateSoulsRegister.register(eventBus);//机械动力联动
+        ModCompact(eventBus);//模组联动
     }
+
+    private static void ModCompact(IEventBus eventBus) {
+        //机械动力联动
+        if (CreateCompact.isLoadCreate()) {
+            CreateSoulsRegister.register(eventBus);
+        }
+    }
+
 
 }

@@ -9,6 +9,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.ViewportEvent;
+import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
 
 import java.util.List;
 
@@ -76,6 +78,15 @@ public class DeepDivingSoul extends SoulItem {
             }
         }
     }
+
+    public static void DeepDivingSoulBreathHandler(LivingBreatheEvent event) {
+        if (event.getEntity() instanceof Player player && CurioUtils.isEquipped(player, CreateSoulsRegister.DeepDiving_Soul.get())) {
+            event.setCanBreathe(true);
+            event.setRefillAirAmount(player.getMaxAirSupply());
+        }
+    }
+
+
 
 
 }

@@ -32,10 +32,11 @@ public class PlayerRenderer implements ICurioRenderer {
 
     @Override
     public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack stack, SlotContext slotContext, PoseStack poseStack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource buffer, int light, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (slotContext.entity() instanceof LocalPlayer player) {
+        if (slotContext.entity() instanceof LocalPlayer player && stack.getItem() instanceof SoulItem soul) {
             Minecraft minecraft = Minecraft.getInstance();
             ItemRenderer itemRenderer = minecraft.getItemRenderer();
-            List<SoulItem> soulItemList = CurioUtils.getAllCurioItems(CurioUtils.getSoulInventory(player));
+            List<SoulItem> soulItemList = CurioUtils.getAllCurioItems(soul.getCurioItemList());
+            soulItemList.add(soul);
             for (SoulItem soulItem : soulItemList) {
                 poseStack.pushPose();
                 //去除玩家视角影响
