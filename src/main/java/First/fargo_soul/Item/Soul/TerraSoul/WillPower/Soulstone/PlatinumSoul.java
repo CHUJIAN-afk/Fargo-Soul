@@ -13,6 +13,8 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 
 import java.util.Collection;
 import java.util.List;
@@ -20,7 +22,7 @@ import java.util.List;
 public class PlatinumSoul extends SoulItem {
 
     public PlatinumSoul(Properties properties) {
-        super(properties);
+        super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIGHT_RED));
     }
 
     public final List<Component> AttributeList = List.of(

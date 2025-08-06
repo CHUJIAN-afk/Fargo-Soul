@@ -13,6 +13,7 @@ import net.neoforged.fml.common.Mod;
 
 @Mod(Fargo_soul.MODID)
 public class Fargo_soul {
+
     public static final String MODID = "fargo_soul";
 
     public Fargo_soul(final IEventBus eventBus) {

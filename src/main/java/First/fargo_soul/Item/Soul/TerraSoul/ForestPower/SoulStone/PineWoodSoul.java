@@ -14,6 +14,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 
 import java.util.List;
 
@@ -21,8 +23,9 @@ import static First.fargo_soul.Item.Soul.SoulsRegister.PineWoodSoul;
 import static First.fargo_soul.Utils.Utils.random;
 
 public class PineWoodSoul extends SoulItem {
+
     public PineWoodSoul(Properties properties) {
-        super(properties);
+        super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.GREEN));
     }
 
     public final List<Component> AttributeList = List.of(

@@ -16,13 +16,15 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 
 import java.util.List;
 
 public class TekeSoul extends SoulItem {
 
     public TekeSoul(Properties properties) {
-        super(properties);
+        super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIME));
     }
 
     public final List<Component> AttributeList = List.of(

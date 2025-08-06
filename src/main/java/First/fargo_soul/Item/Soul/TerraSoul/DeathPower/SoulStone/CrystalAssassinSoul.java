@@ -23,6 +23,8 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -33,7 +35,7 @@ public class CrystalAssassinSoul extends SoulItem {
     public static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
     public CrystalAssassinSoul(Properties properties) {
-        super(properties);
+        super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PINK));
     }
 
     public final List<Component> AttributeList = List.of(

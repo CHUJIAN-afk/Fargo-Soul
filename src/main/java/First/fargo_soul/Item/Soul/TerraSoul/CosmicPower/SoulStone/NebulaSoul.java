@@ -24,13 +24,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 
 import java.util.List;
 
-public class NebulaSoul  extends SoulItem {
+public class NebulaSoul extends SoulItem {
 
-    public NebulaSoul (Properties properties) {
-        super(properties);
+    public NebulaSoul(Properties properties) {
+        super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.RED));
     }
 
     public final List<Component> AttributeList = List.of(
@@ -48,6 +50,7 @@ public class NebulaSoul  extends SoulItem {
     public List<Component> getAttributeList() {
         return this.AttributeList;
     }
+
     @Override
     public List<Component> getAttributesTooltip(List<Component> tooltips, TooltipContext context, ItemStack stack) {
         tooltips.addAll(AttributeList);

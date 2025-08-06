@@ -5,6 +5,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,7 +16,7 @@ import static First.fargo_soul.Item.Soul.SoulsRegister.*;
 public class WillPower extends SoulItem {
 
     public WillPower(Properties properties) {
-        super(properties);
+        super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PURPLE));
     }
 
     public final List<SoulItem> soulItemList = List.of(

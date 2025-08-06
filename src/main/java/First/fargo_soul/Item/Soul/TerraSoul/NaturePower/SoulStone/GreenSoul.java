@@ -24,6 +24,8 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -35,7 +37,7 @@ public class GreenSoul extends SoulItem {
     public static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
     public GreenSoul(Properties properties) {
-        super(properties);
+        super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIME));
     }
 
     public final List<Component> AttributeList = List.of(

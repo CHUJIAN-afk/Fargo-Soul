@@ -20,6 +20,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -30,7 +32,7 @@ public class ForbiddenSoul extends SoulItem {
     public static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
     public ForbiddenSoul(Properties properties) {
-        super(properties);
+        super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PINK));
     }
 
     public final List<Component> AttributeList = List.of(

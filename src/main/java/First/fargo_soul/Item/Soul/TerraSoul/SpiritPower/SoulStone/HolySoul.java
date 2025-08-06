@@ -10,6 +10,8 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.event.entity.living.LivingHealEvent;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -19,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class HolySoul extends SoulItem {
 
     public HolySoul(Properties properties) {
-        super(properties);
+        super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIGHT_PURPLE));
     }
 
     public final List<Component> AttributeList = List.of(

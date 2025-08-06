@@ -23,15 +23,8 @@ import First.fargo_soul.Item.Soul.TerraSoul.SpiritPower.SoulStone.TekeSoul;
 import First.fargo_soul.Item.Soul.TerraSoul.TerraPower.SoulStone.*;
 import First.fargo_soul.Item.Soul.TerraSoul.TerraPower.SoulStone.ObsidianSoulStone.AshWoodSoul;
 import First.fargo_soul.Item.Soul.TerraSoul.WillPower.Soulstone.*;
-import net.minecraft.core.Registry;
-import net.minecraft.world.item.Item;
+import First.fargo_soul.Utils.Utils;
 import net.minecraft.world.level.storage.loot.LootPool;
-import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.LootTableLoadEvent;
@@ -241,24 +234,8 @@ public class SoulEvent {
 
     @SubscribeEvent
     public static void LootTableLoadEvent(LootTableLoadEvent event) {
-        LootTable lootTable = event.getTable();
-        LootPool.Builder lootPool = LootPool.lootPool().name(Fargo_soul.MODID);
-        Registry<Item> itemRegistry = SoulsRegister.SoulItems.getRegistry().get();
-        LootContextParamSet paramSet = lootTable.getParamSet();
-        if (paramSet.equals(LootContextParamSets.CHEST) || paramSet.equals(LootContextParamSets.VAULT)) {
-            lootPool.when(LootItemRandomChanceCondition.randomChance(0.05f));
-            lootPool.setRolls(ConstantValue.exactly(1));
-            lootPool.setBonusRolls(ConstantValue.exactly(itemRegistry.size()));
-            for (Item item : itemRegistry) {
-                if (item.asItem() instanceof SoulItem soulItem && soulItem.getCurioItemList().size() < 2) {
-                    lootPool.add(LootItem.lootTableItem(soulItem).setWeight(1));
-                }
-            }
-            lootTable.addPool(lootPool.build());
-        }
+        //添加战利品表
+        Utils.AddLootTable(event, SoulsRegister.SoulItems.getRegistry().get(), LootPool.lootPool().name(Fargo_soul.MODID));
     }
-
-
-
 
 }

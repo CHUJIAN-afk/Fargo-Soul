@@ -11,6 +11,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,7 +24,7 @@ import static First.fargo_soul.Item.Soul.SoulsRegister.ObsidianSoul;
 public class ObsidianSoul extends SoulItem {
 
     public ObsidianSoul(Properties properties) {
-        super(properties);
+        super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE));
     }
 
     public final List<SoulItem> soulItemList = List.of(

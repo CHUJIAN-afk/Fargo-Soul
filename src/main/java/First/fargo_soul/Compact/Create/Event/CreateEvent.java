@@ -1,26 +1,26 @@
 package First.fargo_soul.Compact.Create.Event;
 
 
-import First.fargo_soul.Client.Renderer.*;
+import First.fargo_soul.Client.Renderer.PlayerRenderer;
 import First.fargo_soul.Compact.Create.CreateCompact;
 import First.fargo_soul.Compact.Create.CreatePower.SoulStone.BurnerSoul;
 import First.fargo_soul.Compact.Create.CreatePower.SoulStone.DeepDivingSoul;
 import First.fargo_soul.Compact.Create.CreatePower.SoulStone.GogglesSoul;
 import First.fargo_soul.Compact.Create.CreateSoulsRegister;
 import First.fargo_soul.Fargo_soul;
-import First.fargo_soul.Item.Soul.SoulsRegister;
-import net.minecraft.client.renderer.entity.EntityRenderers;
+import First.fargo_soul.Utils.Utils;
+import com.simibubi.create.Create;
+import net.minecraft.world.level.storage.loot.LootPool;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
+import net.neoforged.neoforge.event.LootTableLoadEvent;
 import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
-
-import static First.fargo_soul.Entity.EntityRegister.*;
 
 public class CreateEvent {
 
@@ -48,6 +48,12 @@ public class CreateEvent {
             }
         }
 
+        @SubscribeEvent
+        public static void LootTableLoadEvent(LootTableLoadEvent event) {
+            if (CreateCompact.isLoadCreate()) {
+                Utils.AddLootTable(event, CreateSoulsRegister.CreateSouls.getRegistry().get(), LootPool.lootPool().name(Create.ID));
+            }
+        }
 
     }
 

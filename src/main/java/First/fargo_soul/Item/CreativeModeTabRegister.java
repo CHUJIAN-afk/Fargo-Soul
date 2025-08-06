@@ -30,9 +30,7 @@ public class CreativeModeTabRegister {
                     builder.title(Component.translatable("itemGroup.fargo_soul"));
                     builder.withTabsBefore(CreativeModeTabs.COMBAT);
                     builder.icon(terraSoul::getDefaultInstance);
-                    builder.displayItems((parameters, output) -> {
-                        CreativeTabBuild(output);
-                    });
+                    builder.displayItems((parameters, output) -> CreativeTabBuild(output));
                     return builder.build();
                 }
         );

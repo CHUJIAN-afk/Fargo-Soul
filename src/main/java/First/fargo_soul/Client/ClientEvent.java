@@ -2,8 +2,6 @@ package First.fargo_soul.Client;
 
 
 import First.fargo_soul.Client.Renderer.*;
-import First.fargo_soul.Compact.Create.CreateCompact;
-import First.fargo_soul.Compact.Create.CreateSoulsRegister;
 import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.SoulsRegister;
 import First.fargo_soul.Item.Soul.TerraSoul.CosmicPower.SoulStone.MeteorSoul;

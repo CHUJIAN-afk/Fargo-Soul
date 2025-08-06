@@ -17,6 +17,8 @@ import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 
 import java.util.List;
 
@@ -25,7 +27,7 @@ import static First.fargo_soul.Utils.Utils.random;
 public class DarkArtistSoul extends SoulItem {
 
     public DarkArtistSoul(Properties properties) {
-        super(properties);
+        super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.YELLOW));
     }
 
     public final List<Component> AttributeList = List.of(

@@ -12,6 +12,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 
 import java.util.List;
 
@@ -20,7 +22,7 @@ import static First.fargo_soul.Item.Soul.SoulsRegister.CopperSoul;
 public class CopperSoul extends SoulItem {
 
     public CopperSoul(Properties properties) {
-        super(properties);
+        super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE));
     }
 
     public final List<Component> AttributeList = List.of(

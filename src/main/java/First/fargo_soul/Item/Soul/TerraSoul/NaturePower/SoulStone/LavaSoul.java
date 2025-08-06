@@ -12,6 +12,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -21,7 +23,7 @@ import java.util.concurrent.ScheduledExecutorService;
 public class LavaSoul extends SoulItem {
     public static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
     public LavaSoul(Properties properties) {
-        super(properties);
+        super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE));
     }
 
     public final List<Component> AttributeList = List.of(

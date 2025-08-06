@@ -11,6 +11,8 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -24,7 +26,7 @@ import static First.fargo_soul.Item.Soul.SoulsRegister.MonkSoul;
 public class PenetratingNinjaSoul extends SoulItem {
 
     public PenetratingNinjaSoul(Properties properties) {
-        super(properties);
+        super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.YELLOW));
     }
 
     public final List<SoulItem> soulItemList = List.of(

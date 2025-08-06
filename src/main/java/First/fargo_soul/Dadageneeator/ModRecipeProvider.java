@@ -1,5 +1,6 @@
 package First.fargo_soul.Dadageneeator;
 
+import First.fargo_soul.Compact.Create.CreateSoulsRegister;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
 import net.minecraft.core.HolderLookup;
@@ -34,6 +35,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         addShapelessRecipe(recipeOutput, SoulsRegister.WillPower);
         addShapelessRecipe(recipeOutput, SoulsRegister.CosmicPower);
         addShapelessRecipe(recipeOutput, SoulsRegister.TerraSoul);
+        //机械动力联动
+        addShapelessRecipe(recipeOutput, CreateSoulsRegister.Create_Power);
     }
 
     protected void addShapelessRecipe(RecipeOutput recipeOutput, DeferredItem<SoulItem> output) {

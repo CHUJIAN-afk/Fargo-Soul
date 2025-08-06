@@ -20,7 +20,7 @@ import static First.fargo_soul.Utils.Utils.random;
 public class TerraSoul extends SoulItem {
 
     public TerraSoul(Properties properties) {
-        super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.EXPERT));
+        super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.MASTER));
     }
 
     public final List<SoulItem> soulItemList = List.of(
