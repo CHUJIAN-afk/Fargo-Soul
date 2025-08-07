@@ -1,13 +1,17 @@
-// 1.21.1	2025-08-06T11:02:32.7742181	Item Models: fargo_soul
+// 1.21.1	2025-08-06T23:26:36.9643769	Item Models: fargo_soul
 7395c6778c1d85064646ca65ed72a3f62f5b85d3 assets/fargo_soul/models/item/adamantite_soul.json
 d78f5ebaa32d04b76c35be0f8ed8897b6c9bc452 assets/fargo_soul/models/item/ancient_cobalt_soul.json
 fdca1a8f292efcc9c113f5d640fcd6128aa49831 assets/fargo_soul/models/item/ancient_holy_soul.json
 c713e4d150bb9c47167798b2884703e0b1e3d832 assets/fargo_soul/models/item/ancient_shadow_soul.json
 7b4c45a15b6adaf46a19c54b73ff35a926fe9d4b assets/fargo_soul/models/item/ash_wood_soul.json
+ac2472f713dc13ac0535fa3fba718c7b4162decd assets/fargo_soul/models/item/barbarian_essence.json
 42e2a06f32ccf84315c6228a3cb3e67a3bb0f9f5 assets/fargo_soul/models/item/beetle_soul.json
 10072a80eb72438e7fb5739c00a4066a6c9b49d6 assets/fargo_soul/models/item/bee_soul.json
+8f25b79b2f450af31cd4d0c091d88f310e522ad1 assets/fargo_soul/models/item/berserker_gloves.json
+e61852f12f784f766861053c35bbb7691c745e63 assets/fargo_soul/models/item/berserker_soul.json
 c77a3d8388f06a2d7cc070b6586655be4353096e assets/fargo_soul/models/item/blaze_soul.json
 5b9c5a7845288f3ba153b61919b14a6d427319be assets/fargo_soul/models/item/cactus_soul.json
+d92258f89ed58963135d2c102075cce52548d10d assets/fargo_soul/models/item/celestial_shell.json
 41eb4d8ab5e42237d5fe220bcbde1423a6b2afe9 assets/fargo_soul/models/item/cobalt_soul.json
 c7bfa58f0dafa6c4c166e9e521f94da3fa8e8592 assets/fargo_soul/models/item/copper_soul.json
 68ac04cf5e815bb7c7c7221c979175b94a0ccada assets/fargo_soul/models/item/cosmic_power.json
@@ -17,6 +21,7 @@ c7bfa58f0dafa6c4c166e9e521f94da3fa8e8592 assets/fargo_soul/models/item/copper_so
 2587528d57a492a3ada5cd7fdde92aa872de1cd8 assets/fargo_soul/models/item/death_power.json
 b9aaca6308a887ae6a7ef121f37f825fe92fde4f assets/fargo_soul/models/item/earth_power.json
 42f7c0101657a4ece0801574562e9d943c3d608f assets/fargo_soul/models/item/ebony_wood_soul.json
+e2ead49ee29e905baae6259ccea6d05980928d13 assets/fargo_soul/models/item/fire_gloves.json
 dd5d8714bf0cefa081568784685493a16badc66d assets/fargo_soul/models/item/forbidden_soul.json
 6ecd93e84180d54f04243c5889ed86c5cf9b893a assets/fargo_soul/models/item/forest_power.json
 89ce5e83ccf11572ef2b3d23ef9050763f163aad assets/fargo_soul/models/item/frost_soul.json
@@ -55,6 +60,7 @@ f9ac2ced7988819ac46241d566fe9ff81870b6fb assets/fargo_soul/models/item/silver_so
 8ab07bcc702bb7775b148304b7280f7a9a90ddbd assets/fargo_soul/models/item/spider_soul.json
 a1ae9c38d0b4c8122477d0d6727f39e4750dbf8a assets/fargo_soul/models/item/spirit_power.json
 353a83eb7c29d4b31c7cf6951a424003041cc5fd assets/fargo_soul/models/item/stardust_soul.json
+e5e75d447324f9e9f6c53e331d270b74748e14f7 assets/fargo_soul/models/item/stinger_necklace.json
 36ab7f9dbea2e2079cb9152fdbcbcfa0319d561b assets/fargo_soul/models/item/teke_soul.json
 16c8a9e9d0df2c81f7bbae0e6d008a629f7bbcbe assets/fargo_soul/models/item/terra_power.json
 91750f8910891640e4fd741b11df997b01007b8e assets/fargo_soul/models/item/terra_soul.json

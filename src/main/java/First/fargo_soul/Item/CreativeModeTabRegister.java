@@ -40,6 +40,8 @@ public class CreativeModeTabRegister {
     private static void CreativeTabBuild(CreativeModeTab.Output output) {
         //主魔石
         addCreativeTab(output, SoulsRegister.TerraSoul.get());
+        addCreativeTab(output, SoulsRegister.BerserkerSoul.get());
+
         //机械动力联动
         if (CreateCompact.isLoadCreate()) {
             addCreativeTab(output, CreateSoulsRegister.Create_Power.get());

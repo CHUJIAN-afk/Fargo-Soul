@@ -25,6 +25,10 @@ import First.fargo_soul.Item.Soul.TerraSoul.TerraPower.TerraPower;
 import First.fargo_soul.Item.Soul.TerraSoul.TerraSoul;
 import First.fargo_soul.Item.Soul.TerraSoul.WillPower.Soulstone.*;
 import First.fargo_soul.Item.Soul.TerraSoul.WillPower.WillPower;
+import First.fargo_soul.Item.Soul.UniverseSoul.BerserkerSoul.Soul.*;
+import First.fargo_soul.Item.Soul.UniverseSoul.BerserkerSoul.BerserkerSoul;
+
+
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -101,11 +105,28 @@ public class SoulsRegister {
     public static final DeferredItem<SoulItem> VortexSoul;
     public static final DeferredItem<SoulItem> CosmicPower;
     public static final DeferredItem<SoulItem> TerraSoul;
+    public static final DeferredItem<SoulItem> BarbarianEssence;
+    public static final DeferredItem<SoulItem> BerserkerGloves;
+    public static final DeferredItem<SoulItem> CelestialShell;
+    public static final DeferredItem<SoulItem> FireGloves;
+    public static final DeferredItem<SoulItem> StingerNecklace;
+    public static final DeferredItem<SoulItem> BerserkerSoul;
+
+
+
+
 
 
     static {
         SoulItems = DeferredRegister.createItems(Fargo_soul.MODID);
-        // 森林之力
+        //狂战士之魂
+        BarbarianEssence = SoulItems.registerItem("barbarian_essence", BarbarianEssence::new);
+        BerserkerGloves = SoulItems.registerItem("berserker_gloves", BerserkerGloves::new);
+        CelestialShell = SoulItems.registerItem("celestial_shell", CelestialShell::new);
+        FireGloves = SoulItems.registerItem("fire_gloves", FireGloves::new);
+        StingerNecklace = SoulItems.registerItem("stinger_necklace", StingerNecklace::new);
+        BerserkerSoul = SoulItems.registerItem("berserker_soul", BerserkerSoul::new);
+        //森林之力
         WoodSoul = SoulItems.registerItem("wood_soul", WoodSoul::new);
         PineWoodSoul = SoulItems.registerItem("pine_wood_soul", PineWoodSoul::new);
         RosewoodSoul = SoulItems.registerItem("rose_wood_soul", RoseWoodSoul::new);

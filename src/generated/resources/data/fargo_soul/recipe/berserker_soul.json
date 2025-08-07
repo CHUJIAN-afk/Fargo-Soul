@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "fargo_soul:barbarian_essence"
+    },
+    {
+      "item": "fargo_soul:berserker_gloves"
+    },
+    {
+      "item": "fargo_soul:celestial_shell"
+    },
+    {
+      "item": "fargo_soul:fire_gloves"
+    },
+    {
+      "item": "fargo_soul:stinger_necklace"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:berserker_soul"
+  }
+}

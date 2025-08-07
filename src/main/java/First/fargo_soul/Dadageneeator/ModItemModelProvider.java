@@ -17,6 +17,9 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         addModels(SoulsRegister.TerraSoul.get());
+        //TODO 寰宇之魂 - 狂战士之魂 暂时的模型生成器
+        addModels(SoulsRegister.BerserkerSoul.get());
+
         //机械动力联动
         //addModels(CreateSoulsRegister.Create_Power.get());
 

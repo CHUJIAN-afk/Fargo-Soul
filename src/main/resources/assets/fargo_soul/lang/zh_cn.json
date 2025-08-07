@@ -325,5 +325,12 @@
   "effect.fargo_soul.sunburst_eruption": "日耀喷发",
   "effect.fargo_soul.flare": "耀斑",
   "effect.fargo_soul.vitality_boosted_blaze": "生命星云",
-  "effect.fargo_soul.wrath_fire": "伤害星云"
+  "effect.fargo_soul.wrath_fire": "伤害星云",
+  "item.fargo_soul.ancient_cobalt_soul.attribute.4": "跳跃后获得0.2秒无敌帧，该无敌帧不能叠加",
+  "item.fargo_soul.barbarian_essence": "狂战士精华",
+  "item.fargo_soul.berserker_gloves": "狂战士手套",
+  "item.fargo_soul.celestial_shell": "天界石",
+  "item.fargo_soul.fire_gloves": "烈焰手套",
+  "item.fargo_soul.stinger_necklace": "毒刺项链",
+  "item.fargo_soul.berserker_soul": "狂战士之魂"
 }

@@ -1,6 +1,16 @@
 {
   "itemGroup.fargo_soul": "Fargo's Souls",
   "curios.identifier.soul": "Soul",
+
+  "item.fargo_soul.barbarian_essence": "Barbarian Essence",
+  "item.fargo_soul.berserker_gloves": "Berserker Gloves",
+  "item.fargo_soul.celestial_shell": "Celestial Shell",
+  "item.fargo_soul.fire_gloves": "Fire Gloves",
+  "item.fargo_soul.stinger_necklace": "Stinger Necklace",
+  "item.fargo_soul.berserker_soul": "Berserker Soul",
+
+
+
   "item.fargo_soul.terra_soul": "Terra Soul",
   "item.fargo_soul.wood_soul": "Wooden Soul",
   "item.fargo_soul.pine_wood_soul": "Pine Wood Soul",

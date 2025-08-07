@@ -35,6 +35,10 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         addShapelessRecipe(recipeOutput, SoulsRegister.WillPower);
         addShapelessRecipe(recipeOutput, SoulsRegister.CosmicPower);
         addShapelessRecipe(recipeOutput, SoulsRegister.TerraSoul);
+        addShapelessRecipe(recipeOutput, SoulsRegister.BerserkerSoul);
+
+
+
         //机械动力联动
         addShapelessRecipe(recipeOutput, CreateSoulsRegister.Create_Power);
     }

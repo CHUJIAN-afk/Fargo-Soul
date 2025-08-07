@@ -23,6 +23,8 @@ import First.fargo_soul.Item.Soul.TerraSoul.SpiritPower.SoulStone.TekeSoul;
 import First.fargo_soul.Item.Soul.TerraSoul.TerraPower.SoulStone.*;
 import First.fargo_soul.Item.Soul.TerraSoul.TerraPower.SoulStone.ObsidianSoulStone.AshWoodSoul;
 import First.fargo_soul.Item.Soul.TerraSoul.WillPower.Soulstone.*;
+import First.fargo_soul.Item.Soul.UniverseSoul.BerserkerSoul.BerserkerSoul;
+import First.fargo_soul.Item.Soul.UniverseSoul.BerserkerSoul.Soul.*;
 import First.fargo_soul.Utils.Utils;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -100,6 +102,8 @@ public class SoulEvent {
         MeteorSoul.MeteorSoulDamageHandler(event);
         NebulaSoul.NebulaSoulDamageHandler(event);
         NebulaSoul.NebulaSoulDamageHandler2(event);
+        //狂战士之魂
+        FireGloves.FireGlovesDamageHandler(event);
     }
 
     @SubscribeEvent
@@ -109,11 +113,12 @@ public class SoulEvent {
     }
 
 
-
     @SubscribeEvent
     public static void LivingDamageEvent(LivingDamageEvent.Post event) {
         //生命之力
         CactusSoul.CactusSoulDamageHandler2(event);
+        //狂战士之魂
+        StingerNecklace.StingerNecklaceDamageHandler2(event);
     }
 
 
@@ -159,6 +164,12 @@ public class SoulEvent {
         //宇宙之力
         NebulaSoul.NebulaSoulTickHandler(event);
         MeteorSoul.MeteorSoulTickHandler(event);
+        //狂战士之魂
+        BarbarianEssence.BarbarianEssenceTickHandler(event);
+        BerserkerGloves.BerserkerGlovesTickHandler(event);
+        CelestialShell.CelestialShellTickHandler(event);
+        FireGloves.FireGlovesTickHandler(event);
+        BerserkerSoul.BerserkerSoulTickHandler(event);
     }
 
     @SubscribeEvent
@@ -224,14 +235,16 @@ public class SoulEvent {
         //意志之力
         PlatinumSoul.PlatinumSoulDropsEvent(event);
     }
-
     @SubscribeEvent
     public static void MobEffectExpired(MobEffectEvent.Expired event) {
         //宇宙之力
         BlazeSoul.BlazeSoulMobEffectExpiredHandler(event);
         CrimsonSoul.CrimsonSoulMobEffectExpiredHandler(event);
     }
-
+    @SubscribeEvent
+    public static void LivingBreatheEvent(LivingBreatheEvent event) {
+        CelestialShell.CelestialShellBreathHandler(event);
+    }
     @SubscribeEvent
     public static void LootTableLoadEvent(LootTableLoadEvent event) {
         //添加战利品表

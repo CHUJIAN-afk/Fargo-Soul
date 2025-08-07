@@ -21,9 +21,14 @@ public class CombatRulesMixin {
             ordinal = 1
     )
     private static float modifyArmorValue(float armorValue, LivingEntity entity, float damage, DamageSource damageSource, float armorToughness) {
-        if (damageSource.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.RedRidingSoul.get())) {
-            float ArmorPierce = player.getPersistentData().getFloat("RedRidingSoul");
-            armorValue -= ArmorPierce * 2;
+        if (damageSource.getEntity() instanceof ServerPlayer player) {
+            if (CurioUtils.isEquipped(player, SoulsRegister.RedRidingSoul.get())) {
+                float ArmorPierce = player.getPersistentData().getFloat("RedRidingSoul");
+                armorValue -= ArmorPierce * 2;
+            }
+            if (CurioUtils.isEquipped(player, SoulsRegister.StingerNecklace.get())) {
+                armorValue -= 5;
+            }
         }
         return Math.max(armorValue, 0);
     }

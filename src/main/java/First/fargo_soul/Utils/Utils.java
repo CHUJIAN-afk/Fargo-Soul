@@ -32,6 +32,12 @@ public class Utils {
         return player.level().clip(clipContext);
     }
 
+    /**
+     * 只需添加主魂石，即可将子魂石全部添加到战利品表中
+     * @param event
+     * @param itemRegistry
+     * @param lootPool
+     */
     public static void AddLootTable(LootTableLoadEvent event, Registry<Item> itemRegistry,LootPool.Builder lootPool) {
         LootTable lootTable = event.getTable();
         LootContextParamSet paramSet = lootTable.getParamSet();

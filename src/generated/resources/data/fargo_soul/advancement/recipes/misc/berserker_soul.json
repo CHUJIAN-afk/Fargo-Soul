@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_fargo_soul:barbarian_essence": {
+      "conditions": {
+        "items": [
+          {
+            "items": "fargo_soul:barbarian_essence"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "fargo_soul:berserker_soul"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_fargo_soul:barbarian_essence"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "fargo_soul:berserker_soul"
+    ]
+  }
+}

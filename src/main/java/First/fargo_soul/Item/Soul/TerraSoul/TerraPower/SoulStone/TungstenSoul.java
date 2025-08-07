@@ -1,10 +1,12 @@
 package First.fargo_soul.Item.Soul.TerraSoul.TerraPower.SoulStone;
 
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
+import First.fargo_soul.Utils.AttributeUtils;
 import First.fargo_soul.Utils.CurioUtils;
 import First.fargo_soul.Utils.ParticleUtils;
 import First.fargo_soul.Utils.Utils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -13,6 +15,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -91,20 +94,12 @@ public class TungstenSoul extends SoulItem {
     }
 
     public static void TungstenSoulTickHandler(PlayerTickEvent.Post event) {
-        if (event.getEntity() instanceof ServerPlayer player && player.getAttribute(Attributes.ENTITY_INTERACTION_RANGE) instanceof AttributeInstance attributeInstance) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            Holder<Attribute> entityInteractionRange = Attributes.ENTITY_INTERACTION_RANGE;
             ResourceLocation resourceLocation = TungstenSoul.getId();
-            if (CurioUtils.isEquipped(player, TungstenSoul.get())) {
-                if (attributeInstance.getModifier(resourceLocation) == null) {
-                    AttributeModifier modifier = new AttributeModifier(
-                            resourceLocation,
-                            0.5,
-                            AttributeModifier.Operation.ADD_MULTIPLIED_BASE
-                    );
-                    attributeInstance.addPermanentModifier(modifier);
-                }
-            } else {
-                attributeInstance.removeModifier(resourceLocation);
-            }
+            AttributeModifier.Operation addMultipliedBase = AttributeModifier.Operation.ADD_MULTIPLIED_BASE;
+            boolean equipped = CurioUtils.isEquipped(player, TungstenSoul.get());
+            AttributeUtils.ConditionAttributeModifier(player, entityInteractionRange, resourceLocation, 0.5, addMultipliedBase, equipped);
         }
     }
 
