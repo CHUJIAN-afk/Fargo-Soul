@@ -13,8 +13,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FarmBlock;
 import net.minecraft.world.level.block.PumpkinBlock;
@@ -38,17 +36,17 @@ public class PumpkinSoul extends SoulItem {
             Component.translatable("item.fargo_soul.pumpkin_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
+
     @Override
     public List<Component> getAttributeList() {
-        return this.AttributeList;
+        return AttributeList;
     }
 
     @Override
-    public List<Component> getAttributesTooltip(List<Component> tooltips, Item.TooltipContext context, ItemStack stack) {
-        tooltips.addAll(AttributeList);
-        tooltips.addAll(TooltipList);
-        return tooltips;
+    public List<Component> getTooltipList() {
+        return TooltipList;
     }
+
 
     public static void PumpkinSoulTickHandler1(PlayerTickEvent.Post event) {
         if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.PumpkinSoul.get())) {

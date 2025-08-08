@@ -49,15 +49,12 @@ public class CurioUtils {
         List<SoulItem> result = new ArrayList<>();
         for (SoulItem item : originList) {
             result.add(item);
-            List<SoulItem> soulItems = item.getCurioItemList();
+            List<SoulItem> soulItems = item.getSoulItemList();
             if (!soulItems.isEmpty()) {
                 result.addAll(getAllCurioItems(soulItems));
             }
         }
         return result;
     }
-
-
-
 
 }

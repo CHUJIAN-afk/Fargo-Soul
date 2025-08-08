@@ -12,7 +12,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class CreateSoulsRegister {
 
     public static final DeferredRegister.Items CreateSouls;
-
     public static final DeferredItem<SoulItem> CardBoard_Soul;
     public static final DeferredItem<SoulItem> DeepDiving_Soul;
     public static final DeferredItem<SoulItem> Goggles_Soul;

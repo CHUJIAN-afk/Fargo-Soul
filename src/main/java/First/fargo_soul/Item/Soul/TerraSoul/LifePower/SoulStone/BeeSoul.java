@@ -18,8 +18,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -50,17 +48,17 @@ public class BeeSoul extends SoulItem {
             Component.translatable("item.fargo_soul.bee_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
+
     @Override
     public List<Component> getAttributeList() {
-        return this.AttributeList;
+        return AttributeList;
     }
 
     @Override
-    public List<Component> getAttributesTooltip(List<Component> tooltips, Item.TooltipContext context, ItemStack stack) {
-        tooltips.addAll(AttributeList);
-        tooltips.addAll(TooltipList);
-        return tooltips;
+    public List<Component> getTooltipList() {
+        return TooltipList;
     }
+
 
     public static void BeeSoulTickHandler1(PlayerTickEvent.Post event) {
         if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.BeeSoul.get())) {

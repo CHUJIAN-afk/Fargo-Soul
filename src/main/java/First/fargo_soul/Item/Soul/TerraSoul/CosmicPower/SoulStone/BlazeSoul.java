@@ -15,7 +15,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import org.confluence.lib.ConfluenceMagicLib;
@@ -48,13 +47,12 @@ public class BlazeSoul extends SoulItem {
 
     @Override
     public List<Component> getAttributeList() {
-        return this.AttributeList;
+        return AttributeList;
     }
+
     @Override
-    public List<Component> getAttributesTooltip(List<Component> tooltips, TooltipContext context, ItemStack stack) {
-        tooltips.addAll(AttributeList);
-        tooltips.addAll(TooltipList);
-        return tooltips;
+    public List<Component> getTooltipList() {
+        return TooltipList;
     }
 
     public static void BlazeSoulMobEffectExpiredHandler(MobEffectEvent.Expired event) {

@@ -9,8 +9,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
@@ -35,17 +33,17 @@ public class BeetleSoul extends SoulItem {
             Component.translatable("item.fargo_soul.beetle_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
+
     @Override
     public List<Component> getAttributeList() {
-        return this.AttributeList;
+        return AttributeList;
     }
 
     @Override
-    public List<Component> getAttributesTooltip(List<Component> tooltips, Item.TooltipContext context, ItemStack stack) {
-        tooltips.addAll(AttributeList);
-        tooltips.addAll(TooltipList);
-        return tooltips;
+    public List<Component> getTooltipList() {
+        return TooltipList;
     }
+
 
     public static void BeetleSoulDamageHandler(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.BeetleSoul.get())) {

@@ -11,7 +11,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
@@ -37,16 +36,15 @@ public class DeepDivingSoul extends SoulItem {
             Component.literal("“玩家试图在岩浆里游泳”").withStyle(ChatFormatting.DARK_GRAY)
     );
 
+
     @Override
     public List<Component> getAttributeList() {
-        return this.AttributeList;
+        return AttributeList;
     }
 
     @Override
-    public List<Component> getAttributesTooltip(List<Component> tooltips, TooltipContext context, ItemStack stack) {
-        tooltips.addAll(AttributeList);
-        tooltips.addAll(TooltipList);
-        return tooltips;
+    public List<Component> getTooltipList() {
+        return TooltipList;
     }
 
     @OnlyIn(Dist.CLIENT)

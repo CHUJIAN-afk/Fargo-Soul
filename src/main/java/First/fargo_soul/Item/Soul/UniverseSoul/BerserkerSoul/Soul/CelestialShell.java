@@ -5,7 +5,6 @@ import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
 import First.fargo_soul.Utils.AttributeUtils;
 import First.fargo_soul.Utils.CurioUtils;
-import First.fargo_soul.Utils.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -35,16 +34,12 @@ public class CelestialShell extends SoulItem {
 			Component.literal("大幅增加水下移动速度").withStyle(ChatFormatting.BLUE),
 			Component.literal("可以在水下呼吸").withStyle(ChatFormatting.BLUE)
 	);
+
 	@Override
 	public List<Component> getAttributeList() {
-		return this.AttributeList;
+		return AttributeList;
 	}
-	@Override
-	public List<Component> getAttributesTooltip(List<Component> tooltips, Item.TooltipContext context, ItemStack stack) {
-		tooltips.addAll(AttributeList);
-		tooltips.addAll(TooltipList);
-		return tooltips;
-	}
+
 	public static void CelestialShellTickHandler(PlayerTickEvent.Post event) {
 		if (event.getEntity() instanceof ServerPlayer player) {
 			AttributeModifier.Operation addMultipliedBase = AttributeModifier.Operation.ADD_MULTIPLIED_BASE;
@@ -71,13 +66,14 @@ public class CelestialShell extends SoulItem {
 			event.setCanBreathe(true);
 		}
 	}
+
 	private static void CelestialShellAddAttributeModifiers(ServerPlayer player, Holder<Attribute> attributeHolder, double amount, AttributeModifier.Operation operation) {
-		AttributeUtils.ConditionAttributeModifier(player, attributeHolder, Utils.FargoResource("CelestialShell"), amount, operation, CurioUtils.isEquipped(player, SoulsRegister.CelestialShell.get()));
-	}
-	private static void CelestialShellNightAddAttributeModifiers(ServerPlayer player, Holder<Attribute> attributeHolder, double amount, AttributeModifier.Operation operation) {
-		AttributeUtils.ConditionAttributeModifier(player, attributeHolder, Utils.FargoResource("CelestialShellNight"), amount, operation, CurioUtils.isEquipped(player, SoulsRegister.CelestialShell.get()) && player.serverLevel().isNight());
+		AttributeUtils.ConditionAttributeModifier(player, attributeHolder, SoulsRegister.CelestialShell.getId(), amount, operation, CurioUtils.isEquipped(player, SoulsRegister.CelestialShell.get()));
 	}
 
+	private static void CelestialShellNightAddAttributeModifiers(ServerPlayer player, Holder<Attribute> attributeHolder, double amount, AttributeModifier.Operation operation) {
+		AttributeUtils.ConditionAttributeModifier(player, attributeHolder, SoulsRegister.CelestialShell.getId(), amount, operation, CurioUtils.isEquipped(player, SoulsRegister.CelestialShell.get()) && player.serverLevel().isNight());
+	}
 
 
 }

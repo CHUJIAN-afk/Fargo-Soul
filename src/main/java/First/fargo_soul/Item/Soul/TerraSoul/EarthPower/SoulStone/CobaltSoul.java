@@ -6,15 +6,11 @@ import First.fargo_soul.Utils.CurioUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 public class CobaltSoul extends SoulItem {
@@ -23,31 +19,16 @@ public class CobaltSoul extends SoulItem {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIGHT_RED));
     }
 
-    public final List<SoulItem> soulItemList = List.of(
-            SoulsRegister.AncientCobaltSoul.get()
-    );
-
     @Override
-    public List<SoulItem> getCurioItemList() {
-        return this.soulItemList;
+    public List<SoulItem> getSoulItemList() {
+        return List.of(
+                SoulsRegister.AncientCobaltSoul.get()
+        );
     }
 
-    public final List<Component> list1 =
-            soulItemList.stream()
-                    .flatMap(curioItem -> curioItem.getAttributeList().stream())
-                    .collect(Collectors.toList());
-
-
-    public final List<Component> list2 = List.of(
+    public final List<Component> AttributeList = List.of(
             Component.translatable("item.fargo_soul.ancient_cobalt_soul.attribute.4").withStyle(ChatFormatting.BLUE)
     );
-
-
-    public final List<Component> AttributeList = Stream.concat(
-            list1.stream(),
-            list2.stream()
-    ).collect(Collectors.toList());
-
 
     public final List<Component> TooltipList = List.of(
             Component.translatable("item.fargo_soul.ancient_cobalt_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
@@ -55,14 +36,12 @@ public class CobaltSoul extends SoulItem {
 
     @Override
     public List<Component> getAttributeList() {
-        return this.AttributeList;
+        return AttributeList;
     }
 
     @Override
-    public List<Component> getAttributesTooltip(List<Component> tooltips, Item.TooltipContext context, ItemStack stack) {
-        tooltips.addAll(AttributeList);
-        tooltips.addAll(TooltipList);
-        return tooltips;
+    public List<Component> getTooltipList() {
+        return TooltipList;
     }
 
     public static void CobaltSoulJumpHandler(LivingEvent.LivingJumpEvent event) {

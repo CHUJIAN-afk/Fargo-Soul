@@ -25,16 +25,15 @@ public class AncientHolySoul extends SoulItem {
             Component.translatable("item.fargo_soul.ancient_holy_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
+
     @Override
     public List<Component> getAttributeList() {
-        return this.AttributeList;
+        return AttributeList;
     }
 
     @Override
-    public List<Component> getAttributesTooltip(List<Component> tooltips, Item.TooltipContext context, ItemStack stack) {
-        tooltips.addAll(AttributeList);
-        tooltips.addAll(TooltipList);
-        return tooltips;
+    public List<Component> getTooltipList() {
+        return TooltipList;
     }
 
 }

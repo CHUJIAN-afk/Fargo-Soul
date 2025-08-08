@@ -9,8 +9,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
@@ -34,17 +32,16 @@ public class PearlWoodSoul extends SoulItem {
             Component.translatable("item.fargo_soul.pearl_wood_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
+
     @Override
     public List<Component> getAttributeList() {
-        return this.AttributeList;
-    }
-    @Override
-    public List<Component> getAttributesTooltip(List<Component> tooltips, Item.TooltipContext context, ItemStack stack) {
-        tooltips.addAll(AttributeList);
-        tooltips.addAll(TooltipList);
-        return tooltips;
+        return AttributeList;
     }
 
+    @Override
+    public List<Component> getTooltipList() {
+        return TooltipList;
+    }
     public static void PearlWoodDamageHandler(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, PearlWoodSoul.get())) {
             if (event.getEntity() instanceof LivingEntity livingEntity && Utils.random.nextDouble() < 0.1) {

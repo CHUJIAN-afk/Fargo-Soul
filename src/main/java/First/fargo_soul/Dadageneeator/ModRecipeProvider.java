@@ -1,5 +1,6 @@
 package First.fargo_soul.Dadageneeator;
 
+import First.fargo_soul.Compact.Create.CreateCompact;
 import First.fargo_soul.Compact.Create.CreateSoulsRegister;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
@@ -10,6 +11,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.neoforged.neoforge.common.conditions.IConditionBuilder;
+import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.NotNull;
 
@@ -37,15 +39,13 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         addShapelessRecipe(recipeOutput, SoulsRegister.TerraSoul);
         addShapelessRecipe(recipeOutput, SoulsRegister.BerserkerSoul);
 
-
-
         //机械动力联动
-        addShapelessRecipe(recipeOutput, CreateSoulsRegister.Create_Power);
+        addShapelessRecipe(recipeOutput.withConditions(new ModLoadedCondition(CreateCompact.MODID)), CreateSoulsRegister.Create_Power);
     }
 
     protected void addShapelessRecipe(RecipeOutput recipeOutput, DeferredItem<SoulItem> output) {
         ShapelessRecipeBuilder builder = ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, output);
-        List<SoulItem> soulItems = output.get().getCurioItemList();
+        List<SoulItem> soulItems = output.get().getSoulItemList();
         for (SoulItem input : soulItems) {
             builder.requires(input);
         }

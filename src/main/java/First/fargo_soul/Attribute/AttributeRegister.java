@@ -25,6 +25,7 @@ public class AttributeRegister {
     public static final Holder<Attribute> CriticalChance;
     public static final Holder<Attribute> CriticalDamage;
     public static final Holder<Attribute> Damage;
+    public static final Holder<Attribute> RangedDamage;
 
     static {
         CriticalChance = ATTRIBUTE.register(
@@ -41,13 +42,18 @@ public class AttributeRegister {
                 "damage",
                 () -> new RangedAttribute("fargo_soul:damage", 1.0D, 0.0D, Double.MAX_VALUE).setSyncable(true)
         );
-    }
 
+        RangedDamage = ATTRIBUTE.register(
+                "ranged_damage",
+                () -> new RangedAttribute("fargo_soul:ranged_damage", 1.0D, 0.0D, Double.MAX_VALUE).setSyncable(true)
+        );
+    }
     @SubscribeEvent
     public static void EntityAttributeModificationEvent(EntityAttributeModificationEvent event) {
         event.add(EntityType.PLAYER, CriticalChance);
         event.add(EntityType.PLAYER, CriticalDamage);
         event.add(EntityType.PLAYER, Damage);
+        event.add(EntityType.PLAYER, RangedDamage);
     }
     //暴击率与暴击伤害处理
     public static void CriticalHandler(LivingIncomingDamageEvent event) {
@@ -59,13 +65,15 @@ public class AttributeRegister {
             }
         }
     }
+
     //伤害属性处理
-    public static void DamageHandler(LivingIncomingDamageEvent event) {
+    public static void DamageAndRangedDamageHandler(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof LivingEntity attacker) {
             if (attacker.getAttribute(Damage) instanceof AttributeInstance damage) {
-                if (random.nextDouble() < damage.getValue()) {
-                    event.setAmount((float) (event.getAmount() * damage.getValue()));
-                }
+                event.setAmount((float) (event.getAmount() * damage.getValue()));
+            }
+            if (!event.getSource().isDirect() && attacker.getAttribute(RangedDamage) instanceof AttributeInstance damage) {
+                event.setAmount((float) (event.getAmount() * damage.getValue()));
             }
         }
     }

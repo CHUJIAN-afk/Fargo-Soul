@@ -44,7 +44,7 @@ public class SoulEvent {
         SoulItem.invulnerableTimeHandler(event);
         //属性处理
         AttributeRegister.CriticalHandler(event);
-        AttributeRegister.DamageHandler(event);
+        AttributeRegister.DamageAndRangedDamageHandler(event);
         //森林之力
         EbonyWoodSoul.EbonyWoodDamageHandler(event);
         EbonyWoodSoul.EbonyWoodDamageHandler2(event);

@@ -3,8 +3,6 @@ package First.fargo_soul.Item.Soul.TerraSoul.ForestPower.SoulStone;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
@@ -25,15 +23,15 @@ public class WoodSoul extends SoulItem {
             Component.translatable("item.fargo_soul.wood_soul.tooltip.2").withStyle(ChatFormatting.DARK_GRAY)
     );
 
+
     @Override
     public List<Component> getAttributeList() {
-        return this.AttributeList;
+        return AttributeList;
     }
+
     @Override
-    public List<Component> getAttributesTooltip(List<Component> tooltips, Item.TooltipContext context, ItemStack stack) {
-        tooltips.addAll(AttributeList);
-        tooltips.addAll(TooltipList);
-        return tooltips;
+    public List<Component> getTooltipList() {
+        return TooltipList;
     }
-    //VillagerMixin
+
 }

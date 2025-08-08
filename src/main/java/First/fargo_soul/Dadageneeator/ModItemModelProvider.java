@@ -30,7 +30,7 @@ public class ModItemModelProvider extends ItemModelProvider {
      */
     private void addModels(SoulItem soulItem) {
         basicItem(soulItem);
-        CurioUtils.getAllCurioItems(soulItem.getCurioItemList()).stream().distinct().toList().forEach(this::basicItem);
+        CurioUtils.getAllCurioItems(soulItem.getSoulItemList()).stream().distinct().toList().forEach(this::basicItem);
     }
 
 }

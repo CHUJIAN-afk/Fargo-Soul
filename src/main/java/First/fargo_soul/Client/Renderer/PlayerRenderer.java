@@ -35,7 +35,7 @@ public class PlayerRenderer implements ICurioRenderer {
         if (slotContext.entity() instanceof LocalPlayer player && stack.getItem() instanceof SoulItem soul) {
             Minecraft minecraft = Minecraft.getInstance();
             ItemRenderer itemRenderer = minecraft.getItemRenderer();
-            List<SoulItem> soulItemList = CurioUtils.getAllCurioItems(soul.getCurioItemList());
+            List<SoulItem> soulItemList = CurioUtils.getAllCurioItems(soul.getSoulItemList());
             soulItemList.add(soul);
             for (SoulItem soulItem : soulItemList) {
                 poseStack.pushPose();

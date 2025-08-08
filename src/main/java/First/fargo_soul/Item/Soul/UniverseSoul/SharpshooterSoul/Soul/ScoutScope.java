@@ -1,4 +1,4 @@
-package First.fargo_soul.Item.Soul.UniverseSoul.BerserkerSoul.Soul;
+package First.fargo_soul.Item.Soul.UniverseSoul.SharpshooterSoul.Soul;
 
 import First.fargo_soul.Attribute.AttributeRegister;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
@@ -7,7 +7,6 @@ import First.fargo_soul.Utils.AttributeUtils;
 import First.fargo_soul.Utils.CurioUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -20,31 +19,24 @@ import org.confluence.lib.common.component.ModRarity;
 
 import java.util.List;
 
-public class BarbarianEssence extends SoulItem {
-	public BarbarianEssence(Properties properties) {
-		super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.YELLOW));
+public class ScoutScope extends SoulItem {
+
+	public ScoutScope(Properties properties) {
+		super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PINK));
 	}
 
 	public final List<Component> AttributeList = List.of(
-			Component.literal("增加18%伤害").withStyle(ChatFormatting.BLUE),
-			Component.literal("增加10%攻速").withStyle(ChatFormatting.BLUE),
-			Component.literal("增加8%暴击率").withStyle(ChatFormatting.BLUE)
+			Component.literal("增加10%远程伤害").withStyle(ChatFormatting.BLUE),
+			Component.literal("箭的速度大大提高").withStyle(ChatFormatting.BLUE),
+			Component.literal("20%几率不消耗箭").withStyle(ChatFormatting.BLUE),
+			Component.literal("潜行时降低敌人发现你的范围").withStyle(ChatFormatting.BLUE)
 	);
 
-	public final List<Component> TooltipList = List.of(
-			Component.literal("“这只是个开始……”").withStyle(ChatFormatting.DARK_GRAY)
-	);
 
 	@Override
 	public List<Component> getAttributeList() {
 		return AttributeList;
 	}
-
-	@Override
-	public List<Component> getTooltipList() {
-		return TooltipList;
-	}
-
 
 	public static void BarbarianEssenceTickHandler(PlayerTickEvent.Post event) {
 		if (event.getEntity() instanceof ServerPlayer player) {

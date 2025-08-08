@@ -3,13 +3,10 @@ package First.fargo_soul.Item.Soul.TerraSoul.CosmicPower;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static First.fargo_soul.Item.Soul.SoulsRegister.*;
 
@@ -19,27 +16,16 @@ public class CosmicPower extends SoulItem {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PURPLE));
     }
 
-    public final List<SoulItem> soulItemList = List.of(
-            BlazeSoul.get(),
-            MeteorSoul.get(),
-            NebulaSoul.get(),
-            StardustSoul.get(),
-            VortexSoul.get(),
-            WizardSoul.get()
-    );
-
     @Override
-    public List<SoulItem> getCurioItemList() {
-        return this.soulItemList;
-    }
-
-    public final List<Component> AttributeList = soulItemList.stream()
-            .flatMap(curioItem -> curioItem.getAttributeList().stream())
-            .collect(Collectors.toList());
-
-    @Override
-    public List<Component> getAttributeList() {
-        return this.AttributeList;
+    public List<SoulItem> getSoulItemList() {
+        return List.of(
+                BlazeSoul.get(),
+                MeteorSoul.get(),
+                NebulaSoul.get(),
+                StardustSoul.get(),
+                VortexSoul.get(),
+                WizardSoul.get()
+        );
     }
 
     public final List<Component> TooltipList = List.of(
@@ -47,10 +33,8 @@ public class CosmicPower extends SoulItem {
     );
 
     @Override
-    public List<Component> getAttributesTooltip(List<Component> tooltips, Item.TooltipContext context, ItemStack stack) {
-        tooltips.addAll(AttributeList);
-        tooltips.addAll(TooltipList);
-        return tooltips;
+    public List<Component> getTooltipList() {
+        return TooltipList;
     }
 
 }

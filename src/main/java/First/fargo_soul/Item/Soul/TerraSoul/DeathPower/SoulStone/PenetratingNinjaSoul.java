@@ -7,7 +7,6 @@ import First.fargo_soul.Utils.CurioUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -18,8 +17,6 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static First.fargo_soul.Item.Soul.SoulsRegister.MonkSoul;
 
@@ -29,44 +26,30 @@ public class PenetratingNinjaSoul extends SoulItem {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.YELLOW));
     }
 
-    public final List<SoulItem> soulItemList = List.of(
-            MonkSoul.get()
-    );
+    @Override
+    public List<SoulItem> getSoulItemList() {
+        return List.of(
+                MonkSoul.get()
+        );
+    }
 
-    public final List<Component> list1 =
-            soulItemList.stream()
-                    .flatMap(curioItem -> curioItem.getAttributeList().stream())
-                    .collect(Collectors.toList());
-
-
-    public final List<Component> list2 = List.of(
+    public final List<Component> AttributeList = List.of(
             Component.translatable("item.fargo_soul.penetrating_ninja_soul.attribute.1").withStyle(ChatFormatting.BLUE)
     );
-
-    public final List<Component> AttributeList = Stream.concat(
-            list1.stream(),
-            list2.stream()
-    ).collect(Collectors.toList());
-
-    @Override
-    public List<Component> getAttributeList() {
-        return this.AttributeList;
-    }
 
     public final List<Component> TooltipList = List.of(
             Component.translatable("item.fargo_soul.penetrating_ninja_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
     );
 
+
     @Override
-    public List<SoulItem> getCurioItemList() {
-        return this.soulItemList;
+    public List<Component> getAttributeList() {
+        return AttributeList;
     }
 
     @Override
-    public List<Component> getAttributesTooltip(List<Component> tooltips, TooltipContext context, ItemStack stack) {
-        tooltips.addAll(AttributeList);
-        tooltips.addAll(TooltipList);
-        return tooltips;
+    public List<Component> getTooltipList() {
+        return TooltipList;
     }
 
     @OnlyIn(Dist.CLIENT)

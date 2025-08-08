@@ -4,7 +4,6 @@ import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
 import First.fargo_soul.Utils.AttributeUtils;
 import First.fargo_soul.Utils.CurioUtils;
-import First.fargo_soul.Utils.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -16,6 +15,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.registries.DeferredItem;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
@@ -36,21 +36,14 @@ public class FireGloves extends SoulItem {
 
 	@Override
 	public List<Component> getAttributeList() {
-		return this.AttributeList;
+		return AttributeList;
 	}
-
-	@Override
-	public List<Component> getAttributesTooltip(List<Component> tooltips, Item.TooltipContext context, ItemStack stack) {
-		tooltips.addAll(AttributeList);
-		tooltips.addAll(TooltipList);
-		return tooltips;
-	}
-
 
 	public static void FireGlovesTickHandler(PlayerTickEvent.Post event) {
 		if (event.getEntity() instanceof ServerPlayer player) {
-			ResourceLocation resourceLocation = Utils.FargoResource("FireGloves");
-			boolean equipped = CurioUtils.isEquipped(player, SoulsRegister.FireGloves.get());
+			DeferredItem<SoulItem> fireGloves = SoulsRegister.FireGloves;
+			ResourceLocation resourceLocation = fireGloves.getId();
+			boolean equipped = CurioUtils.isEquipped(player, fireGloves.get());
 			AttributeModifier.Operation addMultipliedBase = AttributeModifier.Operation.ADD_MULTIPLIED_BASE;
 			AttributeUtils.ConditionAttributeModifier(player, Attributes.ATTACK_KNOCKBACK, resourceLocation, 1, addMultipliedBase, equipped);
 			AttributeUtils.ConditionAttributeModifier(player, Attributes.ATTACK_DAMAGE, resourceLocation, 0.12, addMultipliedBase, equipped);

@@ -25,10 +25,11 @@ import First.fargo_soul.Item.Soul.TerraSoul.TerraPower.TerraPower;
 import First.fargo_soul.Item.Soul.TerraSoul.TerraSoul;
 import First.fargo_soul.Item.Soul.TerraSoul.WillPower.Soulstone.*;
 import First.fargo_soul.Item.Soul.TerraSoul.WillPower.WillPower;
-import First.fargo_soul.Item.Soul.UniverseSoul.BerserkerSoul.Soul.*;
 import First.fargo_soul.Item.Soul.UniverseSoul.BerserkerSoul.BerserkerSoul;
-
-
+import First.fargo_soul.Item.Soul.UniverseSoul.BerserkerSoul.Soul.*;
+import First.fargo_soul.Item.Soul.UniverseSoul.SharpshooterSoul.SharpshooterSoul;
+import First.fargo_soul.Item.Soul.UniverseSoul.SharpshooterSoul.Soul.MarksmanEssence;
+import First.fargo_soul.Item.Soul.UniverseSoul.SharpshooterSoul.Soul.MeltRocketBag;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -111,14 +112,18 @@ public class SoulsRegister {
     public static final DeferredItem<SoulItem> FireGloves;
     public static final DeferredItem<SoulItem> StingerNecklace;
     public static final DeferredItem<SoulItem> BerserkerSoul;
-
-
-
-
+    public static final DeferredItem<SoulItem> MarksmanEssence;
+    public static final DeferredItem<SoulItem> SharpshooterSoul;
+    public static final DeferredItem<SoulItem> MeltRocketBag;
 
 
     static {
         SoulItems = DeferredRegister.createItems(Fargo_soul.MODID);
+
+        MeltRocketBag = SoulItems.registerItem("melt_rocket_bag", MeltRocketBag::new);
+        MarksmanEssence = SoulItems.registerItem("marksman_essence", MarksmanEssence::new);
+        SharpshooterSoul = SoulItems.registerItem("sharpshooter_soul", SharpshooterSoul::new);
+
         //狂战士之魂
         BarbarianEssence = SoulItems.registerItem("barbarian_essence", BarbarianEssence::new);
         BerserkerGloves = SoulItems.registerItem("berserker_gloves", BerserkerGloves::new);

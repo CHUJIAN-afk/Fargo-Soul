@@ -29,16 +29,8 @@ public class StingerNecklace extends SoulItem {
 
 	@Override
 	public List<Component> getAttributeList() {
-		return this.AttributeList;
+		return AttributeList;
 	}
-
-	@Override
-	public List<Component> getAttributesTooltip(List<Component> tooltips, Item.TooltipContext context, ItemStack stack) {
-		tooltips.addAll(AttributeList);
-		tooltips.addAll(TooltipList);
-		return tooltips;
-	}
-
 
 	public static void StingerNecklaceDamageHandler2(LivingDamageEvent event) {
 		if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.StingerNecklace.get())) {

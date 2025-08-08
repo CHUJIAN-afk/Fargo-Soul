@@ -41,6 +41,7 @@ public class CreativeModeTabRegister {
         //主魔石
         addCreativeTab(output, SoulsRegister.TerraSoul.get());
         addCreativeTab(output, SoulsRegister.BerserkerSoul.get());
+        addCreativeTab(output, SoulsRegister.SharpshooterSoul.get());
 
         //机械动力联动
         if (CreateCompact.isLoadCreate()) {
@@ -53,7 +54,7 @@ public class CreativeModeTabRegister {
      */
     private static void addCreativeTab(CreativeModeTab.Output output, SoulItem soulItem) {
         output.accept(soulItem);
-        CurioUtils.getAllCurioItems(soulItem.getCurioItemList()).stream().distinct().toList().forEach(output::accept);
+        CurioUtils.getAllCurioItems(soulItem.getSoulItemList()).stream().distinct().toList().forEach(output::accept);
     }
 
     public static void register(IEventBus eventBus) {
