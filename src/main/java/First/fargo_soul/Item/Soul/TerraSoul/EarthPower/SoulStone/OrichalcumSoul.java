@@ -5,10 +5,8 @@ import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
 import First.fargo_soul.Utils.CurioUtils;
 import First.fargo_soul.Utils.ParticleUtils;
-import First.fargo_soul.Utils.Utils;
-import net.minecraft.ChatFormatting;
+import First.fargo_soul.Utils.CustomUtils;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,7 +15,6 @@ import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
-import java.util.List;
 import java.util.Random;
 
 public class OrichalcumSoul extends SoulItem {
@@ -26,26 +23,6 @@ public class OrichalcumSoul extends SoulItem {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PINK));
     }
 
-    public final List<Component> AttributeList = List.of(
-            Component.translatable("item.fargo_soul.orichalcum_soul.attribute.1").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.orichalcum_soul.attribute.2").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.orichalcum_soul.attribute.3").withStyle(ChatFormatting.BLUE)
-    );
-
-    public final List<Component> TooltipList = List.of(
-            Component.translatable("item.fargo_soul.orichalcum_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
-    );
-
-
-    @Override
-    public List<Component> getAttributeList() {
-        return AttributeList;
-    }
-
-    @Override
-    public List<Component> getTooltipList() {
-        return TooltipList;
-    }
 
     public static void OrichalcumSoulDamageHandler(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.OrichalcumSoul.get()) && event.getEntity() instanceof LivingEntity livingEntity) {
@@ -55,7 +32,7 @@ public class OrichalcumSoul extends SoulItem {
             livingEntity.hurt(player.damageSources().magic(), event.getAmount() * 0.05f);
             livingEntity.invulnerableTime = 0;
             livingEntity.addEffect(new MobEffectInstance(EffectRegister.OrichalcumPoisoning, 100));
-            Random random = Utils.random;
+            Random random = CustomUtils.random;
             ParticleUtils.spawnMovingParticleLine(
                     player.serverLevel(),
                     livingEntity.getBoundingBox().getCenter().add((2 - random.nextDouble(4)), (1 - random.nextDouble(2)), (2 - random.nextDouble(4))),

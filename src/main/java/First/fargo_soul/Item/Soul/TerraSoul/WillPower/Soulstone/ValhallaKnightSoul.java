@@ -4,8 +4,6 @@ import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
 import First.fargo_soul.Utils.AttributeUtils;
 import First.fargo_soul.Utils.CurioUtils;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -26,27 +24,6 @@ public class ValhallaKnightSoul extends SoulItem {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.YELLOW));
     }
 
-    public final List<Component> AttributeList = List.of(
-            Component.translatable("item.fargo_soul.valhalla_knight_soul.attribute.1").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.valhalla_knight_soul.attribute.2").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.valhalla_knight_soul.attribute.3").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.valhalla_knight_soul.attribute.4").withStyle(ChatFormatting.BLUE)
-    );
-
-    public final List<Component> TooltipList = List.of(
-            Component.translatable("item.fargo_soul.valhalla_knight_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
-    );
-
-
-    @Override
-    public List<Component> getAttributeList() {
-        return AttributeList;
-    }
-
-    @Override
-    public List<Component> getTooltipList() {
-        return TooltipList;
-    }
 
     public static void ValhallaKnightSoulTickHandler(PlayerTickEvent.Post event) {
         if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.ValhallaKnightSoul.get())) {

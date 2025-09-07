@@ -26,10 +26,10 @@ public record GoldSoulPacket() implements CustomPacketPayload {
             GoldSoulPacket::decode
     );
 
-    private void encode(ByteBuf byteBuf) {
+    private void encode(@SuppressWarnings("unused") ByteBuf byteBuf) {
     }
 
-    private static GoldSoulPacket decode(ByteBuf byteBuf) {
+    private static GoldSoulPacket decode(@SuppressWarnings("unused") ByteBuf byteBuf) {
         return new GoldSoulPacket();
     }
 

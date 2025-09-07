@@ -6,10 +6,13 @@ import First.fargo_soul.Compact.Create.CreateCompact;
 import First.fargo_soul.Compact.Create.CreatePower.SoulStone.BurnerSoul;
 import First.fargo_soul.Compact.Create.CreatePower.SoulStone.DeepDivingSoul;
 import First.fargo_soul.Compact.Create.CreatePower.SoulStone.GogglesSoul;
+import First.fargo_soul.Compact.Create.CreatePower.CreateSoulItem;
 import First.fargo_soul.Compact.Create.CreateSoulsRegister;
 import First.fargo_soul.Fargo_soul;
-import First.fargo_soul.Utils.Utils;
+import First.fargo_soul.Utils.CustomUtils;
 import com.simibubi.create.Create;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -18,6 +21,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.event.LootTableLoadEvent;
 import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
@@ -51,7 +55,7 @@ public class CreateEvent {
         @SubscribeEvent
         public static void LootTableLoadEvent(LootTableLoadEvent event) {
             if (CreateCompact.isLoadCreate()) {
-                Utils.AddLootTable(event, CreateSoulsRegister.CreateSouls.getRegistry().get(), LootPool.lootPool().name(Create.ID));
+                CustomUtils.AddLootTable(event, CreateSoulsRegister.CreateSouls.getRegistry().get(), LootPool.lootPool().name(Create.ID));
             }
         }
 
@@ -67,8 +71,14 @@ public class CreateEvent {
             }
         }
 
-    }
+        @SubscribeEvent
+        public static void ItemTooltipHandler(ItemTooltipEvent event) {
+            if (event.getItemStack().getItem() instanceof CreateSoulItem && !CreateCompact.isLoadCreate() && !event.getFlags().hasShiftDown()) {
+                event.getToolTip().addLast(Component.translatable("item.fargo_soul.create_compact.tooltip").withStyle(ChatFormatting.RED));
+            }
+        }
 
+    }
 
     @EventBusSubscriber(modid = Fargo_soul.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvent {

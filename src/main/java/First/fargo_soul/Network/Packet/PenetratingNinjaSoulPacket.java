@@ -22,10 +22,10 @@ public record PenetratingNinjaSoulPacket() implements CustomPacketPayload {
             PenetratingNinjaSoulPacket::decode
     );
 
-    private void encode(ByteBuf byteBuf) {
+    private void encode(@SuppressWarnings("unused") ByteBuf byteBuf) {
     }
 
-    private static PenetratingNinjaSoulPacket decode(ByteBuf byteBuf) {
+    private static PenetratingNinjaSoulPacket decode(@SuppressWarnings("unused") ByteBuf byteBuf) {
         return new PenetratingNinjaSoulPacket();
     }
 

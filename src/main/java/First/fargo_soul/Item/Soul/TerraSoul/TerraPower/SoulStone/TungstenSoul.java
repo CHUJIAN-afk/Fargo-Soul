@@ -4,11 +4,9 @@ import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Utils.AttributeUtils;
 import First.fargo_soul.Utils.CurioUtils;
 import First.fargo_soul.Utils.ParticleUtils;
-import First.fargo_soul.Utils.Utils;
-import net.minecraft.ChatFormatting;
+import First.fargo_soul.Utils.CustomUtils;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -32,26 +30,6 @@ public class TungstenSoul extends SoulItem {
 
     public TungstenSoul(Item.Properties properties) {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE));
-    }
-
-    public final List<Component> AttributeList = List.of(
-            Component.translatable("item.fargo_soul.tungsten_soul.attribute.1").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.tungsten_soul.attribute.2").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.tungsten_soul.attribute.3").withStyle(ChatFormatting.BLUE)
-    );
-
-    public final List<Component> TooltipList = List.of(
-            Component.translatable("item.fargo_soul.tungsten_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
-    );
-
-    @Override
-    public List<Component> getAttributeList() {
-        return AttributeList;
-    }
-
-    @Override
-    public List<Component> getTooltipList() {
-        return TooltipList;
     }
 
     public static void TungstenSoulDamageHandler(LivingIncomingDamageEvent event) {
@@ -83,7 +61,7 @@ public class TungstenSoul extends SoulItem {
                         SoundEvents.GENERIC_EXPLODE,
                         SoundSource.PLAYERS,
                         1.0f,
-                        Utils.random.nextFloat() * 0.4f + 0.4f
+                        CustomUtils.random.nextFloat() * 0.4f + 0.4f
                 );
             }
         }

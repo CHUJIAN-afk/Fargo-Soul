@@ -6,9 +6,7 @@ import First.fargo_soul.Entity.EntityRegister;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
 import First.fargo_soul.Utils.CurioUtils;
-import First.fargo_soul.Utils.Utils;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
+import First.fargo_soul.Utils.CustomUtils;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -30,27 +28,6 @@ public class GhostSoul extends SoulItem {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.YELLOW));
     }
 
-    public final List<Component> AttributeList = List.of(
-            Component.translatable("item.fargo_soul.ghost_soul.attribute.1").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.ghost_soul.attribute.2").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.ghost_soul.attribute.3").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.ghost_soul.attribute.4").withStyle(ChatFormatting.BLUE)
-    );
-
-    public final List<Component> TooltipList = List.of(
-            Component.translatable("item.fargo_soul.ghost_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
-    );
-
-
-    @Override
-    public List<Component> getAttributeList() {
-        return AttributeList;
-    }
-
-    @Override
-    public List<Component> getTooltipList() {
-        return TooltipList;
-    }
 
     public static void GhostSoulDamageHnadler(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.GhostSoul.get())) {
@@ -71,7 +48,7 @@ public class GhostSoul extends SoulItem {
         if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.GhostSoul.get())) {
             List<LivingEntity> livingEntityList = player.serverLevel().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(20), livingEntity1 -> !player.equals(livingEntity1));
             if (!livingEntityList.isEmpty()) {
-                LivingEntity livingEntity = livingEntityList.get(Utils.random.nextInt(livingEntityList.size()));
+                LivingEntity livingEntity = livingEntityList.get(CustomUtils.random.nextInt(livingEntityList.size()));
                 List<Ghost> projectileList = player.serverLevel().getEntitiesOfClass(Ghost.class, player.getBoundingBox().inflate(0.5), ghost -> player.equals(ghost.getOwner()) && ghost.getBaseDamage() != 3.0);
                 for (Ghost ghost : projectileList) {
                     Vec3 toMonster = livingEntity.getBoundingBox().getCenter().subtract(ghost.position()).normalize();

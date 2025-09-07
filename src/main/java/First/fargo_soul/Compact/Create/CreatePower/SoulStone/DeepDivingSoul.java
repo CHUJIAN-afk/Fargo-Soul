@@ -1,14 +1,12 @@
 package First.fargo_soul.Compact.Create.CreatePower.SoulStone;
 
+import First.fargo_soul.Compact.Create.CreatePower.CreateSoulItem;
 import First.fargo_soul.Compact.Create.CreateSoulsRegister;
-import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Utils.CurioUtils;
 import com.simibubi.create.foundation.fluid.FluidHelper;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -18,33 +16,13 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 
-import java.util.List;
-
-public class DeepDivingSoul extends SoulItem {
+public class DeepDivingSoul extends CreateSoulItem {
 
     public DeepDivingSoul(Properties properties) {
-        super(properties);
-    }
-
-    public final List<Component> AttributeList = List.of(
-            Component.literal("获得下界合金潜水的套装奖励").withStyle(ChatFormatting.BLUE),
-            Component.literal("等同于背罐且视为无限的压缩空气").withStyle(ChatFormatting.BLUE)
-    );
-
-    public final List<Component> TooltipList = List.of(
-            Component.literal("“玩家试图在岩浆里游泳”").withStyle(ChatFormatting.DARK_GRAY)
-    );
-
-
-    @Override
-    public List<Component> getAttributeList() {
-        return AttributeList;
-    }
-
-    @Override
-    public List<Component> getTooltipList() {
-        return TooltipList;
+        super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.YELLOW));
     }
 
     @OnlyIn(Dist.CLIENT)

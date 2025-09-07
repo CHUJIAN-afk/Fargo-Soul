@@ -4,9 +4,7 @@ import First.fargo_soul.Effect.EffectRegister;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Utils.CurioUtils;
 import First.fargo_soul.Utils.ParticleUtils;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -22,35 +20,12 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
-import java.util.List;
-
 import static First.fargo_soul.Item.Soul.SoulsRegister.SilverSoul;
-import static First.fargo_soul.Utils.Utils.random;
+import static First.fargo_soul.Utils.CustomUtils.random;
 
 public class SilverSoul extends SoulItem {
     public SilverSoul(Properties properties) {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE));
-    }
-
-    public final List<Component> AttributeList = List.of(
-            Component.translatable("item.fargo_soul.silver_soul.attribute.1").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.silver_soul.attribute.2").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.silver_soul.attribute.3").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.silver_soul.attribute.4").withStyle(ChatFormatting.BLUE)
-    );
-
-    public final List<Component> TooltipList = List.of(
-            Component.translatable("item.fargo_soul.silver_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
-    );
-
-    @Override
-    public List<Component> getAttributeList() {
-        return AttributeList;
-    }
-
-    @Override
-    public List<Component> getTooltipList() {
-        return TooltipList;
     }
 
     public static void SilverSoulTickHandler(PlayerTickEvent.Post event) {

@@ -5,9 +5,7 @@ import First.fargo_soul.Entity.EntityRegister;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
 import First.fargo_soul.Utils.CurioUtils;
-import First.fargo_soul.Utils.Utils;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
+import First.fargo_soul.Utils.CustomUtils;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
@@ -21,40 +19,16 @@ import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
-import java.util.List;
-
 public class NecromancerSoul extends SoulItem {
 
     public NecromancerSoul(Properties properties) {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE));
     }
 
-    public final List<Component> AttributeList = List.of(
-            Component.translatable("item.fargo_soul.necromancer_soul.attribute.1").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.necromancer_soul.attribute.2").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.necromancer_soul.attribute.3").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.necromancer_soul.attribute.4").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.necromancer_soul.attribute.5").withStyle(ChatFormatting.BLUE)
-    );
-
-    public final List<Component> TooltipList = List.of(
-            Component.translatable("item.fargo_soul.necromancer_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
-    );
-
-
-    @Override
-    public List<Component> getAttributeList() {
-        return AttributeList;
-    }
-
-    @Override
-    public List<Component> getTooltipList() {
-        return TooltipList;
-    }
 
     public static void NecromancerSoulDamageHandler(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.NecromancerSoul.get())) {
-            if (event.getEntity() instanceof LivingEntity livingEntity && Utils.random.nextDouble() < 0.05) {
+            if (event.getEntity() instanceof LivingEntity livingEntity && CustomUtils.random.nextDouble() < 0.05) {
                 ServerLevel level = player.serverLevel();
                 for (int i = 0; i < Math.min((int) event.getAmount(), 50); i++) {
                     Bone bone = new Bone(EntityRegister.Bone.get(), level);

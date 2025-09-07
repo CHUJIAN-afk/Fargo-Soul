@@ -5,39 +5,21 @@ import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
 import First.fargo_soul.Utils.AttributeUtils;
 import First.fargo_soul.Utils.CurioUtils;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
-import java.util.List;
-
 public class CelestialShell extends SoulItem {
 
 	public CelestialShell(Properties properties) {
 		super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.YELLOW));
-	}
-
-	public final List<Component> AttributeList = List.of(
-			Component.literal("小幅提高伤害、近战速度、暴击率、生命再生、防御力、挖矿速度和仆从击退力").withStyle(ChatFormatting.BLUE),
-			Component.literal("在晚上额外中幅增强这些属性").withStyle(ChatFormatting.BLUE),
-			Component.literal("大幅增加水下移动速度").withStyle(ChatFormatting.BLUE),
-			Component.literal("可以在水下呼吸").withStyle(ChatFormatting.BLUE)
-	);
-
-	@Override
-	public List<Component> getAttributeList() {
-		return AttributeList;
 	}
 
 	public static void CelestialShellTickHandler(PlayerTickEvent.Post event) {

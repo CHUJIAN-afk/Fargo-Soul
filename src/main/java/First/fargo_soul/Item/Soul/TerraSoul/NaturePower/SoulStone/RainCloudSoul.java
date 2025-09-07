@@ -3,8 +3,6 @@ package First.fargo_soul.Item.Soul.TerraSoul.NaturePower.SoulStone;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
 import First.fargo_soul.Utils.CurioUtils;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -18,42 +16,19 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
-import java.util.List;
-
 public class RainCloudSoul extends SoulItem {
 
     public RainCloudSoul(Properties properties) {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIGHT_PURPLE));
     }
 
-    public final List<Component> AttributeList = List.of(
-            Component.translatable("item.fargo_soul.rain_cloud_soul.attribute.1").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.rain_cloud_soul.attribute.2").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.rain_cloud_soul.attribute.3").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.rain_cloud_soul.attribute.4").withStyle(ChatFormatting.BLUE)
-    );
-
-    public final List<Component> TooltipList = List.of(
-            Component.translatable("item.fargo_soul.rain_cloud_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
-    );
-
-
-    @Override
-    public List<Component> getAttributeList() {
-        return AttributeList;
-    }
-
-    @Override
-    public List<Component> getTooltipList() {
-        return TooltipList;
-    }
 
     public static void RainCloudSoulDamageHandler2(LivingIncomingDamageEvent event) {
         if (event.getEntity() instanceof Player player && CurioUtils.isEquipped(player, SoulsRegister.RainCloudSoul.get())) {
             //反射
             float RainCloudSoul = player.getPersistentData().getFloat("RainCloudSoul");
             if (event.getSource().getDirectEntity() instanceof Projectile projectile && RainCloudSoul < 20) {
-                if (event.getSource().getEntity() instanceof LivingEntity livingEntity) {
+                if (event.getSource().getEntity() instanceof LivingEntity livingEntity && !livingEntity.equals(player)) {
                     projectile.setOwner(player);
                     Vec3 toMonster = livingEntity.getBoundingBox().getCenter().subtract(projectile.position()).normalize();
                     projectile.shoot(toMonster.x, toMonster.y, toMonster.z, 10f, 0.0f);

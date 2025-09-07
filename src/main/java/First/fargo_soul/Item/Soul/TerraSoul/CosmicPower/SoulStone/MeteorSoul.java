@@ -5,9 +5,8 @@ import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
 import First.fargo_soul.Utils.AttributeUtils;
 import First.fargo_soul.Utils.CurioUtils;
-import net.minecraft.ChatFormatting;
+import First.fargo_soul.Utils.CustomUtils;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
@@ -24,10 +23,6 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
-import java.util.List;
-
-import static First.fargo_soul.Utils.Utils.random;
-
 public class MeteorSoul extends SoulItem {
 
     public MeteorSoul(Properties properties) {
@@ -35,28 +30,9 @@ public class MeteorSoul extends SoulItem {
 
     }
 
-    public final List<Component> AttributeList = List.of(
-            Component.translatable("item.fargo_soul.meteor_soul.attribute.1").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.meteor_soul.attribute.2").withStyle(ChatFormatting.BLUE)
-    );
-
-    public final List<Component> TooltipList = List.of(
-            Component.translatable("item.fargo_soul.meteor_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
-    );
-
-    @Override
-    public List<Component> getAttributeList() {
-        return AttributeList;
-    }
-
-    @Override
-    public List<Component> getTooltipList() {
-        return TooltipList;
-    }
-
     public static void MeteorSoulDamageHandler(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.MeteorSoul.get())) {
-            if (event.getEntity() instanceof LivingEntity livingEntity && random.nextDouble() < 0.05) {
+            if (event.getEntity() instanceof LivingEntity livingEntity && CustomUtils.random.nextDouble() < 0.05) {
                 SmallFireball fireball = new SmallFireball(EntityType.SMALL_FIREBALL, player.serverLevel());
                 Vec3 Pos = new Vec3(livingEntity.getRandomX(4), livingEntity.getRandomY() + 8, livingEntity.getRandomZ(4));
                 fireball.setPos(Pos);

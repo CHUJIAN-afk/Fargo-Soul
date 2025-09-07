@@ -1,6 +1,5 @@
 package First.fargo_soul.Utils;
 
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
@@ -9,28 +8,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static First.fargo_soul.Utils.Utils.random;
+import static First.fargo_soul.Utils.CustomUtils.random;
 
 public class ParticleUtils {
     public static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
-    /**
-     * 生成飞向目标的单个粒子
-     * @param level 世界
-     * @param startPos 起点坐标
-     * @param targetPos 终点坐标
-     * @param particleType 粒子类型
-     * @param speed 速度
-     */
-    public static void spawnMovingParticle(ClientLevel level, Vec3 startPos, Vec3 targetPos, ParticleOptions particleType, float speed) {
-        Vec3 direction = targetPos.subtract(startPos).normalize();
-        Vec3 velocity = direction.scale(speed);
-        level.addParticle(
-                particleType,
-                startPos.x, startPos.y, startPos.z,
-                velocity.x, velocity.y, velocity.z
-        );
-    }
     /**
      * 逐渐生成两点之间的直线粒子
      * @param level      世界
@@ -119,15 +101,6 @@ public class ParticleUtils {
             executorService.schedule(() -> spawnParticleCircle(level, centerX, centerY, centerZ, particle, currentRadius, totalParticles, innerRatio, speed), step * interval, TimeUnit.MILLISECONDS);
         }
     }
-
-    public static void spawnParticleCircle(ServerLevel level, double centerX, double centerY, double centerZ, ParticleOptions particle, float maxRadius, int totalParticles, float innerRatio) {
-        spawnParticleCircle(level, centerX, centerY, centerZ, particle, maxRadius, totalParticles, innerRatio, 0);
-    }
-
-    public static void spawnParticleCircle(ServerLevel level, Vec3 vec3, ParticleOptions particle, float maxRadius, int totalParticles) {
-        spawnParticleCircle(level, vec3.x(), vec3.y(), vec3.z(), particle, maxRadius, totalParticles, 0, 0);
-    }
-
 
 
     /**

@@ -1,5 +1,6 @@
 package First.fargo_soul;
 
+import First.fargo_soul.Attachment.AttachmentRegister;
 import First.fargo_soul.Attribute.AttributeRegister;
 import First.fargo_soul.Effect.EffectRegister;
 import First.fargo_soul.Entity.EntityRegister;
@@ -20,6 +21,8 @@ public class Fargo_soul {
         EntityRegister.register(eventBus);//实体注册
         EffectRegister.register(eventBus);//药水效果注册
         AttributeRegister.register(eventBus);//属性注册
+        AttachmentRegister.register(eventBus);//数据组件注册
     }
+
 
 }

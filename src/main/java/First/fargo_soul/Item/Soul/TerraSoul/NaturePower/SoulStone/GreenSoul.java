@@ -4,12 +4,10 @@ import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
 import First.fargo_soul.Utils.CurioUtils;
 import First.fargo_soul.Utils.ParticleUtils;
-import First.fargo_soul.Utils.Utils;
-import net.minecraft.ChatFormatting;
+import First.fargo_soul.Utils.CustomUtils;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -38,27 +36,6 @@ public class GreenSoul extends SoulItem {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIME));
     }
 
-    public final List<Component> AttributeList = List.of(
-            Component.translatable("item.fargo_soul.green_soul.attribute.1").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.green_soul.attribute.2").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.green_soul.attribute.3").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.green_soul.attribute.4").withStyle(ChatFormatting.BLUE)
-    );
-
-    public final List<Component> TooltipList = List.of(
-            Component.translatable("item.fargo_soul.green_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
-    );
-
-
-    @Override
-    public List<Component> getAttributeList() {
-        return AttributeList;
-    }
-
-    @Override
-    public List<Component> getTooltipList() {
-        return TooltipList;
-    }
 
     private static Movement zza = Movement.NONE;
     private static int sprintingTime = 0;
@@ -154,7 +131,7 @@ public class GreenSoul extends SoulItem {
                             SoundEvents.ILLUSIONER_CAST_SPELL,
                             SoundSource.PLAYERS,
                             1.0f,
-                            Utils.random.nextFloat() * 0.4f + 0.4f
+                            CustomUtils.random.nextFloat() * 0.4f + 0.4f
                     );
                 }
             }

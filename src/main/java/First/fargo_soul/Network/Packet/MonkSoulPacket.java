@@ -22,10 +22,10 @@ public record MonkSoulPacket() implements CustomPacketPayload {
             MonkSoulPacket::decode
     );
 
-    private void encode(ByteBuf byteBuf) {
+    private void encode(@SuppressWarnings("unused") ByteBuf byteBuf) {
     }
 
-    private static MonkSoulPacket decode(ByteBuf byteBuf) {
+    private static MonkSoulPacket decode(@SuppressWarnings("unused") ByteBuf byteBuf) {
         return new MonkSoulPacket();
     }
 

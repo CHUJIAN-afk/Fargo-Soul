@@ -20,7 +20,7 @@ public class Bone extends AbstractArrow {
 
     public Bone(EntityType<? extends Bone> type, Level level) {
         super(type, level);
-        this.pickup = Pickup.ALLOWED;
+        this.pickup = Pickup.DISALLOWED;
     }
 
     @Override

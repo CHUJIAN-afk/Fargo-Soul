@@ -7,15 +7,20 @@ import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
 import First.fargo_soul.Item.Soul.TerraSoul.CosmicPower.SoulStone.MeteorSoul;
+import First.fargo_soul.Item.Soul.TerraSoul.CosmicPower.SoulStone.StardustSoul;
+import First.fargo_soul.Item.Soul.TerraSoul.CosmicPower.SoulStone.VortexSoul;
 import First.fargo_soul.Item.Soul.TerraSoul.DeathPower.SoulStone.CrystalAssassinSoul;
 import First.fargo_soul.Item.Soul.TerraSoul.DeathPower.SoulStone.PenetratingNinjaSoulStone.MonkSoul;
 import First.fargo_soul.Item.Soul.TerraSoul.LifePower.SoulStone.BeeSoul;
 import First.fargo_soul.Item.Soul.TerraSoul.NaturePower.SoulStone.GreenSoul;
+import First.fargo_soul.Item.Soul.TerraSoul.WillPower.Soulstone.GoldSoul;
+import First.fargo_soul.Item.Soul.UniverseSoul.SharpshooterSoul.Soul.ScoutScope;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
 import net.neoforged.neoforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
 import net.neoforged.neoforge.client.event.RenderTooltipEvent;
@@ -44,14 +49,24 @@ public class ClientEvent {
         @SubscribeEvent
         public static void RenderTooltipEvent(RenderTooltipEvent.GatherComponents event) {
             //渲染物品
-            SoulItem.RenderTooltipEvent(event);
+            SoulItem.RenderTooltipHandler(event);
         }
         @SubscribeEvent
         public static void ItemTooltipEvent(ItemTooltipEvent event){
             //渲染文本
-            SoulItem.ItemTooltipEvent(event);
+            SoulItem.ItemTooltipHandler(event);
         }
 
+        @SubscribeEvent
+        public static void KeyInputEvent(InputEvent.Key event) {
+            //意志之力
+            GoldSoul.GoldSoulInputHandler(event);
+            //宇宙之力
+            StardustSoul.StardustSoulInputHandler(event);
+            VortexSoul.VortexSoulInputHandler(event);
+            //神枪手之魂
+            ScoutScope.ScoutScopeInputHandler(event);
+        }
     }
 
 

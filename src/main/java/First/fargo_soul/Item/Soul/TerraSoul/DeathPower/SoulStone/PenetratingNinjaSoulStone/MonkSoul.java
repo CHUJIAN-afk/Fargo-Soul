@@ -6,9 +6,7 @@ import First.fargo_soul.Item.Soul.TerraSoul.DeathPower.SoulStone.PenetratingNinj
 import First.fargo_soul.Network.Packet.MonkSoulPacket;
 import First.fargo_soul.Utils.CurioUtils;
 import First.fargo_soul.Utils.KeyUtils;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
@@ -29,28 +27,6 @@ public class MonkSoul extends SoulItem {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.YELLOW));
     }
 
-    public final List<Component> AttributeList = List.of(
-            Component.translatable("item.fargo_soul.monk_soul.attribute.1").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.monk_soul.attribute.2").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.monk_soul.attribute.3").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.monk_soul.attribute.4").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.monk_soul.attribute.5").withStyle(ChatFormatting.BLUE)
-    );
-
-    public final List<Component> TooltipList = List.of(
-            Component.translatable("item.fargo_soul.monk_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
-    );
-
-
-    @Override
-    public List<Component> getAttributeList() {
-        return AttributeList;
-    }
-
-    @Override
-    public List<Component> getTooltipList() {
-        return TooltipList;
-    }
 
     public static void MonkSoulMovementTickHandler(PlayerTickEvent.Post event) {
         if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.MonkSoul.get())) {

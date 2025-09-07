@@ -5,18 +5,13 @@ import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
 import First.fargo_soul.Utils.AttributeUtils;
 import First.fargo_soul.Utils.CurioUtils;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
-
-import java.util.List;
 
 public class MarksmanEssence extends SoulItem {
 
@@ -24,36 +19,15 @@ public class MarksmanEssence extends SoulItem {
 		super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIME));
 	}
 
-	public final List<Component> AttributeList = List.of(
-			Component.literal("增加20%远程伤害").withStyle(ChatFormatting.BLUE),
-			Component.literal("10%几率不消耗弹药").withStyle(ChatFormatting.BLUE),
-			Component.literal("增加10%射弹速度").withStyle(ChatFormatting.BLUE),
-			Component.literal("“这只是个开始……”").withStyle(ChatFormatting.DARK_GRAY)
-	);
-
-	public final List<Component> TooltipList = List.of(
-			Component.literal("“这只是个开始……”").withStyle(ChatFormatting.DARK_GRAY)
-	);
-
-	@Override
-	public List<Component> getAttributeList() {
-		return AttributeList;
-	}
-
-	@Override
-	public List<Component> getTooltipList() {
-		return TooltipList;
-	}
-
-	public static void BarbarianEssenceTickHandler(PlayerTickEvent.Post event) {
+	public static void MarksmanEssenceTickHandler(PlayerTickEvent.Post event) {
 		if (event.getEntity() instanceof ServerPlayer player) {
-			DeferredItem<SoulItem> barbarianEssence = SoulsRegister.BarbarianEssence;
-			ResourceLocation resourceLocation = barbarianEssence.getId();
-			boolean equipped = CurioUtils.isEquipped(player, barbarianEssence.get());
+			DeferredItem<SoulItem> MarksmanEssence = SoulsRegister.MarksmanEssence;
+			ResourceLocation resourceLocation = MarksmanEssence.getId();
+			boolean equipped = CurioUtils.isEquipped(player, MarksmanEssence.get());
 			AttributeModifier.Operation addMultipliedBase = AttributeModifier.Operation.ADD_MULTIPLIED_BASE;
-			AttributeUtils.ConditionAttributeModifier(player, AttributeRegister.Damage, resourceLocation, 0.18, addMultipliedBase, equipped);
-			AttributeUtils.ConditionAttributeModifier(player, Attributes.ATTACK_SPEED, resourceLocation, 0.10, addMultipliedBase, equipped);
-			AttributeUtils.ConditionAttributeModifier(player, AttributeRegister.CriticalChance, resourceLocation, 0.08, addMultipliedBase, equipped);
+			AttributeUtils.ConditionAttributeModifier(player, AttributeRegister.RangedDamage, resourceLocation, 0.22, addMultipliedBase, equipped);
+			AttributeUtils.ConditionAttributeModifier(player, AttributeRegister.RangedSpeed, resourceLocation, 0.20, addMultipliedBase, equipped);
+			AttributeUtils.ConditionAttributeModifier(player, AttributeRegister.CriticalChance, resourceLocation, 0.10, addMultipliedBase, equipped);
 		}
 	}
 

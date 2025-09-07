@@ -3,19 +3,23 @@ package First.fargo_soul.Attribute;
 import First.fargo_soul.Fargo_soul;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import static First.fargo_soul.Utils.Utils.random;
+import static First.fargo_soul.Utils.CustomUtils.random;
 
 @EventBusSubscriber(modid = Fargo_soul.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class AttributeRegister {
@@ -26,35 +30,41 @@ public class AttributeRegister {
     public static final Holder<Attribute> CriticalDamage;
     public static final Holder<Attribute> Damage;
     public static final Holder<Attribute> RangedDamage;
+    public static final Holder<Attribute> RangedSpeed;
+
 
     static {
-        CriticalChance = ATTRIBUTE.register(
-                "critical_chance",
-                () -> new RangedAttribute("fargo_soul:critical_chance", 0.1D, 0.0D, Double.MAX_VALUE).setSyncable(true)
-        );
-
-        CriticalDamage = ATTRIBUTE.register(
-                "critical_damage",
-                () -> new RangedAttribute("fargo_soul:critical_damage", 2.0D, 0.0D, Double.MAX_VALUE).setSyncable(true)
-        );
-
-        Damage = ATTRIBUTE.register(
-                "damage",
-                () -> new RangedAttribute("fargo_soul:damage", 1.0D, 0.0D, Double.MAX_VALUE).setSyncable(true)
-        );
-
-        RangedDamage = ATTRIBUTE.register(
-                "ranged_damage",
-                () -> new RangedAttribute("fargo_soul:ranged_damage", 1.0D, 0.0D, Double.MAX_VALUE).setSyncable(true)
-        );
+        CriticalChance = RegisterAttribute("critical_chance", 0.1D);
+        CriticalDamage = RegisterAttribute("critical_damage", 2.0D);
+        Damage = RegisterAttribute("damage", 1.0D);
+        RangedDamage = RegisterAttribute("ranged_damage", 1.0D);
+        RangedSpeed = RegisterAttribute("ranged_speed", 1.0D);
     }
+
+    private static Holder<Attribute> RegisterAttribute(String name, double defaultValue) {
+        ResourceLocation resourceLocation = ResourceLocation.fromNamespaceAndPath(Fargo_soul.MODID, name);
+        return ATTRIBUTE.register(name, () -> new RangedAttribute(resourceLocation.toString(), defaultValue, 0.0, Double.MAX_VALUE).setSyncable(true));
+    }
+
     @SubscribeEvent
     public static void EntityAttributeModificationEvent(EntityAttributeModificationEvent event) {
         event.add(EntityType.PLAYER, CriticalChance);
         event.add(EntityType.PLAYER, CriticalDamage);
         event.add(EntityType.PLAYER, Damage);
         event.add(EntityType.PLAYER, RangedDamage);
+        event.add(EntityType.PLAYER, RangedSpeed);
     }
+
+    //弹射物速度处理
+    public static void RangedSpeedHandler(EntityJoinLevelEvent event) {
+        if (event.getEntity() instanceof Projectile projectile && projectile.getOwner() instanceof Player player) {
+            if (!projectile.getPersistentData().getBoolean("RangedSpeed") && player.getAttribute(RangedSpeed) instanceof AttributeInstance attributeInstance) {
+                projectile.getPersistentData().putBoolean("RangedSpeed", true);
+                projectile.setDeltaMovement(projectile.getDeltaMovement().scale(attributeInstance.getValue()));
+            }
+        }
+    }
+
     //暴击率与暴击伤害处理
     public static void CriticalHandler(LivingIncomingDamageEvent event) {
         if (event.getEntity() instanceof LivingEntity && event.getSource().getEntity() instanceof LivingEntity attacker) {
@@ -66,7 +76,7 @@ public class AttributeRegister {
         }
     }
 
-    //伤害属性处理
+    //伤害与远程伤害处理
     public static void DamageAndRangedDamageHandler(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof LivingEntity attacker) {
             if (attacker.getAttribute(Damage) instanceof AttributeInstance damage) {

@@ -5,10 +5,8 @@ import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
 import First.fargo_soul.Utils.CurioUtils;
 import First.fargo_soul.Utils.ParticleUtils;
-import First.fargo_soul.Utils.Utils;
-import net.minecraft.ChatFormatting;
+import First.fargo_soul.Utils.CustomUtils;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -29,28 +27,6 @@ public class AncientCobaltSoul extends SoulItem {
 
     public AncientCobaltSoul(Properties properties) {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE));
-    }
-
-
-    public final List<Component> AttributeList = List.of(
-            Component.translatable("item.fargo_soul.ancient_cobalt_soul.attribute.1").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.ancient_cobalt_soul.attribute.2").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.ancient_cobalt_soul.attribute.3").withStyle(ChatFormatting.BLUE)
-    );
-
-    public final List<Component> TooltipList = List.of(
-            Component.translatable("item.fargo_soul.ancient_cobalt_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
-    );
-
-
-    @Override
-    public List<Component> getAttributeList() {
-        return AttributeList;
-    }
-
-    @Override
-    public List<Component> getTooltipList() {
-        return TooltipList;
     }
 
     public static void AncientCobaltSoulJumpHandler(LivingEvent.LivingJumpEvent event) {
@@ -82,7 +58,7 @@ public class AncientCobaltSoul extends SoulItem {
                         SoundEvents.GENERIC_EXPLODE,
                         SoundSource.PLAYERS,
                         1.0f,
-                        Utils.random.nextFloat() * 0.4f + 0.4f
+                        CustomUtils.random.nextFloat() * 0.4f + 0.4f
                 );
 
             }
@@ -98,7 +74,6 @@ public class AncientCobaltSoul extends SoulItem {
             }
         }
     }
-
 
     public static void AncientCobaltSoulTickHandler(PlayerTickEvent.Post event) {
         if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.AncientCobaltSoul.get())) {

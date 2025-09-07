@@ -1,31 +1,38 @@
 package First.fargo_soul.Utils;
 
+import First.fargo_soul.Attachment.Attachment.SoulData;
+import First.fargo_soul.Attachment.AttachmentRegister;
+import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.locale.Language;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class CurioUtils {
 
-    public static boolean findCurio(LivingEntity livingEntity, ItemStack itemStack) {
-        return CuriosApi.getCuriosInventory(livingEntity).map(iCuriosItemHandler -> iCuriosItemHandler.isEquipped(itemStack.getItem())).orElse(false);
-    }
-
     public static boolean isEquipped(LivingEntity livingEntity, Item item) {
-        List<SoulItem> OringinCurioList = getSoulInventory(livingEntity);
-        List<SoulItem> CurioList = getAllCurioItems(OringinCurioList).stream().distinct().toList();
-        for (SoulItem soulItem : CurioList) {
-            if (soulItem.equals(item)) {
-                return true;
+        if (item instanceof SoulItem soulItem) {
+            if (livingEntity.level().isClientSide()) {
+                List<SoulItem> OringinCurioList = CurioUtils.getSoulInventory(livingEntity);
+                List<SoulItem> CurioList = CurioUtils.getAllCurioItems(OringinCurioList).stream().distinct().toList();
+                return CurioList.contains(item);
             }
+            SoulData soulData = livingEntity.getData(AttachmentRegister.SoulData);
+            List<SoulItem> soulItemList = soulData.getSoulItemList();
+            if (soulItemList == null) {
+                updateSoulList(livingEntity);
+                soulItemList = soulData.getSoulItemList();
+            }
+            return soulItemList.contains(soulItem);
         }
         return false;
     }
@@ -57,4 +64,50 @@ public class CurioUtils {
         return result;
     }
 
+    public static void updateSoulList(LivingEntity livingEntity) {
+        List<SoulItem> OringinCurioList = CurioUtils.getSoulInventory(livingEntity);
+        List<SoulItem> CurioList = CurioUtils.getAllCurioItems(OringinCurioList).stream().distinct().toList();
+        livingEntity.getData(AttachmentRegister.SoulData).setSoulItemList(CurioList);
+    }
+
+    public static List<Component> getAttributeList(SoulItem soulItem) {
+        return getComponent(soulItem, "attribute");
+    }
+
+    public static List<Component> getTooltipList(SoulItem soulItem) {
+        return getComponent(soulItem, "tooltip");
+    }
+
+    private static List<Component> getComponent(SoulItem soulItem, String string) {
+        List<Component> componentList = new ArrayList<>();
+        Map<String, String> languageData = Language.getInstance().getLanguageData();
+        List<String> keyList = new ArrayList<>();
+
+
+        languageData.keySet().forEach(key -> {
+            if (key.contains(Fargo_soul.MODID + "." + BuiltInRegistries.ITEM.getKey(soulItem).getPath() + "." + string)) {
+                keyList.add(key);
+            }
+        });
+        keyList.sort(Comparator.comparingInt(CurioUtils::extractLastNumber));
+        for (String key : keyList) {
+            componentList.add(Component.translatable(key).withStyle(string.equals("attribute") ? ChatFormatting.BLUE : ChatFormatting.DARK_GRAY));
+        }
+        return componentList;
+    }
+
+    private static int extractLastNumber(String s) {
+        int number = 0;
+        int power = 1;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            char c = s.charAt(i);
+            if (Character.isDigit(c)) {
+                number += (c - '0') * power;
+                power *= 10;
+            } else {
+                break;
+            }
+        }
+        return number;
+    }
 }

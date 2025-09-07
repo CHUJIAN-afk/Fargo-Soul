@@ -25,18 +25,40 @@ import First.fargo_soul.Item.Soul.TerraSoul.TerraPower.SoulStone.ObsidianSoulSto
 import First.fargo_soul.Item.Soul.TerraSoul.WillPower.Soulstone.*;
 import First.fargo_soul.Item.Soul.UniverseSoul.BerserkerSoul.BerserkerSoul;
 import First.fargo_soul.Item.Soul.UniverseSoul.BerserkerSoul.Soul.*;
-import First.fargo_soul.Utils.Utils;
+import First.fargo_soul.Item.Soul.UniverseSoul.SharpshooterSoul.SharpshooterSoul;
+import First.fargo_soul.Item.Soul.UniverseSoul.SharpshooterSoul.Soul.MarksmanEssence;
+import First.fargo_soul.Item.Soul.UniverseSoul.SharpshooterSoul.Soul.MeltRocketBag;
+import First.fargo_soul.Item.Soul.UniverseSoul.SharpshooterSoul.Soul.ScoutScope;
+import First.fargo_soul.Item.Soul.UniverseSoul.SharpshooterSoul.Soul.StalkerQuiver;
+import First.fargo_soul.Item.Soul.UniverseSoul.UniverseSoul;
+import First.fargo_soul.Utils.CustomUtils;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.LootTableLoadEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
 @EventBusSubscriber(modid = Fargo_soul.MODID, bus = EventBusSubscriber.Bus.GAME)
 public class SoulEvent {
+
+    @SubscribeEvent
+    public static void CurioChangeEvent(CurioChangeEvent event) {
+        //魂石数据缓存更新
+        SoulItem.CurioChangeHandler(event);
+    }
+
+
+    @SubscribeEvent
+    public static void EntityJoinLevelEvent(EntityJoinLevelEvent event){
+        //属性处理
+        AttributeRegister.RangedSpeedHandler(event);
+    }
 
     @SubscribeEvent
     public static void LivingIncomingDamageEvent(LivingIncomingDamageEvent event) {
@@ -170,6 +192,14 @@ public class SoulEvent {
         CelestialShell.CelestialShellTickHandler(event);
         FireGloves.FireGlovesTickHandler(event);
         BerserkerSoul.BerserkerSoulTickHandler(event);
+        //神枪手之魂
+        MarksmanEssence.MarksmanEssenceTickHandler(event);
+        MeltRocketBag.MeltRocketBagTickHandler(event);
+        ScoutScope.ScoutScopeTickHandler(event);
+        SharpshooterSoul.SharpshooterSoulTickHandler(event);
+        StalkerQuiver.StalkerQuiverTickHandler(event);
+        //寰宇之魂
+        UniverseSoul.UniverseSoulTickHandler(event);
     }
 
     @SubscribeEvent
@@ -222,6 +252,9 @@ public class SoulEvent {
         //死亡之力
         AncientShadowSoul.AdamantiteSoulChangeTargetHandler(event);
         NinjaSoul.NinjaSoulChangeTargetHandler(event);
+        //神枪手之魂
+        ScoutScope.ScoutScopeTargetChangeHandler(event);
+        StalkerQuiver.StalkerQuiverTargetChangeHandler(event);
     }
 
     @SubscribeEvent
@@ -231,24 +264,42 @@ public class SoulEvent {
     }
 
     @SubscribeEvent
-    public static void LivingDropsEvent(LivingDropsEvent event){
+    public static void LivingDropsEvent(LivingDropsEvent event) {
         //意志之力
         PlatinumSoul.PlatinumSoulDropsEvent(event);
     }
+
     @SubscribeEvent
     public static void MobEffectExpired(MobEffectEvent.Expired event) {
         //宇宙之力
         BlazeSoul.BlazeSoulMobEffectExpiredHandler(event);
         CrimsonSoul.CrimsonSoulMobEffectExpiredHandler(event);
     }
+
     @SubscribeEvent
     public static void LivingBreatheEvent(LivingBreatheEvent event) {
         CelestialShell.CelestialShellBreathHandler(event);
     }
+
     @SubscribeEvent
     public static void LootTableLoadEvent(LootTableLoadEvent event) {
+
+
         //添加战利品表
-        Utils.AddLootTable(event, SoulsRegister.SoulItems.getRegistry().get(), LootPool.lootPool().name(Fargo_soul.MODID));
+        CustomUtils.AddLootTable(event, SoulsRegister.SoulItems.getRegistry().get(), LootPool.lootPool().name(Fargo_soul.MODID));
+
+
+
+
     }
+
+    @SubscribeEvent
+    public static void ProjectileImpactEvent(ProjectileImpactEvent event){
+        //神枪手之魂
+        MeltRocketBag.MeltRocketBagProjectileImpactHandler(event);
+    }
+
+
+
 
 }

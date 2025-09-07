@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-08T21:37:44.6467313	Recipes
+// 1.21.1	2025-08-09T15:35:24.8231638	Recipes
 3b51e82f058f7a42ad2bd104932bdbc9e62dee05 data/fargo_soul/advancement/recipes/misc/berserker_soul.json
 6dafda3c4ce74da3a95c28be435cee34b2445704 data/fargo_soul/advancement/recipes/misc/cosmic_power.json
 704be2cf0d6245ea53f0fcbceb8a3424b099419c data/fargo_soul/advancement/recipes/misc/create_power.json
@@ -7,6 +7,7 @@ bc044bac8e1b210141e7dbbcf6a4e89494d8c99a data/fargo_soul/advancement/recipes/mis
 4202ace4ef4866300eab46f0ad8e2eb3e8ea71b9 data/fargo_soul/advancement/recipes/misc/forest_power.json
 f284f515520a6468cd0ec1a412fda6c08ea21b1e data/fargo_soul/advancement/recipes/misc/life_power.json
 40de10227b167cba799a4f17c1d76dff2d80d001 data/fargo_soul/advancement/recipes/misc/nature_power.json
+777539dfaba948c8bf0cd4d6b47f73f9058bcc2f data/fargo_soul/advancement/recipes/misc/sharpshooter_soul.json
 3bdf2167489842d3741b2c41cdb93029c4705da2 data/fargo_soul/advancement/recipes/misc/spirit_power.json
 37b2ef8db145bebeba0815c5694529dbf7b5a561 data/fargo_soul/advancement/recipes/misc/terra_power.json
 7dcc5a87641a9a77464c0d6b757f16ba424748be data/fargo_soul/advancement/recipes/misc/terra_soul.json
@@ -19,6 +20,7 @@ f5516a6b977dd9af9c5c896ff43d6ca01a33da16 data/fargo_soul/recipe/earth_power.json
 61d64d38b87b76c49e1af9d9a22bc9ff2609450a data/fargo_soul/recipe/forest_power.json
 11ccffe184a0944b7dc8efcba3dcbb80083e2209 data/fargo_soul/recipe/life_power.json
 f6c04f5261486b1ced8030df19c21a6b54b48cf1 data/fargo_soul/recipe/nature_power.json
+5963a9beae7a58898bec7164142338cc6d6c8049 data/fargo_soul/recipe/sharpshooter_soul.json
 4296feba2ae37c92dc57a4b9430bed0d6ff381e0 data/fargo_soul/recipe/spirit_power.json
 731df560bdfe11497b78227a786b7bac01dd61e3 data/fargo_soul/recipe/terra_power.json
 f2aff43db9b5ede4f44fe2b1f28db3c597d54d78 data/fargo_soul/recipe/terra_soul.json

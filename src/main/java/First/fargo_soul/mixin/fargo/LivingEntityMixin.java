@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin {
+public class LivingEntityMixin {
 
     @Inject(method = "knockback", at = @At("HEAD"), cancellable = true)
     public void knockback(double strength, double x, double z, CallbackInfo ci) {
@@ -23,6 +23,5 @@ public abstract class LivingEntityMixin {
             }
         }
     }
-
 
 }

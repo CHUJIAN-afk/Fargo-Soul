@@ -30,6 +30,9 @@ import First.fargo_soul.Item.Soul.UniverseSoul.BerserkerSoul.Soul.*;
 import First.fargo_soul.Item.Soul.UniverseSoul.SharpshooterSoul.SharpshooterSoul;
 import First.fargo_soul.Item.Soul.UniverseSoul.SharpshooterSoul.Soul.MarksmanEssence;
 import First.fargo_soul.Item.Soul.UniverseSoul.SharpshooterSoul.Soul.MeltRocketBag;
+import First.fargo_soul.Item.Soul.UniverseSoul.SharpshooterSoul.Soul.ScoutScope;
+import First.fargo_soul.Item.Soul.UniverseSoul.SharpshooterSoul.Soul.StalkerQuiver;
+import First.fargo_soul.Item.Soul.UniverseSoul.UniverseSoul;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -115,15 +118,21 @@ public class SoulsRegister {
     public static final DeferredItem<SoulItem> MarksmanEssence;
     public static final DeferredItem<SoulItem> SharpshooterSoul;
     public static final DeferredItem<SoulItem> MeltRocketBag;
+    public static final DeferredItem<SoulItem> ScoutScope;
+    public static final DeferredItem<SoulItem> StalkerQuiver;
 
+
+
+    public static final DeferredItem<SoulItem> UniverseSoul;
 
     static {
         SoulItems = DeferredRegister.createItems(Fargo_soul.MODID);
-
+        //神射手之魂
         MeltRocketBag = SoulItems.registerItem("melt_rocket_bag", MeltRocketBag::new);
         MarksmanEssence = SoulItems.registerItem("marksman_essence", MarksmanEssence::new);
+        ScoutScope= SoulItems.registerItem("scout_scope", ScoutScope::new);
+        StalkerQuiver =SoulItems.registerItem("stalker_quiver", StalkerQuiver::new);
         SharpshooterSoul = SoulItems.registerItem("sharpshooter_soul", SharpshooterSoul::new);
-
         //狂战士之魂
         BarbarianEssence = SoulItems.registerItem("barbarian_essence", BarbarianEssence::new);
         BerserkerGloves = SoulItems.registerItem("berserker_gloves", BerserkerGloves::new);
@@ -131,6 +140,9 @@ public class SoulsRegister {
         FireGloves = SoulItems.registerItem("fire_gloves", FireGloves::new);
         StingerNecklace = SoulItems.registerItem("stinger_necklace", StingerNecklace::new);
         BerserkerSoul = SoulItems.registerItem("berserker_soul", BerserkerSoul::new);
+        //寰宇之魂
+        UniverseSoul = SoulItems.registerItem("universe_soul", UniverseSoul::new);
+
         //森林之力
         WoodSoul = SoulItems.registerItem("wood_soul", WoodSoul::new);
         PineWoodSoul = SoulItems.registerItem("pine_wood_soul", PineWoodSoul::new);

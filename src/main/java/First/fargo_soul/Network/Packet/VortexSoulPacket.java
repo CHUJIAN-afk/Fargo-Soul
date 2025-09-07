@@ -2,12 +2,13 @@ package First.fargo_soul.Network.Packet;
 
 import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Utils.ParticleUtils;
-import First.fargo_soul.Utils.Utils;
+import First.fargo_soul.Utils.CustomUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
@@ -38,15 +39,15 @@ public record VortexSoulPacket() implements CustomPacketPayload {
             VortexSoulPacket::decode
     );
 
-    private void encode(ByteBuf byteBuf) {
+    private void encode(@SuppressWarnings("unused") ByteBuf byteBuf) {
     }
 
-    private static VortexSoulPacket decode(ByteBuf byteBuf) {
+    private static VortexSoulPacket decode(@SuppressWarnings("unused") ByteBuf byteBuf) {
         return new VortexSoulPacket();
     }
 
     @Override
-    public @NotNull Type<VortexSoulPacket> type() {
+    public @NotNull Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 
@@ -57,7 +58,7 @@ public record VortexSoulPacket() implements CustomPacketPayload {
                 long gameTime = level.getGameTime();
                 long VortexSoul = player.getPersistentData().getLong("VortexSoul");
                 if (VortexSoul < gameTime) {
-                    HitResult hitResult = Utils.getTargetedBlock(player, 512);
+                    HitResult hitResult = CustomUtils.getTargetedBlock(player, 512);
                     if (hitResult instanceof BlockHitResult blockHitResult) {
                         BlockPos pos = blockHitResult.getBlockPos();
                         if (!level.getBlockState(pos).is(Blocks.AIR) && pos.getY() > level.getMinBuildHeight()) {
@@ -90,7 +91,7 @@ public record VortexSoulPacket() implements CustomPacketPayload {
                                     SoundEvents.ENDERMAN_TELEPORT,
                                     SoundSource.PLAYERS,
                                     1.0f,
-                                    Utils.random.nextFloat() * 0.4f + 0.4f
+                                    CustomUtils.random.nextFloat() * 0.4f + 0.4f
                             );
                         }
                     }

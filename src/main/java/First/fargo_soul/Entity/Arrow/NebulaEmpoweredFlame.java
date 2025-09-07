@@ -1,7 +1,7 @@
 package First.fargo_soul.Entity.Arrow;
 
 import First.fargo_soul.Effect.EffectRegister;
-import First.fargo_soul.Utils.Utils;
+import First.fargo_soul.Utils.CustomUtils;
 import net.minecraft.core.Holder;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -53,7 +53,7 @@ public class NebulaEmpoweredFlame extends AbstractArrow {
             this.getDeltaMovement().add(delta);
             this.move(MoverType.SELF, delta);
             if (player.getEyePosition().distanceTo(this.position()) < 0.75) {
-                if (Utils.random.nextBoolean()) {
+                if (CustomUtils.random.nextBoolean()) {
                     Holder<MobEffect> vitalityBoostedBlaze = EffectRegister.VitalityBoostedBlaze;
                     if (player.getEffect(vitalityBoostedBlaze) instanceof MobEffectInstance mobEffectInstance) {
                         player.removeEffect(vitalityBoostedBlaze);

@@ -3,8 +3,6 @@ package First.fargo_soul.Item.Soul.TerraSoul.EarthPower.SoulStone;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
 import First.fargo_soul.Utils.CurioUtils;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import org.confluence.lib.ConfluenceMagicLib;
@@ -24,24 +22,6 @@ public class CobaltSoul extends SoulItem {
         return List.of(
                 SoulsRegister.AncientCobaltSoul.get()
         );
-    }
-
-    public final List<Component> AttributeList = List.of(
-            Component.translatable("item.fargo_soul.ancient_cobalt_soul.attribute.4").withStyle(ChatFormatting.BLUE)
-    );
-
-    public final List<Component> TooltipList = List.of(
-            Component.translatable("item.fargo_soul.ancient_cobalt_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
-    );
-
-    @Override
-    public List<Component> getAttributeList() {
-        return AttributeList;
-    }
-
-    @Override
-    public List<Component> getTooltipList() {
-        return TooltipList;
     }
 
     public static void CobaltSoulJumpHandler(LivingEvent.LivingJumpEvent event) {

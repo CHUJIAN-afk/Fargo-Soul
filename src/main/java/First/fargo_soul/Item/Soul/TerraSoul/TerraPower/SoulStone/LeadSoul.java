@@ -3,17 +3,13 @@ package First.fargo_soul.Item.Soul.TerraSoul.TerraPower.SoulStone;
 import First.fargo_soul.Effect.EffectRegister;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Utils.CurioUtils;
-import First.fargo_soul.Utils.Utils;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
+import First.fargo_soul.Utils.CustomUtils;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
-
-import java.util.List;
 
 import static First.fargo_soul.Item.Soul.SoulsRegister.LeadSoul;
 
@@ -23,30 +19,10 @@ public class LeadSoul extends SoulItem {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE));
     }
 
-    public final List<Component> AttributeList = List.of(
-            Component.translatable("item.fargo_soul.lead_soul.attribute.1").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.lead_soul.attribute.2").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.lead_soul.attribute.3").withStyle(ChatFormatting.BLUE)
-    );
-
-    public final List<Component> TooltipList = List.of(
-            Component.translatable("item.fargo_soul.lead_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
-    );
-
-
-    @Override
-    public List<Component> getAttributeList() {
-        return AttributeList;
-    }
-
-    @Override
-    public List<Component> getTooltipList() {
-        return TooltipList;
-    }
 
     public static void LeadSoulDamageHandler(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, LeadSoul.get()) && event.getEntity() instanceof LivingEntity livingEntity) {
-            if (Utils.random.nextDouble() < 0.1) {
+            if (CustomUtils.random.nextDouble() < 0.1) {
                 livingEntity.addEffect(new MobEffectInstance(EffectRegister.LeadPoisoning, 200, 0));
             }
         }

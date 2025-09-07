@@ -2,6 +2,10 @@ package First.fargo_soul.Utils;
 
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import net.minecraft.core.Registry;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ClipContext;
@@ -12,15 +16,17 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.LootTableLoadEvent;
 
+import java.util.List;
 import java.util.Random;
 
-public class Utils {
-    public static final Random random = new Random();
+public class CustomUtils {
 
+    public static final Random random = new Random();
 
     public static BlockHitResult getTargetedBlock(Player player, double maxDistance) {
         Vec3 eyePos = player.getEyePosition();
@@ -33,7 +39,7 @@ public class Utils {
     /**
      * 只需添加主魂石，即可将子魂石全部添加到战利品表中
      */
-    public static void AddLootTable(LootTableLoadEvent event, Registry<Item> itemRegistry,LootPool.Builder lootPool) {
+    public static void AddLootTable(LootTableLoadEvent event, Registry<Item> itemRegistry, LootPool.Builder lootPool) {
         LootTable lootTable = event.getTable();
         LootContextParamSet paramSet = lootTable.getParamSet();
         if (paramSet.equals(LootContextParamSets.CHEST) || paramSet.equals(LootContextParamSets.VAULT)) {
@@ -47,6 +53,21 @@ public class Utils {
             }
             lootTable.addPool(lootPool.build());
         }
+    }
+
+    /**
+     * 获取范围内的敌人，不包括中心实体
+     */
+    public static List<LivingEntity> getEnemyList(LivingEntity center, AABB aabb) {
+        return center.level().getEntitiesOfClass(LivingEntity.class, aabb, livingEntity -> (livingEntity instanceof Enemy && !center.equals(livingEntity)));
+    }
+
+    /**
+     * 获取范围内最近的的敌人，不包括中心实体
+     */
+    public static LivingEntity getFirstEnemy(LivingEntity center, double distance) {
+        TargetingConditions conditions = TargetingConditions.forCombat().range(distance);
+        return center.level().getNearestEntity(LivingEntity.class, conditions, center, center.getX(), center.getY(), center.getZ(), center.getBoundingBox().inflate(distance));
     }
 
 }

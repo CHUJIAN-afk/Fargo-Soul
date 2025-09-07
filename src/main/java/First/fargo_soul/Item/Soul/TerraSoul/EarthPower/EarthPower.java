@@ -1,8 +1,6 @@
 package First.fargo_soul.Item.Soul.TerraSoul.EarthPower;
 
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
@@ -27,15 +25,6 @@ public class EarthPower extends SoulItem {
                 TitaniumSoul.get()
         );
     }
-
-    @Override
-    public List<Component> getTooltipList() {
-        return TooltipList;
-    }
-
-    public final List<Component> TooltipList = List.of(
-            Component.translatable("item.fargo_soul.earth_power.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
-    );
 
 
 }

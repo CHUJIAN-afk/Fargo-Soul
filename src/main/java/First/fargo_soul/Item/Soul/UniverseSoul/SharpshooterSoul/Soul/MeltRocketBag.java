@@ -5,57 +5,38 @@ import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
 import First.fargo_soul.Utils.AttributeUtils;
 import First.fargo_soul.Utils.CurioUtils;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
-import java.util.List;
-
 public class MeltRocketBag extends SoulItem {
+
 	public MeltRocketBag(Properties properties) {
 		super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PINK));
 	}
 
-	public final List<Component> AttributeList = List.of(
-			Component.literal("增加10%远程伤害").withStyle(ChatFormatting.BLUE),
-			Component.literal("箭的速度大大提高").withStyle(ChatFormatting.BLUE),
-			Component.literal("20%几率不消耗箭").withStyle(ChatFormatting.BLUE),
-			Component.literal("点燃木箭，火光熊熊").withStyle(ChatFormatting.BLUE)
-	);
-
-	public final List<Component> TooltipList = List.of(
-			Component.literal("“在恐惧中颤抖吧！”").withStyle(ChatFormatting.DARK_GRAY)
-	);
-
-
-	@Override
-	public List<Component> getAttributeList() {
-		return AttributeList;
-	}
-
-	@Override
-	public List<Component> getTooltipList() {
-		return TooltipList;
-	}
-
-
-	public static void BarbarianEssenceTickHandler(PlayerTickEvent.Post event) {
+	public static void MeltRocketBagTickHandler(PlayerTickEvent.Post event) {
 		if (event.getEntity() instanceof ServerPlayer player) {
-			DeferredItem<SoulItem> barbarianEssence = SoulsRegister.BarbarianEssence;
-			ResourceLocation resourceLocation = barbarianEssence.getId();
-			boolean equipped = CurioUtils.isEquipped(player, barbarianEssence.get());
+			DeferredItem<SoulItem> MeltRocketBag = SoulsRegister.MeltRocketBag;
+			ResourceLocation resourceLocation = MeltRocketBag.getId();
+			boolean equipped = CurioUtils.isEquipped(player, MeltRocketBag.get());
 			AttributeModifier.Operation addMultipliedBase = AttributeModifier.Operation.ADD_MULTIPLIED_BASE;
-			AttributeUtils.ConditionAttributeModifier(player, AttributeRegister.Damage, resourceLocation, 0.18, addMultipliedBase, equipped);
-			AttributeUtils.ConditionAttributeModifier(player, Attributes.ATTACK_SPEED, resourceLocation, 0.10, addMultipliedBase, equipped);
-			AttributeUtils.ConditionAttributeModifier(player, AttributeRegister.CriticalChance, resourceLocation, 0.08, addMultipliedBase, equipped);
+			AttributeUtils.ConditionAttributeModifier(player, AttributeRegister.RangedDamage, resourceLocation, 0.1, addMultipliedBase, equipped);
+			AttributeUtils.ConditionAttributeModifier(player, AttributeRegister.RangedSpeed, resourceLocation, 0.2, addMultipliedBase, equipped);
+		}
+	}
+
+	public static void MeltRocketBagProjectileImpactHandler(ProjectileImpactEvent event) {
+		if (event.getProjectile().getOwner() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.MeltRocketBag.get())) {
+			if (event.getEntity() instanceof LivingEntity livingEntity && livingEntity.getRemainingFireTicks() == 0) {
+				livingEntity.setRemainingFireTicks(60);
+			}
 		}
 	}
 

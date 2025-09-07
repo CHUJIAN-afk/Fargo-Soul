@@ -3,10 +3,8 @@ package First.fargo_soul.Item.Soul.TerraSoul.TerraPower.SoulStone;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Utils.CurioUtils;
 import First.fargo_soul.Utils.ParticleUtils;
-import First.fargo_soul.Utils.Utils;
-import net.minecraft.ChatFormatting;
+import First.fargo_soul.Utils.CustomUtils;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
@@ -23,26 +21,6 @@ public class CopperSoul extends SoulItem {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE));
     }
 
-    public final List<Component> AttributeList = List.of(
-            Component.translatable("item.fargo_soul.copper_soul.attribute.1").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.copper_soul.attribute.2").withStyle(ChatFormatting.BLUE),
-            Component.translatable("item.fargo_soul.copper_soul.attribute.3").withStyle(ChatFormatting.BLUE)
-    );
-
-    public final List<Component> TooltipList = List.of(
-            Component.translatable("item.fargo_soul.copper_soul.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
-    );
-
-
-    @Override
-    public List<Component> getAttributeList() {
-        return AttributeList;
-    }
-
-    @Override
-    public List<Component> getTooltipList() {
-        return TooltipList;
-    }
 
     public static void CopperSoulDamageHandler(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, CopperSoul.get()) && event.getEntity() instanceof LivingEntity livingEntity) {
@@ -52,7 +30,7 @@ public class CopperSoul extends SoulItem {
             if ((player.level().canSeeSky(livingEntity.blockPosition()) && player.level().isRaining() || livingEntity.isInWater())) {
                 random = 0.2;
             }
-            if (serverTickCount > LastCopperSoul && Utils.random.nextDouble() < random) {
+            if (serverTickCount > LastCopperSoul && CustomUtils.random.nextDouble() < random) {
                 player.getPersistentData().putLong("LastCopperSoul", serverTickCount + 100);
                 livingEntity.hurt(player.damageSources().lightningBolt(), event.getAmount() * 0.75f);
                 livingEntity.invulnerableTime = 0;

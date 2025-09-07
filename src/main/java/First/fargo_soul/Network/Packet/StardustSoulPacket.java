@@ -24,10 +24,10 @@ public record StardustSoulPacket() implements CustomPacketPayload {
             StardustSoulPacket::decode
     );
 
-    private void encode(ByteBuf byteBuf) {
+    private void encode(@SuppressWarnings("unused") ByteBuf byteBuf) {
     }
 
-    private static StardustSoulPacket decode(ByteBuf byteBuf) {
+    private static StardustSoulPacket decode(@SuppressWarnings("unused") ByteBuf byteBuf) {
         return new StardustSoulPacket();
     }
 

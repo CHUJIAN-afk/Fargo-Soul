@@ -1,5 +1,7 @@
 package First.fargo_soul.Item;
 
+import First.fargo_soul.Compact.Avaritia.AvaritiaCompact;
+import First.fargo_soul.Compact.Avaritia.AvaritiaSoulsRegister;
 import First.fargo_soul.Compact.Create.CreateCompact;
 import First.fargo_soul.Compact.Create.CreateSoulsRegister;
 import First.fargo_soul.Fargo_soul;
@@ -38,15 +40,15 @@ public class CreativeModeTabRegister {
     }
 
     private static void CreativeTabBuild(CreativeModeTab.Output output) {
-        //主魔石
+        //泰拉之魂
         addCreativeTab(output, SoulsRegister.TerraSoul.get());
-        addCreativeTab(output, SoulsRegister.BerserkerSoul.get());
-        addCreativeTab(output, SoulsRegister.SharpshooterSoul.get());
-
+        //寰宇之魂
+        addCreativeTab(output, SoulsRegister.UniverseSoul.get());
         //机械动力联动
-        if (CreateCompact.isLoadCreate()) {
-            addCreativeTab(output, CreateSoulsRegister.Create_Power.get());
-        }
+        addCreativeTab(output, CreateSoulsRegister.Create_Power.get());
+        //无尽贪婪联动
+        addCreativeTab(output, AvaritiaSoulsRegister.Avaritia_Power.get());
+
     }
 
     /**

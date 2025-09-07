@@ -1,8 +1,6 @@
 package First.fargo_soul.Item.Soul.TerraSoul.NaturePower;
 
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
@@ -27,15 +25,6 @@ public class NaturePower extends SoulItem {
                 RainCloudSoul.get()
         );
     }
-
-    @Override
-    public List<Component> getTooltipList() {
-        return TooltipList;
-    }
-
-    public final List<Component> TooltipList = List.of(
-            Component.translatable("item.fargo_soul.nature_power.tooltip.1").withStyle(ChatFormatting.DARK_GRAY)
-    );
 
 
 }

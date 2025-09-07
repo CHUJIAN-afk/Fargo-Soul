@@ -2,15 +2,15 @@ package First.fargo_soul.Compact.Create.CreatePower;
 
 import First.fargo_soul.Compact.Create.CreateSoulsRegister;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 
 import java.util.List;
 
-public class CreatePower extends SoulItem {
+public class CreatePower extends CreateSoulItem {
 
     public CreatePower(Properties properties) {
-        super(properties);
+        super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PURPLE));
     }
 
     @Override
@@ -23,14 +23,5 @@ public class CreatePower extends SoulItem {
                 CreateSoulsRegister.Goggles_Soul.get()
         );
     }
-
-    @Override
-    public List<Component> getTooltipList() {
-        return TooltipList;
-    }
-
-    public final List<Component> TooltipList = List.of(
-            Component.literal("“你突然有一种建造工厂的冲动”").withStyle(ChatFormatting.DARK_GRAY)
-    );
 
 }

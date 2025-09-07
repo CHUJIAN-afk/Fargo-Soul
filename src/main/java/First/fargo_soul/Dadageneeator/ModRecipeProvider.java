@@ -27,6 +27,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
     @Override
     protected void buildRecipes(@NotNull RecipeOutput recipeOutput) {
+
         addShapelessRecipe(recipeOutput, SoulsRegister.EarthPower);
         addShapelessRecipe(recipeOutput, SoulsRegister.ForestPower);
         addShapelessRecipe(recipeOutput, SoulsRegister.LifePower);
@@ -37,7 +38,11 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         addShapelessRecipe(recipeOutput, SoulsRegister.WillPower);
         addShapelessRecipe(recipeOutput, SoulsRegister.CosmicPower);
         addShapelessRecipe(recipeOutput, SoulsRegister.TerraSoul);
+
         addShapelessRecipe(recipeOutput, SoulsRegister.BerserkerSoul);
+        addShapelessRecipe(recipeOutput, SoulsRegister.SharpshooterSoul);
+        addShapelessRecipe(recipeOutput, SoulsRegister.UniverseSoul);
+
 
         //机械动力联动
         addShapelessRecipe(recipeOutput.withConditions(new ModLoadedCondition(CreateCompact.MODID)), CreateSoulsRegister.Create_Power);
@@ -46,11 +51,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     protected void addShapelessRecipe(RecipeOutput recipeOutput, DeferredItem<SoulItem> output) {
         ShapelessRecipeBuilder builder = ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, output);
         List<SoulItem> soulItems = output.get().getSoulItemList();
-        for (SoulItem input : soulItems) {
-            builder.requires(input);
-        }
-        builder.unlockedBy("has_" + soulItems.getFirst(), has(soulItems.getFirst()))
-                .save(recipeOutput, output.getId());
+        soulItems.forEach(builder::requires);
+        builder.unlockedBy("has_" + soulItems.getFirst(), has(soulItems.getFirst())).save(recipeOutput, output.getId());
     }
 
 }
