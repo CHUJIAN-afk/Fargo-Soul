@@ -1,6 +1,6 @@
 package First.fargo_soul.Dadageneeator;
 
-import First.fargo_soul.Compact.Create.CreateSoulsRegister;
+import First.create.Create.CreateSoulsRegister;
 import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;

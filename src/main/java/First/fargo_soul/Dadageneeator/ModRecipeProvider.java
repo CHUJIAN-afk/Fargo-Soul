@@ -1,7 +1,7 @@
 package First.fargo_soul.Dadageneeator;
 
-import First.fargo_soul.Compact.Create.CreateCompact;
-import First.fargo_soul.Compact.Create.CreateSoulsRegister;
+import First.create.Create.CreateCompact;
+import First.create.Create.CreateSoulsRegister;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
 import net.minecraft.core.HolderLookup;

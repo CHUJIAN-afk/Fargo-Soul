@@ -1,7 +1,7 @@
 package First.fargo_soul.mixin.create.Mixin;
 
 
-import First.fargo_soul.Compact.Create.CreateSoulsRegister;
+import First.create.Create.CreateSoulsRegister;
 import First.fargo_soul.Utils.CurioUtils;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.equipment.armor.DivingBootsItem;

@@ -3,7 +3,11 @@ package First.fargo_soul.Utils;
 import First.fargo_soul.Attachment.Attachment.Data;
 import First.fargo_soul.Attachment.AttachmentRegister;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
+import net.minecraft.core.Holder;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Enemy;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.NotNull;
@@ -17,6 +21,44 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class SoulUtils {
+
+	public static void applyOrUpdateEffect(LivingEntity entity, Holder<MobEffect> effect, int duration, int maxLevel) {
+		if (entity.getEffect(effect) instanceof MobEffectInstance existingEffect) {
+			int newAmplifier = Math.min(existingEffect.getAmplifier() + 1, maxLevel);
+			entity.removeEffect(effect);
+			entity.addEffect(new MobEffectInstance(effect, duration, newAmplifier));
+		} else {
+			entity.addEffect(new MobEffectInstance(effect, duration));
+		}
+	}
+
+	public static List<LivingEntity> getNearbyEnemyList(LivingEntity center, double distance) {
+		List<LivingEntity> enemyList = new ArrayList<>();
+		for (LivingEntity ofClass : getNearbyLivingEntityList(center, distance)) {
+			if (ofClass instanceof Enemy) {
+				enemyList.add(ofClass);
+			}
+		}
+		return enemyList;
+	}
+
+	public static List<LivingEntity> getNearbyLivingEntityList(LivingEntity center, double distance) {
+		List<LivingEntity> entitiesOfClass = center.level().getEntitiesOfClass(LivingEntity.class, center.getBoundingBox().inflate(distance));
+		entitiesOfClass.removeIf(livingEntity -> livingEntity.distanceTo(center) > distance);
+		entitiesOfClass.remove(center);
+		return entitiesOfClass;
+	}
+
+
+	public static List<SoulItem> getAllSoulItemFromSoulData(LivingEntity livingEntity){
+		AttachmentType<Data> dataAttachmentType = AttachmentRegister.Data.get();
+		Data data = livingEntity.getData(dataAttachmentType);
+		List<SoulItem> soulItemList = getAllCurioItems(getSoulInventory(livingEntity));
+		Set<Class<? extends SoulItem>> set = soulItemList.stream().map(SoulItem::getClass).collect(Collectors.toSet());
+		data.getSoulItemList().removeIf(soulItem -> !set.contains(soulItem.getClass()));
+		soulItemList.forEach(data::addSoulItem);
+		return data.getSoulItemList();
+	}
 
 	public static <T extends SoulItem> SoulItem getSoulItemFromSoulData(LivingEntity livingEntity, Class<T> type) {
 		AttachmentType<Data> dataAttachmentType = AttachmentRegister.Data.get();

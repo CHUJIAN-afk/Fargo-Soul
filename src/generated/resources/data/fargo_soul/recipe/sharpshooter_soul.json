@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "fargo_soul:marksman_essence"
+    },
+    {
+      "item": "fargo_soul:melt_rocket_bag"
+    },
+    {
+      "item": "fargo_soul:scout_scope"
+    },
+    {
+      "item": "fargo_soul:stalker_quiver"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:sharpshooter_soul"
+  }
+}

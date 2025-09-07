@@ -1,26 +1,34 @@
 package First.fargo_soul.Item.Soul.TerraSoul.CosmicPower.SoulStone;
 
 import First.fargo_soul.Effect.EffectRegister;
+import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
-import First.fargo_soul.Utils.CurioUtils;
+import First.fargo_soul.Utils.AttributeUtils;
 import First.fargo_soul.Utils.ParticleUtils;
 import First.fargo_soul.Utils.CustomUtils;
+import First.fargo_soul.Utils.SoulUtils;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.level.Level;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
 import java.util.List;
-
 
 public class BlazeSoul extends SoulItem {
 
@@ -28,100 +36,101 @@ public class BlazeSoul extends SoulItem {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.RED));
     }
 
-    public static void BlazeSoulMobEffectExpiredHandler(MobEffectEvent.Expired event) {
-        if (event.getEntity() instanceof ServerPlayer player) {
-            if (event.getEffectInstance() instanceof MobEffectInstance mobEffectInstance && mobEffectInstance.is(EffectRegister.SunburstEruption)) {
-                player.getPersistentData().remove("BlazeSoul");
-            }
-        }
-        if (event.getEntity() instanceof LivingEntity livingEntity) {
-            if (event.getEffectInstance() instanceof MobEffectInstance mobEffectInstance && mobEffectInstance.is(EffectRegister.Flare)) {
-                List<LivingEntity> livingEntityList = livingEntity.level().getEntitiesOfClass(LivingEntity.class, livingEntity.getBoundingBox().inflate(1));
-                for (LivingEntity entity : livingEntityList) {
-                    entity.hurt(livingEntity.damageSources().onFire(), 10);
-                }
-                if (livingEntity.level() instanceof ServerLevel level) {
-                    ParticleUtils.spawnParticleSphere(
-                            level,
-                            livingEntity.getX(),
-                            livingEntity.getBoundingBox().getCenter().y(),
-                            livingEntity.getZ(),
-                            ParticleTypes.LAVA,
-                            1f,
-                            30,
-                            0.5f
-                    );
-                    level.playSound(
-                            null,
-                            livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(),
-                            SoundEvents.GENERIC_EXPLODE,
-                            SoundSource.PLAYERS,
-                            1.0f,
-                            CustomUtils.random.nextFloat() * 0.4f + 0.4f
-                    );
-                }
-            }
-        }
-    }
+    private long remainingTime = 0;
+    private float energy = 0;
+    private float maxEnergy = 0;
+    private boolean isActivated = false;
 
-    public static void BlazeSoulDamageHandler(LivingIncomingDamageEvent event) {
-        if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.BlazeSoul.get())) {
-            if (event.getEntity() instanceof LivingEntity livingEntity && event.getSource().getWeaponItem() != null) {
-                float BlazeSoul = player.getPersistentData().getFloat("BlazeSoul");
-                if (player.getEffect(EffectRegister.SunburstEruption) == null) {
-                    player.getPersistentData().putFloat("BlazeSoul", BlazeSoul + event.getAmount() * 0.15f);
-                }
-                //增加日曜能力
-                if (BlazeSoul > player.getMaxHealth() * 20) {
-                    player.addEffect(new MobEffectInstance(EffectRegister.SunburstEruption, 200));
-                }
-                //移除日曜能力
-                if (BlazeSoul < 0) {
-                    player.getPersistentData().remove("BlazeSoul");
-                    player.removeEffect(EffectRegister.SunburstEruption);
-                }
-                if (player.getEffect(EffectRegister.SunburstEruption) != null) {
-                    player.getPersistentData().putFloat("BlazeSoul", BlazeSoul - 50);
-                    List<LivingEntity> livingEntityList = player.serverLevel().getEntitiesOfClass(LivingEntity.class, livingEntity.getBoundingBox().inflate(2));
-                    livingEntityList.removeIf(player::equals);
-                    for (LivingEntity entity : livingEntityList) {
-                        entity.addEffect(new MobEffectInstance(EffectRegister.Flare, 200));
-                        entity.hurt(player.damageSources().onFire(), 20);
-                        entity.invulnerableTime = 0;
+    @EventBusSubscriber(modid = Fargo_soul.MODID)
+    public static class Event {
+
+        @SubscribeEvent
+        public static void Tick(EntityTickEvent.Post event) {
+            if (event.getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
+                ResourceLocation resourceLocation = SoulsRegister.BlazeSoul.getId();
+                Holder<Attribute> knockbackResistance = Attributes.KNOCKBACK_RESISTANCE;
+                if (SoulUtils.getSoulItemFromSoulData(attacker, BlazeSoul.class) instanceof BlazeSoul blazeSoul) {
+                    blazeSoul.maxEnergy = attacker.getMaxHealth() * 40;
+                    AttributeUtils.ConditionAttributeModifier(
+                            attacker,
+                            knockbackResistance,
+                            resourceLocation,
+                            1.0,
+                            AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
+                            blazeSoul.isActivated
+                    );
+                    if (blazeSoul.isActivated) {
+                        if (--blazeSoul.remainingTime < 0 || blazeSoul.energy < 0) {
+                            blazeSoul.isActivated = false;
+                            blazeSoul.energy = 0;
+                        }
+                    } else {
+                        blazeSoul.remainingTime = 200;
+                        if (blazeSoul.energy == blazeSoul.maxEnergy) {
+                            blazeSoul.isActivated = true;
+                        }
                     }
-                    ServerLevel level = player.serverLevel();
-                    ParticleUtils.spawnParticleSphere(
-                            level,
-                            livingEntity.getX(),
-                            livingEntity.getBoundingBox().getCenter().y(),
-                            livingEntity.getZ(),
-                            ParticleTypes.LAVA,
-                            1f,
-                            60,
-                            0.5f
-                    );
-                    level.playSound(
-                            null,
-                            livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(),
-                            SoundEvents.GENERIC_EXPLODE,
-                            SoundSource.PLAYERS,
-                            1.0f,
-                            CustomUtils.random.nextFloat() * 0.4f + 0.4f
-                    );
+                } else {
+                    AttributeUtils.removeAttributeModifier(attacker, knockbackResistance, resourceLocation);
                 }
             }
         }
-    }
 
-    public static void BlazeSoulDamageHandler2(LivingIncomingDamageEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.BlazeSoul.get())) {
-            float BlazeSoul = player.getPersistentData().getFloat("BlazeSoul");
-            float damage = event.getAmount() * (1 - ((BlazeSoul / (player.getMaxHealth() * 20)) * 0.2f));
-            event.setAmount(damage);
-            if (player.getEffect(EffectRegister.SunburstEruption) != null && event.getAmount() < player.getMaxHealth() * 0.08f) {
-                event.setCanceled(true);
+        @SubscribeEvent
+        public static void Damage1(LivingIncomingDamageEvent event) {
+            if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
+                if (SoulUtils.getSoulItemFromSoulData(attacker, BlazeSoul.class) instanceof BlazeSoul blazeSoul) {
+                    if (blazeSoul.isActivated) {
+                        blazeSoul.energy -= 50;
+                        List<LivingEntity> livingEntityList = SoulUtils.getNearbyLivingEntityList(target, 2);
+                        livingEntityList.add(target);
+                        livingEntityList.remove(attacker);
+                        for (LivingEntity entity : livingEntityList) {
+                            entity.addEffect(new MobEffectInstance(EffectRegister.Flare, 200));
+                            entity.invulnerableTime = 0;
+                            entity.hurt(attacker.damageSources().onFire(), 20);
+                        }
+                        Level level = attacker.level();
+                        ParticleUtils.spawnParticleSphere(
+                                (ServerLevel) level,
+                                target.getX(),
+                                target.getBoundingBox().getCenter().y(),
+                                target.getZ(),
+                                ParticleTypes.LAVA,
+                                1f,
+                                60,
+                                0.5f
+                        );
+                        level.playSound(
+                                null,
+                                target.getX(),
+                                target.getY(),
+                                target.getZ(),
+                                SoundEvents.GENERIC_EXPLODE,
+                                SoundSource.PLAYERS,
+                                1.0f,
+                                CustomUtils.random.nextFloat() * 0.4f + 0.4f
+                        );
+                    } else {
+                        blazeSoul.energy += event.getAmount() * 0.15f;
+                        blazeSoul.energy = Math.min(blazeSoul.energy, blazeSoul.maxEnergy);
+                    }
+                }
             }
         }
-    }
 
+        @SubscribeEvent
+        public static void Damage2(LivingIncomingDamageEvent event) {
+            if (event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
+                if (SoulUtils.getSoulItemFromSoulData(target, BlazeSoul.class) instanceof BlazeSoul blazeSoul) {
+                    float damage = blazeSoul.isActivated ? event.getAmount() * 0.5f : event.getAmount() * (1 - ((blazeSoul.energy / (blazeSoul.maxEnergy)) * 0.45f));
+                    event.setAmount(damage);
+                    if (blazeSoul.isActivated && event.getAmount() < target.getMaxHealth() * 0.08f) {
+                        event.setCanceled(true);
+                    }
+                }
+            }
+        }
+
+    }
 }

@@ -82,7 +82,6 @@ public class NebulaEmpoweredFlame extends AbstractArrow {
 
     @Override
     protected void onHitEntity(@NotNull EntityHitResult result) {
-        this.discard();
     }
 
     @Override

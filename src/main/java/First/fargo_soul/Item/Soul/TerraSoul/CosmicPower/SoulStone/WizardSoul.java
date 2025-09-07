@@ -10,5 +10,4 @@ public class WizardSoul  extends SoulItem {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE));
     }
 
-
 }

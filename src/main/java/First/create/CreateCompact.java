@@ -1,4 +1,4 @@
-package First.fargo_soul.Compact.Create;
+package First.create.Create;
 
 import net.neoforged.fml.ModList;
 

@@ -1,7 +1,7 @@
 package First.fargo_soul.Item;
 
 import First.fargo_soul.Compact.Avaritia.AvaritiaSoulsRegister;
-import First.fargo_soul.Compact.Create.CreateSoulsRegister;
+import First.create.Create.CreateSoulsRegister;
 import First.fargo_soul.Item.BaseItem.BaseItemsRegister;
 import First.fargo_soul.Item.Soul.SoulsRegister;
 import net.neoforged.bus.api.IEventBus;

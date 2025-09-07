@@ -1,6 +1,6 @@
 package First.fargo_soul.mixin.create.Mixin;
 
-import First.fargo_soul.Compact.Create.CreateSoulsRegister;
+import First.create.Create.CreateSoulsRegister;
 import First.fargo_soul.Utils.CurioUtils;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.simibubi.create.content.kinetics.crank.HandCrankBlock;

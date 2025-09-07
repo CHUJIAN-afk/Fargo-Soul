@@ -1,8 +1,8 @@
 package First.fargo_soul.mixin.create.Mixin;
 
 
-import First.fargo_soul.Compact.Create.CreateCompact;
-import First.fargo_soul.Compact.Create.CreateSoulsRegister;
+import First.create.Create.CreateCompact;
+import First.create.Create.CreateSoulsRegister;
 import First.fargo_soul.Utils.CurioUtils;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.world.entity.Entity;

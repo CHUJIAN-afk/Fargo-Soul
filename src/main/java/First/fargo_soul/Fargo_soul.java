@@ -15,7 +15,7 @@ public class Fargo_soul {
 
     public static final String MODID = "fargo_soul";
 
-    public Fargo_soul(final IEventBus eventBus) {
+    public Fargo_soul(IEventBus eventBus) {
         ModItemRegister.register(eventBus);//物品注册
         CreativeModeTabRegister.register(eventBus);//创造模式物品栏
         EntityRegister.register(eventBus);//实体注册
@@ -23,6 +23,5 @@ public class Fargo_soul {
         AttributeRegister.register(eventBus);//属性注册
         AttachmentRegister.register(eventBus);//数据组件注册
     }
-
 
 }
