@@ -1,6 +1,11 @@
 package First.fargo_soul.Item.Soul.TerraSoul;
 
+import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
+import net.minecraft.world.entity.LivingEntity;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
@@ -17,16 +22,32 @@ public class TerraSoul extends SoulItem {
     @Override
     public List<SoulItem> getSoulItemList() {
         return List.of(
+                CosmicPower.get(),
+                DeathPower.get(),
                 EarthPower.get(),
                 ForestPower.get(),
                 LifePower.get(),
                 NaturePower.get(),
-                TerraPower.get(),
                 SpiritPower.get(),
-                DeathPower.get(),
-                WillPower.get(),
-                CosmicPower.get()
+                TerraPower.get(),
+                WillPower.get()
         );
     }
+
+    @EventBusSubscriber(modid = Fargo_soul.MODID)
+    public static class Event {
+
+        @SubscribeEvent
+        public static void Death(LivingDeathEvent event) {
+            if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target) {
+
+            }
+        }
+
+
+    }
+
+
+
 
 }

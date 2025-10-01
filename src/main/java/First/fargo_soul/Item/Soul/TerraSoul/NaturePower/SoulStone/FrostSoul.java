@@ -1,15 +1,36 @@
 package First.fargo_soul.Item.Soul.TerraSoul.NaturePower.SoulStone;
 
-import First.fargo_soul.Entity.Arrow.IceSpike;
+import First.fargo_soul.Attachment.Attachment.SoulAbilityData;
+import First.fargo_soul.Attachment.AttachmentRegister;
+import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
-import First.fargo_soul.Item.Soul.SoulsRegister;
-import First.fargo_soul.Utils.CurioUtils;
-import net.minecraft.server.level.ServerPlayer;
+import First.fargo_soul.Item.Soul.TerraSoul.NaturePower.NaturePower;
+import First.fargo_soul.Utils.ParticleUtils;
+import First.fargo_soul.Utils.SoulUtils;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Snowball;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RenderLivingEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
@@ -19,33 +40,102 @@ public class FrostSoul extends SoulItem {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PINK));
     }
 
+    @EventBusSubscriber(modid = Fargo_soul.MODID)
+    public static class Event {
 
-    public static void FrostSoulTickHandler(PlayerTickEvent.Post event) {
-        if (event.getEntity() instanceof Player player && CurioUtils.isEquipped(player, SoulsRegister.FrostSoul.get())) {
-            if (player.tickCount % 20 == 0) {
-                int FrostSoul = player.getPersistentData().getInt("FrostSoul");
-                player.getPersistentData().putInt("FrostSoul", Math.min(FrostSoul + 1, 10));
-            }
-            if (player.tickCount % 5 == 0) {
-                int FrostSoul = player.getPersistentData().getInt("FrostSoul");
-                TargetingConditions conditions = TargetingConditions.forCombat().range(30.0);
-                LivingEntity target = player.level().getNearestEntity(LivingEntity.class, conditions, player, player.getX(), player.getY(), player.getZ(), player.getBoundingBox().inflate(10));
-                if (FrostSoul > 0 && target != null) {
-                    player.getPersistentData().putInt("FrostSoul", Math.max(FrostSoul - 1, 0));
-                    if (player instanceof ServerPlayer) {
-                        double x = player.getRandomX(2);
-                        double y = player.getY() + 1;
-                        double z = player.getRandomZ(2);
-                        IceSpike iceSpike = new IceSpike(player.level(), x, y, z);
-                        Vec3 toMonster = target.getBoundingBox().getCenter().subtract(x, y, z).normalize();
-                        iceSpike.shoot(toMonster.x, toMonster.y, toMonster.z, 3.0f, 1.0f);
-                        iceSpike.setOwner(player);
-                        player.level().addFreshEntity(iceSpike);
+        @OnlyIn(Dist.CLIENT)
+        @SubscribeEvent
+        public static void render(RenderLivingEvent.Post<?, ?> event) {
+            LivingEntity attacker = event.getEntity();
+            if (SoulUtils.isEquipped(attacker, FrostSoul.class)) {
+                MultiBufferSource multiBufferSource = event.getMultiBufferSource();
+                PoseStack poseStack = event.getPoseStack();
+                int packedLight = event.getPackedLight();
+                Minecraft minecraft = Minecraft.getInstance();
+                ItemRenderer itemRenderer = minecraft.getItemRenderer();
+                float ageInTicks = SoulUtils.getAgeInTicks(attacker, event.getPartialTick(), 3);
+                SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(FrostSoul.class);
+                int stacks = soulInfo.stacks;
+                if (stacks > 0) {
+                    double size = attacker.getBoundingBox().getSize();
+                    float scale = (float) (size);
+                    for (int i = 0; i < stacks; i++) {
+                        poseStack.pushPose();
+                        float angle = ageInTicks * 0.008f + ((float) Math.PI * 2 / stacks * i);
+                        float verticalOffset = (float) Math.cos(angle + i) * 0.05f;
+                        float x = (float) (Math.sin(angle)) * scale;
+                        float z = (float) (Math.cos(angle)) * scale;
+                        AABB boundingBox = attacker.getBoundingBox();
+                        poseStack.translate(
+                                x,
+                                boundingBox.getYsize() * 0.5f + verticalOffset,
+                                z
+                        );
+                        poseStack.mulPose(Axis.YP.rotationDegrees(angle * 180 / (float) Math.PI));
+                        poseStack.scale(0.4f * scale, 0.4f * scale, 0.6f * scale);
+                        itemRenderer.renderStatic(
+                                Items.SNOWBALL.getDefaultInstance(),
+                                ItemDisplayContext.FIXED,
+                                packedLight,
+                                OverlayTexture.NO_OVERLAY,
+                                poseStack,
+                                multiBufferSource,
+                                attacker.level(),
+                                attacker.getId()
+                        );
+                        poseStack.popPose();
                     }
                 }
             }
         }
-    }
 
+        @SubscribeEvent
+        public static void Tick(EntityTickEvent.Post event) {
+            if (event.getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
+                if (SoulUtils.isEquipped(attacker, FrostSoul.class)) {
+                    SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(FrostSoul.class);
+                    Level level = attacker.level();
+                    BlockPos onPos = attacker.getOnPos();
+                    boolean cold = level.getBiome(onPos).value().coldEnoughToSnow(onPos);
+                    soulInfo.maxCooldown = cold ? 8 : 20;
+                    soulInfo.maxStacks = SoulUtils.isEquipped(attacker, NaturePower.class) ? 20 : 10;
+                    if (soulInfo.cooldown == 0) {
+                        soulInfo.cooldown = soulInfo.maxCooldown;
+                        soulInfo.addStacks();
+                    }
+                    if (attacker.tickCount % (cold ? 2 : 5) == 0 && soulInfo.stacks > 0) {
+                        if (SoulUtils.getSoulTarget(attacker, 10) instanceof LivingEntity target) {
+                            soulInfo.shrinkStacks();
+                            double x = attacker.getRandomX(2);
+                            double y = attacker.getY() + attacker.getBoundingBox().getYsize() * 0.5f;
+                            double z = attacker.getRandomZ(2);
+                            Snowball snowball = new Snowball(level, x, y, z);
+                            Vec3 toMonster = target.getHitbox().getCenter().subtract(x, y, z).normalize();
+                            snowball.shoot(toMonster.x, toMonster.y, toMonster.z, 2.0f, 1.0f);
+                            snowball.setOwner(attacker);
+                            level.addFreshEntity(snowball);
+                            ParticleUtils.spawnParticleSphere(
+                                    (ServerLevel) level,
+                                    x,
+                                    y,
+                                    z,
+                                    ParticleTypes.ITEM_SNOWBALL,
+                                    0.2f,
+                                    10,
+                                    0.5f
+                            );
+                            SoulUtils.playSound(
+                                    level,
+                                    snowball.position(),
+                                    SoundEvents.SNOWBALL_THROW,
+                                    SoundSource.PLAYERS
+                            );
+                        }
+                    }
+                }
+            }
+        }
+
+    }
 
 }

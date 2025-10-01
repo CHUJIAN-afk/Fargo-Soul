@@ -1,20 +1,23 @@
 package First.fargo_soul.Item.Soul.TerraSoul.WillPower.Soulstone;
 
+import First.fargo_soul.Attachment.Attachment.SoulAbilityData;
+import First.fargo_soul.Attachment.AttachmentRegister;
+import First.fargo_soul.Attribute.AttributeRegister;
+import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
-import First.fargo_soul.Utils.CurioUtils;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.EntityType;
+import First.fargo_soul.Item.Soul.TerraSoul.WillPower.WillPower;
+import First.fargo_soul.Utils.AttributeUtils;
+import First.fargo_soul.Utils.SoulUtils;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.Arrow;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
-
-import static First.fargo_soul.Utils.CustomUtils.random;
 
 public class RedRidingSoul extends SoulItem {
 
@@ -23,46 +26,52 @@ public class RedRidingSoul extends SoulItem {
     }
 
 
-    public static void RedRidingSoulDamageHandler(LivingIncomingDamageEvent event) {
-        if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.RedRidingSoul.get())) {
-            long lastDamage = player.getPersistentData().getLong("RedRidingSoulLastDamage");
-            long gameTime = player.serverLevel().getGameTime();
-            if (lastDamage + 20 > gameTime) {
-                if (event.getSource().getWeaponItem() != null && event.getEntity() instanceof LivingEntity livingEntity) {
-                    player.getPersistentData().putLong("RedRidingSoulLastDamage", gameTime);
-                    float damage = player.getPersistentData().getFloat("RedRidingSoul");
-                    player.getPersistentData().putFloat("RedRidingSoul", Math.min(damage + 1, 10));
-                    float ArmorPierce = (damage * 2) - livingEntity.getArmorValue();
-                    if (ArmorPierce > 0) {
-                        event.setAmount(event.getAmount() * (1 + (ArmorPierce * 0.01f)));
-                    }
-                    event.setAmount(event.getAmount() + damage);
-                    if (damage == 10) {
-                        player.getPersistentData().remove("RedRidingSoul");
-                        for (int i = 0; i < 10; i++) {
-                            Arrow arrow = new Arrow(EntityType.ARROW, player.serverLevel());
-                            arrow.getPersistentData().putBoolean("soul", true);
-                            Vec3 Pos = new Vec3(livingEntity.getRandomX(4), livingEntity.getRandomY() + 6, livingEntity.getRandomZ(4));
-                            arrow.setPos(Pos);
-                            arrow.setBaseDamage(event.getAmount() * 0.2);
-                            Vec3 vec3 = livingEntity.getHitbox().getCenter().subtract(Pos).normalize();
-                            arrow.shoot(vec3.x, vec3.y, vec3.z, 1.0F, 1.0F);
-                            player.level().addFreshEntity(arrow);
-                            player.serverLevel().playSound(
-                                    null,
-                                    player.getX(), player.getY(), player.getZ(),
-                                    SoundEvents.ARROW_SHOOT,
-                                    SoundSource.PLAYERS,
-                                    1.0f,
-                                    random.nextFloat() * 0.4f + 0.4f
-                            );
-                        }
-                    }
-                }
-            } else {
-                player.getPersistentData().putLong("RedRidingSoulLastDamage", gameTime);
-                player.getPersistentData().remove("RedRidingSoul");
+    @EventBusSubscriber(modid = Fargo_soul.MODID)
+    public static class Event {
+
+        @SubscribeEvent
+        public static void Tick(EntityTickEvent.Post event) {
+            if (event.getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
+                SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(RedRidingSoul.class);
+                AttributeUtils.ConditionAttributeModifier(
+                        attacker,
+                        Attributes.MOVEMENT_SPEED,
+                        SoulsRegister.RedRidingSoul.getId(),
+                        soulInfo.stacks * 0.01f,
+                        AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
+                        SoulUtils.isEquipped(attacker, RedRidingSoul.class) && soulInfo.stacks > 0
+                );
+                AttributeUtils.ConditionAttributeModifier(
+                        attacker,
+                        AttributeRegister.ArmorPierce,
+                        SoulsRegister.RedRidingSoul.getId(),
+                        soulInfo.stacks * 0.01f,
+                        AttributeModifier.Operation.ADD_VALUE,
+                        SoulUtils.isEquipped(attacker, RedRidingSoul.class) && soulInfo.stacks > 0
+                );
             }
         }
+
+        @SubscribeEvent
+        public static void Damage(LivingIncomingDamageEvent event) {
+            if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
+                if (SoulUtils.isEquipped(attacker, RedRidingSoul.class)) {
+                    SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(RedRidingSoul.class);
+                    soulInfo.maxStacks = SoulUtils.isEquipped(attacker, WillPower.class) ? 15 : 10;
+                    soulInfo.addStacks();
+                    if (target.getArmorValue() > 0) {
+                        event.setAmount(event.getAmount() * 1.2f);
+                    }
+                }
+            }
+            if (!event.isCanceled() && event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
+                if (SoulUtils.isEquipped(target, RedRidingSoul.class)) {
+                    SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(RedRidingSoul.class);
+                    soulInfo.removeStacks();
+                }
+            }
+        }
+
     }
+
 }

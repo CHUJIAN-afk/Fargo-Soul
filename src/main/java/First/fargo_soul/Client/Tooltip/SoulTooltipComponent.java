@@ -13,9 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public record SoulTooltipComponent(int width, int height,
-								   SoulItem soulItem) implements ClientTooltipComponent, TooltipComponent {
-
+public record SoulTooltipComponent(int width, int height, SoulItem soulItem) implements ClientTooltipComponent, TooltipComponent {
 	@Override
 	public int getWidth(@NotNull Font font) {
 		return width;
@@ -31,9 +29,11 @@ public record SoulTooltipComponent(int width, int height,
 		PoseStack pose = guiGraphics.pose();
 		pose.pushPose();
 		pose.translate(tooltipX, tooltipY, 0);
+		pose.scale(1.5f, 1.5f, 1.5f);
 		List<SoulItem> soulItemList = soulItem.getSoulItemList();
 		guiGraphics.renderItem(soulItem.getDefaultInstance(), 0, 0);
-		for (int i = 0; i < soulItemList.size(); i++) {
+		for (SoulItem item : soulItemList) {
+			int i = soulItemList.indexOf(item);
 			guiGraphics.renderItem(soulItemList.get(i).getDefaultInstance(), (i + 1) * 16, 0);
 		}
 		pose.popPose();

@@ -1,144 +1,129 @@
 package First.fargo_soul.Item.Soul.TerraSoul.NaturePower.SoulStone;
 
+import First.fargo_soul.Attachment.Attachment.SoulAbilityData;
+import First.fargo_soul.Attachment.AttachmentRegister;
+import First.fargo_soul.Fargo_soul;
+import First.fargo_soul.Item.BaseItem.BaseItemsRegister;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
-import First.fargo_soul.Item.Soul.SoulsRegister;
-import First.fargo_soul.Utils.CurioUtils;
+import First.fargo_soul.Item.Soul.TerraSoul.NaturePower.NaturePower;
 import First.fargo_soul.Utils.ParticleUtils;
-import First.fargo_soul.Utils.CustomUtils;
-import net.minecraft.client.player.Input;
-import net.minecraft.client.player.LocalPlayer;
+import First.fargo_soul.Utils.SoulUtils;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RenderLivingEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
-import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 
 public class GreenSoul extends SoulItem {
-    public static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
     public GreenSoul(Properties properties) {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIME));
     }
 
+    @EventBusSubscriber(modid = Fargo_soul.MODID)
+    public static class Event {
 
-    private static Movement zza = Movement.NONE;
-    private static int sprintingTime = 0;
-    private static boolean zzKeyDown = false;
-    private static int cooldown = 0;
-
-    private enum Movement {
-        NONE,
-        UP
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public static void GreenSoulMovementInputHandler(MovementInputUpdateEvent event) {
-        if (event.getEntity() instanceof LocalPlayer player && CurioUtils.isEquipped(player, SoulsRegister.GreenSoul.get())) {
-        if (cooldown > 0) {
-            cooldown--;
-            return;
-        }
-        Input input = event.getInput();
-        if (sprintingTime > 0) sprintingTime--;
-        if (zza == Movement.NONE) {
-            if (input.up) {
-                zza = Movement.UP;
-                sprintingTime = 7;
-                zzKeyDown = true;
-            }
-        } else if (zzKeyDown) {
-            if (!input.up) zzKeyDown = false;
-        } else if (sprintingTime > 0) {
-            if (zza == Movement.UP && input.forwardImpulse >= 0.8) {
-                Vec3 viewVector = player.getLookAngle();
-                player.addDeltaMovement(viewVector.scale(1.2));
-                zza = Movement.NONE;
-                cooldown = 20;
-            }
-        } else if (sprintingTime == 0) {
-            zza = Movement.NONE;
-        }
-    }}
-
-    public static void GreenSoulTickHandler2(PlayerTickEvent.Post event){
-        if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.GreenSoul.get())) {
-            if (player.isFallFlying()){
-                List<LivingEntity> livingEntityList = player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(2));
-                livingEntityList.removeIf(livingEntity -> CurioUtils.isEquipped(livingEntity, SoulsRegister.GreenSoul.get()));
-                for (LivingEntity livingEntity : livingEntityList) {
-                    MobEffectInstance effectInstance = new MobEffectInstance(MobEffects.POISON, 60);
-                    livingEntity.addEffect(effectInstance);
-                }
-                double x = player.getX();
-                double y = player.getY();
-                double z = player.getZ();
-                executorService.schedule((() -> ParticleUtils.spawnParticleSphere(
-                        player.serverLevel(),
-                        x,
-                        y,
-                        z,
-                        ParticleTypes.GLOW_SQUID_INK,
-                        2.0f,
-                        20,
-                        0.5f
-                )), 200, TimeUnit.MILLISECONDS);
+        @OnlyIn(Dist.CLIENT)
+        @SubscribeEvent
+        public static void render(RenderLivingEvent.Post<?, ?> event) {
+            LivingEntity attacker = event.getEntity();
+            if (SoulUtils.isEquipped(attacker, GreenSoul.class)) {
+                MultiBufferSource multiBufferSource = event.getMultiBufferSource();
+                PoseStack poseStack = event.getPoseStack();
+                Minecraft minecraft = Minecraft.getInstance();
+                ItemRenderer itemRenderer = minecraft.getItemRenderer();
+                float ageInTicks = SoulUtils.getAgeInTicks(attacker, event.getPartialTick(), 0.04f);
+                poseStack.pushPose();
+                double y = attacker.getBoundingBox().getYsize();
+                double size = attacker.getBoundingBox().getSize() + 0.25;
+                float scale = (float) (size);
+                float floatingOffset = (float) Math.sin(ageInTicks) * scale * 0.1f + scale * 0.5f;
+                poseStack.translate(0, y + floatingOffset, 0);
+                poseStack.mulPose(Axis.YP.rotationDegrees(ageInTicks * 180 / (float) Math.PI));
+                poseStack.scale(scale, scale, scale);
+                itemRenderer.renderStatic(
+                        BaseItemsRegister.GreenCrystal.get().getDefaultInstance(),
+                        ItemDisplayContext.FIXED,
+                        LightTexture.FULL_BRIGHT,
+                        OverlayTexture.NO_OVERLAY,
+                        poseStack,
+                        multiBufferSource,
+                        attacker.level(),
+                        attacker.getId()
+                );
+                poseStack.popPose();
             }
         }
-    }
 
-    public static void GreenSoulTickHandler(PlayerTickEvent.Post event) {
-        if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.GreenSoul.get())) {
-            if (player.tickCount % 20 == 0) {
-                TargetingConditions conditions = TargetingConditions.forCombat().range(10.0);
-                LivingEntity target = player.level().getNearestEntity(LivingEntity.class, conditions, player, player.getX(), player.getY(), player.getZ(), player.getBoundingBox().inflate(10));
-                if (target != null) {
-                    target.hurt(player.damageSources().playerAttack(player), 4);
-                    ParticleUtils.spawnParticleLine(
-                            player.serverLevel(),
-                            player.position().add(0, 2, 0),
-                            target.getBoundingBox().getCenter(),
-                            ParticleTypes.ELECTRIC_SPARK,
-                            10,
-                            0
-                    );
-                    ParticleUtils.spawnParticleLine(
-                            player.serverLevel(),
-                            player.position().add(0, 1.8, 0),
-                            player.position().add(0, 2.6, 0),
-                            ParticleTypes.ELECTRIC_SPARK,
-                            100,
-                            0.5f
-                    );
-                    player.serverLevel().playSound(
-                            null,
-                            player.getX(), player.getY(), player.getZ(),
-                            SoundEvents.ILLUSIONER_CAST_SPELL,
-                            SoundSource.PLAYERS,
-                            1.0f,
-                            CustomUtils.random.nextFloat() * 0.4f + 0.4f
-                    );
+        @SubscribeEvent
+        public static void GreenSoulTickHandler(EntityTickEvent.Post event) {
+            if (event.getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
+                if (SoulUtils.isEquipped(attacker, GreenSoul.class)) {
+                    boolean equipped = SoulUtils.isEquipped(attacker, NaturePower.class);
+                    SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GreenSoul.class);
+                    soulInfo.maxCooldown = equipped ? 30 : 60;
+                    if (soulInfo.cooldown == 0 && SoulUtils.getSoulTarget(attacker, 10) instanceof LivingEntity target) {
+                        soulInfo.cooldown = soulInfo.maxCooldown;
+                        Level level = attacker.level();
+                        SoulUtils.attack(attacker, target, DamageTypes.MAGIC, 4);
+                        target.addEffect(new MobEffectInstance(MobEffects.GLOWING, 59));
+                        if (equipped) {
+                            target.addEffect(new MobEffectInstance(MobEffects.POISON, 39));
+                        }
+                        Vec3 position = attacker.position();
+                        double size = attacker.getBoundingBox().getYsize();
+                        ParticleUtils.spawnParticleLine(
+                                (ServerLevel) level,
+                                position.add(0, size, 0),
+                                target.getBoundingBox().getCenter(),
+                                ParticleTypes.ELECTRIC_SPARK,
+                                10,
+                                0
+                        );
+                        ParticleUtils.spawnParticleLine(
+                                (ServerLevel) level,
+                                position.add(0, size * 0.9, 0),
+                                position.add(0, size * 1.3, 0),
+                                ParticleTypes.ELECTRIC_SPARK,
+                                100,
+                                0.5f
+                        );
+                        SoulUtils.playSound(
+                                level,
+                                position,
+                                SoundEvents.ILLUSIONER_CAST_SPELL,
+                                SoundSource.PLAYERS
+                        );
+                    }
                 }
             }
         }
-    }
 
-
-
+	}
 
 }
+
+
+

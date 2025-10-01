@@ -18,7 +18,6 @@ repositories {
         name "org.confluenceReleases"
         url "https://maven.confluence.ink/snapshots"
     }
-    maven { url = "https://maven.createmod.net" } // Create, Ponder, Flywheel
     maven { url = "https://maven.ithundxr.dev/snapshots" } // Registrate
 
 }
@@ -113,14 +112,7 @@ dependencies {
     implementation(jarJar("io.github.llamalad7:mixinextras-neoforge:0.5.0"))
     //汇流lib内置库
     implementation(jarJar("org.confluence.lib:Confluence-Magic-Lib:0.0.2a-SNAPSHOT"))
-    //机械动力联动
-    compileOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
-    compileOnly("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}")
-    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
-    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
-    compileOnly("com.tterrag.registrate:Registrate:${registrate_version}")
-    //无尽贪婪-重生联动
-    compileOnly files("libs/Re-Avaritia-neoforge-1.21.1-1.3.9.0-beta4-fix2.jar")
+
 
 }
 
@@ -154,6 +146,9 @@ neoForge.ideSyncTask generateModMetadata
 publishing {
     publications {
         register('mavenJava', MavenPublication) {
+            groupId = 'com.fargo_soul'
+            artifactId = 'fargo_soul'
+            version = '1.0.0'
             from components.java
         }
     }
@@ -161,6 +156,9 @@ publishing {
         maven {
             url "file://${project.projectDir}/repo"
         }
+    }
+    repositories {
+        mavenLocal()
     }
 }
 

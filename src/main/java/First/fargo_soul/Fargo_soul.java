@@ -8,12 +8,19 @@ import First.fargo_soul.Item.CreativeModeTabRegister;
 import First.fargo_soul.Item.ModItemRegister;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 
 @Mod(Fargo_soul.MODID)
 public class Fargo_soul {
 
     public static final String MODID = "fargo_soul";
+    public static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+    public static final Logger logger = LoggerFactory.getLogger(MODID);
 
     public Fargo_soul(IEventBus eventBus) {
         ModItemRegister.register(eventBus);//物品注册

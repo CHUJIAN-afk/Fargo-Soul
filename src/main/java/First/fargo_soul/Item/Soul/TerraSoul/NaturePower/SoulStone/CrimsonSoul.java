@@ -1,15 +1,17 @@
 package First.fargo_soul.Item.Soul.TerraSoul.NaturePower.SoulStone;
 
-import First.fargo_soul.Effect.EffectRegister;
+import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
-import First.fargo_soul.Item.Soul.SoulsRegister;
-import First.fargo_soul.Utils.CurioUtils;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.effect.MobEffectInstance;
+import First.fargo_soul.Utils.SoulUtils;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
+
+import java.util.List;
 
 public class CrimsonSoul extends SoulItem {
 
@@ -17,27 +19,25 @@ public class CrimsonSoul extends SoulItem {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE));
     }
 
+    @EventBusSubscriber(modid = Fargo_soul.MODID)
+    public static class Event {
 
-    public static void CrimsonSoulMobEffectExpiredHandler(MobEffectEvent.Expired event) {
-        if (event.getEntity() instanceof ServerPlayer player) {
-            if (event.getEffectInstance() instanceof MobEffectInstance mobEffectInstance && mobEffectInstance.is(EffectRegister.ScarletHeals)) {
-                player.heal(player.getPersistentData().getFloat("CrimsonSoul"));
-                player.getPersistentData().remove("CrimsonSoul");
+        @SubscribeEvent
+        public static void Damage(LivingIncomingDamageEvent event) {
+            if (event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
+                Level level = target.level();
+                List<LivingEntity> livingEntityList = level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(5), livingEntity -> SoulUtils.isEquipped(livingEntity, CrimsonSoul.class));
+                livingEntityList.remove(target);
+                for (LivingEntity attacker : livingEntityList) {
+                    float healAmount = event.getAmount() * (0.1f + ((attacker.getMaxHealth() - attacker.getHealth()) / attacker.getMaxHealth()) * 0.3f);
+                    attacker.heal(healAmount);
+                }
             }
         }
+
     }
 
-    public static void CrimsonSoulDamageHandler2(LivingIncomingDamageEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.CrimsonSoul.get()) && event.getAmount() > 10) {
-            if (player.getEffect(EffectRegister.ScarletHeals) == null) {
-                player.getPersistentData().putFloat("CrimsonSoul", event.getAmount() * 0.5f);
-                player.addEffect(new MobEffectInstance(EffectRegister.ScarletHeals, 140));
-            } else {
-                player.getPersistentData().remove("CrimsonSoul");
-                player.removeEffect(EffectRegister.ScarletHeals);
-            }
-        }
-    }
+
 
 
 

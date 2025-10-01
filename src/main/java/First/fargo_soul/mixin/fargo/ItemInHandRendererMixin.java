@@ -2,7 +2,10 @@ package First.fargo_soul.mixin.fargo;
 
 
 import First.fargo_soul.Item.Soul.SoulsRegister;
+import First.fargo_soul.Item.Soul.TerraSoul.TerraPower.SoulStone.TungstenSoul;
+import First.fargo_soul.Item.Soul.TerraSoul.TerraPower.TerraPower;
 import First.fargo_soul.Utils.CurioUtils;
+import First.fargo_soul.Utils.SoulUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -30,8 +33,8 @@ public class ItemInHandRendererMixin {
     private void ItemRender(LivingEntity entity, ItemStack itemStack, ItemDisplayContext displayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int seed, CallbackInfo ci) {
         if (entity instanceof Player player) {
             float scale = 1.0f;
-            if (CurioUtils.isEquipped(player, SoulsRegister.TungstenSoul.get())) {
-                scale += 1;
+            if (SoulUtils.isEquipped(player, TungstenSoul.class)) {
+                scale += SoulUtils.isEquipped(player, TerraPower.class) ? 1.5f : 1.0f;
             }
             if (CurioUtils.isEquipped(player, SoulsRegister.BerserkerGloves.get()) && itemStack.getItem() instanceof TieredItem) {
                 scale += 1;
@@ -44,3 +47,4 @@ public class ItemInHandRendererMixin {
     }
 
 }
+

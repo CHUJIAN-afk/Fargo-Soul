@@ -1,24 +1,24 @@
 package First.fargo_soul.Item.Soul.TerraSoul.EarthPower.SoulStone;
 
+import First.fargo_soul.Attachment.Attachment.SoulAbilityData;
+import First.fargo_soul.Attachment.AttachmentRegister;
+import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
+import First.fargo_soul.Item.Soul.TerraSoul.EarthPower.EarthPower;
 import First.fargo_soul.Utils.AttributeUtils;
-import First.fargo_soul.Utils.CurioUtils;
-import First.fargo_soul.Utils.ParticleUtils;
-import net.minecraft.core.particles.ParticleTypes;
+import First.fargo_soul.Utils.SoulUtils;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Monster;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
-
-import java.util.List;
-
-import static First.fargo_soul.Utils.CustomUtils.random;
 
 
 public class AdamantiteSoul extends SoulItem {
@@ -27,51 +27,51 @@ public class AdamantiteSoul extends SoulItem {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIME));
     }
 
+    @EventBusSubscriber(modid = Fargo_soul.MODID)
+    public static class Event {
 
-    public static void AdamantiteSoulDamageHandler(LivingIncomingDamageEvent event) {
-        if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.AdamantiteSoul.get())) {
-            if (event.getSource().getWeaponItem() != null) {
-                player.getPersistentData().putLong("AdamantiteSoulLastDamage", player.serverLevel().getGameTime() + 100);
-                int AdamantiteSoul = player.getPersistentData().getInt("AdamantiteSoul");
-                player.getPersistentData().putInt("AdamantiteSoul", Math.min(AdamantiteSoul + 5, 30));
+        @SubscribeEvent
+        public static void Tick(EntityTickEvent.Post event) {
+            if (event.getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
                 ResourceLocation resourceLocation = SoulsRegister.AdamantiteSoul.getId();
-                AttributeUtils.addAttributeModifier(player, Attributes.ATTACK_SPEED, resourceLocation, AdamantiteSoul / 100d, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+                SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(AdamantiteSoul.class);
+                if (soulInfo.duration == 0) {
+                    soulInfo.stacks = 0;
+                }
+                AttributeUtils.ConditionAttributeModifier(
+                        attacker,
+                        Attributes.ATTACK_SPEED,
+                        resourceLocation,
+                        soulInfo.stacks * 0.05,
+                        AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
+                        SoulUtils.isEquipped(attacker, AdamantiteSoul.class) && soulInfo.stacks > 0
+                );
+                AttributeUtils.ConditionAttributeModifier(
+                        attacker,
+                        Attributes.MOVEMENT_SPEED,
+                        resourceLocation,
+                        0.15,
+                        AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
+                        SoulUtils.isEquipped(attacker, EarthPower.class) && soulInfo.stacks > soulInfo.maxStacks
+                );
             }
         }
-    }
 
-    public static void AdamantiteSoulTickHandler(PlayerTickEvent.Post event) {
-        if (event.getEntity() instanceof ServerPlayer player) {
-            ResourceLocation resourceLocation = SoulsRegister.AdamantiteSoul.getId();
-            if (CurioUtils.isEquipped(player, SoulsRegister.AdamantiteSoul.get())) {
-                int AdamantiteSoul = player.getPersistentData().getInt("AdamantiteSoul");
-                long lastDamage = player.getPersistentData().getLong("AdamantiteSoulLastDamage");
-                if (lastDamage < player.serverLevel().getGameTime()) {
-                    player.getPersistentData().remove("AdamantiteSoul");
-                    AttributeUtils.removeAttributeModifier(player, Attributes.ATTACK_SPEED, resourceLocation);
-                }
-                if (AdamantiteSoul == 30 && player.tickCount % 40 == 0) {
-                    List<Monster> monsterList = player.level().getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(5));
-                    monsterList.removeIf(monster -> !player.equals(monster.getTarget()));
-                    for (Monster monster : monsterList) {
-                        if (random.nextDouble() < 0.2) {
-                            ParticleUtils.spawnParticleLine(
-                                    player.serverLevel(),
-                                    player.getBoundingBox().getCenter(),
-                                    monster.position(),
-                                    ParticleTypes.PORTAL,
-                                    20,
-                                    0.1f
-                            );
-                            monster.setTarget(null);
-                        }
+        @SubscribeEvent
+        public static void Damage(LivingIncomingDamageEvent event) {
+            if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
+                if (SoulUtils.isEquipped(attacker, AdamantiteSoul.class)) {
+                    SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(AdamantiteSoul.class);
+                    soulInfo.maxStacks = 8;
+                    soulInfo.addStacks();
+                    soulInfo.duration = 100;
+                    if (target instanceof Mob mob && mob.getTarget() != null && target.getRandom().nextDouble() < 0.05 && soulInfo.stacks == soulInfo.maxStacks) {
+                        mob.setTarget(null);
                     }
                 }
-            } else {
-                AttributeUtils.removeAttributeModifier(player, Attributes.ATTACK_SPEED, resourceLocation);
             }
         }
-    }
 
+    }
 
 }

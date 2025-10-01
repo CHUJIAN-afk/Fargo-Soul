@@ -1,26 +1,74 @@
 package First.fargo_soul.Utils;
 
-import First.fargo_soul.Attachment.Attachment.Data;
+import First.fargo_soul.Attachment.Attachment.SoulData;
 import First.fargo_soul.Attachment.AttachmentRegister;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
+import First.fargo_soul.Item.Soul.SoulsRegister;
 import net.minecraft.core.Holder;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.Enemy;
-import net.neoforged.neoforge.attachment.AttachmentType;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
-import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.Function;
 
 public class SoulUtils {
+
+	public static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+	public static final Random random = new Random();
+
+	public static float getAgeInTicks(LivingEntity attacker, float partialTick, float speed) {
+		float render = attacker.tickCount * speed;
+		return Mth.lerp(partialTick, render - speed, render);
+	}
+
+	public static void playSound(Level level, Vec3 center, SoundEvent soundEvent, SoundSource soundSource) {
+		level.playSound(
+				null,
+				center.x(),
+				center.y(),
+				center.z(),
+				soundEvent,
+				soundSource,
+				1.0f,
+				random.nextFloat(0.4f, 0.8f)
+		);
+	}
+
+	public static LivingEntity getSoulTarget(LivingEntity attacker, float distance) {
+		LivingEntity target = null;
+		if (attacker instanceof Player player) {
+			List<LivingEntity> livingEntityList = player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(distance), livingEntity -> livingEntity instanceof Enemy && player.distanceTo(livingEntity) < distance);
+			if (!livingEntityList.isEmpty()) {
+				target = livingEntityList.get(player.getRandom().nextInt(livingEntityList.size()));
+			}
+		} else if (attacker instanceof Mob mob && mob.getTarget() instanceof LivingEntity target1) {
+			if (mob.distanceTo(target1) < distance) {
+				target = target1;
+			}
+		}
+		return target;
+	}
 
 	public static void applyOrUpdateEffect(LivingEntity entity, Holder<MobEffect> effect, int duration, int maxLevel) {
 		if (entity.getEffect(effect) instanceof MobEffectInstance existingEffect) {
@@ -32,52 +80,64 @@ public class SoulUtils {
 		}
 	}
 
-	public static List<LivingEntity> getNearbyEnemyList(LivingEntity center, double distance) {
-		List<LivingEntity> enemyList = new ArrayList<>();
-		for (LivingEntity ofClass : getNearbyLivingEntityList(center, distance)) {
-			if (ofClass instanceof Enemy) {
-				enemyList.add(ofClass);
+	public static List<SoulItem> getSoulItemList(LivingEntity livingEntity) {
+		List<SoulItem> soulItemList = new ArrayList<>();
+		getAllCurioItems(getSoulInventory(livingEntity)).forEach(soulItem -> {
+			if (!soulItemList.contains(soulItem)) {
+				soulItemList.add(soulItem);
+			}
+		});
+		return soulItemList;
+	}
+
+	public static <T extends SoulItem> boolean isEquipped(LivingEntity livingEntity, Class<T> type) {
+		SoulData soulData = livingEntity.getData(AttachmentRegister.SoulData.get());
+		if (soulData.getSoulItemList() == null) {
+			soulData.setSoulItemList(getSoulItemList(livingEntity));
+		}
+		for (SoulItem soulItem : getSoulItemList(livingEntity)) {
+			if (soulItem.getClass().equals(type)) {
+				return true;
 			}
 		}
-		return enemyList;
+		return false;
 	}
 
-	public static List<LivingEntity> getNearbyLivingEntityList(LivingEntity center, double distance) {
-		List<LivingEntity> entitiesOfClass = center.level().getEntitiesOfClass(LivingEntity.class, center.getBoundingBox().inflate(distance));
-		entitiesOfClass.removeIf(livingEntity -> livingEntity.distanceTo(center) > distance);
-		entitiesOfClass.remove(center);
-		return entitiesOfClass;
+	public static void updateSoulList(LivingEntity livingEntity) {
+		SoulData soulData = livingEntity.getData(AttachmentRegister.SoulData.get());
+		soulData.setSoulItemList(getSoulItemList(livingEntity));
 	}
 
-
-	public static List<SoulItem> getAllSoulItemFromSoulData(LivingEntity livingEntity){
-		AttachmentType<Data> dataAttachmentType = AttachmentRegister.Data.get();
-		Data data = livingEntity.getData(dataAttachmentType);
-		List<SoulItem> soulItemList = getAllCurioItems(getSoulInventory(livingEntity));
-		Set<Class<? extends SoulItem>> set = soulItemList.stream().map(SoulItem::getClass).collect(Collectors.toSet());
-		data.getSoulItemList().removeIf(soulItem -> !set.contains(soulItem.getClass()));
-		soulItemList.forEach(data::addSoulItem);
-		return data.getSoulItemList();
+	public static boolean isEquippedAny(LivingEntity livingEntity, List<Class<? extends SoulItem>> types) {
+		for (Class<? extends SoulItem> type : types) {
+			if (isEquipped(livingEntity, type)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
-	public static <T extends SoulItem> SoulItem getSoulItemFromSoulData(LivingEntity livingEntity, Class<T> type) {
-		AttachmentType<Data> dataAttachmentType = AttachmentRegister.Data.get();
-		Data data = livingEntity.getData(dataAttachmentType);
-		List<SoulItem> soulItemList = getAllCurioItems(getSoulInventory(livingEntity));
-		Set<Class<? extends SoulItem>> set = soulItemList.stream().map(SoulItem::getClass).collect(Collectors.toSet());
-		data.getSoulItemList().removeIf(soulItem -> !set.contains(soulItem.getClass()));
-		soulItemList.forEach(data::addSoulItem);
-		return data.getSoulItem(type);
-	}
-
-	private static @NotNull List<SoulItem> getSoulInventory(LivingEntity livingEntity) {
+	private static List<SoulItem> getSoulInventory(LivingEntity livingEntity) {
 		List<SoulItem> OringinCurioList = new ArrayList<>();
+		if (livingEntity instanceof Player player) {
+			Inventory inventory = player.getInventory();
+			if (inventory.contains(SoulsRegister.TerraSoul.get().getDefaultInstance())) {
+				NonNullList<ItemStack> list = inventory.items;
+				list.forEach(itemStack -> {
+					Item item = itemStack.getItem();
+					if (item instanceof SoulItem soulItem) {
+						OringinCurioList.add(soulItem);
+					}
+				});
+			}
+		}
 		Optional<ICuriosItemHandler> curiosItemHandler = CuriosApi.getCuriosInventory(livingEntity);
 		if (curiosItemHandler.isPresent()) {
 			IItemHandlerModifiable iItemHandlerModifiable = curiosItemHandler.get().getEquippedCurios();
 			int size = iItemHandlerModifiable.getSlots();
 			for (int i = 0; i < size; i++) {
-				if (iItemHandlerModifiable.getStackInSlot(i).getItem() instanceof SoulItem soulItem) {
+				ItemStack stack = iItemHandlerModifiable.getStackInSlot(i);
+				if (stack.getItem() instanceof SoulItem soulItem) {
 					OringinCurioList.add(soulItem);
 				}
 			}
@@ -85,10 +145,12 @@ public class SoulUtils {
 		return OringinCurioList;
 	}
 
-	private static List<SoulItem> getAllCurioItems(List<SoulItem> originList) {
+	public static List<SoulItem> getAllCurioItems(List<SoulItem> originList) {
 		List<SoulItem> result = new ArrayList<>();
 		for (SoulItem item : originList) {
-			result.add(item);
+			if (!result.contains(item)) {
+				result.add(item);
+			}
 			List<SoulItem> soulItems = item.getSoulItemList();
 			if (!soulItems.isEmpty()) {
 				result.addAll(getAllCurioItems(soulItems));
@@ -96,4 +158,30 @@ public class SoulUtils {
 		}
 		return result;
 	}
+
+	public static <T extends SoulItem> boolean canAttack(Class<T> type, LivingEntity by, LivingEntity target) {
+		List<String> damageContainer = target.getData(AttachmentRegister.DamageData).getDamageContainer();
+		String string = type.getPackageName() + by.getId() + by.level().getGameTime();
+		return !damageContainer.contains(string);
+	}
+
+	public static <T extends SoulItem> void attack(Class<T> type, LivingEntity by, LivingEntity attacker, LivingEntity target, ResourceKey<DamageType> damageTypeResourceKey, float amount) {
+		List<String> damageContainer = target.getData(AttachmentRegister.DamageData).getDamageContainer();
+		String string = type.getPackageName() + by.getId() + attacker.level().getGameTime();
+		damageContainer.add(string);
+		attack(attacker, target, damageTypeResourceKey, amount);
+	}
+
+	public static void attack(LivingEntity attacker, LivingEntity target, ResourceKey<DamageType> damageTypeResourceKey, float amount) {
+		target.invulnerableTime = 0;
+		target.hurt(attacker.level().damageSources().source(damageTypeResourceKey, attacker), amount);
+	}
+
+	public <T> void addItemToTag(Function<ResourceLocation, Optional<? extends T>> idToValue, Map<ResourceLocation, Collection<T>> tags, ResourceLocation itemKey, ResourceLocation tagKey) {
+		if (idToValue.apply(itemKey).isPresent()) {
+			tags.computeIfAbsent(tagKey, k -> new ArrayList<>()).add(idToValue.apply(itemKey).get());
+		}
+	}
+
+
 }

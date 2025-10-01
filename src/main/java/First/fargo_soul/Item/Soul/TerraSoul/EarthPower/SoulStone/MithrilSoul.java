@@ -1,18 +1,22 @@
 package First.fargo_soul.Item.Soul.TerraSoul.EarthPower.SoulStone;
 
+import First.fargo_soul.Attachment.Attachment.SoulAbilityData;
+import First.fargo_soul.Attachment.AttachmentRegister;
+import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
+import First.fargo_soul.Item.Soul.TerraSoul.EarthPower.EarthPower;
 import First.fargo_soul.Utils.AttributeUtils;
-import First.fargo_soul.Utils.CurioUtils;
+import First.fargo_soul.Utils.SoulUtils;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
-
-import java.util.concurrent.TimeUnit;
 
 public class MithrilSoul extends SoulItem {
 
@@ -20,17 +24,31 @@ public class MithrilSoul extends SoulItem {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PINK));
     }
 
+    @EventBusSubscriber(modid = Fargo_soul.MODID)
+    public static class Event {
 
-    public static void MithrilSoulDamageHandler(LivingIncomingDamageEvent event) {
-        if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.MithrilSoul.get())) {
-            long MithrilSoulLastDamage = player.getPersistentData().getLong("MithrilSoulLastDamage");
-            player.getPersistentData().putLong("MithrilSoulLastDamage", player.serverLevel().getGameTime() + 100);
-            if (MithrilSoulLastDamage < player.serverLevel().getGameTime()) {
-                ResourceLocation resourceLocation = SoulsRegister.MithrilSoul.getId();
-                AttributeUtils.addAttributeModifier(player, Attributes.ATTACK_SPEED, resourceLocation, 0.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
-                AttributeUtils.executorService.schedule(() -> AttributeUtils.removeAttributeModifier(player, Attributes.ATTACK_SPEED, resourceLocation), 3, TimeUnit.SECONDS);
+        @SubscribeEvent
+        public static void Post1(LivingDamageEvent.Post event) {
+            if (event.getSource().getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
+                if (SoulUtils.isEquipped(attacker, MithrilSoul.class)) {
+                    SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(MithrilSoul.class);
+                    soulInfo.maxCooldown = SoulUtils.isEquipped(attacker, EarthPower.class) ? 160 : 220;
+                    if (soulInfo.cooldown == 0) {
+                        soulInfo.cooldown = soulInfo.maxCooldown;
+                    }
+                    ResourceLocation resourceLocation = SoulsRegister.MithrilSoul.getId();
+                    AttributeUtils.ConditionAttributeModifier(
+                            attacker,
+                            Attributes.ATTACK_SPEED,
+                            resourceLocation,
+                            0.5,
+                            AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
+                            soulInfo.cooldown >= 100 && soulInfo.cooldown <= soulInfo.maxCooldown
+                    );
+                }
             }
         }
+
     }
 
 }

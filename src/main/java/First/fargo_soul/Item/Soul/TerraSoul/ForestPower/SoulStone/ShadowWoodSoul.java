@@ -1,18 +1,20 @@
 package First.fargo_soul.Item.Soul.TerraSoul.ForestPower.SoulStone;
 
+import First.fargo_soul.Attachment.Attachment.SoulAbilityData;
+import First.fargo_soul.Attachment.AttachmentRegister;
+import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
-import First.fargo_soul.Utils.CurioUtils;
-import First.fargo_soul.Utils.ParticleUtils;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerPlayer;
+import First.fargo_soul.Item.Soul.TerraSoul.ForestPower.ForestPower;
+import First.fargo_soul.Utils.SoulUtils;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
-
-import static First.fargo_soul.Item.Soul.SoulsRegister.ShadowWoodSoul;
 
 public class ShadowWoodSoul extends SoulItem {
 
@@ -20,31 +22,38 @@ public class ShadowWoodSoul extends SoulItem {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.GREEN));
     }
 
+    @EventBusSubscriber(modid = Fargo_soul.MODID)
+    public static class Event {
 
-    public static void ShadowWoodSoulTickHandler(PlayerTickEvent.Post event){
-        if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, ShadowWoodSoul.get()) && player.tickCount % 60 == 0){
-            ParticleUtils.spawnExpandingParticleCircle(
-                    player.serverLevel(),
-                    player.getX(),
-                    player.getY(),
-                    player.getZ(),
-                    ParticleTypes.DRAGON_BREATH,
-                    4,
-                    40,
-                    0.0f,
-                    0,
-                    10,
-                    20
-            );
-        }
-    }
-
-    public static void ShadowWoodSoulDamageHandler(LivingIncomingDamageEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, ShadowWoodSoul.get()) && event.getSource().getEntity() instanceof LivingEntity livingEntity) {
-            float distance = player.distanceTo(livingEntity);
-            if (distance <= 4) {
-                player.heal(event.getAmount() * 0.1f);
+        @SubscribeEvent
+        public static void Tick(EntityTickEvent.Post event) {
+            if (event.getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
+                if (SoulUtils.isEquipped(attacker, ShadowWoodSoul.class)) {
+                    SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(PineWoodSoul.class);
+                    soulInfo.maxCooldown = 100;
+                    if (soulInfo.cooldown == 0 && SoulUtils.getSoulTarget(attacker, 10) instanceof LivingEntity target) {
+                        soulInfo.cooldown = soulInfo.maxCooldown;
+                        SoulAbilityData.SoulInfo info = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(attacker.getScoreboardName());
+                        info.enabled = true;
+                    }
+                }
             }
         }
+
+        @SubscribeEvent
+        public static void Damage(LivingIncomingDamageEvent event) {
+            if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
+                if (SoulUtils.isEquipped(target, ShadowWoodSoul.class) && SoulUtils.canAttack(ShadowWoodSoul.class, attacker, attacker)) {
+                    SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(target.getScoreboardName());
+                    if (soulInfo.enabled) {
+                        int amount = SoulUtils.isEquipped(target, ForestPower.class) ? 3 : 2;
+                        SoulUtils.attack(ShadowWoodSoul.class, attacker, target, attacker, DamageTypes.MAGIC, amount);
+                        target.heal(amount);
+                    }
+                }
+            }
+        }
+
     }
+
 }

@@ -1,49 +1,39 @@
 package First.fargo_soul.Item.Soul.BaseSoul;
 
+import First.fargo_soul.Attachment.AttachmentRegister;
 import First.fargo_soul.Client.Tooltip.SoulTooltipComponent;
+import First.fargo_soul.Event.AddItemTagEvent;
 import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.SoulsRegister;
 import First.fargo_soul.Utils.CurioUtils;
 import First.fargo_soul.Utils.SoulUtils;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.RenderLivingEvent;
 import net.neoforged.neoforge.client.event.RenderTooltipEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
-import org.confluence.lib.ConfluenceMagicLib;
-import org.confluence.lib.common.component.ModRarity;
-import org.joml.Quaternionf;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class SoulItem extends Item implements ICurioItem {
 
@@ -76,13 +66,38 @@ public class SoulItem extends Item implements ICurioItem {
 
     @EventBusSubscriber(modid = Fargo_soul.MODID)
     public static class Event {
+
+        @SubscribeEvent
+        public static void AddItemTagEvent(AddItemTagEvent event) {
+            ResourceLocation resourceLocation = ResourceLocation.fromNamespaceAndPath("curios", "soul");
+            SoulItem item = SoulsRegister.TerraSoul.get();
+            List<SoulItem> soulItemList = SoulUtils.getAllCurioItems(item.getSoulItemList());
+            soulItemList.add(item);
+            List<ResourceLocation> resourceLocationList = new ArrayList<>();
+            soulItemList.forEach(soulItem -> resourceLocationList.add(BuiltInRegistries.ITEM.getKey(soulItem)));
+            event.getMap().put(resourceLocation, resourceLocationList);
+        }
+
+
+        @SubscribeEvent
+        public static void LivingIncomingDamageEvent(LivingIncomingDamageEvent event) {
+            if (event.getSource().getDirectEntity() instanceof Entity entity && entity.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SoulItem.class).enabled && !event.getSource().isDirect()) {
+                event.getEntity().invulnerableTime = 0;
+            }
+        }
+
+        @SubscribeEvent
+        public static void CurioChangeEvent(CurioChangeEvent event) {
+            SoulUtils.updateSoulList(event.getEntity());
+        }
+
         @OnlyIn(Dist.CLIENT)
         @SubscribeEvent
         public static void RenderTooltipHandler(RenderTooltipEvent.GatherComponents event) {
             if (event.getItemStack().getItem() instanceof SoulItem soulItem) {
                 List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
                 int size = tooltipElements.size();
-                tooltipElements.add(Math.min(size, 3), Either.right(new SoulTooltipComponent((soulItem.getSoulItemList().size() + 1) * 16, 16, soulItem)));
+                tooltipElements.add(Math.min(size, 3), Either.right(new SoulTooltipComponent((soulItem.getSoulItemList().size() + 1) * 24, 24, soulItem)));
             }
         }
 
@@ -98,40 +113,17 @@ public class SoulItem extends Item implements ICurioItem {
                 toolTip.add(mutableComponent);
                 if (flags.hasShiftDown()) {
                     List<SoulItem> soulItemList = CurioUtils.getAllCurioItems(soulItem.getSoulItemList());
-                    List<Component> attributeList = CurioUtils.getAttributeList(soulItem);
+                    List<Component> attributeList = CurioUtils.getComponent(soulItem, "attribute");
                     if (!attributeList.isEmpty()) {
                         toolTip.addAll(attributeList);
                     }
                     for (SoulItem item : soulItemList) {
                         toolTip.add(Component.empty());
-                        toolTip.addAll(CurioUtils.getAttributeList(item));
+                        toolTip.addAll(CurioUtils.getComponent(item, "attribute"));
                     }
                 } else {
-                    List<Component> tooltipList = CurioUtils.getTooltipList(soulItem);
-                    if (soulItem.components().get(ConfluenceMagicLib.MOD_RARITY.get()) instanceof ModRarity modRarity && modRarity.equals(ModRarity.MASTER)) {
-                        for (Component component : tooltipList) {
-                            toolTip.add(component.copy().withColor(modRarity.color()));
-                        }
-                    } else {
-                        toolTip.addAll(tooltipList);
-                    }
+                    toolTip.addAll(CurioUtils.getComponent(soulItem, "tooltip"));
                 }
-            }
-        }
-
-        @SubscribeEvent
-        public static void invulnerable(LivingIncomingDamageEvent event) {
-            if (event.getSource().getEntity() instanceof Projectile projectile && projectile.getOwner() instanceof Player) {
-                if (event.getEntity() instanceof LivingEntity target) {
-                    target.invulnerableTime = 0;
-                }
-            }
-        }
-
-        @SubscribeEvent
-        public static void CurioChangeHandler(CurioChangeEvent event) {
-            if (event.getEntity() instanceof LivingEntity livingEntity) {
-                CurioUtils.updateSoulList(livingEntity);
             }
         }
 

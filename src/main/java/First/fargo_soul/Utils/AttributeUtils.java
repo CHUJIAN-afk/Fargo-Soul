@@ -7,15 +7,16 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-
 public class AttributeUtils {
-    public static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
     public static void ConditionAttributeModifier(LivingEntity livingEntity, Holder<Attribute> attribute, ResourceLocation resourceLocation, double amount, AttributeModifier.Operation operation, boolean condition) {
         if (condition) {
-            addAttributeModifier(livingEntity, attribute, resourceLocation, amount, operation);
+            if (livingEntity.getAttribute(attribute) instanceof AttributeInstance attributeInstance) {
+                AttributeModifier attributeModifier = attributeInstance.getModifier(resourceLocation);
+                if ((attributeModifier == null) || (attributeModifier instanceof AttributeModifier modifier && (modifier.amount() != amount || modifier.operation() != operation))) {
+                    addAttributeModifier(livingEntity, attribute, resourceLocation, amount, operation);
+                }
+            }
         } else {
             removeAttributeModifier(livingEntity, attribute, resourceLocation);
         }

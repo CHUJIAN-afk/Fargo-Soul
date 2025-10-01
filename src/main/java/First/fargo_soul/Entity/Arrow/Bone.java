@@ -41,14 +41,6 @@ public class Bone extends AbstractArrow {
     }
 
     @Override
-    public void tick() {
-        super.tick();
-        if (this.tickCount >= 100) {
-            this.discard();
-        }
-    }
-
-    @Override
     protected @NotNull ItemStack getDefaultPickupItem() {
         return Items.BONE.getDefaultInstance();
     }

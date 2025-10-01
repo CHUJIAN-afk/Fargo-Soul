@@ -6,21 +6,17 @@ import First.fargo_soul.Item.Soul.TerraSoul.CosmicPower.CosmicPower;
 import First.fargo_soul.Item.Soul.TerraSoul.CosmicPower.SoulStone.*;
 import First.fargo_soul.Item.Soul.TerraSoul.DeathPower.DeathPower;
 import First.fargo_soul.Item.Soul.TerraSoul.DeathPower.SoulStone.*;
-import First.fargo_soul.Item.Soul.TerraSoul.DeathPower.SoulStone.PenetratingNinjaSoulStone.MonkSoul;
 import First.fargo_soul.Item.Soul.TerraSoul.EarthPower.EarthPower;
 import First.fargo_soul.Item.Soul.TerraSoul.EarthPower.SoulStone.*;
-import First.fargo_soul.Item.Soul.TerraSoul.EarthPower.SoulStone.CobaltSoulStone.AncientCobaltSoul;
 import First.fargo_soul.Item.Soul.TerraSoul.ForestPower.ForestPower;
 import First.fargo_soul.Item.Soul.TerraSoul.ForestPower.SoulStone.*;
 import First.fargo_soul.Item.Soul.TerraSoul.LifePower.LifePower;
 import First.fargo_soul.Item.Soul.TerraSoul.LifePower.SoulStone.*;
-import First.fargo_soul.Item.Soul.TerraSoul.LifePower.SoulStone.TurtleSoulStone.CactusSoul;
 import First.fargo_soul.Item.Soul.TerraSoul.NaturePower.NaturePower;
 import First.fargo_soul.Item.Soul.TerraSoul.NaturePower.SoulStone.*;
 import First.fargo_soul.Item.Soul.TerraSoul.SpiritPower.SoulStone.*;
 import First.fargo_soul.Item.Soul.TerraSoul.SpiritPower.SpiritPower;
 import First.fargo_soul.Item.Soul.TerraSoul.TerraPower.SoulStone.*;
-import First.fargo_soul.Item.Soul.TerraSoul.TerraPower.SoulStone.ObsidianSoulStone.AshWoodSoul;
 import First.fargo_soul.Item.Soul.TerraSoul.TerraPower.TerraPower;
 import First.fargo_soul.Item.Soul.TerraSoul.TerraSoul;
 import First.fargo_soul.Item.Soul.TerraSoul.WillPower.Soulstone.*;
@@ -55,10 +51,8 @@ public class SoulsRegister {
     public static final DeferredItem<SoulItem> LeadSoul;
     public static final DeferredItem<SoulItem> SilverSoul;
     public static final DeferredItem<SoulItem> TungstenSoul;
-    public static final DeferredItem<SoulItem> AshWoodSoul;
     public static final DeferredItem<SoulItem> ObsidianSoul;
     public static final DeferredItem<SoulItem> TerraPower;
-    public static final DeferredItem<SoulItem> AncientCobaltSoul;
     public static final DeferredItem<SoulItem> CobaltSoul;
     public static final DeferredItem<SoulItem> PalladiumSoul;
     public static final DeferredItem<SoulItem> MithrilSoul;
@@ -77,7 +71,6 @@ public class SoulsRegister {
     public static final DeferredItem<SoulItem> BeetleSoul;
     public static final DeferredItem<SoulItem> PumpkinSoul;
     public static final DeferredItem<SoulItem> SpiderSoul;
-    public static final DeferredItem<SoulItem> CactusSoul;
     public static final DeferredItem<SoulItem> TurtleSoul;
     public static final DeferredItem<SoulItem> LifePower;
     public static final DeferredItem<SoulItem> ForbiddenSoul;
@@ -92,7 +85,6 @@ public class SoulsRegister {
     public static final DeferredItem<SoulItem> DarkArtistSoul;
     public static final DeferredItem<SoulItem> GloomySoul;
     public static final DeferredItem<SoulItem> NecromancerSoul;
-    public static final DeferredItem<SoulItem> MonkSoul;
     public static final DeferredItem<SoulItem> PenetratingNinjaSoul;
     public static final DeferredItem<SoulItem> DeathPower;
     public static final DeferredItem<SoulItem> GoldSoul;
@@ -159,11 +151,9 @@ public class SoulsRegister {
         LeadSoul = SoulItems.registerItem("lead_soul", LeadSoul::new);
         SilverSoul = SoulItems.registerItem("silver_soul", SilverSoul::new);
         TungstenSoul = SoulItems.registerItem("tungsten_soul", TungstenSoul::new);
-        AshWoodSoul = SoulItems.registerItem("ash_wood_soul", AshWoodSoul::new);
         ObsidianSoul = SoulItems.registerItem("obsidian_soul", ObsidianSoul::new);
         TerraPower = SoulItems.registerItem("terra_power", TerraPower::new);
         // 大地之力
-        AncientCobaltSoul = SoulItems.registerItem("ancient_cobalt_soul", AncientCobaltSoul::new);
         CobaltSoul = SoulItems.registerItem("cobalt_soul", CobaltSoul::new);
         PalladiumSoul = SoulItems.registerItem("palladium_soul", PalladiumSoul::new);
         MithrilSoul = SoulItems.registerItem("mithril_soul", MithrilSoul::new);
@@ -184,7 +174,6 @@ public class SoulsRegister {
         BeetleSoul = SoulItems.registerItem("beetle_soul", BeetleSoul::new);
         PumpkinSoul = SoulItems.registerItem("pumpkin_soul", PumpkinSoul::new);
         SpiderSoul = SoulItems.registerItem("spider_soul", SpiderSoul::new);
-        CactusSoul = SoulItems.registerItem("cactus_soul", CactusSoul::new);
         TurtleSoul = SoulItems.registerItem("turtle_soul", TurtleSoul::new);
         LifePower = SoulItems.registerItem("life_power", LifePower::new);
         // 心灵之力
@@ -201,7 +190,6 @@ public class SoulsRegister {
         DarkArtistSoul = SoulItems.registerItem("dark_artist_soul", DarkArtistSoul::new);
         GloomySoul = SoulItems.registerItem("gloomy_soul", GloomySoul::new);
         NecromancerSoul = SoulItems.registerItem("necromancer_soul", NecromancerSoul::new);
-        MonkSoul = SoulItems.registerItem("monk_soul", MonkSoul::new);
         PenetratingNinjaSoul = SoulItems.registerItem("penetrating_ninja_soul", PenetratingNinjaSoul::new);
         DeathPower = SoulItems.registerItem("death_power", DeathPower::new);
         // 意志之力

@@ -1,14 +1,14 @@
 package First.fargo_soul.Item.Soul.TerraSoul.WillPower.Soulstone;
 
+import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
-import First.fargo_soul.Item.Soul.SoulsRegister;
-import First.fargo_soul.Utils.CurioUtils;
-import First.fargo_soul.Utils.CustomUtils;
-import net.minecraft.server.level.ServerPlayer;
+import First.fargo_soul.Item.Soul.TerraSoul.WillPower.WillPower;
+import First.fargo_soul.Utils.SoulUtils;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
@@ -21,21 +21,23 @@ public class PlatinumSoul extends SoulItem {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIGHT_RED));
     }
 
+    @EventBusSubscriber(modid = Fargo_soul.MODID)
+    public static class Event {
 
-    public static void PlatinumSoulDropsEvent(LivingDropsEvent event) {
-        if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.PlatinumSoul.get())) {
-            if (event.getEntity() instanceof Monster && CustomUtils.random.nextDouble() < 0.2 && event.getEntity() instanceof LivingEntity) {
-                Collection<ItemEntity> itemEntities = event.getDrops();
-                for (ItemEntity itemEntity : itemEntities) {
-                    ItemStack itemStack = itemEntity.getItem();
-                    itemStack.setCount(itemStack.getCount() * 5);
+        @SubscribeEvent
+        public static void Drop(LivingDropsEvent event) {
+            if (event.getSource().getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
+                if (SoulUtils.isEquipped(attacker, PlatinumSoul.class) && SoulUtils.random.nextDouble() < 0.2) {
+                    Collection<ItemEntity> itemEntities = event.getDrops();
+                    for (ItemEntity itemEntity : itemEntities) {
+                        ItemStack itemStack = itemEntity.getItem();
+                        int scale = SoulUtils.isEquipped(attacker, WillPower.class) ? 8 : 5;
+                        itemStack.setCount(itemStack.getCount() * scale);
+                    }
                 }
             }
         }
+
     }
-
-
-
-
 
 }

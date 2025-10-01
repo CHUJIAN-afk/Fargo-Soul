@@ -2,7 +2,10 @@ package First.fargo_soul.Compact.Avaritia;
 
 
 import First.fargo_soul.Compact.Avaritia.InfinityPower.AvaritiaPower;
-import First.fargo_soul.Compact.Avaritia.InfinityPower.Soul.*;
+import First.fargo_soul.Compact.Avaritia.InfinityPower.Soul.BlazingBoneSoul;
+import First.fargo_soul.Compact.Avaritia.InfinityPower.Soul.CrystalMatrixSoul;
+import First.fargo_soul.Compact.Avaritia.InfinityPower.Soul.InfinitySoul;
+import First.fargo_soul.Compact.Avaritia.InfinityPower.Soul.NeutronSoul;
 import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import net.neoforged.bus.api.IEventBus;

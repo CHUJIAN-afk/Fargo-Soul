@@ -18,10 +18,10 @@ public class CosmicPower extends SoulItem {
     public List<SoulItem> getSoulItemList() {
         return List.of(
                 BlazeSoul.get(),
-                MeteorSoul.get(),
                 NebulaSoul.get(),
                 StardustSoul.get(),
                 VortexSoul.get(),
+                MeteorSoul.get(),
                 WizardSoul.get()
         );
     }

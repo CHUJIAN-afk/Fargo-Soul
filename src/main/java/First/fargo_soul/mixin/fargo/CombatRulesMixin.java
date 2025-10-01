@@ -1,12 +1,11 @@
 package First.fargo_soul.mixin.fargo;
 
 
-import First.fargo_soul.Item.Soul.SoulsRegister;
-import First.fargo_soul.Utils.CurioUtils;
-import net.minecraft.server.level.ServerPlayer;
+import First.fargo_soul.Attribute.AttributeRegister;
 import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -21,13 +20,9 @@ public class CombatRulesMixin {
             ordinal = 1
     )
     private static float modifyArmorValue(float armorValue, LivingEntity entity, float damage, DamageSource damageSource, float armorToughness) {
-        if (damageSource.getEntity() instanceof ServerPlayer player) {
-            if (CurioUtils.isEquipped(player, SoulsRegister.RedRidingSoul.get())) {
-                float ArmorPierce = player.getPersistentData().getFloat("RedRidingSoul");
-                armorValue -= ArmorPierce * 2;
-            }
-            if (CurioUtils.isEquipped(player, SoulsRegister.StingerNecklace.get())) {
-                armorValue -= 5;
+        if (damageSource.getEntity() instanceof LivingEntity attacker) {
+            if (attacker.getAttribute(AttributeRegister.ArmorPierce) instanceof AttributeInstance attributeInstance) {
+                armorValue -= (float) attributeInstance.getValue();
             }
         }
         return Math.max(armorValue, 0);

@@ -1,18 +1,9 @@
 package First.fargo_soul.Utils;
 
 import net.minecraft.client.player.Input;
-import net.minecraft.server.level.ServerPlayer;
 
 
 public class KeyUtils {
-
-    public static boolean isShift(ServerPlayer player) {
-        long Shift = player.getPersistentData().getLong("Shift");
-        if (player.isShiftKeyDown()) {
-            player.getPersistentData().putLong("Shift", player.serverLevel().getGameTime());
-        }
-        return (Shift + 20) > player.serverLevel().getGameTime();
-    }
 
     private static Movement zza = Movement.NONE;
     private static int sprintingTime = 0;
@@ -50,4 +41,5 @@ public class KeyUtils {
         }
         return false;
     }
+
 }

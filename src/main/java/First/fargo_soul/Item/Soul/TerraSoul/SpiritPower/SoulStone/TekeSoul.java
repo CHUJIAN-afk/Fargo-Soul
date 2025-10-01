@@ -1,19 +1,18 @@
 package First.fargo_soul.Item.Soul.TerraSoul.SpiritPower.SoulStone;
 
-import First.fargo_soul.Attribute.AttributeRegister;
+import First.fargo_soul.Attachment.Attachment.SoulAbilityData;
+import First.fargo_soul.Attachment.AttachmentRegister;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
-import First.fargo_soul.Item.Soul.SoulsRegister;
-import First.fargo_soul.Utils.AttributeUtils;
-import First.fargo_soul.Utils.CurioUtils;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
+import First.fargo_soul.Item.Soul.TerraSoul.SpiritPower.SpiritPower;
+import First.fargo_soul.Utils.SoulUtils;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
+import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
 public class TekeSoul extends SoulItem {
 
@@ -21,26 +20,28 @@ public class TekeSoul extends SoulItem {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIME));
     }
 
+    @EventBusSubscriber
+    public static class Event {
 
-    public static void TekeSoulTickHandler(PlayerTickEvent.Post event) {
-        if (event.getEntity() instanceof ServerPlayer player) {
-            ResourceLocation resourceLocation = SoulsRegister.TekeSoul.getId();
-            if (CurioUtils.isEquipped(player, SoulsRegister.TekeSoul.get())) {
-                AttributeUtils.addAttributeModifier(player, Attributes.ENTITY_INTERACTION_RANGE, resourceLocation, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
-            } else {
-                AttributeUtils.removeAttributeModifier(player, AttributeRegister.CriticalChance, resourceLocation);
+        @SubscribeEvent
+        public static void CurioChangeEvent(CurioChangeEvent event) {
+            SoulAbilityData.updateMaxCooldown(event.getEntity(), TekeSoul.class, SoulUtils.isEquipped(event.getEntity(), SpiritPower.class) ? 3600 : 6000);
+        }
+
+        @SubscribeEvent
+        public static void Death(LivingDeathEvent event) {
+            if (!event.isCanceled() && event.getEntity() instanceof TamableAnimal animal && animal.getOwner() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
+                SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(TekeSoul.class);
+                soulInfo.maxCooldown = SoulUtils.isEquipped(event.getEntity(), SpiritPower.class) ? 3600 : 6000;
+                if (soulInfo.cooldown == 0 && SoulUtils.isEquipped(attacker, TekeSoul.class)) {
+                    animal.heal(attacker.getHealth() * 0.25f);
+                    event.setCanceled(true);
+                }
             }
         }
+
     }
 
-
-    public static void TekeSoulEntityInteractHandler(PlayerInteractEvent.EntityInteract event) {
-        if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.TekeSoul.get()) && event.getTarget() instanceof TamableAnimal animal && player.equals(animal.getOwner())) {
-            ResourceLocation resourceLocation = SoulsRegister.TekeSoul.getId();
-            AttributeUtils.addAttributeModifier(player, Attributes.ATTACK_DAMAGE, resourceLocation, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
-            AttributeUtils.addAttributeModifier(player, Attributes.ATTACK_KNOCKBACK, resourceLocation, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
-        }
-    }
 
 
 }

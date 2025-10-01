@@ -1,24 +1,28 @@
 package First.fargo_soul.Item.Soul.TerraSoul.WillPower.Soulstone;
 
-import First.fargo_soul.Entity.Arrow.Banner;
-import First.fargo_soul.Entity.EntityRegister;
+import First.fargo_soul.Attachment.Attachment.SoulAbilityData;
+import First.fargo_soul.Attachment.AttachmentRegister;
+import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
-import First.fargo_soul.Item.Soul.SoulsRegister;
-import First.fargo_soul.Utils.CurioUtils;
-import First.fargo_soul.Utils.KeyUtils;
-import net.minecraft.server.level.ServerPlayer;
+import First.fargo_soul.Item.Soul.TerraSoul.WillPower.WillPower;
+import First.fargo_soul.Utils.SoulUtils;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
-import static First.fargo_soul.Utils.CustomUtils.random;
+import java.util.List;
 
 public class GladiatorSoul extends SoulItem {
 
@@ -26,67 +30,80 @@ public class GladiatorSoul extends SoulItem {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.GREEN));
     }
 
+    @EventBusSubscriber(modid = Fargo_soul.MODID)
+    public static class Event {
 
-    public static void GladiatorSoulDamageHandler2(LivingIncomingDamageEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.GladiatorSoul.get())) {
-            if (!player.serverLevel().getEntitiesOfClass(Banner.class, player.getBoundingBox().inflate(4)).isEmpty()) {
-                event.setAmount(event.getAmount() * 0.92f); }
-        }
-    }
-
-    public static void GladiatorSoulTickHandler(PlayerTickEvent.Post event) {
-        if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.GladiatorSoul.get())) {
-            long GladiatorSoul = player.getPersistentData().getLong("GladiatorSoulBanner");
-            if (GladiatorSoul < player.serverLevel().getGameTime() && KeyUtils.isShift(player)) {
-                player.getPersistentData().putLong("GladiatorSoulBanner", player.serverLevel().getGameTime() + 200);
-                Banner banner = new Banner(EntityRegister.Banner.get(), player.serverLevel());
-                banner.setPos(player.position());
-                player.serverLevel().addFreshEntity(banner);
-
-            }
-        }
-    }
-
-    public static void GladiatorSoulDamageHandler(LivingIncomingDamageEvent event) {
-        if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.GladiatorSoul.get()) && event.getEntity() instanceof LivingEntity livingEntity && event.getSource().getWeaponItem() != null) {
-            long GladiatorSoul = player.getPersistentData().getLong("GladiatorSoul");
-            if (GladiatorSoul < player.serverLevel().getGameTime()) {
-                player.getPersistentData().putLong("GladiatorSoul", player.serverLevel().getGameTime() + 40);
-                int size = 4;
-                if (!player.serverLevel().getEntitiesOfClass(Banner.class, player.getBoundingBox().inflate(4)).isEmpty()) {
-                    size = 16;
-                    event.setAmount(event.getAmount() * 1.08f);
-                }
-                for (int i = 0; i < size; i++) {
-                    Arrow arrow = new Arrow(EntityType.ARROW, player.serverLevel());
-                    arrow.getPersistentData().putBoolean("soul", true);
-                    Vec3 Pos = new Vec3(livingEntity.getRandomX(4), livingEntity.getRandomY() + 6, livingEntity.getRandomZ(4));
-                    arrow.setPos(Pos);
-                    arrow.setBaseDamage(1);
-                    Vec3 vec3 = livingEntity.getHitbox().getCenter().subtract(Pos).normalize();
-                    if (size == 16) {
-                        arrow.setBaseDamage(arrow.getBaseDamage() * 3);
+        @SubscribeEvent
+        public static void Damage(LivingIncomingDamageEvent event) {
+            if (event.getSource().getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
+                if (SoulUtils.isEquipped(attacker, GladiatorSoul.class)) {
+                    Level level = attacker.level();
+                    List<LivingEntity> livingEntityList = level.getEntitiesOfClass(LivingEntity.class, attacker.getBoundingBox().inflate(4), livingEntity -> {
+                        if (attacker instanceof Player) {
+                            return livingEntity instanceof Enemy;
+                        } else {
+                            return livingEntity instanceof Player || (livingEntity instanceof Mob mob && attacker.equals(mob.getTarget()));
+                        }
+                    });
+                    if (livingEntityList.size() >= 3) {
+                        event.setAmount(event.getAmount() * 1.1f);
                     }
-                    arrow.shoot(vec3.x, vec3.y, vec3.z, 0.25f + random.nextFloat(0.5f), 1.0F);
-                    player.level().addFreshEntity(arrow);
-                    player.serverLevel().playSound(
-                            null,
-                            player.getX(), player.getY(), player.getZ(),
-                            SoundEvents.ARROW_SHOOT,
-                            SoundSource.PLAYERS,
-                            1.0f,
-                            random.nextFloat() * 0.4f + 0.4f
-                    );
+                }
+            }
+            if (event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
+                if (SoulUtils.isEquipped(target, GladiatorSoul.class)) {
+                    Level level = target.level();
+                    List<LivingEntity> livingEntityList = level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(4), livingEntity -> {
+                        if (target instanceof Player) {
+                            return livingEntity instanceof Enemy;
+                        } else {
+                            return livingEntity instanceof Mob mob && target.equals(mob.getTarget());
+                        }
+                    });
+                    if (livingEntityList.size() >= 3) {
+                        event.setAmount(event.getAmount() * 0.9f);
+                    }
+                }
+            }
+
+            if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
+                if (SoulUtils.isEquipped(attacker, GladiatorSoul.class)) {
+                    SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GladiatorSoul.class);
+                    soulInfo.maxStacks = SoulUtils.isEquipped(attacker, WillPower.class) ? 12 : 24;
+                    soulInfo.addStacks();
+                    if (soulInfo.stacks == soulInfo.maxStacks) {
+                        soulInfo.removeStacks();
+                        Level level = attacker.level();
+                        List<LivingEntity> livingEntityList = level.getEntitiesOfClass(LivingEntity.class, attacker.getBoundingBox().inflate(4), livingEntity -> {
+                            if (attacker instanceof Player) {
+                                return livingEntity instanceof Enemy;
+                            } else {
+                                return livingEntity instanceof Mob mob && attacker.equals(mob.getTarget());
+                            }
+                        });
+                        for (int i = 0; i < 16; i++) {
+                            Arrow arrow = new Arrow(EntityType.ARROW, level);
+                            Vec3 Pos = new Vec3(target.getRandomX(4), target.getRandomY() + 10, target.getRandomZ(4));
+                            Vec3 vec3 = target.getHitbox().getCenter().subtract(Pos).normalize();
+                            arrow.setPos(Pos);
+                            arrow.setBaseDamage(arrow.getBaseDamage() * (livingEntityList.size() < 3 ? 1.8 : 1.0));
+                            arrow.shoot(vec3.x, vec3.y, vec3.z, SoulUtils.random.nextFloat(0.8f, 1.6f), 0.5F);
+                            arrow.setOwner(attacker);
+                            level.addFreshEntity(arrow);
+                            SoulAbilityData.SoulInfo info = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SoulItem.class);
+                            info.enabled = true;
+                        }
+                        SoulUtils.playSound(
+                                level,
+                                target.position(),
+                                SoundEvents.ARROW_SHOOT,
+                                SoundSource.PLAYERS
+                        );
+                    }
                 }
             }
         }
+
     }
-
-
-
-
-
-
-
 
 }

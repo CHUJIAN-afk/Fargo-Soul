@@ -10,5 +10,4 @@ public class AncientHolySoul extends SoulItem {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIGHT_PURPLE));
     }
 
-
 }

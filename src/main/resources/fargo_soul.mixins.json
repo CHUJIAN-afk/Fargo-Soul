@@ -5,26 +5,18 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "fargo_soul.refmap.json",
   "mixins": [
-    "create.Accessor.BlazeBurnerBlockEntityAccessor",
-    "create.Accessor.SchematicannonBlockEntityAccessor",
-    "create.Mixin.BacktankUtilMixin",
-    "create.Mixin.CardboardArmorHandlerMixin",
-    "create.Mixin.DivingBootsItemMixin",
-    "create.Mixin.EntityMixin",
-    "create.Mixin.GogglesItemMixin",
-    "create.Mixin.HandCrankBlockMixin",
-    "create.Mixin.SchematicannonBlockEntityMixin",
-    "create.Mixin.ToolboxHandlerMixin",
-    "fargo.ArrowMixin",
     "fargo.CombatRulesMixin",
+    "fargo.CuriosEntityManagerMixin",
     "fargo.EntityMixin",
     "fargo.ItemEntityMixin",
     "fargo.LivingEntityMixin",
     "fargo.PlayerMixin",
+    "fargo.SnowballMixin",
+    "fargo.StemBlockMixin",
+    "fargo.TagLoaderMixin",
     "fargo.VillagerMixin"
   ],
   "client": [
-    "create.Mixin.RemainingAirOverlayMixin",
     "fargo.ItemInHandRendererMixin"
   ],
   "injectors": {

@@ -1,19 +1,21 @@
 package First.fargo_soul.Item.Soul.TerraSoul.SpiritPower.SoulStone;
 
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
-import First.fargo_soul.Item.Soul.SoulsRegister;
-import First.fargo_soul.Utils.CurioUtils;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import First.fargo_soul.Item.Soul.TerraSoul.SpiritPower.SpiritPower;
+import First.fargo_soul.Utils.SoulUtils;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingHealEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class HolySoul extends SoulItem {
 
@@ -21,23 +23,27 @@ public class HolySoul extends SoulItem {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIGHT_PURPLE));
     }
 
+    @EventBusSubscriber
+    public static class Event {
 
-    public static void HolySoulHealHandler(LivingHealEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.GhostSoul.get())) {
-            event.setAmount(event.getAmount() * 1.4f);
-            List<AbstractArrow> arrowList = player.serverLevel().getEntitiesOfClass(AbstractArrow.class, player.getHitbox().inflate(12), abstractArrow -> !player.equals(abstractArrow.getOwner()));
-            for (AbstractArrow abstractArrow : arrowList) {
-                abstractArrow.setNoPhysics(true);
-                abstractArrow.setDeltaMovement(Vec3.ZERO);
-                ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-                executorService.schedule(() -> {
-                    if (abstractArrow.isNoPhysics()) {
-                        abstractArrow.setNoPhysics(false);
+        @SubscribeEvent
+        public static void HolySoulHealHandler(LivingHealEvent event) {
+            if (event.getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
+                if (SoulUtils.isEquipped(attacker, HolySoul.class)) {
+                    event.setAmount(event.getAmount() * 1.4f);
+                    if (event.getAmount() > 0) {
+                        Level level = attacker.level();
+                        int value = SoulUtils.isEquipped(attacker, SpiritPower.class) ? 2 : 1;
+                        List<LivingEntity> targetList = level.getEntitiesOfClass(LivingEntity.class, attacker.getBoundingBox().inflate(value), livingEntity -> attacker instanceof Player ? livingEntity instanceof Enemy : (livingEntity instanceof Mob mob && attacker.equals(mob.getTarget())));
+                        for (LivingEntity target : targetList) {
+                            Vec3 direction = target.getBoundingBox().getCenter().subtract(attacker.getBoundingBox().getCenter()).normalize();
+                            target.knockback(1.5, -direction.x, -direction.z);
+                        }
                     }
-                }, 500, TimeUnit.MILLISECONDS);
+                }
             }
         }
-    }
 
+    }
 
 }

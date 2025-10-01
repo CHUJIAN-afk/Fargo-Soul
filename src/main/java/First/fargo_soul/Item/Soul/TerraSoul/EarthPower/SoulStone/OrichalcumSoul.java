@@ -1,17 +1,22 @@
 package First.fargo_soul.Item.Soul.TerraSoul.EarthPower.SoulStone;
 
 import First.fargo_soul.Effect.EffectRegister;
+import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
-import First.fargo_soul.Item.Soul.SoulsRegister;
-import First.fargo_soul.Utils.CurioUtils;
-import First.fargo_soul.Utils.ParticleUtils;
+import First.fargo_soul.Item.Soul.TerraSoul.EarthPower.EarthPower;
 import First.fargo_soul.Utils.CustomUtils;
+import First.fargo_soul.Utils.ParticleUtils;
+import First.fargo_soul.Utils.SoulUtils;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
@@ -23,28 +28,52 @@ public class OrichalcumSoul extends SoulItem {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PINK));
     }
 
+    @EventBusSubscriber(modid = Fargo_soul.MODID)
+    public static class Event {
 
-    public static void OrichalcumSoulDamageHandler(LivingIncomingDamageEvent event) {
-        if (event.getSource().getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.OrichalcumSoul.get()) && event.getEntity() instanceof LivingEntity livingEntity) {
-            if (event.getSource().is(Tags.DamageTypes.IS_POISON) && livingEntity.getEffect(EffectRegister.OrichalcumPoisoning) != null) {
-                event.setAmount(event.getAmount() * 3.5f);
+        @SubscribeEvent
+        public static void Incoming(LivingIncomingDamageEvent event) {
+            if (event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
+                if (event.getSource().is(Tags.DamageTypes.IS_POISON) && target.getEffect(EffectRegister.OrichalcumPoisoning) != null) {
+                    event.setAmount(event.getAmount() * 3.5f);
+                }
             }
-            livingEntity.hurt(player.damageSources().magic(), event.getAmount() * 0.05f);
-            livingEntity.invulnerableTime = 0;
-            livingEntity.addEffect(new MobEffectInstance(EffectRegister.OrichalcumPoisoning, 100));
-            Random random = CustomUtils.random;
-            ParticleUtils.spawnMovingParticleLine(
-                    player.serverLevel(),
-                    livingEntity.getBoundingBox().getCenter().add((2 - random.nextDouble(4)), (1 - random.nextDouble(2)), (2 - random.nextDouble(4))),
-                    livingEntity.getBoundingBox().getCenter(),
-                    ParticleTypes.CHERRY_LEAVES,
-                    10,
-                    0.0f,
-                    0,
-                    5,
-                    50
-            );
         }
+
+        @SubscribeEvent
+        public static void Damage(LivingIncomingDamageEvent event) {
+            if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
+                double chance = SoulUtils.isEquipped(attacker, EarthPower.class) ? 0.4 : 0.2;
+                if (SoulUtils.isEquipped(attacker, OrichalcumSoul.class) && target.getRandom().nextDouble() < chance) {
+                    float amount = 1 + (event.getAmount() * 0.05f);
+                    int amplifier = SoulUtils.isEquipped(attacker, EarthPower.class) ? 1 : 0;
+                    Random random = CustomUtils.random;
+                    SoulUtils.attack(attacker, target, DamageTypes.MAGIC, amount);
+                    target.addEffect(new MobEffectInstance(EffectRegister.OrichalcumPoisoning, 99, amplifier));
+                    ParticleUtils.spawnMovingParticleLine(
+                            (ServerLevel) attacker.level(),
+                            target.getBoundingBox().getCenter().add((2 - random.nextDouble(4)), (1 - random.nextDouble(2)), (2 - random.nextDouble(4))),
+                            target.getBoundingBox().getCenter(),
+                            ParticleTypes.CHERRY_LEAVES,
+                            10,
+                            0.0f,
+                            0,
+                            5,
+                            50
+                    );
+                }
+            }
+        }
+
+        @SubscribeEvent
+        public static void Post2(MobEffectEvent.Applicable event) {
+            if (event.getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
+                if (SoulUtils.isEquipped(attacker, OrichalcumSoul.class) && event.getEffectInstance().is(EffectRegister.OrichalcumPoisoning)) {
+                    event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
+                }
+            }
+        }
+
     }
 
 }

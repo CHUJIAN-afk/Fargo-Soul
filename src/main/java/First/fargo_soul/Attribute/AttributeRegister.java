@@ -31,7 +31,7 @@ public class AttributeRegister {
     public static final Holder<Attribute> Damage;
     public static final Holder<Attribute> RangedDamage;
     public static final Holder<Attribute> RangedSpeed;
-
+    public static final Holder<Attribute> ArmorPierce;
 
     static {
         CriticalChance = RegisterAttribute("critical_chance", 0.1D);
@@ -39,6 +39,7 @@ public class AttributeRegister {
         Damage = RegisterAttribute("damage", 1.0D);
         RangedDamage = RegisterAttribute("ranged_damage", 1.0D);
         RangedSpeed = RegisterAttribute("ranged_speed", 1.0D);
+        ArmorPierce = RegisterAttribute("armor_pierce", 0.0D);
     }
 
     private static Holder<Attribute> RegisterAttribute(String name, double defaultValue) {
@@ -53,6 +54,7 @@ public class AttributeRegister {
         event.add(EntityType.PLAYER, Damage);
         event.add(EntityType.PLAYER, RangedDamage);
         event.add(EntityType.PLAYER, RangedSpeed);
+        event.add(EntityType.PLAYER, ArmorPierce);
     }
 
     //弹射物速度处理
