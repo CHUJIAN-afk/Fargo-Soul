@@ -60,7 +60,7 @@ public class AdamantiteSoul extends SoulItem {
         @SubscribeEvent
         public static void Damage(LivingIncomingDamageEvent event) {
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
-                if (SoulUtils.isEquipped(attacker, AdamantiteSoul.class)) {
+                if (!attacker.equals(target) && SoulUtils.isEquipped(attacker, AdamantiteSoul.class)) {
                     SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(AdamantiteSoul.class);
                     soulInfo.maxStacks = 8;
                     soulInfo.addStacks();

@@ -44,7 +44,13 @@ public class EntityMixin {
         return true;
     }
 
-    @Inject(method = "isColliding", at = @At("HEAD"), cancellable = true)
+    @Inject(
+            method = "isColliding",
+            at = @At(
+                    "RETURN"
+            ),
+            cancellable = true
+    )
     private void bypassCollision(BlockPos pos, BlockState state, CallbackInfoReturnable<Boolean> cir) {
         if (((Entity) (Object) this) instanceof Player player && SoulUtils.isEquipped(player, PenetratingNinjaSoul.class)) {
             SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(PenetratingNinjaSoul.class);

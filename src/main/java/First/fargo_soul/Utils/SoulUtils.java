@@ -8,20 +8,26 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -30,6 +36,7 @@ import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 public class SoulUtils {
@@ -40,6 +47,44 @@ public class SoulUtils {
 	public static float getAgeInTicks(LivingEntity attacker, float partialTick, float speed) {
 		float render = attacker.tickCount * speed;
 		return Mth.lerp(partialTick, render - speed, render);
+	}
+
+	public static void addEntity(Level level, Entity entity) {
+		MinecraftServer server = level.getServer();
+		if (server != null) {
+			server.execute(() -> level.addFreshEntity(entity));
+		}
+	}
+
+	public static void CooldownEndSound(LivingEntity attacker, SoundEvent event, int second) {
+		Level level = attacker.level();
+		executorService.schedule(() -> playSound(
+				level,
+				attacker.position(),
+				event,
+				SoundSource.PLAYERS
+		), second, TimeUnit.SECONDS);
+	}
+
+	public static void setAbilityInvulnerable(Projectile projectile) {
+		projectile.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SoulItem.class).enabled = true;
+	}
+
+	public static void shootTargetFromAttaker(Projectile projectile, LivingEntity attacker, LivingEntity target) {
+		shootTargetFromAttaker(projectile, attacker, target, 1, 1);
+	}
+
+	public static void shootTargetFromAttaker(Projectile projectile, LivingEntity attacker, LivingEntity target, double distance, double speed) {
+		double size = attacker.getBoundingBox().getSize() * distance;
+		double x = attacker.getRandomX(size);
+		double y = attacker.getRandomY() + size;
+		double z = attacker.getRandomZ(size);
+		Vec3 pos = new Vec3(x, y, z);
+		projectile.setPos(pos);
+		Vec3 toTarget = target.getHitbox().getCenter().subtract(pos).normalize().scale(speed);
+		projectile.setOwner(attacker);
+		projectile.setDeltaMovement(toTarget);
+		addEntity(attacker.level(), projectile);
 	}
 
 	public static void playSound(Level level, Vec3 center, SoundEvent soundEvent, SoundSource soundSource) {
@@ -55,10 +100,22 @@ public class SoulUtils {
 		);
 	}
 
+	public static BlockHitResult getTargetedBlock(Player player, double maxDistance) {
+		Vec3 eyePos = player.getEyePosition();
+		Vec3 lookVec = player.getLookAngle();
+		Vec3 endPos = eyePos.add(lookVec.scale(maxDistance));
+		ClipContext clipContext = new ClipContext(eyePos, endPos, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player);
+		return player.level().clip(clipContext);
+	}
+
 	public static LivingEntity getSoulTarget(LivingEntity attacker, float distance) {
 		LivingEntity target = null;
 		if (attacker instanceof Player player) {
-			List<LivingEntity> livingEntityList = player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(distance), livingEntity -> livingEntity instanceof Enemy && player.distanceTo(livingEntity) < distance);
+			List<LivingEntity> livingEntityList = player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(distance), livingEntity -> {
+				boolean a = livingEntity instanceof OwnableEntity ownableEntity && player.equals(ownableEntity.getOwner());
+				boolean b = livingEntity instanceof Enemy && player.distanceTo(livingEntity) < distance;
+				return !a && b;
+			});
 			if (!livingEntityList.isEmpty()) {
 				target = livingEntityList.get(player.getRandom().nextInt(livingEntityList.size()));
 			}
@@ -117,7 +174,7 @@ public class SoulUtils {
 		return false;
 	}
 
-	private static List<SoulItem> getSoulInventory(LivingEntity livingEntity) {
+	public static List<SoulItem> getSoulInventory(LivingEntity livingEntity) {
 		List<SoulItem> OringinCurioList = new ArrayList<>();
 		if (livingEntity instanceof Player player) {
 			Inventory inventory = player.getInventory();

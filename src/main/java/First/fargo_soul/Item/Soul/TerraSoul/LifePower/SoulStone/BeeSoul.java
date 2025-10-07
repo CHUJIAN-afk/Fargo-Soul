@@ -76,7 +76,7 @@ public class BeeSoul extends SoulItem {
                 }
             }
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
-                if (SoulUtils.isEquipped(attacker, BeeSoul.class) && !SoulUtils.isEquipped(target, BeeSoul.class)) {
+                if (!attacker.equals(target) && SoulUtils.isEquipped(attacker, BeeSoul.class) && !SoulUtils.isEquipped(target, BeeSoul.class)) {
                     Level level = attacker.level();
                     List<Bee> beeList = level.getEntitiesOfClass(Bee.class, attacker.getBoundingBox().inflate(5));
                     for (Bee bee : beeList) {

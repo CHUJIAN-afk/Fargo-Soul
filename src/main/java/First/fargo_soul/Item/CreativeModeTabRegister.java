@@ -1,59 +1,51 @@
 package First.fargo_soul.Item;
 
+import First.fargo_soul.Event.SoulCreativeTabEvent;
 import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
-import First.fargo_soul.Utils.CurioUtils;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.List;
+
 
 public class CreativeModeTabRegister {
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TAB_DEFERRED_REGISTER;
+    public static final DeferredRegister<CreativeModeTab> CreativeModeTabRegister;
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FARGO_SOUL_TAB;
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FargoSoulTab;
 
     static {
 
-        //物品栏添加
-        CREATIVE_MODE_TAB_DEFERRED_REGISTER = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Fargo_soul.MODID);
-        FARGO_SOUL_TAB = CREATIVE_MODE_TAB_DEFERRED_REGISTER.register(Fargo_soul.MODID, () -> {
+        CreativeModeTabRegister = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Fargo_soul.MODID);
+        FargoSoulTab = CreativeModeTabRegister.register(Fargo_soul.MODID, () -> {
                     SoulItem terraSoul = SoulsRegister.TerraSoul.get();
                     CreativeModeTab.Builder builder = CreativeModeTab.builder();
                     builder.title(Component.translatable("itemGroup.fargo_soul"));
                     builder.withTabsBefore(CreativeModeTabs.COMBAT);
                     builder.icon(terraSoul::getDefaultInstance);
-                    builder.displayItems((parameters, output) -> CreativeTabBuild(output));
+                    builder.displayItems((parameters, output) -> {
+                        SoulCreativeTabEvent event = new SoulCreativeTabEvent();
+                        NeoForge.EVENT_BUS.post(event);
+                        List<SoulItem> soulItemList = event.getSoulItemList();
+                        for (SoulItem soulItem : soulItemList) {
+                            output.accept(soulItem);
+                        }
+                    });
                     return builder.build();
                 }
         );
 
     }
 
-    private static void CreativeTabBuild(CreativeModeTab.Output output) {
-        //泰拉之魂
-        addCreativeTab(output, SoulsRegister.TerraSoul.get());
-        //寰宇之魂
-        //addCreativeTab(output, SoulsRegister.UniverseSoul.get());
-        //无尽贪婪联动
-        //addCreativeTab(output, AvaritiaSoulsRegister.Avaritia_Power.get());
-    }
-
-    /**
-     * 传入父魔石以添加所有子魔石
-     */
-    private static void addCreativeTab(CreativeModeTab.Output output, SoulItem soulItem) {
-        output.accept(soulItem);
-        CurioUtils.getAllCurioItems(soulItem.getSoulItemList()).stream().distinct().toList().forEach(output::accept);
-    }
-
     public static void register(IEventBus eventBus) {
-        CREATIVE_MODE_TAB_DEFERRED_REGISTER.register(eventBus);
+        CreativeModeTabRegister.register(eventBus);
     }
 
 }

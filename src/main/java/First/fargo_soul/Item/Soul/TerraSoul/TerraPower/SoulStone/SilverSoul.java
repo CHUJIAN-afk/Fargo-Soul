@@ -50,9 +50,10 @@ public class SilverSoul extends SoulItem {
                 if (SoulUtils.isEquipped(attacker, SilverSoul.class)) {
                     SoulAbilityData.SoulInfo SoulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SilverSoul.class);
                     if (attacker.isBlocking()) {
-                        SoulInfo.duration += 2;
+                        SoulInfo.maxStacks = 100;
+                        SoulInfo.stacks++;
                     } else {
-                        SoulInfo.duration = 0;
+                        SoulInfo.removeStacks();
                     }
                 }
             }
@@ -63,7 +64,7 @@ public class SilverSoul extends SoulItem {
             if (event.getEntity() instanceof LivingEntity target && event.getDamageSource().getEntity() instanceof LivingEntity attacker && !target.level().isClientSide()) {
                 if (SoulUtils.isEquipped(target, SilverSoul.class)) {
                     SoulAbilityData.SoulInfo SoulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SilverSoul.class);
-                    if (event.getBlocked() && SoulInfo.duration > 0 && SoulInfo.duration < (SoulUtils.isEquipped(target, TerraPower.class) ? 6 : 4)) {
+                    if (event.getBlocked() && SoulInfo.cooldown == 0 && SoulInfo.stacks > 0 && SoulInfo.stacks < (SoulUtils.isEquipped(target, TerraPower.class) ? 6 : 4)) {
                         SoulInfo.maxCooldown = 20;
                         SoulInfo.cooldown = SoulInfo.maxCooldown;
                         attacker.hurt(target.damageSources().mobAttack(target), event.getBlockedDamage() * 2.0f);

@@ -87,7 +87,7 @@ public class BlazeSoul extends SoulItem {
                 }
             }
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
-                if (SoulUtils.isEquipped(attacker, BlazeSoul.class) && SoulUtils.canAttack(BlazeSoul.class, target, target)) {
+                if (!attacker.equals(target) && SoulUtils.isEquipped(attacker, BlazeSoul.class) && SoulUtils.canAttack(BlazeSoul.class, target, target)) {
                     SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(BlazeSoul.class);
                     if (soulInfo.enabled) {
                         soulInfo.shrinkStacks(100);

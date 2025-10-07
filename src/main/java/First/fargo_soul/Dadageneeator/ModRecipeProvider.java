@@ -1,15 +1,16 @@
 package First.fargo_soul.Dadageneeator;
 
+import First.fargo_soul.Event.DataGeneratorRecipeEvent;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
-import First.fargo_soul.Item.Soul.SoulsRegister;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.conditions.IConditionBuilder;
-import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -24,23 +25,19 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
     @Override
     protected void buildRecipes(@NotNull RecipeOutput recipeOutput) {
-        addShapelessRecipe(recipeOutput, SoulsRegister.EarthPower);
-        addShapelessRecipe(recipeOutput, SoulsRegister.ForestPower);
-        addShapelessRecipe(recipeOutput, SoulsRegister.LifePower);
-        addShapelessRecipe(recipeOutput, SoulsRegister.NaturePower);
-        addShapelessRecipe(recipeOutput, SoulsRegister.TerraPower);
-        addShapelessRecipe(recipeOutput, SoulsRegister.SpiritPower);
-        addShapelessRecipe(recipeOutput, SoulsRegister.DeathPower);
-        addShapelessRecipe(recipeOutput, SoulsRegister.WillPower);
-        addShapelessRecipe(recipeOutput, SoulsRegister.CosmicPower);
-        addShapelessRecipe(recipeOutput, SoulsRegister.TerraSoul);
+        DataGeneratorRecipeEvent dataGeneratorModelsEvent = new DataGeneratorRecipeEvent();
+        NeoForge.EVENT_BUS.post(dataGeneratorModelsEvent);
+        List<SoulItem> soulItemList = dataGeneratorModelsEvent.getSoulItemList();
+        for (SoulItem soulItem : soulItemList) {
+            addShapelessRecipe(recipeOutput, soulItem);
+        }
     }
 
-    private void addShapelessRecipe(RecipeOutput recipeOutput, DeferredItem<SoulItem> output) {
-        ShapelessRecipeBuilder builder = ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, output);
-        List<SoulItem> soulItems = output.get().getSoulItemList();
+    private void addShapelessRecipe(RecipeOutput recipeOutput, SoulItem soulItem) {
+        ShapelessRecipeBuilder builder = ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, soulItem);
+        List<SoulItem> soulItems = soulItem.getSoulItemList();
         soulItems.forEach(builder::requires);
-        builder.unlockedBy("has_" + soulItems.getFirst(), has(soulItems.getFirst())).save(recipeOutput, output.getId());
+        builder.unlockedBy("has_" + soulItems.getFirst(), has(soulItems.getFirst())).save(recipeOutput, BuiltInRegistries.ITEM.getKey(soulItem));
     }
 
 }

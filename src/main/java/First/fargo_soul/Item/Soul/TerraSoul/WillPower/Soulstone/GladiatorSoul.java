@@ -67,11 +67,13 @@ public class GladiatorSoul extends SoulItem {
             }
 
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
-                if (SoulUtils.isEquipped(attacker, GladiatorSoul.class)) {
+                if (!attacker.equals(target) && SoulUtils.isEquipped(attacker, GladiatorSoul.class)) {
                     SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GladiatorSoul.class);
                     soulInfo.maxStacks = SoulUtils.isEquipped(attacker, WillPower.class) ? 12 : 24;
                     soulInfo.addStacks();
-                    if (soulInfo.stacks == soulInfo.maxStacks) {
+                    soulInfo.maxCooldown = 20;
+                    if (soulInfo.cooldown == 0 && soulInfo.stacks == soulInfo.maxStacks) {
+                        soulInfo.cooldown = soulInfo.maxCooldown;
                         soulInfo.removeStacks();
                         Level level = attacker.level();
                         List<LivingEntity> livingEntityList = level.getEntitiesOfClass(LivingEntity.class, attacker.getBoundingBox().inflate(4), livingEntity -> {
@@ -82,6 +84,7 @@ public class GladiatorSoul extends SoulItem {
                             }
                         });
                         for (int i = 0; i < 16; i++) {
+
                             Arrow arrow = new Arrow(EntityType.ARROW, level);
                             Vec3 Pos = new Vec3(target.getRandomX(4), target.getRandomY() + 10, target.getRandomZ(4));
                             Vec3 vec3 = target.getHitbox().getCenter().subtract(Pos).normalize();
@@ -89,9 +92,10 @@ public class GladiatorSoul extends SoulItem {
                             arrow.setBaseDamage(arrow.getBaseDamage() * (livingEntityList.size() < 3 ? 1.8 : 1.0));
                             arrow.shoot(vec3.x, vec3.y, vec3.z, SoulUtils.random.nextFloat(0.8f, 1.6f), 0.5F);
                             arrow.setOwner(attacker);
-                            level.addFreshEntity(arrow);
                             SoulAbilityData.SoulInfo info = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SoulItem.class);
                             info.enabled = true;
+                            SoulUtils.addEntity(level, arrow);
+
                         }
                         SoulUtils.playSound(
                                 level,

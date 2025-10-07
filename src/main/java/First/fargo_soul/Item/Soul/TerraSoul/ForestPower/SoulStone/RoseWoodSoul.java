@@ -24,7 +24,7 @@ public class RoseWoodSoul extends SoulItem {
         @SubscribeEvent
         public static void Damage(LivingIncomingDamageEvent event) {
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target) {
-                if (!target.onGround() && SoulUtils.isEquipped(attacker, RoseWoodSoul.class) && !SoulUtils.isEquipped(target, RoseWoodSoul.class)) {
+                if (!attacker.equals(target) && !target.onGround() && SoulUtils.isEquipped(attacker, RoseWoodSoul.class) && !SoulUtils.isEquipped(target, RoseWoodSoul.class)) {
                     Vec3 delta = attacker.getBoundingBox().getCenter().subtract(target.getBoundingBox().getCenter()).normalize();
                     delta.scale(SoulUtils.isEquipped(attacker, ForestPower.class) ? 2 : 1);
                     target.push(delta);

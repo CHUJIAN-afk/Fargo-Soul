@@ -1,8 +1,8 @@
 package First.fargo_soul.Item.Soul.TerraSoul.DeathPower.SoulStone;
 
 import First.fargo_soul.Attachment.AttachmentRegister;
-import First.fargo_soul.Entity.Arrow.Bone;
 import First.fargo_soul.Entity.EntityRegister;
+import First.fargo_soul.Entity.Projectile.Bone;
 import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.TerraSoul.DeathPower.DeathPower;
@@ -30,10 +30,10 @@ public class NecromancerSoul extends SoulItem {
     @EventBusSubscriber(modid = Fargo_soul.MODID)
     public static class Event {
 
-        @SubscribeEvent
+        //@SubscribeEvent
         public static void Damage(LivingIncomingDamageEvent event) {
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
-                if (SoulUtils.isEquipped(target, NecromancerSoul.class)) {
+                if (!attacker.equals(target) && SoulUtils.isEquipped(target, NecromancerSoul.class)) {
                     Level level = target.level();
                     if (target.getRandom().nextDouble() < 0.02) {
                         int chance = SoulUtils.isEquipped(attacker, DeathPower.class) ? 24 : 12;
@@ -49,7 +49,7 @@ public class NecromancerSoul extends SoulItem {
                             bone.setBaseDamage(Math.min(event.getAmount() * 0.25f, 10));
                             bone.moveTo(spawnPos.x, spawnPos.y, spawnPos.z, target.getYRot(), target.getXRot());
                             bone.shoot(velocity.x, velocity.y, velocity.z, 0.6f, 6.0f);
-                            level.addFreshEntity(bone);
+                            //level.addFreshEntity(bone);
                             bone.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SoulItem.class).enabled = true;
                         }
                     }
@@ -77,8 +77,5 @@ public class NecromancerSoul extends SoulItem {
         }
 
     }
-
-
-
 
 }

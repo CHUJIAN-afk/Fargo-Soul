@@ -18,7 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
@@ -60,7 +60,7 @@ public class GhostSoul extends SoulItem {
         @SubscribeEvent
         public static void Damage(LivingDamageEvent.Post event) {
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
-                if (SoulUtils.isEquipped(target, GhostSoul.class)) {
+                if (!attacker.equals(target) && SoulUtils.isEquipped(target, GhostSoul.class)) {
                     attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GhostSoul.class).addStacks();
                     target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GhostSoul.class).shrinkStacks();
                 }
@@ -68,10 +68,10 @@ public class GhostSoul extends SoulItem {
         }
 
         @SubscribeEvent
-        public static void Death(LivingDeathEvent event) {
+        public static void Death(LivingIncomingDamageEvent event) {
             if (!event.isCanceled() && event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
                 SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GhostSoul.class);
-                if (SoulUtils.isEquipped(target, GhostSoul.class) && soulInfo.cooldown == 0) {
+                if (SoulUtils.isEquipped(target, GhostSoul.class) && soulInfo.cooldown == 0 && event.getAmount() > target.getHealth()) {
                     soulInfo.cooldown = soulInfo.maxCooldown;
                     target.heal(target.getMaxHealth() * 0.25f);
                     event.setCanceled(true);

@@ -54,15 +54,14 @@ public class GreenSoul extends SoulItem {
                 PoseStack poseStack = event.getPoseStack();
                 Minecraft minecraft = Minecraft.getInstance();
                 ItemRenderer itemRenderer = minecraft.getItemRenderer();
-                float ageInTicks = SoulUtils.getAgeInTicks(attacker, event.getPartialTick(), 0.04f);
+                float ageInTicks = SoulUtils.getAgeInTicks(attacker, event.getPartialTick(), 0.02f);
                 poseStack.pushPose();
                 double y = attacker.getBoundingBox().getYsize();
-                double size = attacker.getBoundingBox().getSize() + 0.25;
-                float scale = (float) (size);
+                float scale = (float) (attacker.getBoundingBox().getSize() + 0.25);
                 float floatingOffset = (float) Math.sin(ageInTicks) * scale * 0.1f + scale * 0.5f;
                 poseStack.translate(0, y + floatingOffset, 0);
                 poseStack.mulPose(Axis.YP.rotationDegrees(ageInTicks * 180 / (float) Math.PI));
-                poseStack.scale(scale, scale, scale);
+                poseStack.scale(scale * 0.25f, scale * 0.25f, scale * 0.25f);
                 itemRenderer.renderStatic(
                         BaseItemsRegister.GreenCrystal.get().getDefaultInstance(),
                         ItemDisplayContext.FIXED,

@@ -25,7 +25,7 @@ public class LeadSoul extends SoulItem {
         @SubscribeEvent
         public static void Post(LivingDamageEvent.Post event) {
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
-                if (SoulUtils.isEquipped(attacker, LeadSoul.class) && attacker.getRandom().nextDouble() < 0.1) {
+                if (!attacker.equals(target) && SoulUtils.isEquipped(attacker, LeadSoul.class) && attacker.getRandom().nextDouble() < 0.1) {
                     target.addEffect(new MobEffectInstance(EffectRegister.LeadPoisoning, 200, SoulUtils.isEquipped(attacker, TerraPower.class) ? 1 : 0));
                 }
             }

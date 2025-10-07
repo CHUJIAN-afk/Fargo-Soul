@@ -8,9 +8,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static First.fargo_soul.Utils.CustomUtils.random;
+import static First.fargo_soul.Utils.SoulUtils.random;
 
 public class ParticleUtils {
+
     public static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
     /**
@@ -217,5 +218,6 @@ public class ParticleUtils {
             level.sendParticles(particle, x, y, z, 1, 0, 0, 0, speed);
         }
     }
+
 }
 

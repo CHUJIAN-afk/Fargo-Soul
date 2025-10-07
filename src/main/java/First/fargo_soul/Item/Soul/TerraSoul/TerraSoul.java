@@ -1,11 +1,11 @@
 package First.fargo_soul.Item.Soul.TerraSoul;
 
+import First.fargo_soul.Event.SoulCreativeTabEvent;
 import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
-import net.minecraft.world.entity.LivingEntity;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
@@ -37,13 +37,10 @@ public class TerraSoul extends SoulItem {
     @EventBusSubscriber(modid = Fargo_soul.MODID)
     public static class Event {
 
-        @SubscribeEvent
-        public static void Death(LivingDeathEvent event) {
-            if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target) {
-
-            }
+        @SubscribeEvent(priority = EventPriority.HIGHEST)
+        public static void CreativeTabEvent(SoulCreativeTabEvent event) {
+            event.add(TerraSoul.get());
         }
-
 
     }
 

@@ -1,6 +1,5 @@
-package First.fargo_soul.Client.Renderer;
+package First.fargo_soul.Entity.Projectile;
 
-import First.fargo_soul.Entity.Arrow.NeedleProjectile;
 import First.fargo_soul.Fargo_soul;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -20,23 +19,23 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
-public class NeedleRenderer extends EntityRenderer<NeedleProjectile> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Fargo_soul.MODID,"cactus_soul");
-    private final ItemStack needleStack = new ItemStack(Items.CACTUS);
+public class BoneRenderer extends EntityRenderer<Bone> {
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Fargo_soul.MODID,"necromancer_soul");
+    private final ItemStack itemStack = new ItemStack(Items.BONE);
 
-    public NeedleRenderer(EntityRendererProvider.Context context) {
+    public BoneRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 
     @Override
-    public void render(NeedleProjectile entity, float yaw, float partialTick, PoseStack poseStack, @NotNull MultiBufferSource buffer, int light) {
+    public void render(Bone entity, float yaw, float partialTick, PoseStack poseStack, @NotNull MultiBufferSource buffer, int light) {
         poseStack.pushPose();
+        poseStack.scale(0.5f, 0.5f, 0.5f);
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTick, entity.xRotO, entity.getXRot())));
         poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTick, entity.yRotO, entity.getYRot()) - 90));
-        poseStack.scale(0.25f, 0.5f, 0.25f);
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         itemRenderer.renderStatic(
-                needleStack,
+                itemStack,
                 ItemDisplayContext.FIXED,
                 light,
                 OverlayTexture.NO_OVERLAY,
@@ -49,7 +48,7 @@ public class NeedleRenderer extends EntityRenderer<NeedleProjectile> {
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull NeedleProjectile entity) {
+    public @NotNull ResourceLocation getTextureLocation(@NotNull Bone entity) {
         return TEXTURE;
     }
 }

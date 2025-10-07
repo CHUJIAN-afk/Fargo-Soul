@@ -34,7 +34,7 @@ public class NebulaSoul extends SoulItem {
         public static void Tick(EntityTickEvent.Post event) {
             if (event.getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
                 if (SoulUtils.isEquipped(attacker, NebulaSoul.class)) {
-                    SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(CosmicPower.class);
+                    SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(NebulaSoul.class);
                     soulInfo.maxCooldown = SoulUtils.isEquipped(attacker, CosmicPower.class) ? 40 : 60;
                     if (soulInfo.cooldown == 0) {
                         soulInfo.cooldown = soulInfo.maxCooldown;

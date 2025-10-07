@@ -1,16 +1,19 @@
 package First.fargo_soul.Dadageneeator;
 
-import First.fargo_soul.Fargo_soul;
+import First.fargo_soul.Event.DataGeneratorModelsEvent;
+import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-@EventBusSubscriber(modid = Fargo_soul.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber
 public class DataGenerator {
 
     @SubscribeEvent
@@ -20,7 +23,10 @@ public class DataGenerator {
         PackOutput packOutput = generator.getPackOutput();
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
-        generator.addProvider(includeClient, new ModItemModelProvider(packOutput, existingFileHelper));
+        DataGeneratorModelsEvent dataGeneratorModelsEvent = new DataGeneratorModelsEvent();
+        NeoForge.EVENT_BUS.post(dataGeneratorModelsEvent);
+        Map<String, SoulItem> map = dataGeneratorModelsEvent.getMap();
+        map.forEach((modid, soulItem) -> generator.addProvider(includeClient, new ModItemModelProvider(packOutput, existingFileHelper, modid, soulItem)));
         generator.addProvider(includeClient, new ModRecipeProvider(packOutput, lookupProvider));
     }
 

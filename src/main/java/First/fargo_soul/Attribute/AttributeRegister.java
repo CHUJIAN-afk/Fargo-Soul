@@ -1,6 +1,7 @@
 package First.fargo_soul.Attribute;
 
 import First.fargo_soul.Fargo_soul;
+import First.fargo_soul.Utils.SoulUtils;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -19,9 +20,7 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import static First.fargo_soul.Utils.CustomUtils.random;
-
-@EventBusSubscriber(modid = Fargo_soul.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Fargo_soul.MODID)
 public class AttributeRegister {
 
     public static final DeferredRegister<Attribute> ATTRIBUTE = DeferredRegister.create(Registries.ATTRIBUTE, Fargo_soul.MODID);
@@ -71,7 +70,7 @@ public class AttributeRegister {
     public static void CriticalHandler(LivingIncomingDamageEvent event) {
         if (event.getEntity() instanceof LivingEntity && event.getSource().getEntity() instanceof LivingEntity attacker) {
             if (attacker.getAttribute(CriticalChance) instanceof AttributeInstance criticalChance && attacker.getAttribute(CriticalDamage) instanceof AttributeInstance criticalDamage) {
-                if (random.nextDouble() < criticalChance.getValue()) {
+                if (SoulUtils.random.nextDouble() < criticalChance.getValue()) {
                     event.setAmount((float) (event.getAmount() * criticalDamage.getValue()));
                 }
             }

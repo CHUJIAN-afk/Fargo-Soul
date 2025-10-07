@@ -1,5 +1,6 @@
 package First.fargo_soul.Item.Soul.TerraSoul.CosmicPower.SoulStone;
 
+import First.fargo_soul.Attachment.Attachment.SoulAbilityData;
 import First.fargo_soul.Attachment.AttachmentRegister;
 import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
@@ -8,6 +9,8 @@ import First.fargo_soul.Item.Soul.TerraSoul.CosmicPower.CosmicPower;
 import First.fargo_soul.Utils.AttributeUtils;
 import First.fargo_soul.Utils.SoulUtils;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -51,17 +54,22 @@ public class MeteorSoul extends SoulItem {
         @SubscribeEvent
         public static void Damage(LivingIncomingDamageEvent event) {
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
-                if (SoulUtils.isEquipped(attacker, MeteorSoul.class) && SoulUtils.canAttack(MeteorSoul.class, target, target)) {
+                if (!attacker.equals(target) && SoulUtils.isEquipped(attacker, MeteorSoul.class)) {
                     double chance = SoulUtils.isEquipped(attacker, CosmicPower.class) ? 0.1 : 0.05;
-                    if (target.getRandom().nextDouble() < chance) {
+                    SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(MeteorSoul.class);
+                    soulInfo.maxCooldown = 2;
+                    if (soulInfo.cooldown == 0 && target.getRandom().nextDouble() < chance) {
+                        soulInfo.cooldown = soulInfo.maxCooldown;
                         Level level = attacker.level();
                         SmallFireball fireball = new SmallFireball(EntityType.SMALL_FIREBALL, level);
-                        Vec3 Pos = new Vec3(target.getRandomX(4), target.getRandomY() + 8, target.getRandomZ(4));
-                        Vec3 vec3 = target.getHitbox().getCenter().subtract(Pos).normalize();
-                        fireball.setPos(Pos);
-                        fireball.shoot(vec3.x, vec3.y, vec3.z, 2F, 1.0F);
-                        level.addFreshEntity(fireball);
-                        fireball.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SoulItem.class).enabled = true;
+                        SoulUtils.shootTargetFromAttaker(fireball, attacker, target, 2, 2);
+                        SoulUtils.setAbilityInvulnerable(fireball);
+                        SoulUtils.playSound(
+                                level,
+                                fireball.position(),
+                                SoundEvents.GHAST_SHOOT,
+                                SoundSource.PLAYERS
+                        );
                     }
                 }
             }

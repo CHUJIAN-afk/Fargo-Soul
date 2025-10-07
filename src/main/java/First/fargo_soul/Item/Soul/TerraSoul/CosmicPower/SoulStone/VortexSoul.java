@@ -7,7 +7,6 @@ import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
 import First.fargo_soul.Item.Soul.TerraSoul.CosmicPower.CosmicPower;
-import First.fargo_soul.Utils.CustomUtils;
 import First.fargo_soul.Utils.ParticleUtils;
 import First.fargo_soul.Utils.SoulUtils;
 import io.netty.buffer.ByteBuf;
@@ -93,7 +92,7 @@ public class VortexSoul extends SoulItem {
                     Level level = player.level();
                     SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(VortexSoul.class);
                     int maxDistance = SoulUtils.isEquipped(player, CosmicPower.class) ? 1024 : 512;
-                    HitResult hitResult = CustomUtils.getTargetedBlock(player, maxDistance);
+                    HitResult hitResult = SoulUtils.getTargetedBlock(player, maxDistance);
                     if (soulInfo.cooldown == 0 && hitResult instanceof BlockHitResult blockHitResult) {
                         soulInfo.cooldown = soulInfo.maxCooldown;
                         BlockPos pos = blockHitResult.getBlockPos();

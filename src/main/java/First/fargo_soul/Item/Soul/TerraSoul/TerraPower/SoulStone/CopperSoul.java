@@ -2,7 +2,6 @@ package First.fargo_soul.Item.Soul.TerraSoul.TerraPower.SoulStone;
 
 import First.fargo_soul.Attachment.Attachment.SoulAbilityData;
 import First.fargo_soul.Attachment.AttachmentRegister;
-import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.TerraSoul.EarthPower.SoulStone.CobaltSoul;
 import First.fargo_soul.Item.Soul.TerraSoul.TerraPower.TerraPower;
@@ -38,7 +37,7 @@ public class CopperSoul extends SoulItem {
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
                 SoulAbilityData.SoulInfo SoulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(CobaltSoul.class);
                 SoulInfo.maxCooldown = 40;
-                if (SoulInfo.cooldown == 0 && SoulUtils.isEquipped(attacker, CopperSoul.class) && attacker.getRandom().nextDouble() < (target.isInWaterOrRain() ? 0.2 : 0.1)) {
+                if (!attacker.equals(target) && SoulInfo.cooldown == 0 && SoulUtils.isEquipped(attacker, CopperSoul.class) && attacker.getRandom().nextDouble() < (target.isInWaterOrRain() ? 0.2 : 0.1)) {
                     SoulInfo.cooldown = SoulInfo.maxCooldown;
                     Level level = attacker.level();
                     List<LivingEntity> livingEntityList = level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(2), livingEntity -> attacker instanceof Player ? livingEntity instanceof Enemy : ((livingEntity instanceof Mob mob && attacker.equals(mob.getTarget()) || livingEntity instanceof Player)));
@@ -50,17 +49,17 @@ public class CopperSoul extends SoulItem {
                     LightningBolt lightning = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
                     lightning.setPos(target.getBoundingBox().getCenter());
                     lightning.setDamage(lightning.getDamage() * 2.0f);
-                    level.addFreshEntity(lightning);
-                    SoulAbilityData.SoulInfo soulInfo = lightning.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SoulItem.class);
-                    soulInfo.enabled = true;
+                    SoulUtils.addEntity(level, lightning);
+                    lightning.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SoulItem.class).enabled = true;
                     if (SoulUtils.isEquipped(attacker, TerraPower.class)) {
-                        Fargo_soul.executorService.schedule(() -> {
-                            LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
-                            lightningBolt.setPos(target.getBoundingBox().getCenter());
-                            lightningBolt.setDamage(lightningBolt.getDamage() * 2.0f);
-                            level.addFreshEntity(lightningBolt);
-                            SoulAbilityData.SoulInfo info = lightning.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SoulItem.class);
-                            info.enabled = true;
+                        SoulUtils.executorService.schedule(() -> {
+                            if (attacker.isAlive()) {
+                                LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
+                                lightningBolt.setPos(target.getBoundingBox().getCenter());
+                                lightningBolt.setDamage(lightningBolt.getDamage() * 2.0f);
+                                SoulUtils.addEntity(level, lightning);
+                                lightning.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SoulItem.class).enabled = true;
+                            }
                         }, 1, TimeUnit.SECONDS);
                     }
                 }

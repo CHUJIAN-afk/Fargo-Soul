@@ -20,7 +20,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
@@ -45,52 +44,38 @@ public class DarkArtistSoul extends SoulItem {
         @SubscribeEvent
         public static void Damage(LivingIncomingDamageEvent event) {
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
-                if (SoulUtils.isEquipped(attacker, DarkArtistSoul.class)) {
-                    SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(DarkArtistSoul.class);
+                if (!attacker.equals(target) && SoulUtils.isEquipped(attacker, DarkArtistSoul.class)) {
                     Level level = attacker.level();
                     //箭矢
-                    soulInfo.maxCooldown = 200;
-                    if (soulInfo.cooldown == 0) {
-                        soulInfo.cooldown = soulInfo.maxCooldown;
+                    SoulAbilityData.SoulInfo DarkArtistArrow = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("DarkArtistArrow");
+                    DarkArtistArrow.maxCooldown = 200;
+                    if (DarkArtistArrow.cooldown == 0) {
+                        DarkArtistArrow.cooldown = DarkArtistArrow.maxCooldown;
                         for (int i = 0; i < 8; i++) {
                             Arrow arrow = new Arrow(EntityType.ARROW, level);
-                            Vec3 Pos = new Vec3(target.getRandomX(4), target.getRandomY() + 2, target.getRandomZ(4));
-                            Vec3 vec3 = target.getHitbox().getCenter().subtract(Pos).normalize();
-                            arrow.setPos(Pos);
                             arrow.setBaseDamage(event.getAmount() * (SoulUtils.isEquipped(attacker, DeathPower.class) ? 0.25 : 0.15f));
-                            arrow.shoot(vec3.x, vec3.y, vec3.z, 1F, 1.0F);
-                            level.addFreshEntity(arrow);
-                            arrow.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SoulItem.class).enabled = true;
+                            SoulUtils.shootTargetFromAttaker(arrow, attacker, target, 2, 3);
+                            SoulUtils.setAbilityInvulnerable(arrow);
                             SoulUtils.playSound(
                                     level,
-                                    Pos,
+                                    arrow.position(),
                                     SoundEvents.ARROW_SHOOT,
                                     SoundSource.PLAYERS
                             );
                         }
                     }
                     //火球
+                    SoulAbilityData.SoulInfo DarkArtistFireball = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("DarkArtistFireball");
+                    DarkArtistFireball.maxCooldown = 2;
                     double chance = SoulUtils.isEquipped(attacker, DeathPower.class) ? 0.2 : 0.1;
-                    if (target.getRandom().nextDouble() < chance) {
-                        double x = attacker.getRandomX(2);
-                        double y = attacker.getRandomY() + 2;
-                        double z = attacker.getRandomZ(2);
-                        Vec3 toMonster = target.getHitbox().getCenter().subtract(x, y, z).normalize();
-                        SmallFireball fireball = new SmallFireball(
-                                level,
-                                x,
-                                y,
-                                z,
-                                toMonster
-                        );
-                        fireball.setOwner(attacker);
-                        level.addFreshEntity(fireball);
-                        fireball.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SoulItem.class).enabled = true;
+                    if (DarkArtistFireball.cooldown == 0 && target.getRandom().nextDouble() < chance) {
+                        DarkArtistFireball.cooldown = DarkArtistFireball.maxCooldown;
+                        SmallFireball fireball = new SmallFireball(EntityType.SMALL_FIREBALL, level);
+                        SoulUtils.shootTargetFromAttaker(fireball, attacker, target);
+                        SoulUtils.setAbilityInvulnerable(fireball);
                         ParticleUtils.spawnParticleSphere(
-								(ServerLevel) level,
-                                x,
-                                y,
-                                z,
+                                (ServerLevel) level,
+                                fireball.position(),
                                 ParticleTypes.LAVA,
                                 0.2f,
                                 5,
@@ -100,7 +85,7 @@ public class DarkArtistSoul extends SoulItem {
                 }
             }
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
-                if (SoulUtils.isEquipped(target, DarkArtistSoul.class)) {
+                if (!attacker.equals(target) && SoulUtils.isEquipped(target, DarkArtistSoul.class)) {
                     Holder<MobEffect> blindness = MobEffects.BLINDNESS;
                     Holder<MobEffect> darkness = MobEffects.DARKNESS;
                     attacker.addEffect(new MobEffectInstance(blindness, 200));

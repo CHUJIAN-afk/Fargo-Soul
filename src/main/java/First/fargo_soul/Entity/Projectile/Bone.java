@@ -1,4 +1,4 @@
-package First.fargo_soul.Entity.Arrow;
+package First.fargo_soul.Entity.Projectile;
 
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;

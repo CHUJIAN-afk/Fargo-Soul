@@ -55,7 +55,7 @@ public class RedRidingSoul extends SoulItem {
         @SubscribeEvent
         public static void Damage(LivingIncomingDamageEvent event) {
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
-                if (SoulUtils.isEquipped(attacker, RedRidingSoul.class)) {
+                if (!attacker.equals(target) && SoulUtils.isEquipped(attacker, RedRidingSoul.class)) {
                     SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(RedRidingSoul.class);
                     soulInfo.maxStacks = SoulUtils.isEquipped(attacker, WillPower.class) ? 15 : 10;
                     soulInfo.addStacks();

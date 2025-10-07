@@ -31,7 +31,7 @@ public class PlayerMixin {
             player.heal(player.getMaxHealth() * 0.05f);
             Bee bee = new Bee(EntityType.BEE, level);
             bee.setPos(new Vec3(player.getRandomX(2), player.getRandomY() + 2, player.getRandomZ(2)));
-            level.addFreshEntity(bee);
+            SoulUtils.addEntity(level, bee);
         }
     }
 

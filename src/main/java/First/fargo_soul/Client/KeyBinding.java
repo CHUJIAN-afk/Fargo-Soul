@@ -40,7 +40,7 @@ public class KeyBinding {
     }
 
     //注册按键
-    @EventBusSubscriber(modid = Fargo_soul.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
+    @EventBusSubscriber(modid = Fargo_soul.MODID, value = Dist.CLIENT)
     public static class ClientBusEvents {
         @SubscribeEvent
         public static void registerKeyMappingsEvent(RegisterKeyMappingsEvent event) {

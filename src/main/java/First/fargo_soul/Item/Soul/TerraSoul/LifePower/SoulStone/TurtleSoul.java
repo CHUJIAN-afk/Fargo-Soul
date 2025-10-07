@@ -2,19 +2,14 @@ package First.fargo_soul.Item.Soul.TerraSoul.LifePower.SoulStone;
 
 import First.fargo_soul.Attachment.Attachment.SoulAbilityData;
 import First.fargo_soul.Attachment.AttachmentRegister;
-import First.fargo_soul.Entity.Arrow.NeedleProjectile;
-import First.fargo_soul.Entity.EntityRegister;
 import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
-import First.fargo_soul.Item.Soul.TerraSoul.LifePower.LifePower;
 import First.fargo_soul.Utils.SoulUtils;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import org.confluence.lib.ConfluenceMagicLib;
@@ -49,7 +44,7 @@ public class TurtleSoul extends SoulItem {
 				}
 			}
 			if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
-				if (SoulUtils.isEquipped(target, TurtleSoul.class)) {
+				if (!attacker.equals(target) && SoulUtils.isEquipped(target, TurtleSoul.class)) {
 					SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(TurtleSoul.class);
 					if (soulInfo.enabled) {
 						event.setAmount(Math.max(event.getAmount() - target.getMaxHealth() * 0.04f, 0));
@@ -61,7 +56,7 @@ public class TurtleSoul extends SoulItem {
 				}
 			}
 			if (event.getSource().getDirectEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
-				if (SoulUtils.isEquipped(target, TurtleSoul.class) && SoulUtils.canAttack(TurtleSoul.class, attacker, attacker)) {
+				if (!attacker.equals(target) && SoulUtils.isEquipped(target, TurtleSoul.class) && SoulUtils.canAttack(TurtleSoul.class, attacker, attacker)) {
 					float newDamage = event.getAmount();
 					float scale = (1 - (float) (attacker.getBoundingBox().getCenter().distanceTo(target.getBoundingBox().getCenter()) * 0.1)) * 0.6f;
 					boolean lowHealth = target.getHealth() / target.getMaxHealth() < 0.5;
@@ -71,6 +66,7 @@ public class TurtleSoul extends SoulItem {
 						attacker.knockback(1, knockback.x(), knockback.y());
 					}
 					SoulUtils.attack(TurtleSoul.class, attacker, target, attacker, DamageTypes.CACTUS, newDamage);
+					/*
 					double chance = SoulUtils.isEquipped(target, LifePower.class) ? 0.2 : 0.1;
 					if (!event.isCanceled() && event.getAmount() > 0 && target.getRandom().nextDouble() < chance) {
 						Level level = target.level();
@@ -78,22 +74,24 @@ public class TurtleSoul extends SoulItem {
 							addNeedle(level, target, target, target.getBoundingBox().getCenter(), 0.6f);
 						}
 					}
+					*/
 				}
 			}
 		}
-
+/*
 		@SubscribeEvent
 		public static void CactusSoulDeathHandler(LivingDeathEvent event) {
 			if (event.getSource().getDirectEntity() instanceof NeedleProjectile needleProjectile && event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
 				if (needleProjectile.getOwner() instanceof LivingEntity attacker && SoulUtils.isEquipped(attacker, TurtleSoul.class)) {
 					Level level = attacker.level();
 					for (int i = 0; i < (SoulUtils.isEquipped(attacker, LifePower.class) ? 120 : 80); i++) {
-						addNeedle(level, attacker, target, target.getBoundingBox().getCenter(), 0.9f);
+						//addNeedle(level, attacker, target, target.getBoundingBox().getCenter(), 0.9f);
 					}
 				}
 			}
 		}
-
+*/
+		/*
 		private static void addNeedle(Level level, LivingEntity target, LivingEntity target1, Vec3 target2, float velocity) {
 			NeedleProjectile needle = new NeedleProjectile(EntityRegister.Needle.get(), level);
 			needle.setOwner(target);
@@ -111,7 +109,7 @@ public class TurtleSoul extends SoulItem {
 			SoulAbilityData.SoulInfo soulInfo = needle.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SoulItem.class);
 			soulInfo.enabled = true;
 		}
-
+*/
 	}
 
 }

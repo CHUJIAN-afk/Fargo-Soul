@@ -81,7 +81,7 @@ public class BeetleSoul extends SoulItem {
                 }
             }
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
-                if (SoulUtils.isEquipped(attacker, BeetleSoul.class)) {
+                if (!attacker.equals(target) && SoulUtils.isEquipped(attacker, BeetleSoul.class)) {
                     SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("BeetleMight");
                     soulInfo.addStacks(2);
                     target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(attacker.getScoreboardName()).enabled = true;

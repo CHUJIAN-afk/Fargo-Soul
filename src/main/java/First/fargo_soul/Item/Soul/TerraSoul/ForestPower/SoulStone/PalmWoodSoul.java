@@ -40,7 +40,7 @@ public class PalmWoodSoul extends SoulItem {
                 }
             }
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
-                if (SoulUtils.isEquipped(attacker, PalmWoodSoul.class)) {
+                if (!attacker.equals(target) && SoulUtils.isEquipped(attacker, PalmWoodSoul.class)) {
                     int remainingFireTicks = target.getRemainingFireTicks() + 40;
                     remainingFireTicks = Math.min(remainingFireTicks, 600);
                     target.setRemainingFireTicks(remainingFireTicks);

@@ -31,8 +31,10 @@ public class PlatinumSoul extends SoulItem {
                     Collection<ItemEntity> itemEntities = event.getDrops();
                     for (ItemEntity itemEntity : itemEntities) {
                         ItemStack itemStack = itemEntity.getItem();
-                        int scale = SoulUtils.isEquipped(attacker, WillPower.class) ? 8 : 5;
-                        itemStack.setCount(itemStack.getCount() * scale);
+                        if (!(itemStack.getItem() instanceof SoulItem)) {
+                            int scale = SoulUtils.isEquipped(attacker, WillPower.class) ? 8 : 5;
+                            itemStack.setCount(itemStack.getCount() * scale);
+                        }
                     }
                 }
             }

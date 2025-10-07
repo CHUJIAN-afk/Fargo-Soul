@@ -47,7 +47,7 @@ public class TitaniumSoul extends SoulItem {
                     Level level = target.level();
                     SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(TitaniumSoul.class);
                     soulInfo.maxCooldown = 400;
-                    if (event.isCanceled() && soulInfo.cooldown == 0) {
+                    if (!event.isCanceled() && soulInfo.cooldown == 0) {
                         soulInfo.cooldown = soulInfo.maxCooldown;
                         event.setCanceled(true);
                         SoulUtils.playSound(

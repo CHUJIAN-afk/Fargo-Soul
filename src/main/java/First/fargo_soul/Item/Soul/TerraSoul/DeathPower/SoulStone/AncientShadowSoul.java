@@ -32,7 +32,7 @@ public class AncientShadowSoul extends SoulItem {
         @SubscribeEvent
         public static void Damage(LivingIncomingDamageEvent event) {
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
-                if (SoulUtils.isEquipped(attacker, AncientShadowSoul.class)) {
+                if (!attacker.equals(target) && SoulUtils.isEquipped(attacker, AncientShadowSoul.class)) {
                     Holder<MobEffect> blindness = MobEffects.BLINDNESS;
                     Holder<MobEffect> darkness = MobEffects.DARKNESS;
                     if (target.getEffect(blindness) != null || target.getEffect(darkness) != null) {
@@ -41,7 +41,7 @@ public class AncientShadowSoul extends SoulItem {
                 }
             }
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
-                if (SoulUtils.isEquipped(attacker, AncientShadowSoul.class)) {
+                if (!attacker.equals(target) && SoulUtils.isEquipped(attacker, AncientShadowSoul.class)) {
                     Holder<MobEffect> blindness = MobEffects.BLINDNESS;
                     Holder<MobEffect> darkness = MobEffects.DARKNESS;
                     double chance = (SoulUtils.isEquipped(attacker, DeathPower.class) ? 1 : (getEnvironmentLight(attacker) > 1 ? 1 : 0.1));

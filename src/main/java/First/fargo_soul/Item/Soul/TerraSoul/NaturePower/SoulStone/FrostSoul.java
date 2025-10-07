@@ -18,13 +18,13 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Snowball;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -106,19 +106,12 @@ public class FrostSoul extends SoulItem {
                     if (attacker.tickCount % (cold ? 2 : 5) == 0 && soulInfo.stacks > 0) {
                         if (SoulUtils.getSoulTarget(attacker, 10) instanceof LivingEntity target) {
                             soulInfo.shrinkStacks();
-                            double x = attacker.getRandomX(2);
-                            double y = attacker.getY() + attacker.getBoundingBox().getYsize() * 0.5f;
-                            double z = attacker.getRandomZ(2);
-                            Snowball snowball = new Snowball(level, x, y, z);
-                            Vec3 toMonster = target.getHitbox().getCenter().subtract(x, y, z).normalize();
-                            snowball.shoot(toMonster.x, toMonster.y, toMonster.z, 2.0f, 1.0f);
-                            snowball.setOwner(attacker);
-                            level.addFreshEntity(snowball);
+                            Snowball snowball = new Snowball(EntityType.SNOWBALL, level);
+                            SoulUtils.shootTargetFromAttaker(snowball, attacker, target, 0.5, 2);
+                            SoulUtils.setAbilityInvulnerable(snowball);
                             ParticleUtils.spawnParticleSphere(
                                     (ServerLevel) level,
-                                    x,
-                                    y,
-                                    z,
+                                    snowball.position(),
                                     ParticleTypes.ITEM_SNOWBALL,
                                     0.2f,
                                     10,

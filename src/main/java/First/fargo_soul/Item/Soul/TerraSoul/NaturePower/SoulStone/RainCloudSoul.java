@@ -1,5 +1,7 @@
 package First.fargo_soul.Item.Soul.TerraSoul.NaturePower.SoulStone;
 
+import First.fargo_soul.Attachment.Attachment.SoulAbilityData;
+import First.fargo_soul.Attachment.AttachmentRegister;
 import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.TerraSoul.NaturePower.NaturePower;
@@ -31,13 +33,16 @@ public class RainCloudSoul extends SoulItem {
                     event.setCanceled(true);
                 }
             }
-            if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
+            if (!event.isCanceled() && event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
                 Level level = target.level();
                 double chance = SoulUtils.isEquipped(target, NaturePower.class) && level.isRaining() ? 0.4 : 0.1;
-                if (SoulUtils.isEquipped(target, RainCloudSoul.class) && target.getRandom().nextDouble() < chance) {
+                SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(RainCloudSoul.class);
+                soulInfo.maxCooldown = 20;
+                if (soulInfo.cooldown == 0 && !attacker.equals(target) && SoulUtils.isEquipped(target, RainCloudSoul.class) && target.getRandom().nextDouble() < chance) {
+                    soulInfo.cooldown = soulInfo.maxCooldown;
                     LightningBolt lightning = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
                     lightning.setPos(attacker.getBoundingBox().getCenter());
-                    level.addFreshEntity(lightning);
+                    SoulUtils.addEntity(level, lightning);
                 }
             }
         }

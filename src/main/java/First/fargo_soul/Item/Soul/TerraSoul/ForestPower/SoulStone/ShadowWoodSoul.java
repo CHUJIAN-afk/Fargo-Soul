@@ -43,7 +43,7 @@ public class ShadowWoodSoul extends SoulItem {
         @SubscribeEvent
         public static void Damage(LivingIncomingDamageEvent event) {
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
-                if (SoulUtils.isEquipped(target, ShadowWoodSoul.class) && SoulUtils.canAttack(ShadowWoodSoul.class, attacker, attacker)) {
+                if (!attacker.equals(target) && SoulUtils.isEquipped(target, ShadowWoodSoul.class) && SoulUtils.canAttack(ShadowWoodSoul.class, attacker, attacker)) {
                     SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(target.getScoreboardName());
                     if (soulInfo.enabled) {
                         int amount = SoulUtils.isEquipped(target, ForestPower.class) ? 3 : 2;

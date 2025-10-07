@@ -20,6 +20,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -28,7 +29,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -66,26 +66,13 @@ public class ObsidianSoul extends SoulItem {
                     SoulInfo.maxCooldown  = SoulUtils.isEquipped(attacker, TerraPower.class) ? 30 : 60;
                     if (SoulInfo.cooldown == 0 && SoulUtils.getSoulTarget(attacker, 10) instanceof LivingEntity target) {
                         SoulInfo.cooldown = SoulInfo.maxCooldown;
-                        double x = attacker.getRandomX(2);
-                        double y = attacker.getRandomY() + 2;
-                        double z = attacker.getRandomZ(2);
-                        double factor = SoulUtils.isEquipped(attacker, TerraPower.class) ? 1.3 : 1.0;
-                        Vec3 toMonster = target.getBoundingBox().getCenter().subtract(x, y, z).normalize().scale(factor);
                         Level level = attacker.level();
-                        SmallFireball fireball = new SmallFireball(
-                                level,
-                                x,
-                                y,
-                                z,
-                                toMonster
-                        );
-                        fireball.setOwner(attacker);
-                        level.addFreshEntity(fireball);
+                        SmallFireball fireball = new SmallFireball(EntityType.SMALL_FIREBALL, level);
+                        SoulUtils.shootTargetFromAttaker(fireball, attacker, target, 1, SoulUtils.isEquipped(attacker, TerraPower.class) ? 1.3 : 1.0);
+                        SoulUtils.setAbilityInvulnerable(fireball);
                         ParticleUtils.spawnParticleSphere(
-								(ServerLevel) level,
-                                x,
-                                y,
-                                z,
+                                (ServerLevel) level,
+                                fireball.position(),
                                 ParticleTypes.LAVA,
                                 0.2f,
                                 5,
