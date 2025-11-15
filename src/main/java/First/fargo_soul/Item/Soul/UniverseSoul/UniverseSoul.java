@@ -1,30 +1,16 @@
 package First.fargo_soul.Item.Soul.UniverseSoul;
 
-import First.fargo_soul.Attribute.AttributeRegister;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
-import First.fargo_soul.Item.Soul.SoulsRegister;
-import First.fargo_soul.Utils.AttributeUtils;
-import First.fargo_soul.Utils.CurioUtils;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import net.neoforged.neoforge.registries.DeferredItem;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
-import java.util.List;
-
-import static First.fargo_soul.Item.Soul.SoulsRegister.BerserkerSoul;
-import static First.fargo_soul.Item.Soul.SoulsRegister.SharpshooterSoul;
 
 public class UniverseSoul extends SoulItem {
 
 	public UniverseSoul(Properties properties) {
 		super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.MASTER));
 	}
-
+/*
 	@Override
 	public List<SoulItem> getSoulItemList() {
 		return List.of(
@@ -47,5 +33,5 @@ public class UniverseSoul extends SoulItem {
 			AttributeUtils.ConditionAttributeModifier(player, Attributes.ATTACK_KNOCKBACK, resourceLocation, 1, addMultipliedTotal, equipped);
 		}
 	}
-
+*/
 }

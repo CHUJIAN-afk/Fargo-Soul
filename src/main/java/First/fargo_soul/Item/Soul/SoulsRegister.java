@@ -1,6 +1,7 @@
 package First.fargo_soul.Item.Soul;
 
 import First.fargo_soul.Fargo_soul;
+import First.fargo_soul.Item.Soul.BaseSoul.SoulCoreItem;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.TerraSoul.CosmicPower.CosmicPower;
 import First.fargo_soul.Item.Soul.TerraSoul.CosmicPower.SoulStone.*;
@@ -21,14 +22,6 @@ import First.fargo_soul.Item.Soul.TerraSoul.TerraPower.TerraPower;
 import First.fargo_soul.Item.Soul.TerraSoul.TerraSoul;
 import First.fargo_soul.Item.Soul.TerraSoul.WillPower.Soulstone.*;
 import First.fargo_soul.Item.Soul.TerraSoul.WillPower.WillPower;
-import First.fargo_soul.Item.Soul.UniverseSoul.BerserkerSoul.BerserkerSoul;
-import First.fargo_soul.Item.Soul.UniverseSoul.BerserkerSoul.Soul.*;
-import First.fargo_soul.Item.Soul.UniverseSoul.SharpshooterSoul.SharpshooterSoul;
-import First.fargo_soul.Item.Soul.UniverseSoul.SharpshooterSoul.Soul.MarksmanEssence;
-import First.fargo_soul.Item.Soul.UniverseSoul.SharpshooterSoul.Soul.MeltRocketBag;
-import First.fargo_soul.Item.Soul.UniverseSoul.SharpshooterSoul.Soul.ScoutScope;
-import First.fargo_soul.Item.Soul.UniverseSoul.SharpshooterSoul.Soul.StalkerQuiver;
-import First.fargo_soul.Item.Soul.UniverseSoul.UniverseSoul;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -37,6 +30,8 @@ public class SoulsRegister {
 
     public static final DeferredRegister.Items SoulItems;
 
+
+    public static final DeferredItem<SoulCoreItem> SoulCoreItem;
     public static final DeferredItem<SoulItem> WoodSoul;
     public static final DeferredItem<SoulItem> PineWoodSoul;
     public static final DeferredItem<SoulItem> RosewoodSoul;
@@ -101,6 +96,7 @@ public class SoulsRegister {
     public static final DeferredItem<SoulItem> VortexSoul;
     public static final DeferredItem<SoulItem> CosmicPower;
     public static final DeferredItem<SoulItem> TerraSoul;
+    /*
     public static final DeferredItem<SoulItem> BarbarianEssence;
     public static final DeferredItem<SoulItem> BerserkerGloves;
     public static final DeferredItem<SoulItem> CelestialShell;
@@ -113,12 +109,14 @@ public class SoulsRegister {
     public static final DeferredItem<SoulItem> ScoutScope;
     public static final DeferredItem<SoulItem> StalkerQuiver;
 
-
-
     public static final DeferredItem<SoulItem> UniverseSoul;
+    */
 
     static {
         SoulItems = DeferredRegister.createItems(Fargo_soul.MODID);
+        SoulCoreItem = SoulItems.registerItem("soul", SoulCoreItem::new);
+
+/*
         //神射手之魂
         MeltRocketBag = SoulItems.registerItem("melt_rocket_bag", MeltRocketBag::new);
         MarksmanEssence = SoulItems.registerItem("marksman_essence", MarksmanEssence::new);
@@ -134,7 +132,7 @@ public class SoulsRegister {
         BerserkerSoul = SoulItems.registerItem("berserker_soul", BerserkerSoul::new);
         //寰宇之魂
         UniverseSoul = SoulItems.registerItem("universe_soul", UniverseSoul::new);
-
+*/
         //森林之力
         WoodSoul = SoulItems.registerItem("wood_soul", WoodSoul::new);
         PineWoodSoul = SoulItems.registerItem("pine_wood_soul", PineWoodSoul::new);

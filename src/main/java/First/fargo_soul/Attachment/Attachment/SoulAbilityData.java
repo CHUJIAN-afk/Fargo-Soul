@@ -115,6 +115,7 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag> {
 			Collection<SoulAbilityData.SoulInfo> soulInfos = soulAbilityData.ClientSoulInfo.values();
 			for (SoulAbilityData.SoulInfo soulInfo : soulInfos) {
 				if (soulInfo.maxCooldown != -1) {
+					soulInfo.cooldown = Math.min(soulInfo.cooldown, soulInfo.maxCooldown);
 					soulInfo.cooldown = Math.max(--soulInfo.cooldown, 0);
 				}
 				soulInfo.duration = Math.max(soulInfo.duration - soulInfo.durationReduction, 0);
@@ -128,6 +129,7 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag> {
 				Collection<SoulAbilityData.SoulInfo> soulInfos = soulAbilityData.SoulInfo.values();
 				for (SoulAbilityData.SoulInfo soulInfo : soulInfos) {
 					if (soulInfo.maxCooldown != -1) {
+						soulInfo.cooldown = Math.min(soulInfo.cooldown, soulInfo.maxCooldown);
 						soulInfo.cooldown = Math.max(--soulInfo.cooldown, 0);
 					}
 					soulInfo.duration = Math.max(--soulInfo.duration, 0);

@@ -1,6 +1,5 @@
 package First.fargo_soul.Item;
 
-import First.fargo_soul.Compact.Avaritia.AvaritiaSoulsRegister;
 import First.fargo_soul.Item.BaseItem.BaseItemsRegister;
 import First.fargo_soul.Item.Soul.SoulsRegister;
 import net.neoforged.bus.api.IEventBus;
@@ -13,7 +12,7 @@ public class ModItemRegister {
         //主魂石
         SoulsRegister.SoulItems.register(eventBus);
         //无尽贪婪联动
-        AvaritiaSoulsRegister.register(eventBus);
+        //AvaritiaSoulsRegister.register(eventBus);
     }
 
 }

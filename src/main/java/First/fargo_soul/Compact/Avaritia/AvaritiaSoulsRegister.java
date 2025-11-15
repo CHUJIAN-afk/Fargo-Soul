@@ -31,7 +31,7 @@ public class AvaritiaSoulsRegister {
     }
 
     public static void register(IEventBus eventBus) {
-        AvaritiaSouls.register(eventBus);
+        //AvaritiaSouls.register(eventBus);
     }
 
 }

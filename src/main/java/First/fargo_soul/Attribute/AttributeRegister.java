@@ -23,7 +23,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 @EventBusSubscriber(modid = Fargo_soul.MODID)
 public class AttributeRegister {
 
-    public static final DeferredRegister<Attribute> ATTRIBUTE = DeferredRegister.create(Registries.ATTRIBUTE, Fargo_soul.MODID);
+    public static final DeferredRegister<Attribute> Attributes;
 
     public static final Holder<Attribute> CriticalChance;
     public static final Holder<Attribute> CriticalDamage;
@@ -33,6 +33,7 @@ public class AttributeRegister {
     public static final Holder<Attribute> ArmorPierce;
 
     static {
+        Attributes = DeferredRegister.create(Registries.ATTRIBUTE, Fargo_soul.MODID);
         CriticalChance = RegisterAttribute("critical_chance", 0.1D);
         CriticalDamage = RegisterAttribute("critical_damage", 2.0D);
         Damage = RegisterAttribute("damage", 1.0D);
@@ -43,7 +44,7 @@ public class AttributeRegister {
 
     private static Holder<Attribute> RegisterAttribute(String name, double defaultValue) {
         ResourceLocation resourceLocation = ResourceLocation.fromNamespaceAndPath(Fargo_soul.MODID, name);
-        return ATTRIBUTE.register(name, () -> new RangedAttribute(resourceLocation.toString(), defaultValue, 0.0, Double.MAX_VALUE).setSyncable(true));
+        return Attributes.register(name, () -> new RangedAttribute(resourceLocation.toString(), defaultValue, 0.0, Double.MAX_VALUE).setSyncable(true));
     }
 
     @SubscribeEvent
@@ -54,6 +55,10 @@ public class AttributeRegister {
         event.add(EntityType.PLAYER, RangedDamage);
         event.add(EntityType.PLAYER, RangedSpeed);
         event.add(EntityType.PLAYER, ArmorPierce);
+    }
+
+    public static void register(IEventBus eventBus) {
+        Attributes.register(eventBus);
     }
 
     //弹射物速度处理
@@ -87,10 +92,6 @@ public class AttributeRegister {
                 event.setAmount((float) (event.getAmount() * damage.getValue()));
             }
         }
-    }
-
-    public static void register(IEventBus eventBus) {
-        ATTRIBUTE.register(eventBus);
     }
 
 }

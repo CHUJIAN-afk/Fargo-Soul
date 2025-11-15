@@ -27,7 +27,7 @@ public class DataGenerator {
         NeoForge.EVENT_BUS.post(dataGeneratorModelsEvent);
         Map<String, SoulItem> map = dataGeneratorModelsEvent.getMap();
         map.forEach((modid, soulItem) -> generator.addProvider(includeClient, new ModItemModelProvider(packOutput, existingFileHelper, modid, soulItem)));
-        generator.addProvider(includeClient, new ModRecipeProvider(packOutput, lookupProvider));
+        //generator.addProvider(includeClient, new ModRecipeProvider(packOutput, lookupProvider));
     }
 
 }

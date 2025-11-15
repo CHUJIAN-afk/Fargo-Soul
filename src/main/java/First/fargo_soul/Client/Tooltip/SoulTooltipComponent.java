@@ -6,6 +6,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.Item;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
@@ -13,15 +14,21 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public record SoulTooltipComponent(int width, int height, SoulItem soulItem) implements ClientTooltipComponent, TooltipComponent {
+public record SoulTooltipComponent(
+		int width,
+		int height,
+		float scale,
+		Item item
+) implements ClientTooltipComponent, TooltipComponent {
+
 	@Override
 	public int getWidth(@NotNull Font font) {
-		return width;
+		return (int) (width * scale);
 	}
 
 	@Override
 	public int getHeight() {
-		return height;
+		return (int) (height * scale);
 	}
 
 	@Override
@@ -29,12 +36,16 @@ public record SoulTooltipComponent(int width, int height, SoulItem soulItem) imp
 		PoseStack pose = guiGraphics.pose();
 		pose.pushPose();
 		pose.translate(tooltipX, tooltipY, 0);
-		pose.scale(1.5f, 1.5f, 1.5f);
-		List<SoulItem> soulItemList = soulItem.getSoulItemList();
-		guiGraphics.renderItem(soulItem.getDefaultInstance(), 0, 0);
-		for (SoulItem item : soulItemList) {
-			int i = soulItemList.indexOf(item);
-			guiGraphics.renderItem(soulItemList.get(i).getDefaultInstance(), (i + 1) * 16, 0);
+		pose.scale(scale, scale, scale);
+		if (item instanceof SoulItem soulItem) {
+			List<SoulItem> soulItemList = soulItem.getSoulItemList();
+			guiGraphics.renderItem(soulItem.getDefaultInstance(), 0, 0);
+			for (SoulItem item : soulItemList) {
+				int i = soulItemList.indexOf(item);
+				guiGraphics.renderItem(soulItemList.get(i).getDefaultInstance(), (i + 1) * 16, 0);
+			}
+		} else {
+			guiGraphics.renderItem(item.getDefaultInstance(), 16, 0);
 		}
 		pose.popPose();
 	}

@@ -1,12 +1,6 @@
 package First.fargo_soul.Item.Soul.UniverseSoul.BerserkerSoul.Soul;
 
-import First.fargo_soul.Effect.EffectRegister;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
-import First.fargo_soul.Item.Soul.SoulsRegister;
-import First.fargo_soul.Utils.CurioUtils;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
@@ -15,7 +9,7 @@ public class StingerNecklace extends SoulItem {
 	public StingerNecklace(Properties properties) {
 		super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PINK));
 	}
-
+/*
 	public static void StingerNecklaceDamageHandler2(LivingDamageEvent event) {
 		if (event.getEntity() instanceof ServerPlayer player && CurioUtils.isEquipped(player, SoulsRegister.StingerNecklace.get())) {
 			if (player.getEffect(EffectRegister.Honey) instanceof MobEffectInstance mobEffectInstance) {
@@ -25,7 +19,7 @@ public class StingerNecklace extends SoulItem {
 			}
 		}
 	}
-
+*/
 
 
 }

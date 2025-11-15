@@ -51,4 +51,5 @@ public class NeedleRenderer extends EntityRenderer<NeedleProjectile> {
     public @NotNull ResourceLocation getTextureLocation(@NotNull NeedleProjectile entity) {
         return TEXTURE;
     }
+
 }

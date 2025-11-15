@@ -25,5 +25,4 @@ public class WillPower extends SoulItem {
         );
     }
 
-
 }

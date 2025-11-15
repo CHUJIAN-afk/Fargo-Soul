@@ -1,18 +1,6 @@
 package First.fargo_soul.Item.Soul.UniverseSoul.BerserkerSoul.Soul;
 
-import First.fargo_soul.Attribute.AttributeRegister;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
-import First.fargo_soul.Item.Soul.SoulsRegister;
-import First.fargo_soul.Utils.AttributeUtils;
-import First.fargo_soul.Utils.CurioUtils;
-import net.minecraft.core.Holder;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
@@ -21,7 +9,7 @@ public class CelestialShell extends SoulItem {
 	public CelestialShell(Properties properties) {
 		super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.YELLOW));
 	}
-
+/*
 	public static void CelestialShellTickHandler(PlayerTickEvent.Post event) {
 		if (event.getEntity() instanceof ServerPlayer player) {
 			AttributeModifier.Operation addMultipliedBase = AttributeModifier.Operation.ADD_MULTIPLIED_BASE;
@@ -56,6 +44,6 @@ public class CelestialShell extends SoulItem {
 	private static void CelestialShellNightAddAttributeModifiers(ServerPlayer player, Holder<Attribute> attributeHolder, double amount, AttributeModifier.Operation operation) {
 		AttributeUtils.ConditionAttributeModifier(player, attributeHolder, SoulsRegister.CelestialShell.getId(), amount, operation, CurioUtils.isEquipped(player, SoulsRegister.CelestialShell.get()) && player.serverLevel().isNight());
 	}
-
+*/
 
 }

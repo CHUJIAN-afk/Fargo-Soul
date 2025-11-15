@@ -1,16 +1,6 @@
 package First.fargo_soul.Item.Soul.UniverseSoul.BerserkerSoul.Soul;
 
-import First.fargo_soul.Attribute.AttributeRegister;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
-import First.fargo_soul.Item.Soul.SoulsRegister;
-import First.fargo_soul.Utils.AttributeUtils;
-import First.fargo_soul.Utils.CurioUtils;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import net.neoforged.neoforge.registries.DeferredItem;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
@@ -18,7 +8,7 @@ public class BarbarianEssence extends SoulItem {
 	public BarbarianEssence(Properties properties) {
 		super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.YELLOW));
 	}
-
+/*
 	public static void BarbarianEssenceTickHandler(PlayerTickEvent.Post event) {
 		if (event.getEntity() instanceof ServerPlayer player) {
 			DeferredItem<SoulItem> barbarianEssence = SoulsRegister.BarbarianEssence;
@@ -30,5 +20,5 @@ public class BarbarianEssence extends SoulItem {
 			AttributeUtils.ConditionAttributeModifier(player, AttributeRegister.CriticalChance, resourceLocation, 0.08, addMultipliedBase, equipped);
 		}
 	}
-
+*/
 }

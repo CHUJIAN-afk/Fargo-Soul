@@ -2,6 +2,7 @@ package First.fargo_soul.Utils;
 
 import First.fargo_soul.Attachment.Attachment.SoulData;
 import First.fargo_soul.Attachment.AttachmentRegister;
+import First.fargo_soul.DataComponent.DataComponents.SoulComponent;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.SoulsRegister;
 import net.minecraft.core.Holder;
@@ -30,6 +31,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
@@ -44,9 +49,39 @@ public class SoulUtils {
 	public static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 	public static final Random random = new Random();
 
-	public static float getAgeInTicks(LivingEntity attacker, float partialTick, float speed) {
+	public static <T extends SoulItem> DeferredItem<SoulItem> registerItem(DeferredRegister.Items items, String name, Class<T> tClass, ModRarity modRarity) {
+		return items.registerItem(name, properties -> {
+			try {
+				return tClass.getConstructor(Item.Properties.class).newInstance(properties.component(ConfluenceMagicLib.MOD_RARITY, modRarity));
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		});
+	}
+
+	public static float getAgeInTicks(Entity attacker, float partialTick, float speed) {
 		float render = attacker.tickCount * speed;
 		return Mth.lerp(partialTick, render - speed, render);
+	}
+
+	public static void randomShoot(LivingEntity attacker, Projectile projectile,LivingEntity owner) {
+		Level level = attacker.level();
+		double theta = random.nextDouble() * Math.PI * 2;
+		double phi = Math.acos(2 * random.nextDouble() - 1);
+		double r = 0.5 + random.nextDouble() * 0.3;
+		Vec3 offset = new Vec3(r * Math.sin(phi) * Math.cos(theta), r * Math.sin(phi) * Math.sin(theta), r * Math.cos(phi));
+		Vec3 spawnPos = attacker.position().add(offset);
+		Vec3 velocity = offset.normalize().scale(0.8);
+		projectile.setOwner(owner);
+		projectile.moveTo(spawnPos.x, spawnPos.y, spawnPos.z, attacker.getYRot(), attacker.getXRot());
+		projectile.shoot(velocity.x, velocity.y, velocity.z, 0.6f, 6.0f);
+		addEntity(level, projectile);
+	}
+
+	public static List<Item> getArmorList(LivingEntity entity) {
+		List<Item> list = new ArrayList<>();
+		entity.getArmorSlots().forEach(itemStack -> list.add(itemStack.getItem()));
+		return list;
 	}
 
 	public static void addEntity(Level level, Entity entity) {
@@ -62,7 +97,7 @@ public class SoulUtils {
 				level,
 				attacker.position(),
 				event,
-				SoundSource.PLAYERS
+				attacker.getSoundSource()
 		), second, TimeUnit.SECONDS);
 	}
 
@@ -74,11 +109,15 @@ public class SoulUtils {
 		shootTargetFromAttaker(projectile, attacker, target, 1, 1);
 	}
 
+	public static double getRandomWithError(double baseValue, double errorRange) {
+		return baseValue + (random.nextFloat(-1, 1) * errorRange);
+	}
+
 	public static void shootTargetFromAttaker(Projectile projectile, LivingEntity attacker, LivingEntity target, double distance, double speed) {
 		double size = attacker.getBoundingBox().getSize() * distance;
-		double x = attacker.getRandomX(size);
-		double y = attacker.getRandomY() + size;
-		double z = attacker.getRandomZ(size);
+		double x = getRandomWithError(attacker.getX(), size);
+		double y = getRandomWithError(attacker.getY(), size);
+		double z = getRandomWithError(attacker.getZ(), size);
 		Vec3 pos = new Vec3(x, y, z);
 		projectile.setPos(pos);
 		Vec3 toTarget = target.getHitbox().getCenter().subtract(pos).normalize().scale(speed);
@@ -230,8 +269,14 @@ public class SoulUtils {
 	}
 
 	public static void attack(LivingEntity attacker, LivingEntity target, ResourceKey<DamageType> damageTypeResourceKey, float amount) {
-		target.invulnerableTime = 0;
-		target.hurt(attacker.level().damageSources().source(damageTypeResourceKey, attacker), amount);
+		if (target != null) {
+			target.invulnerableTime = 0;
+			if (attacker == null) {
+				target.hurt(target.level().damageSources().source(damageTypeResourceKey, target), amount);
+			} else {
+				target.hurt(attacker.level().damageSources().source(damageTypeResourceKey, attacker), amount);
+			}
+		}
 	}
 
 	public <T> void addItemToTag(Function<ResourceLocation, Optional<? extends T>> idToValue, Map<ResourceLocation, Collection<T>> tags, ResourceLocation itemKey, ResourceLocation tagKey) {
@@ -240,5 +285,28 @@ public class SoulUtils {
 		}
 	}
 
+	public static int getBreakLevel(SoulComponent soulComponent) {
+		int conditions = 0;
+		if (soulComponent instanceof SoulComponent(
+				String levelId,
+				String biomeId,
+				String blockId,
+				String weather,
+				String time,
+				int minHeight,
+				int maxHeight,
+				Item item,
+				Map<Item, Integer> materials
+		)) {
+			if (!levelId.equals("any")) conditions++;
+			if (!biomeId.equals("any")) conditions++;
+			if (!blockId.equals("any")) conditions++;
+			if (!weather.equals("any")) conditions++;
+			if (!time.equals("any")) conditions++;
+			if (minHeight < maxHeight) conditions++;
+			return conditions;
+		}
+		return conditions;
+	}
 
 }

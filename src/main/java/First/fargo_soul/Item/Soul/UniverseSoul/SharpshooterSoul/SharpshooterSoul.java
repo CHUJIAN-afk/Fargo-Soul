@@ -1,28 +1,15 @@
 package First.fargo_soul.Item.Soul.UniverseSoul.SharpshooterSoul;
 
-import First.fargo_soul.Attribute.AttributeRegister;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
-import First.fargo_soul.Item.Soul.SoulsRegister;
-import First.fargo_soul.Utils.AttributeUtils;
-import First.fargo_soul.Utils.CurioUtils;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import net.neoforged.neoforge.registries.DeferredItem;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
-
-import java.util.List;
-
-import static First.fargo_soul.Item.Soul.SoulsRegister.*;
 
 public class SharpshooterSoul extends SoulItem {
 
 	public SharpshooterSoul(Properties properties) {
 		super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PURPLE));
 	}
-
+/*
 	@Override
 	public List<SoulItem> getSoulItemList() {
 		return List.of(
@@ -43,5 +30,5 @@ public class SharpshooterSoul extends SoulItem {
 			AttributeUtils.ConditionAttributeModifier(player, AttributeRegister.RangedSpeed, resourceLocation, 0.1, addMultipliedBase, equipped);
 		}
 	}
-
+*/
 }

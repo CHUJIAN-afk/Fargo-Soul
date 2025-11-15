@@ -1,0 +1,696 @@
+[
+  {
+    "level": [
+      "any",
+      "minecraft:the_nether"
+    ],
+    "biome": [
+      "any",
+      "minecraft:nether_wastes",
+      "minecraft:crimson_forest",
+      "minecraft:basalt_deltas"
+    ],
+    "block": [
+      "any",
+      "minecraft:magma_block",
+      "minecraft:fire",
+      "minecraft:lava",
+      "minecraft:lava_cauldron"
+    ],
+    "weather": [
+      "any",
+      "clear"
+    ],
+    "time": [
+      "any",
+      "noon",
+      "midnight"
+    ],
+    "minHeight": [
+      0,
+      32
+    ],
+    "maxHeight": [
+      64,
+      128
+    ],
+    "item": "fargo_soul:blaze_soul",
+    "materials": {
+      "primary": {
+        "minecraft:blaze_rod": [
+          64,
+          128
+        ],
+        "minecraft:magma_block": [
+          64,
+          128
+        ],
+        "minecraft:shield": [
+          1,
+          4
+        ],
+        "minecraft:sunflower": [
+          32,
+          64
+        ]
+      },
+      "secondaryCount": [
+        4,
+        7
+      ],
+      "secondary": {
+        "minecraft:lava_bucket": [
+          16,
+          64
+        ],
+        "minecraft:fire_charge": [
+          64,
+          128
+        ],
+        "minecraft:glowstone": [
+          64,
+          128
+        ],
+        "minecraft:nether_star": [
+          1,
+          2
+        ],
+        "minecraft:tnt": [
+          32,
+          64
+        ],
+        "minecraft:blaze_powder": [
+          64,
+          128
+        ],
+        "minecraft:shroomlight": [
+          64,
+          128
+        ],
+        "minecraft:torch": [
+          64,
+          128
+        ],
+        "minecraft:wither_skeleton_skull": [
+          1,
+          8
+        ],
+        "minecraft:magma_cream": [
+          64,
+          128
+        ]
+      }
+    }
+  },
+  {
+    "level": [
+      "any",
+      "minecraft:overworld"
+    ],
+    "biome": [
+      "any",
+      "minecraft:deep_dark",
+      "minecraft:ice_spikes",
+      "minecraft:end_highlands"
+    ],
+    "block": [
+      "any",
+      "minecraft:cobweb",
+      "minecraft:sculk_shrieker",
+      "minecraft:blue_ice"
+    ],
+    "weather": [
+      "any",
+      "clear"
+    ],
+    "time": [
+      "any",
+      "midnight"
+    ],
+    "minHeight": [
+      200,
+      300
+    ],
+    "maxHeight": [
+      -64,
+      0
+    ],
+    "item": "fargo_soul:stardust_soul",
+    "materials": {
+      "primary": {
+        "minecraft:clock": [
+          32,
+          64
+        ],
+        "minecraft:nether_star": [
+          2,
+          4
+        ],
+        "minecraft:echo_shard": [
+          32,
+          64
+        ]
+      },
+      "secondaryCount": [
+        5,
+        8
+      ],
+      "secondary": {
+        "minecraft:amethyst_shard": [
+          64,
+          128
+        ],
+        "minecraft:diamond_block": [
+          16,
+          32
+        ],
+        "minecraft:lapis_block": [
+          64,
+          128
+        ],
+        "minecraft:packed_ice": [
+          64,
+          128
+        ],
+        "minecraft:blue_ice": [
+          64,
+          128
+        ],
+        "minecraft:obsidian": [
+          64,
+          128
+        ],
+        "minecraft:soul_sand": [
+          64,
+          128
+        ],
+        "minecraft:cobweb": [
+          64,
+          128
+        ],
+        "minecraft:nautilus_shell": [
+          8,
+          32
+        ],
+        "minecraft:sculk_catalyst": [
+          1,
+          8
+        ]
+      }
+    }
+  },
+  {
+    "level": [
+      "any",
+      "minecraft:the_end"
+    ],
+    "biome": [
+      "any",
+      "minecraft:the_end",
+      "minecraft:end_highlands",
+      "minecraft:end_midlands"
+    ],
+    "block": [
+      "any",
+      "minecraft:purpur_block",
+      "minecraft:end_gateway",
+      "minecraft:beacon"
+    ],
+    "weather": [
+      "any",
+      "clear"
+    ],
+    "time": [
+      "any",
+      "dawn",
+      "dusk"
+    ],
+    "minHeight": [
+      0,
+      64
+    ],
+    "maxHeight": [
+      128,
+      256
+    ],
+    "item": "fargo_soul:nebula_soul",
+    "materials": {
+      "primary": {
+        "minecraft:end_crystal": [
+          16,
+          32
+        ],
+        "minecraft:dragon_breath": [
+          64,
+          128
+        ],
+        "minecraft:heart_of_the_sea": [
+          1,
+          4
+        ],
+        "minecraft:enchanting_table": [
+          1,
+          4
+        ]
+      },
+      "secondaryCount": [
+        3,
+        6
+      ],
+      "secondary": {
+        "minecraft:amethyst_block": [
+          32,
+          64
+        ],
+        "minecraft:magenta_wool": [
+          64,
+          128
+        ],
+        "minecraft:pink_wool": [
+          64,
+          128
+        ],
+        "minecraft:purple_wool": [
+          64,
+          128
+        ],
+        "minecraft:enchanted_golden_apple": [
+          8,
+          16
+        ],
+        "minecraft:brewing_stand": [
+          16,
+          32
+        ],
+        "minecraft:ghast_tear": [
+          64,
+          128
+        ],
+        "minecraft:chorus_fruit": [
+          64,
+          128
+        ],
+        "minecraft:chorus_flower": [
+          16,
+          64
+        ],
+        "minecraft:popped_chorus_fruit": [
+          64,
+          128
+        ]
+      }
+    }
+  },
+  {
+    "level": [
+      "any",
+      "minecraft:the_end"
+    ],
+    "biome": [
+      "any",
+      "minecraft:end_highlands",
+      "minecraft:the_void"
+    ],
+    "block": [
+      "any",
+      "minecraft:end_gateway",
+      "minecraft:shulker_box",
+      "minecraft:air"
+    ],
+    "weather": [
+      "any",
+      "clear"
+    ],
+    "time": [
+      "any",
+      "noon"
+    ],
+    "minHeight": [
+      -64,
+      0
+    ],
+    "maxHeight": [
+      0,
+      64
+    ],
+    "item": "fargo_soul:vortex_soul",
+    "materials": {
+      "primary": {
+        "minecraft:ender_pearl": [
+          64,
+          128
+        ],
+        "minecraft:elytra": [
+          1,
+          1
+        ],
+        "minecraft:phantom_membrane": [
+          64,
+          128
+        ]
+      },
+      "secondaryCount": [
+        5,
+        9
+      ],
+      "secondary": {
+        "minecraft:shulker_shell": [
+          32,
+          64
+        ],
+        "minecraft:ender_eye": [
+          64,
+          128
+        ],
+        "minecraft:crying_obsidian": [
+          64,
+          128
+        ],
+        "minecraft:sculk_sensor": [
+          32,
+          64
+        ],
+        "minecraft:hopper": [
+          64,
+          128
+        ],
+        "minecraft:piston": [
+          64,
+          128
+        ],
+        "minecraft:lodestone": [
+          1,
+          4
+        ],
+        "minecraft:recovery_compass": [
+          1,
+          1
+        ],
+        "minecraft:shulker_box": [
+          4,
+          16
+        ],
+        "minecraft:trident": [
+          1,
+          2
+        ]
+      }
+    }
+  },
+  {
+    "level": [
+      "any",
+      "minecraft:overworld"
+    ],
+    "biome": [
+      "any",
+      "minecraft:plains",
+      "minecraft:stony_peaks",
+      "minecraft:windswept_hills"
+    ],
+    "block": [
+      "any",
+      "minecraft:stone",
+      "minecraft:air"
+    ],
+    "weather": [
+      "any",
+      "clear",
+      "thunder"
+    ],
+    "time": [
+      "any",
+      "midnight",
+      "dusk"
+    ],
+    "minHeight": [
+      128,
+      200
+    ],
+    "maxHeight": [
+      256,
+      320
+    ],
+    "item": "fargo_soul:meteor_soul",
+    "materials": {
+      "primary": {
+        "minecraft:netherite_boots": [
+          1,
+          2
+        ],
+        "minecraft:anvil": [
+          16,
+          32
+        ],
+        "minecraft:firework_rocket": [
+          64,
+          128
+        ]
+      },
+      "secondaryCount": [
+        3,
+        7
+      ],
+      "secondary": {
+        "minecraft:netherite_ingot": [
+          4,
+          8
+        ],
+        "minecraft:tnt": [
+          64,
+          128
+        ],
+        "minecraft:fire_charge": [
+          64,
+          128
+        ],
+        "minecraft:deepslate": [
+          64,
+          128
+        ],
+        "minecraft:stone": [
+          64,
+          128
+        ],
+        "minecraft:sugar": [
+          64,
+          128
+        ],
+        "minecraft:feather": [
+          64,
+          128
+        ],
+        "minecraft:gunpowder": [
+          64,
+          128
+        ],
+        "minecraft:goat_horn": [
+          1,
+          8
+        ],
+        "minecraft:music_disc_otherside": [
+          1,
+          1
+        ]
+      }
+    }
+  },
+  {
+    "level": [
+      "any",
+      "minecraft:overworld"
+    ],
+    "biome": [
+      "any",
+      "minecraft:dark_forest"
+    ],
+    "block": [
+      "any",
+      "minecraft:enchanting_table",
+      "minecraft:bookshelf",
+      "minecraft:beacon"
+    ],
+    "weather": [
+      "any",
+      "thunder",
+      "rain"
+    ],
+    "time": [
+      "any",
+      "midnight"
+    ],
+    "minHeight": [
+      -64,
+      0
+    ],
+    "maxHeight": [
+      64,
+      128
+    ],
+    "item": "fargo_soul:wizard_soul",
+    "materials": {
+      "primary": {
+        "minecraft:enchanting_table": [
+          2,
+          8
+        ],
+        "minecraft:bookshelf": [
+          32,
+          64
+        ],
+        "minecraft:beacon": [
+          1,
+          2
+        ],
+        "minecraft:lectern": [
+          8,
+          16
+        ]
+      },
+      "secondaryCount": [
+        6,
+        10
+      ],
+      "secondary": {
+        "minecraft:book": [
+          64,
+          128
+        ],
+        "minecraft:experience_bottle": [
+          64,
+          128
+        ],
+        "minecraft:lapis_block": [
+          64,
+          128
+        ],
+        "minecraft:amethyst_cluster": [
+          32,
+          64
+        ],
+        "minecraft:glowstone": [
+          64,
+          128
+        ],
+        "minecraft:netherite_ingot": [
+          9,
+          36
+        ],
+        "minecraft:glass": [
+          64,
+          128
+        ],
+        "minecraft:creeper_head": [
+          1,
+          4
+        ],
+        "minecraft:dragon_breath": [
+          16,
+          64
+        ],
+        "minecraft:totem_of_undying": [
+          1,
+          4
+        ]
+      }
+    }
+  },
+  {
+    "level": [
+      "any",
+      "minecraft:overworld",
+      "minecraft:the_nether",
+      "minecraft:the_end"
+    ],
+    "biome": [
+      "any",
+      "minecraft:the_void",
+      "minecraft:deep_dark",
+      "minecraft:basalt_deltas"
+    ],
+    "block": [
+      "any",
+      "minecraft:beacon",
+      "minecraft:conduit",
+      "minecraft:end_gateway"
+    ],
+    "weather": [
+      "any",
+      "clear",
+      "rain",
+      "thunder"
+    ],
+    "time": [
+      "any",
+      "dawn",
+      "noon",
+      "dusk",
+      "midnight"
+    ],
+    "minHeight": [
+      -64,
+      320
+    ],
+    "maxHeight": [
+      -64,
+      320
+    ],
+    "item": "fargo_soul:cosmic_power",
+    "materials": {
+      "primary": {
+        "fargo_soul:blaze_soul": 1,
+        "fargo_soul:stardust_soul": 1,
+        "fargo_soul:nebula_soul": 1,
+        "fargo_soul:vortex_soul": 1,
+        "fargo_soul:meteor_soul": 1,
+        "fargo_soul:wizard_soul": 1
+      },
+      "secondaryCount": [
+        5,
+        10
+      ],
+      "secondary": {
+        "minecraft:nether_star": [
+          16,
+          32
+        ],
+        "minecraft:dragon_egg": [
+          1,
+          1
+        ],
+        "minecraft:conduit": [
+          8,
+          16
+        ],
+        "minecraft:dragon_head": [
+          4,
+          16
+        ],
+        "minecraft:enchanted_golden_apple": [
+          32,
+          64
+        ],
+        "minecraft:netherite_ingot": [
+          64,
+          128
+        ],
+        "minecraft:music_disc_5": [
+          1,
+          9
+        ],
+        "minecraft:zombie_head": [
+          4,
+          16
+        ],
+        "minecraft:skeleton_skull": [
+          4,
+          16
+        ],
+        "minecraft:piglin_head": [
+          4,
+          16
+        ]
+      }
+    }
+  }
+]

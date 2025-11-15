@@ -2,14 +2,19 @@ package First.fargo_soul.Item.Soul.TerraSoul.LifePower.SoulStone;
 
 import First.fargo_soul.Attachment.Attachment.SoulAbilityData;
 import First.fargo_soul.Attachment.AttachmentRegister;
+import First.fargo_soul.Entity.EntityRegister;
+import First.fargo_soul.Entity.Projectile.NeedleProjectile;
 import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
+import First.fargo_soul.Item.Soul.TerraSoul.LifePower.LifePower;
 import First.fargo_soul.Utils.SoulUtils;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import org.confluence.lib.ConfluenceMagicLib;
@@ -66,50 +71,33 @@ public class TurtleSoul extends SoulItem {
 						attacker.knockback(1, knockback.x(), knockback.y());
 					}
 					SoulUtils.attack(TurtleSoul.class, attacker, target, attacker, DamageTypes.CACTUS, newDamage);
-					/*
 					double chance = SoulUtils.isEquipped(target, LifePower.class) ? 0.2 : 0.1;
 					if (!event.isCanceled() && event.getAmount() > 0 && target.getRandom().nextDouble() < chance) {
 						Level level = target.level();
 						for (int i = 0; i < (SoulUtils.isEquipped(target, LifePower.class) ? 16 : 8); i++) {
-							addNeedle(level, target, target, target.getBoundingBox().getCenter(), 0.6f);
+							NeedleProjectile needle = new NeedleProjectile(EntityRegister.Needle.get(), level);
+							SoulUtils.randomShoot(target, needle,target);
+							SoulUtils.setAbilityInvulnerable(needle);
 						}
 					}
-					*/
 				}
 			}
 		}
-/*
+
 		@SubscribeEvent
 		public static void CactusSoulDeathHandler(LivingDeathEvent event) {
 			if (event.getSource().getDirectEntity() instanceof NeedleProjectile needleProjectile && event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
 				if (needleProjectile.getOwner() instanceof LivingEntity attacker && SoulUtils.isEquipped(attacker, TurtleSoul.class)) {
 					Level level = attacker.level();
 					for (int i = 0; i < (SoulUtils.isEquipped(attacker, LifePower.class) ? 120 : 80); i++) {
-						//addNeedle(level, attacker, target, target.getBoundingBox().getCenter(), 0.9f);
+						NeedleProjectile needle = new NeedleProjectile(EntityRegister.Needle.get(), level);
+						SoulUtils.randomShoot(target, needle, attacker);
+						SoulUtils.setAbilityInvulnerable(needle);
 					}
 				}
 			}
 		}
-*/
-		/*
-		private static void addNeedle(Level level, LivingEntity target, LivingEntity target1, Vec3 target2, float velocity) {
-			NeedleProjectile needle = new NeedleProjectile(EntityRegister.Needle.get(), level);
-			needle.setOwner(target);
-			double baseDamage = SoulUtils.isEquipped(target1, LifePower.class) ? 4 : 2;
-			needle.setBaseDamage(baseDamage);
-			double theta = level.random.nextDouble() * Math.PI * 2;
-			double phi = Math.acos(2 * level.random.nextDouble() - 1);
-			double r = 0.5 + level.random.nextDouble() * 0.3;
-			Vec3 offset = new Vec3(r * Math.sin(phi) * Math.cos(theta), r * Math.sin(phi) * Math.sin(theta), r * Math.cos(phi));
-			Vec3 spawnPos = target2.add(offset);
-			Vec3 vec3 = offset.normalize().scale(0.8);
-			needle.moveTo(spawnPos.x, spawnPos.y, spawnPos.z, target1.getYRot(), target1.getXRot());
-			needle.shoot(vec3.x, vec3.y, vec3.z, velocity, 6.0f);
-			level.addFreshEntity(needle);
-			SoulAbilityData.SoulInfo soulInfo = needle.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SoulItem.class);
-			soulInfo.enabled = true;
-		}
-*/
+
 	}
 
 }

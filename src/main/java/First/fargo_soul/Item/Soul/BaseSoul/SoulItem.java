@@ -3,6 +3,8 @@ package First.fargo_soul.Item.Soul.BaseSoul;
 import First.fargo_soul.Attachment.Attachment.SoulAbilityData;
 import First.fargo_soul.Attachment.AttachmentRegister;
 import First.fargo_soul.Client.Tooltip.SoulTooltipComponent;
+import First.fargo_soul.DataComponent.DataComponents.SoulComponent;
+import First.fargo_soul.DataComponent.DataComponentsRegister;
 import First.fargo_soul.Event.AddItemTagEvent;
 import First.fargo_soul.Fargo_soul;
 import First.fargo_soul.Item.Soul.SoulsRegister;
@@ -15,6 +17,7 @@ import First.fargo_soul.Item.Soul.TerraSoul.LifePower.SoulStone.BeetleSoul;
 import First.fargo_soul.Item.Soul.TerraSoul.NaturePower.SoulStone.GreenSoul;
 import First.fargo_soul.Item.Soul.TerraSoul.WillPower.Soulstone.RedRidingSoul;
 import First.fargo_soul.Item.Soul.TerraSoul.WillPower.WillPower;
+import First.fargo_soul.Recipe.RecipeParser;
 import First.fargo_soul.Utils.AttributeUtils;
 import First.fargo_soul.Utils.CurioUtils;
 import First.fargo_soul.Utils.KeyUtils;
@@ -32,7 +35,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -46,7 +48,6 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
@@ -60,20 +61,21 @@ import net.neoforged.neoforge.client.event.RenderLivingEvent;
 import net.neoforged.neoforge.client.event.RenderTooltipEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
+import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class SoulItem extends Item implements ICurioItem {
 
@@ -83,6 +85,14 @@ public class SoulItem extends Item implements ICurioItem {
 
     public List<SoulItem> getSoulItemList() {
         return List.of();
+    }
+
+    @Override
+    public @NotNull Component getName(@NotNull ItemStack stack) {
+        if (stack.get(ConfluenceMagicLib.MOD_RARITY) instanceof ModRarity modRarity) {
+            return Component.translatable(stack.getDescriptionId()).withColor(modRarity.color());
+        }
+        return super.getName(stack);
     }
 
     @Override
@@ -107,18 +117,32 @@ public class SoulItem extends Item implements ICurioItem {
     @EventBusSubscriber(modid = Fargo_soul.MODID)
     public static class Event {
 
+        @SubscribeEvent(priority = EventPriority.HIGHEST)
+        public static void Damage(LivingIncomingDamageEvent event) {
+            if (event.getSource().getDirectEntity() instanceof Entity entity && !entity.level().isClientSide()) {
+                SoulAbilityData.SoulInfo soulInfo = entity.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SoulItem.class);
+                if (soulInfo.enabled) {
+                    event.getEntity().invulnerableTime = 0;
+                }
+            }
+        }
+
         private static final List<Class<? extends SoulItem>> SprintList = Arrays.asList(
                 CrystalAssassinSoul.class,
                 PenetratingNinjaSoul.class,
                 GreenSoul.class
         );
 
+        private static List<Class<? extends SoulItem>> getSprintList() {
+            return SprintList;
+        }
+
         @SubscribeEvent
         public static void MonsterSprint(EntityTickEvent.Post event) {
             if (event.getEntity() instanceof Mob mob && mob.getTarget() instanceof LivingEntity target && !target.level().isClientSide()) {
                 SoulAbilityData.SoulInfo soulInfo = mob.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("Sprint");
                 soulInfo.maxCooldown = 100;
-                if (SoulUtils.isEquippedAny(mob, SprintList) && soulInfo.cooldown == 0) {
+                if (SoulUtils.isEquippedAny(mob, getSprintList()) && soulInfo.cooldown == 0) {
                     soulInfo.cooldown = soulInfo.maxCooldown;
                     mob.getLookControl().setLookAt(target);
                     double factor = 1.5;
@@ -141,7 +165,7 @@ public class SoulItem extends Item implements ICurioItem {
             if (event.getEntity() instanceof LocalPlayer player) {
                 SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getClientSoulInfo("Sprint");
                 soulInfo.maxCooldown = 40;
-                if (soulInfo.cooldown == 0 && KeyUtils.isDoubleTappingForward(event.getInput()) && SoulUtils.isEquippedAny(player, SprintList)) {
+                if (soulInfo.cooldown == 0 && KeyUtils.isDoubleTappingForward(event.getInput()) && SoulUtils.isEquippedAny(player, getSprintList())) {
                     soulInfo.cooldown = soulInfo.maxCooldown;
                     double factor = 1.5;
                     if (SoulUtils.isEquipped(player, RedRidingSoul.class)) {
@@ -167,7 +191,7 @@ public class SoulItem extends Item implements ICurioItem {
                         BeetleSoul.class
                 );
                 SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getClientSoulInfo("Fly");
-                soulInfo.maxStacks = SoulUtils.isEquipped(player, GreenSoul.class) ? 100 : 60;
+                soulInfo.maxStacks = getFlyTime(player);
                 if (soulInfo.stacks > 0 && event.getInput().jumping && SoulUtils.isEquippedAny(player, typeList)) {
                     soulInfo.stacks--;
                     Vec3 deltaMovement = player.getDeltaMovement();
@@ -183,62 +207,68 @@ public class SoulItem extends Item implements ICurioItem {
             }
         }
 
+        private static int getFlyTime(Player player) {
+            int time = 60;
+            if (SoulUtils.isEquipped(player, GreenSoul.class)) {
+                time += 40;
+            }
+            return time;
+        }
+
         @OnlyIn(Dist.CLIENT)
         @SubscribeEvent
         public static void render(RenderLivingEvent.Post<?, ?> event) {
             LivingEntity attacker = event.getEntity();
             List<SoulItem> soulItemList = SoulUtils.getSoulItemList(attacker);
-            if (soulItemList.isEmpty()) return;
-            //EntityRenderDispatcher
-            float partialTick = event.getPartialTick();
-            float ageInTicks = SoulUtils.getAgeInTicks(attacker, partialTick, 5);
+            if (!soulItemList.isEmpty()) {
+                float partialTick = event.getPartialTick();
+                float ageInTicks = SoulUtils.getAgeInTicks(attacker, partialTick, 5);
+                MultiBufferSource multiBufferSource = event.getMultiBufferSource();
+                PoseStack poseStack = event.getPoseStack();
+                int light = event.getPackedLight();
+                Minecraft minecraft = Minecraft.getInstance();
+                ItemRenderer itemRenderer = minecraft.getItemRenderer();
+                double size = attacker.getBoundingBox().getSize();
+                float scale = (float) size;
 
-            MultiBufferSource multiBufferSource = event.getMultiBufferSource();
-            PoseStack poseStack = event.getPoseStack();
-            int light = event.getPackedLight();
-            Minecraft minecraft = Minecraft.getInstance();
-            ItemRenderer itemRenderer = minecraft.getItemRenderer();
-            double size = attacker.getBoundingBox().getSize();
-            float scale = (float) size;
+                poseStack.pushPose();
+                poseStack.mulPose(Axis.YP.rotationDegrees(-Mth.lerp(partialTick, attacker.yHeadRotO, attacker.yHeadRot)));
 
-            poseStack.pushPose();
-            poseStack.mulPose(Axis.YP.rotationDegrees(-Mth.lerp(partialTick, attacker.yHeadRotO, attacker.yHeadRot)));
+                List<SoulItem> centerSouls = new ArrayList<>();
+                List<SoulItem> innerCircleSouls = new ArrayList<>();
+                List<SoulItem> outerCircleSouls = new ArrayList<>();
 
-            // 分层
-            List<SoulItem> centerSouls = new ArrayList<>();
-            List<SoulItem> innerCircleSouls = new ArrayList<>();
-            List<SoulItem> outerCircleSouls = new ArrayList<>();
-
-            for (SoulItem soulItem : soulItemList) {
-                if (soulItem == SoulsRegister.TerraSoul.get()) {
-                    centerSouls.add(soulItem);
-                } else if (!soulItem.getSoulItemList().isEmpty()) {
-                    innerCircleSouls.add(soulItem);
-                } else {
-                    outerCircleSouls.add(soulItem);
+                for (SoulItem soulItem : soulItemList) {
+                    if (soulItem == SoulsRegister.TerraSoul.get()) {
+                        centerSouls.add(soulItem);
+                    } else if (!soulItem.getSoulItemList().isEmpty()) {
+                        innerCircleSouls.add(soulItem);
+                    } else {
+                        outerCircleSouls.add(soulItem);
+                    }
                 }
-            }
-            // 中心层
-            for (SoulItem soulItem : centerSouls) {
-                renderCenterSoul(soulItem, attacker, poseStack, scale, itemRenderer, multiBufferSource, light);
-            }
-            // 内圈
-            if (!innerCircleSouls.isEmpty()) {
-                renderCircleSouls(innerCircleSouls, attacker, poseStack, scale, itemRenderer, multiBufferSource, light, ageInTicks, 0.3f, 1);
-            }
-            // 外圈（二圈和三圈）
-            if (!outerCircleSouls.isEmpty()) {
-                int half = (outerCircleSouls.size() + 1) / 2;
-                List<SoulItem> secondCircle = outerCircleSouls.subList(0, half);
-                List<SoulItem> thirdCircle = outerCircleSouls.subList(half, outerCircleSouls.size());
-                if (!secondCircle.isEmpty()) {
-                    renderCircleSouls(secondCircle, attacker, poseStack, scale, itemRenderer, multiBufferSource, light, ageInTicks, 0.6f, 2);
+
+                for (SoulItem soulItem : centerSouls) {
+                    renderCenterSoul(soulItem, attacker, poseStack, scale, itemRenderer, multiBufferSource, light);
                 }
-                if (!thirdCircle.isEmpty()) {
-                    renderCircleSouls(thirdCircle, attacker, poseStack, scale, itemRenderer, multiBufferSource, light, ageInTicks, 0.8f, 3);
+
+                if (!innerCircleSouls.isEmpty()) {
+                    renderCircleSouls(innerCircleSouls, attacker, poseStack, scale, itemRenderer, multiBufferSource, light, ageInTicks, 0.3f, 1);
                 }
+
+                if (!outerCircleSouls.isEmpty()) {
+                    int half = (outerCircleSouls.size() + 1) / 2;
+                    List<SoulItem> secondCircle = outerCircleSouls.subList(0, half);
+                    List<SoulItem> thirdCircle = outerCircleSouls.subList(half, outerCircleSouls.size());
+                    if (!secondCircle.isEmpty()) {
+                        renderCircleSouls(secondCircle, attacker, poseStack, scale, itemRenderer, multiBufferSource, light, ageInTicks, 0.6f, 2);
+                    }
+                    if (!thirdCircle.isEmpty()) {
+                        renderCircleSouls(thirdCircle, attacker, poseStack, scale, itemRenderer, multiBufferSource, light, ageInTicks, 0.8f, 3);
+                    }
+                }
+                poseStack.popPose();
             }
-            poseStack.popPose();
         }
 
         @OnlyIn(Dist.CLIENT)
@@ -312,32 +342,40 @@ public class SoulItem extends Item implements ICurioItem {
             }
         }
 
+        private static final List<SoulItem> soulItemList = new ArrayList<>();
+
         @SubscribeEvent
         public static void EnemyJoin(EntityJoinLevelEvent event) {
             Entity entity = event.getEntity();
+            double chance = 0.05;
             if (entity instanceof Enemy && entity instanceof Mob mob && !mob.level().isClientSide()) {
                 SoulAbilityData.SoulInfo soulInfo = mob.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("first");
                 if (!soulInfo.enabled) {
                     soulInfo.enabled = true;
                     Optional<ICuriosItemHandler> curiosInventory = CuriosApi.getCuriosInventory(mob);
                     if (curiosInventory.isPresent()) {
-                        SoulItem item = SoulsRegister.TerraSoul.get();
-                        List<SoulItem> soulItemList = SoulUtils.getAllCurioItems(item.getSoulItemList());
-                        soulItemList.add(item);
-                        IItemHandlerModifiable curios = curiosInventory.get().getEquippedCurios();
-                        SoulAbilityData.SoulInfo info = mob.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("soul");
-                        List<SoulItem> list = new ArrayList<>();
-                        for (int i = 0; i < 4; i++) {
-                            SoulItem soulItem = soulItemList.get(SoulUtils.random.nextInt(soulItemList.size()));
-                            if (mob.getRandom().nextDouble() < 0.01) {
-                                curios.setStackInSlot(i, soulItem.getDefaultInstance());
-                                list.add(soulItem);
+                        if (soulItemList.isEmpty()) {
+                            BuiltInRegistries.ITEM.stream().forEach(item -> {
+                                if (item instanceof SoulItem soulItem && !soulItemList.contains(soulItem)) {
+                                    soulItemList.add(soulItem);
+                                }
+                            });
+                        } else {
+                            IItemHandlerModifiable curios = curiosInventory.get().getEquippedCurios();
+                            SoulAbilityData.SoulInfo info = mob.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("soul");
+                            List<SoulItem> list = new ArrayList<>();
+                            for (int i = 0; i < 4; i++) {
+                                SoulItem soulItem = soulItemList.get(SoulUtils.random.nextInt(soulItemList.size()));
+                                if (mob.getRandom().nextDouble() < chance) {
+                                    curios.setStackInSlot(i, soulItem.getDefaultInstance());
+                                    list.add(soulItem);
+                                }
                             }
-                        }
-                        List<SoulItem> allCurioItems = SoulUtils.getAllCurioItems(list);
-                        if (!allCurioItems.isEmpty()) {
-                            info.enabled = true;
-                            info.stacks = allCurioItems.size();
+                            List<SoulItem> allCurioItems = SoulUtils.getAllCurioItems(list);
+                            if (!allCurioItems.isEmpty()) {
+                                info.enabled = true;
+                                info.stacks = allCurioItems.size();
+                            }
                         }
                     }
                 }
@@ -354,8 +392,18 @@ public class SoulItem extends Item implements ICurioItem {
                     curiosInventory.ifPresent(iCuriosItemHandler -> {
                         IItemHandlerModifiable equippedCurios = iCuriosItemHandler.getEquippedCurios();
                         for (int i = 0; i < 4; i++) {
-                            if (mob.getRandom().nextDouble() < 0.95 || (equippedCurios.getStackInSlot(i).getItem() instanceof SoulItem soulItem && !soulItem.getSoulItemList().isEmpty())) {
-                                equippedCurios.setStackInSlot(i, ItemStack.EMPTY);
+                            if (!equippedCurios.getStackInSlot(i).isEmpty()) {
+                                Item item = equippedCurios.getStackInSlot(i).getItem();
+                                ItemStack instance;
+                                if (event.getSource().getEntity() instanceof Player) {
+                                    instance = SoulsRegister.SoulCoreItem.get().getDefaultInstance();
+                                    if (RecipeParser.getRecipeFromItem(item) instanceof SoulComponent soulComponent) {
+                                        instance.set(DataComponentsRegister.SoulData.get(), soulComponent);
+                                    }
+                                } else {
+                                    instance = ItemStack.EMPTY;
+                                }
+                                equippedCurios.setStackInSlot(i, instance);
                             }
                         }
                     });
@@ -391,34 +439,38 @@ public class SoulItem extends Item implements ICurioItem {
             if (event.getItemStack().getItem() instanceof SoulItem soulItem) {
                 List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
                 int size = tooltipElements.size();
-                tooltipElements.add(Math.min(size, 3), Either.right(new SoulTooltipComponent((soulItem.getSoulItemList().size() + 1) * 24, 24, soulItem)));
+                tooltipElements.add(Math.min(size, 1), Either.right(new SoulTooltipComponent((soulItem.getSoulItemList().size() + 1) * 16, 16, 1.5f, soulItem)));
             }
         }
 
+        private static final Map<Integer, List<Component>> attributeList = new HashMap<>();
+        private static final Map<Integer, List<Component>> tooltipList = new HashMap<>();
+
         @OnlyIn(Dist.CLIENT)
         @SubscribeEvent
-        public static void ItemTooltipHandler(ItemTooltipEvent event) {
+        public static void Tooltip(ItemTooltipEvent event) {
             if (event.getItemStack().getItem() instanceof SoulItem soulItem) {
                 List<Component> toolTip = event.getToolTip();
-                TooltipFlag flags = event.getFlags();
-                MutableComponent mutableComponent = Component.translatable("key.shift.tooltip.1").withStyle(ChatFormatting.DARK_GRAY);
-                mutableComponent.append(Component.literal("Shift").withStyle(flags.hasShiftDown() ? ChatFormatting.WHITE : ChatFormatting.GRAY));
-                mutableComponent.append(Component.translatable("key.shift.tooltip.2").withStyle(ChatFormatting.DARK_GRAY));
-                toolTip.add(mutableComponent);
-                if (flags.hasShiftDown()) {
-                    List<SoulItem> soulItemList = CurioUtils.getAllCurioItems(soulItem.getSoulItemList());
-                    List<Component> attributeList = CurioUtils.getComponent(soulItem, "attribute");
-                    if (!attributeList.isEmpty()) {
-                        toolTip.addAll(attributeList);
-                    }
-                    for (SoulItem item : soulItemList) {
-                        toolTip.add(Component.empty());
-                        toolTip.addAll(CurioUtils.getComponent(item, "attribute"));
-                    }
+                boolean shiftDown = event.getFlags().hasShiftDown();
+                toolTip.add(Component.translatable("key.shift.tooltip.1").withStyle(ChatFormatting.DARK_GRAY).append(Component.literal("Shift").withStyle(shiftDown ? ChatFormatting.WHITE : ChatFormatting.GRAY)).append(Component.translatable("key.shift.tooltip.2").withStyle(ChatFormatting.DARK_GRAY)));
+                if (shiftDown) {
+                    toolTip.addAll(addAttributeList(soulItem));
                 } else {
-                    toolTip.addAll(CurioUtils.getComponent(soulItem, "tooltip"));
+                    toolTip.addAll(tooltipList.computeIfAbsent(soulItem.hashCode(), k -> CurioUtils.getComponent(soulItem, "tooltip")));
                 }
             }
+        }
+
+        public static List<Component> addAttributeList(SoulItem soulItem) {
+            return attributeList.computeIfAbsent(soulItem.hashCode(), k -> {
+                List<SoulItem> soulItemList = CurioUtils.getAllCurioItems(soulItem.getSoulItemList());
+                List<Component> list = new ArrayList<>(CurioUtils.getComponent(soulItem, "attribute"));
+                soulItemList.forEach(item -> {
+                    list.add(Component.empty());
+                    list.addAll(CurioUtils.getComponent(item, "attribute"));
+                });
+                return list;
+            });
         }
 
     }

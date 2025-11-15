@@ -1,0 +1,648 @@
+[
+  {
+    "level": [
+      "any",
+      "minecraft:overworld"
+    ],
+    "biome": [
+      "any",
+      "minecraft:dark_forest",
+      "minecraft:end_highlands",
+      "minecraft:soul_sand_valley"
+    ],
+    "block": [
+      "any",
+      "minecraft:enchanting_table",
+      "minecraft:beacon",
+      "minecraft:end_portal_frame"
+    ],
+    "weather": [
+      "any",
+      "clear"
+    ],
+    "time": [
+      "any",
+      "midnight"
+    ],
+    "minHeight": [
+      -64,
+      0
+    ],
+    "maxHeight": [
+      0,
+      64
+    ],
+    "item": "fargo_soul:spirit_power",
+    "materials": {
+      "primary": {
+        "fargo_soul:ancient_holy_soul": 1,
+        "fargo_soul:forbidden_soul": 1,
+        "fargo_soul:ghost_soul": 1,
+        "fargo_soul:holy_soul": 1,
+        "fargo_soul:teke_soul": 1
+      },
+      "secondaryCount": [
+        8,
+        12
+      ],
+      "secondary": {
+        "minecraft:experience_bottle": [
+          32,
+          64
+        ],
+        "minecraft:ghast_tear": [
+          16,
+          32
+        ],
+        "minecraft:phantom_membrane": [
+          32,
+          64
+        ],
+        "minecraft:ender_pearl": [
+          32,
+          64
+        ],
+        "minecraft:glowstone_dust": [
+          32,
+          64
+        ],
+        "minecraft:redstone": [
+          64,
+          128
+        ],
+        "minecraft:lapis_lazuli": [
+          64,
+          128
+        ],
+        "minecraft:amethyst_shard": [
+          32,
+          64
+        ],
+        "minecraft:echo_shard": [
+          16,
+          32
+        ],
+        "minecraft:nether_star": [
+          1,
+          2
+        ],
+        "minecraft:totem_of_undying": [
+          1,
+          4
+        ],
+        "minecraft:soul_sand": [
+          32,
+          64
+        ],
+        "minecraft:soul_soil": [
+          32,
+          64
+        ],
+        "minecraft:crying_obsidian": [
+          16,
+          32
+        ],
+        "minecraft:sculk_catalyst": [
+          4,
+          8
+        ]
+      }
+    }
+  },
+  {
+    "level": [
+      "any",
+      "minecraft:overworld"
+    ],
+    "biome": [
+      "any",
+      "minecraft:plains",
+      "minecraft:meadow",
+      "minecraft:sunflower_plains"
+    ],
+    "block": [
+      "any",
+      "minecraft:enchanting_table",
+      "minecraft:bookshelf",
+      "minecraft:beacon"
+    ],
+    "weather": [
+      "any",
+      "clear"
+    ],
+    "time": [
+      "any",
+      "noon"
+    ],
+    "minHeight": [
+      60,
+      80
+    ],
+    "maxHeight": [
+      80,
+      100
+    ],
+    "item": "fargo_soul:ancient_holy_soul",
+    "materials": {
+      "primary": {
+        "minecraft:gold_ingot": [
+          32,
+          64
+        ],
+        "minecraft:diamond": [
+          16,
+          32
+        ],
+        "minecraft:emerald": [
+          16,
+          32
+        ]
+      },
+      "secondaryCount": [
+        5,
+        8
+      ],
+      "secondary": {
+        "minecraft:white_wool": [
+          32,
+          64
+        ],
+        "minecraft:yellow_wool": [
+          32,
+          64
+        ],
+        "minecraft:gold_block": [
+          8,
+          16
+        ],
+        "minecraft:diamond_block": [
+          4,
+          8
+        ],
+        "minecraft:emerald_block": [
+          4,
+          8
+        ],
+        "minecraft:book": [
+          32,
+          64
+        ],
+        "minecraft:feather": [
+          32,
+          64
+        ],
+        "minecraft:glowstone_dust": [
+          32,
+          64
+        ],
+        "minecraft:quartz": [
+          32,
+          64
+        ],
+        "minecraft:lantern": [
+          8,
+          16
+        ],
+        "minecraft:torch": [
+          32,
+          64
+        ],
+        "minecraft:chain": [
+          16,
+          32
+        ]
+      }
+    }
+  },
+  {
+    "level": [
+      "any",
+      "minecraft:overworld"
+    ],
+    "biome": [
+      "any",
+      "minecraft:desert",
+      "minecraft:badlands",
+      "minecraft:eroded_badlands"
+    ],
+    "block": [
+      "any",
+      "minecraft:sandstone",
+      "minecraft:terracotta",
+      "minecraft:red_sand"
+    ],
+    "weather": [
+      "any",
+      "clear",
+      "thunder"
+    ],
+    "time": [
+      "any",
+      "noon"
+    ],
+    "minHeight": [
+      60,
+      80
+    ],
+    "maxHeight": [
+      80,
+      100
+    ],
+    "item": "fargo_soul:forbidden_soul",
+    "materials": {
+      "primary": {
+        "minecraft:sandstone": [
+          32,
+          64
+        ],
+        "minecraft:terracotta": [
+          16,
+          32
+        ],
+        "minecraft:gold_ingot": [
+          16,
+          32
+        ]
+      },
+      "secondaryCount": [
+        6,
+        9
+      ],
+      "secondary": {
+        "minecraft:sand": [
+          64,
+          128
+        ],
+        "minecraft:red_sand": [
+          32,
+          64
+        ],
+        "minecraft:clay_ball": [
+          32,
+          64
+        ],
+        "minecraft:paper": [
+          32,
+          64
+        ],
+        "minecraft:book": [
+          16,
+          32
+        ],
+        "minecraft:feather": [
+          32,
+          64
+        ],
+        "minecraft:string": [
+          32,
+          64
+        ],
+        "minecraft:bone": [
+          32,
+          64
+        ],
+        "minecraft:rotten_flesh": [
+          32,
+          64
+        ],
+        "minecraft:spider_eye": [
+          16,
+          32
+        ],
+        "minecraft:gunpowder": [
+          16,
+          32
+        ],
+        "minecraft:tnt": [
+          8,
+          16
+        ]
+      }
+    }
+  },
+  {
+    "level": [
+      "any",
+      "minecraft:overworld"
+    ],
+    "biome": [
+      "any",
+      "minecraft:dark_forest",
+      "minecraft:swamp",
+      "minecraft:deep_dark"
+    ],
+    "block": [
+      "any",
+      "minecraft:obsidian",
+      "minecraft:sculk",
+      "minecraft:soul_sand"
+    ],
+    "weather": [
+      "any",
+      "rain",
+      "thunder"
+    ],
+    "time": [
+      "any",
+      "midnight"
+    ],
+    "minHeight": [
+      -64,
+      0
+    ],
+    "maxHeight": [
+      0,
+      32
+    ],
+    "item": "fargo_soul:ghost_soul",
+    "materials": {
+      "primary": {
+        "minecraft:phantom_membrane": [
+          32,
+          64
+        ],
+        "minecraft:ghast_tear": [
+          16,
+          32
+        ],
+        "minecraft:echo_shard": [
+          8,
+          16
+        ]
+      },
+      "secondaryCount": [
+        7,
+        10
+      ],
+      "secondary": {
+        "minecraft:black_wool": [
+          32,
+          64
+        ],
+        "minecraft:gray_wool": [
+          32,
+          64
+        ],
+        "minecraft:obsidian": [
+          16,
+          32
+        ],
+        "minecraft:crying_obsidian": [
+          8,
+          16
+        ],
+        "minecraft:soul_sand": [
+          32,
+          64
+        ],
+        "minecraft:soul_soil": [
+          32,
+          64
+        ],
+        "minecraft:bone": [
+          32,
+          64
+        ],
+        "minecraft:rotten_flesh": [
+          32,
+          64
+        ],
+        "minecraft:spider_eye": [
+          16,
+          32
+        ],
+        "minecraft:fermented_spider_eye": [
+          8,
+          16
+        ],
+        "minecraft:gunpowder": [
+          16,
+          32
+        ],
+        "minecraft:redstone": [
+          32,
+          64
+        ],
+        "minecraft:glowstone_dust": [
+          16,
+          32
+        ]
+      }
+    }
+  },
+  {
+    "level": [
+      "any",
+      "minecraft:overworld"
+    ],
+    "biome": [
+      "any",
+      "minecraft:plains",
+      "minecraft:forest",
+      "minecraft:flower_forest"
+    ],
+    "block": [
+      "any",
+      "minecraft:beacon",
+      "minecraft:enchanting_table",
+      "minecraft:gold_block"
+    ],
+    "weather": [
+      "any",
+      "clear"
+    ],
+    "time": [
+      "any",
+      "dawn"
+    ],
+    "minHeight": [
+      60,
+      80
+    ],
+    "maxHeight": [
+      80,
+      100
+    ],
+    "item": "fargo_soul:holy_soul",
+    "materials": {
+      "primary": {
+        "minecraft:gold_ingot": [
+          32,
+          64
+        ],
+        "minecraft:glistering_melon_slice": [
+          16,
+          32
+        ],
+        "minecraft:experience_bottle": [
+          16,
+          32
+        ]
+      },
+      "secondaryCount": [
+        5,
+        8
+      ],
+      "secondary": {
+        "minecraft:white_wool": [
+          32,
+          64
+        ],
+        "minecraft:yellow_wool": [
+          32,
+          64
+        ],
+        "minecraft:gold_block": [
+          8,
+          16
+        ],
+        "minecraft:apple": [
+          32,
+          64
+        ],
+        "minecraft:golden_apple": [
+          4,
+          8
+        ],
+        "minecraft:carrot": [
+          32,
+          64
+        ],
+        "minecraft:potato": [
+          32,
+          64
+        ],
+        "minecraft:wheat": [
+          32,
+          64
+        ],
+        "minecraft:honey_bottle": [
+          16,
+          32
+        ],
+        "minecraft:milk_bucket": [
+          8,
+          16
+        ],
+        "minecraft:sugar": [
+          32,
+          64
+        ],
+        "minecraft:feather": [
+          32,
+          64
+        ]
+      }
+    }
+  },
+  {
+    "level": [
+      "any",
+      "minecraft:overworld"
+    ],
+    "biome": [
+      "any",
+      "minecraft:jungle",
+      "minecraft:bamboo_jungle",
+      "minecraft:sparse_jungle"
+    ],
+    "block": [
+      "any",
+      "minecraft:jungle_log",
+      "minecraft:moss_block",
+      "minecraft:vine"
+    ],
+    "weather": [
+      "any",
+      "rain"
+    ],
+    "time": [
+      "any",
+      "dusk",
+      "dawn"
+    ],
+    "minHeight": [
+      40,
+      60
+    ],
+    "maxHeight": [
+      60,
+      80
+    ],
+    "item": "fargo_soul:teke_soul",
+    "materials": {
+      "primary": {
+        "minecraft:jungle_log": [
+          32,
+          64
+        ],
+        "minecraft:bone": [
+          32,
+          64
+        ],
+        "minecraft:feather": [
+          16,
+          32
+        ]
+      },
+      "secondaryCount": [
+        6,
+        9
+      ],
+      "secondary": {
+        "minecraft:jungle_leaves": [
+          32,
+          64
+        ],
+        "minecraft:moss_block": [
+          32,
+          64
+        ],
+        "minecraft:vine": [
+          32,
+          64
+        ],
+        "minecraft:bamboo": [
+          32,
+          64
+        ],
+        "minecraft:cocoa_beans": [
+          16,
+          32
+        ],
+        "minecraft:stick": [
+          64,
+          128
+        ],
+        "minecraft:string": [
+          32,
+          64
+        ],
+        "minecraft:rotten_flesh": [
+          32,
+          64
+        ],
+        "minecraft:spider_eye": [
+          16,
+          32
+        ],
+        "minecraft:egg": [
+          32,
+          64
+        ],
+        "minecraft:leather": [
+          32,
+          64
+        ],
+        "minecraft:wool": [
+          32,
+          64
+        ],
+        "minecraft:carved_pumpkin": [
+          8,
+          16
+        ]
+      }
+    }
+  }
+]

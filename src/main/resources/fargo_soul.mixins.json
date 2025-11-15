@@ -5,20 +5,22 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "fargo_soul.refmap.json",
   "mixins": [
-    "fargo.CombatRulesMixin",
-    "fargo.CuriosEntityManagerMixin",
-    "fargo.EntityMixin",
-    "fargo.ItemEntityMixin",
-    "fargo.LivingEntityMixin",
-    "fargo.PlayerMixin",
-    "fargo.ProjectileUtilMixin",
-    "fargo.SnowballMixin",
-    "fargo.StemBlockMixin",
-    "fargo.TagLoaderMixin",
-    "fargo.VillagerMixin"
+    "curios.CuriosEntityManagerMixin",
+    "minecraft.CombatRulesMixin",
+    "minecraft.EntityMixin",
+    "minecraft.ItemEntityMixin",
+    "minecraft.LivingEntityMixin",
+    "minecraft.PlayerMixin",
+    "minecraft.ProjectileUtilMixin",
+    "minecraft.SnowballMixin",
+    "minecraft.StemBlockMixin",
+    "minecraft.TagLoaderMixin",
+    "minecraft.VillagerMixin"
   ],
   "client": [
-    "fargo.ItemInHandRendererMixin"
+    "minecraft.EntityRenderDispatcherMixin",
+    "minecraft.ItemInHandRendererMixin",
+    "minecraft.ItemRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

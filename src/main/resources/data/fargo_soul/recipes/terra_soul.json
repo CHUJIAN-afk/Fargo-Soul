@@ -1,0 +1,112 @@
+{
+  "level": [
+    "minecraft:the_nether"
+  ],
+  "biome": [
+    "any"
+  ],
+  "block": [
+    "any"
+  ],
+  "weather": [
+    "any"
+  ],
+  "time": [
+    "any"
+  ],
+  "minHeight": [
+    256,
+    328
+  ],
+  "maxHeight": [
+    328,
+    512
+  ],
+  "item": "fargo_soul:terra_soul",
+  "materials": {
+    "primary": {
+      "fargo_soul:forest_power": 1,
+      "fargo_soul:terra_power": 1,
+      "fargo_soul:earth_power": 1,
+      "fargo_soul:nature_power": 1,
+      "fargo_soul:life_power": 1,
+      "fargo_soul:spirit_power": 1,
+      "fargo_soul:death_power": 1,
+      "fargo_soul:will_power": 1,
+      "fargo_soul:cosmic_power": 1,
+      "minecraft:nether_star": 1,
+      "minecraft:dragon_egg": 1,
+      "minecraft:enchanted_golden_apple": 2
+    },
+    "secondaryCount": [
+      16,
+      32
+    ],
+    "secondary": {
+      "minecraft:netherite_block": [
+        4,
+        8
+      ],
+      "minecraft:beacon": [
+        2,
+        4
+      ],
+      "minecraft:conduit": [
+        2,
+        4
+      ],
+      "minecraft:elytra": [
+        2,
+        4
+      ],
+      "minecraft:totem_of_undying": [
+        4,
+        8
+      ],
+      "minecraft:shulker_shell": [
+        16,
+        32
+      ],
+      "minecraft:heart_of_the_sea": [
+        2,
+        4
+      ],
+      "minecraft:dragon_head": [
+        1,
+        2
+      ],
+      "minecraft:trident": [
+        4,
+        8
+      ],
+      "minecraft:nautilus_shell": [
+        16,
+        32
+      ],
+      "minecraft:enchanted_book": [
+        8,
+        16
+      ],
+      "minecraft:music_disc_11": [
+        1,
+        2
+      ],
+      "minecraft:music_disc_pigstep": [
+        1,
+        2
+      ],
+      "minecraft:nether_star": [
+        1,
+        2
+      ],
+      "minecraft:enchanted_golden_apple": [
+        2,
+        4
+      ],
+      "minecraft:echo_shard": [
+        8,
+        16
+      ]
+    }
+  }
+}
