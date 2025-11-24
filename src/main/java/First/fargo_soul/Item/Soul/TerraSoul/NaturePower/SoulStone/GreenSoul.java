@@ -82,9 +82,9 @@ public class GreenSoul extends SoulItem {
                 if (SoulUtils.isEquipped(attacker, GreenSoul.class)) {
                     boolean equipped = SoulUtils.isEquipped(attacker, NaturePower.class);
                     SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GreenSoul.class);
-                    soulInfo.maxCooldown = equipped ? 30 : 60;
-                    if (soulInfo.cooldown == 0 && SoulUtils.getSoulTarget(attacker, 10) instanceof LivingEntity target) {
-                        soulInfo.cooldown = soulInfo.maxCooldown;
+                    soulInfo.setMaxCooldown(equipped ? 30 : 60);
+                    if (soulInfo.isReady() && SoulUtils.getSoulTarget(attacker, 10) instanceof LivingEntity target) {
+                        soulInfo.setCooldown(soulInfo.getMaxCooldown());
                         Level level = attacker.level();
                         SoulUtils.attack(attacker, target, DamageTypes.MAGIC, 4);
                         target.addEffect(new MobEffectInstance(MobEffects.GLOWING, 59));

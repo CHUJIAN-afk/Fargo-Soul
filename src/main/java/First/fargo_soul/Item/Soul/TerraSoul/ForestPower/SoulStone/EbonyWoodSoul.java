@@ -33,7 +33,7 @@ public class EbonyWoodSoul extends SoulItem {
                     livingEntityList.removeIf(livingEntity -> SoulUtils.isEquipped(livingEntity, EbonyWoodSoul.class));
                     for (LivingEntity target : livingEntityList) {
                         SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(attacker.getScoreboardName());
-                        soulInfo.maxStacks = SoulUtils.isEquipped(attacker, ForestPower.class) ? 200 : 100;
+                        soulInfo.setMaxStacks(SoulUtils.isEquipped(attacker, ForestPower.class) ? 200 : 100);
                         soulInfo.addStacks();
                     }
                 }
@@ -45,14 +45,14 @@ public class EbonyWoodSoul extends SoulItem {
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
                 if (!attacker.equals(target) && SoulUtils.isEquipped(attacker, EbonyWoodSoul.class)) {
                     SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(attacker.getScoreboardName());
-                    float newDamage = event.getAmount() * (1 + (soulInfo.stacks * 0.001f));
+                    float newDamage = event.getAmount() * (1 + (soulInfo.getStacks() * 0.001f));
                     event.setAmount(newDamage);
                 }
             }
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
                 if (!attacker.equals(target) && SoulUtils.isEquipped(target, EbonyWoodSoul.class)) {
                     SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(attacker.getScoreboardName());
-                    float newDamage = event.getAmount() * (1 - (soulInfo.stacks * 0.0005f));
+                    float newDamage = event.getAmount() * (1 - (soulInfo.getStacks() * 0.0005f));
                     event.setAmount(newDamage);
                 }
             }

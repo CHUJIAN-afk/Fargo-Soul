@@ -51,18 +51,18 @@ public class BlazeSoul extends SoulItem {
                         resourceLocation,
                         1.0,
                         AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
-                        soulInfo.enabled
+                        soulInfo.isEnabled()
                 );
                 if (SoulUtils.isEquipped(attacker, BlazeSoul.class)) {
-                    soulInfo.maxStacks = (int) ((attacker.getMaxHealth() * 20) + 2000);
-                    if (soulInfo.enabled) {
-                        soulInfo.shrinkStacks((int) (soulInfo.maxStacks * 0.025));
-                        if (soulInfo.stacks <= 0) {
-                            soulInfo.enabled = false;
+                    soulInfo.setMaxStacks((int) ((attacker.getMaxHealth() * 20) + 2000));
+                    if (soulInfo.isEnabled()) {
+                        soulInfo.shrinkStacks((int) (soulInfo.getMaxStacks() * 0.025));
+                        if (soulInfo.getStacks() <= 0) {
+                            soulInfo.setEnabled(false);
                         }
                     } else {
-                        if (soulInfo.stacks >= soulInfo.maxStacks) {
-                            soulInfo.enabled = true;
+                        if (soulInfo.getStacks() >= soulInfo.getMaxStacks()) {
+                            soulInfo.setEnabled(true);
                         }
                     }
                 }
@@ -74,14 +74,14 @@ public class BlazeSoul extends SoulItem {
             if (event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
                 if (SoulUtils.isEquipped(target, BlazeSoul.class)) {
                     SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(BlazeSoul.class);
-                    float scale = soulInfo.enabled ? 0.5f : (1 - (soulInfo.getStackPercentage() * 0.4f));
+                    float scale = soulInfo.isEnabled() ? 0.5f : (1 - (soulInfo.getStackPercentage() * 0.4f));
                     event.setAmount(event.getAmount() * scale);
                 }
             }
             if (event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
                 if (SoulUtils.isEquipped(target, BlazeSoul.class)) {
                     SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(BlazeSoul.class);
-                    if (soulInfo.enabled) {
+                    if (soulInfo.isEnabled()) {
                         event.setAmount(Math.max(event.getAmount() - target.getMaxHealth() * 0.1f, 0));
                     }
                 }
@@ -89,7 +89,7 @@ public class BlazeSoul extends SoulItem {
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
                 if (!attacker.equals(target) && SoulUtils.isEquipped(attacker, BlazeSoul.class) && SoulUtils.canAttack(BlazeSoul.class, target, target)) {
                     SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(BlazeSoul.class);
-                    if (soulInfo.enabled) {
+                    if (soulInfo.isEnabled()) {
                         soulInfo.shrinkStacks(100);
                         Level level = attacker.level();
                         List<LivingEntity> livingEntityList = level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(2));
@@ -115,7 +115,7 @@ public class BlazeSoul extends SoulItem {
                                 SoundSource.PLAYERS
                         );
                     } else {
-                        soulInfo.stacks += (int) (event.getAmount() * (SoulUtils.isEquipped(attacker, CosmicPower.class) ? 0.4f : 0.25f));
+                        soulInfo.addStacks((int) (event.getAmount() * (SoulUtils.isEquipped(attacker, CosmicPower.class) ? 0.4f : 0.25f)));
                     }
                 }
             }

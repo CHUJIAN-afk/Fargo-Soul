@@ -46,9 +46,9 @@ public class PalladiumSoul extends SoulItem {
             if (event.getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
                 if (SoulUtils.isEquipped(attacker, PalladiumSoul.class)) {
                     SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(PalladiumSoul.class);
-                    soulInfo.maxStacks = 10;
+                    soulInfo.setMaxStacks(10);
                     soulInfo.addStacks((int) event.getAmount());
-                    if (soulInfo.stacks == soulInfo.maxStacks) {
+                    if (soulInfo.getStacks() == soulInfo.getMaxStacks()) {
                         soulInfo.removeStacks();
                         attacker.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 119));
                     }

@@ -68,7 +68,7 @@ public class GoldSoul extends SoulItem {
             LivingEntity attacker = event.getEntity();
             if (SoulUtils.isEquipped(attacker, GoldSoul.class)) {
                 SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GoldSoul.class);
-                if (soulInfo.duration > 0) {
+                if (soulInfo.getDuration() > 0) {
                     MultiBufferSource multiBufferSource = event.getMultiBufferSource();
                     PoseStack poseStack = event.getPoseStack();
                     float partialTick = event.getPartialTick();
@@ -153,7 +153,7 @@ public class GoldSoul extends SoulItem {
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
                 if (!attacker.equals(target) && SoulUtils.isEquipped(target, GoldSoul.class)) {
                     SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GoldSoul.class);
-                    if (soulInfo.duration > 0) {
+                    if (soulInfo.getDuration() > 0) {
                         float amount = event.getAmount();
                         float scale = 0.4f;
                         if (target instanceof Player player) {
@@ -232,10 +232,10 @@ public class GoldSoul extends SoulItem {
                 if (isEquipped) {
                     Player player = context.player();
                     SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GoldSoul.class);
-                    soulInfo.maxCooldown = 2400;
-                    if (soulInfo.cooldown == 0) {
-                        soulInfo.cooldown = soulInfo.maxCooldown;
-                        soulInfo.duration = SoulUtils.isEquipped(player, WillPower.class) ? 140 : 100;
+                    soulInfo.setMaxCooldown(2400);
+                    if (soulInfo.getCooldown() == 0) {
+                        soulInfo.setCooldown(soulInfo.getMaxCooldown());
+                        soulInfo.setDuration(SoulUtils.isEquipped(player, WillPower.class) ? 140 : 100);
                         SoulUtils.playSound(
                                 player.level(),
                                 player.position(),

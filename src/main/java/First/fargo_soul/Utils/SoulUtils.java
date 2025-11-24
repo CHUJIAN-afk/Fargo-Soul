@@ -1,5 +1,6 @@
 package First.fargo_soul.Utils;
 
+import First.fargo_soul.Attachment.Attachment.AbilityData;
 import First.fargo_soul.Attachment.Attachment.SoulData;
 import First.fargo_soul.Attachment.AttachmentRegister;
 import First.fargo_soul.DataComponent.DataComponents.SoulComponent;
@@ -102,7 +103,7 @@ public class SoulUtils {
 	}
 
 	public static void setAbilityInvulnerable(Projectile projectile) {
-		projectile.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SoulItem.class).enabled = true;
+		projectile.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SoulItem.class).setEnabled(true);
 	}
 
 	public static void shootTargetFromAttaker(Projectile projectile, LivingEntity attacker, LivingEntity target) {
@@ -188,6 +189,10 @@ public class SoulUtils {
 
 	public static <T extends SoulItem> boolean isEquipped(LivingEntity livingEntity, Class<T> type) {
 		SoulData soulData = livingEntity.getData(AttachmentRegister.SoulData.get());
+		AbilityData abilityData = livingEntity.getData(AttachmentRegister.AbilityData.get());
+		if (abilityData.getAbility().getOrDefault(type.getName(), false)) {
+			return false;
+		}
 		if (soulData.getSoulItemList() == null) {
 			soulData.setSoulItemList(getSoulItemList(livingEntity));
 		}

@@ -32,8 +32,8 @@ public class TekeSoul extends SoulItem {
         public static void Death(LivingDeathEvent event) {
             if (!event.isCanceled() && event.getEntity() instanceof TamableAnimal animal && animal.getOwner() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
                 SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(TekeSoul.class);
-                soulInfo.maxCooldown = SoulUtils.isEquipped(event.getEntity(), SpiritPower.class) ? 3600 : 6000;
-                if (soulInfo.cooldown == 0 && SoulUtils.isEquipped(attacker, TekeSoul.class)) {
+                soulInfo.setMaxCooldown(SoulUtils.isEquipped(event.getEntity(), SpiritPower.class) ? 3600 : 6000);
+                if (soulInfo.getCooldown() == 0 && SoulUtils.isEquipped(attacker, TekeSoul.class)) {
                     animal.heal(attacker.getHealth() * 0.25f);
                     event.setCanceled(true);
                 }

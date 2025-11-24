@@ -67,7 +67,7 @@ public class SoulCoreItem extends Item {
 	public static class Event {
 
 		@SubscribeEvent
-		public static void Tick(PlayerTickEvent.Post event) throws IOException {
+		public static void Tick(PlayerTickEvent.Post event){
 			Player player = event.getEntity();
 			if (!player.level().isClientSide()) {
 				AbstractContainerMenu containerMenu = player.containerMenu;
@@ -253,7 +253,7 @@ public class SoulCoreItem extends Item {
 		}
 
 		@SubscribeEvent
-		public static void Tick(SoulCoreItemEntityTickEvent event) throws Exception {
+		public static void Tick(SoulCoreItemEntityTickEvent event) {
 			ItemEntity itemEntity = event.getItemEntity();
 			Level level = itemEntity.level();
 			if (!level.isClientSide()) {

@@ -44,15 +44,15 @@ public class GhostSoul extends SoulItem {
         public static void Tick(EntityTickEvent.Post event) {
             if (event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
                 SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GhostSoul.class);
-                soulInfo.minStacks = -20;
-                soulInfo.maxStacks = SoulUtils.isEquipped(target, SpiritPower.class) ? 200 : 100;
+                soulInfo.setMinStacks(-20);
+                soulInfo.setMaxStacks(SoulUtils.isEquipped(target, SpiritPower.class) ? 200 : 100);
                 AttributeUtils.ConditionAttributeModifier(
                         target,
                         Attributes.MAX_HEALTH,
                         SoulsRegister.GhostSoul.getId(),
-                        soulInfo.stacks * 0.01f,
+                        soulInfo.getStacks() * 0.01f,
                         AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
-                        (SoulUtils.isEquipped(target, GhostSoul.class) && soulInfo.stacks > 0) || soulInfo.stacks < 0
+                        (SoulUtils.isEquipped(target, GhostSoul.class) && soulInfo.getStacks() > 0) || soulInfo.getStacks() < 0
                 );
             }
         }
@@ -71,8 +71,8 @@ public class GhostSoul extends SoulItem {
         public static void Death(LivingIncomingDamageEvent event) {
             if (!event.isCanceled() && event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
                 SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GhostSoul.class);
-                if (SoulUtils.isEquipped(target, GhostSoul.class) && soulInfo.cooldown == 0 && event.getAmount() > target.getHealth()) {
-                    soulInfo.cooldown = soulInfo.maxCooldown;
+                if (SoulUtils.isEquipped(target, GhostSoul.class) && soulInfo.getCooldown() == 0 && event.getAmount() > target.getHealth()) {
+                    soulInfo.setCooldown(soulInfo.getMaxCooldown());
                     target.heal(target.getMaxHealth() * 0.25f);
                     event.setCanceled(true);
                     target.getActiveEffects().removeIf(mobEffectInstance -> mobEffectInstance.getEffect().value().getCategory().equals(MobEffectCategory.HARMFUL));

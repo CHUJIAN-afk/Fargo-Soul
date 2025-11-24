@@ -32,6 +32,8 @@ import java.util.Map;
 
 public class SoulAbilityData implements INBTSerializable<CompoundTag> {
 
+	public static final String SoulAttack = "SoulAttack";
+
 	private final Map<String, SoulInfo> SoulInfo = new HashMap<>();
 	private final Map<String, SoulInfo> ClientSoulInfo = new HashMap<>();
 
@@ -114,9 +116,8 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag> {
 			SoulAbilityData soulAbilityData = player.getData(AttachmentRegister.SoulAbilityData);
 			Collection<SoulAbilityData.SoulInfo> soulInfos = soulAbilityData.ClientSoulInfo.values();
 			for (SoulAbilityData.SoulInfo soulInfo : soulInfos) {
-				if (soulInfo.maxCooldown != -1) {
-					soulInfo.cooldown = Math.min(soulInfo.cooldown, soulInfo.maxCooldown);
-					soulInfo.cooldown = Math.max(--soulInfo.cooldown, 0);
+				if (soulInfo.getMaxCooldown() != -1) {
+					soulInfo.shrinkCooldown();
 				}
 				soulInfo.duration = Math.max(soulInfo.duration - soulInfo.durationReduction, 0);
 			}
@@ -125,16 +126,19 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag> {
 		@SubscribeEvent(priority = EventPriority.LOWEST)
 		public static void Tick(EntityTickEvent.Post event) {
 			if (event.getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
-				SoulAbilityData soulAbilityData = attacker.getData(AttachmentRegister.SoulAbilityData);
-				Collection<SoulAbilityData.SoulInfo> soulInfos = soulAbilityData.SoulInfo.values();
-				for (SoulAbilityData.SoulInfo soulInfo : soulInfos) {
-					if (soulInfo.maxCooldown != -1) {
-						soulInfo.cooldown = Math.min(soulInfo.cooldown, soulInfo.maxCooldown);
-						soulInfo.cooldown = Math.max(--soulInfo.cooldown, 0);
+				int range = attacker instanceof Player ? 10 : 100;
+				if (attacker.tickCount % range == 0) {
+					SoulAbilityData soulAbilityData = attacker.getData(AttachmentRegister.SoulAbilityData);
+					Collection<SoulAbilityData.SoulInfo> soulInfos = soulAbilityData.SoulInfo.values();
+					for (SoulAbilityData.SoulInfo soulInfo : soulInfos) {
+						if (soulInfo.maxCooldown != -1) {
+							soulInfo.cooldown = Math.min(soulInfo.cooldown, soulInfo.maxCooldown);
+							soulInfo.cooldown = Math.max(--soulInfo.cooldown, 0);
+						}
+						soulInfo.duration = Math.max(--soulInfo.duration, 0);
 					}
-					soulInfo.duration = Math.max(--soulInfo.duration, 0);
+					PacketDistributor.sendToAllPlayers(new Packet(attacker.getId(), serialize(soulAbilityData.SoulInfo)));
 				}
-				PacketDistributor.sendToAllPlayers(new Packet(attacker.getId(), serialize(soulAbilityData.SoulInfo)));
 			}
 		}
 
@@ -167,15 +171,15 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag> {
 
 	}
 
-	public static final class SoulInfo {
-		public int cooldown;
-		public int maxCooldown;
-		public int duration;
-		public int durationReduction;
-		public int minStacks;
-		public int stacks;
-		public int maxStacks;
-		public boolean enabled;
+	public static class SoulInfo {
+		private int cooldown;
+		private int maxCooldown;
+		private int duration;
+		private int durationReduction;
+		private int minStacks;
+		private int stacks;
+		private int maxStacks;
+		private boolean enabled;
 
 		public SoulInfo() {
 			this.cooldown = -1;
@@ -188,28 +192,104 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag> {
 			this.enabled = false;
 		}
 
+		public boolean isReady() {
+			return cooldown == 0;
+		}
+
+		public int getCooldown() {
+			return cooldown;
+		}
+
+		public void setCooldown(int cooldown) {
+			this.cooldown = Math.min(Math.max(cooldown, 0), maxCooldown);
+		}
+
+		public void shrinkCooldown(int amount) {
+			setCooldown(cooldown - amount);
+		}
+
+		public void shrinkCooldown() {
+			shrinkCooldown(1);
+		}
+
+		public int getMaxCooldown() {
+			return maxCooldown;
+		}
+
+		public void setMaxCooldown(int maxCooldown) {
+			this.maxCooldown = maxCooldown;
+		}
+
+		public int getDuration() {
+			return duration;
+		}
+
+		public void setDuration(int duration) {
+			this.duration = duration;
+		}
+
+		public int getDurationReduction() {
+			return durationReduction;
+		}
+
+		public void setDurationReduction(int durationReduction) {
+			this.durationReduction = durationReduction;
+		}
+
+		public int getMinStacks() {
+			return minStacks;
+		}
+
+		public void setMinStacks(int minStacks) {
+			this.minStacks = minStacks;
+		}
+
 		public void removeStacks() {
 			stacks = 0;
+		}
+
+		public int getStacks() {
+			return stacks;
+		}
+
+		public void setStacks(int stacks) {
+			this.stacks = Math.min(Math.max(stacks, minStacks), maxStacks);
+		}
+
+		public void addStacks(int amount) {
+			setStacks(stacks + amount);
 		}
 
 		public void addStacks() {
 			addStacks(1);
 		}
 
-		public void addStacks(int amount) {
-			stacks = Math.min(stacks + amount, maxStacks);
+		public void shrinkStacks(int amount) {
+			setStacks(stacks - amount);
 		}
 
 		public void shrinkStacks() {
 			shrinkStacks(1);
 		}
 
-		public void shrinkStacks(int amount) {
-			stacks = Math.max(stacks - amount, minStacks);
-		}
-
 		public float getStackPercentage() {
 			return maxStacks > 0 ? (float) stacks / maxStacks : 0f;
+		}
+
+		public int getMaxStacks() {
+			return maxStacks;
+		}
+
+		public void setMaxStacks(int maxStacks) {
+			this.maxStacks = maxStacks;
+		}
+
+		public boolean isEnabled() {
+			return enabled;
+		}
+
+		public void setEnabled(boolean enabled) {
+			this.enabled = enabled;
 		}
 
 	}

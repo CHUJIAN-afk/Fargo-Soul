@@ -93,8 +93,8 @@ public class VortexSoul extends SoulItem {
                     SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(VortexSoul.class);
                     int maxDistance = SoulUtils.isEquipped(player, CosmicPower.class) ? 1024 : 512;
                     HitResult hitResult = SoulUtils.getTargetedBlock(player, maxDistance);
-                    if (soulInfo.cooldown == 0 && hitResult instanceof BlockHitResult blockHitResult) {
-                        soulInfo.cooldown = soulInfo.maxCooldown;
+                    if (soulInfo.isReady() && hitResult instanceof BlockHitResult blockHitResult) {
+                        soulInfo.setCooldown(soulInfo.getMaxCooldown());
                         BlockPos pos = blockHitResult.getBlockPos();
                         if (!level.getBlockState(pos).is(Blocks.AIR) && pos.getY() > level.getMinBuildHeight()) {
                             Direction hitFace = blockHitResult.getDirection();

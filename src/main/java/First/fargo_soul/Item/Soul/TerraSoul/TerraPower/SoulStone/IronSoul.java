@@ -49,7 +49,7 @@ public class IronSoul extends SoulItem {
             if (event.getPlayer() instanceof Player player && !player.level().isClientSide()) {
                 if (SoulUtils.isEquipped(player, IronSoul.class)) {
                     SoulAbilityData.SoulInfo SoulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(IronSoul.class);
-                    SoulInfo.duration = 100;
+                    SoulInfo.setDuration(100);
                 }
             }
         }
@@ -58,7 +58,7 @@ public class IronSoul extends SoulItem {
         public static void Incoming(LivingIncomingDamageEvent event) {
             if (event.getEntity() instanceof Player player && !player.level().isClientSide()) {
                 SoulAbilityData.SoulInfo SoulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(IronSoul.class);
-                if (SoulUtils.isEquipped(player, IronSoul.class) && SoulInfo.duration > 0) {
+                if (SoulUtils.isEquipped(player, IronSoul.class) && SoulInfo.getDuration() > 0) {
                     event.setAmount(event.getAmount() * 0.8f);
                 }
             }

@@ -50,8 +50,8 @@ public class SilverSoul extends SoulItem {
                 if (SoulUtils.isEquipped(attacker, SilverSoul.class)) {
                     SoulAbilityData.SoulInfo SoulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SilverSoul.class);
                     if (attacker.isBlocking()) {
-                        SoulInfo.maxStacks = 100;
-                        SoulInfo.stacks++;
+                        SoulInfo.setMaxStacks(100);
+                        SoulInfo.addStacks();
                     } else {
                         SoulInfo.removeStacks();
                     }
@@ -64,9 +64,9 @@ public class SilverSoul extends SoulItem {
             if (event.getEntity() instanceof LivingEntity target && event.getDamageSource().getEntity() instanceof LivingEntity attacker && !target.level().isClientSide()) {
                 if (SoulUtils.isEquipped(target, SilverSoul.class)) {
                     SoulAbilityData.SoulInfo SoulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SilverSoul.class);
-                    if (event.getBlocked() && SoulInfo.cooldown == 0 && SoulInfo.stacks > 0 && SoulInfo.stacks < (SoulUtils.isEquipped(target, TerraPower.class) ? 6 : 4)) {
-                        SoulInfo.maxCooldown = 20;
-                        SoulInfo.cooldown = SoulInfo.maxCooldown;
+                    if (event.getBlocked() && SoulInfo.getCooldown() == 0 && SoulInfo.getStacks() > 0 && SoulInfo.getStacks() < (SoulUtils.isEquipped(target, TerraPower.class) ? 6 : 4)) {
+                        SoulInfo.setMaxCooldown(20);
+                        SoulInfo.setCooldown(SoulInfo.getMaxCooldown());
                         attacker.hurt(target.damageSources().mobAttack(target), event.getBlockedDamage() * 2.0f);
                         Level level = target.level();
                         SoulUtils.playSound(
@@ -103,7 +103,7 @@ public class SilverSoul extends SoulItem {
             if (event.getSource().getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
                 if (SoulUtils.isEquipped(attacker, SilverSoul.class)) {
                     SoulAbilityData.SoulInfo SoulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SilverSoul.class);
-                    if (SoulInfo.cooldown > 0) {
+                    if (SoulInfo.getCooldown() > 0) {
                         event.setAmount(event.getAmount() * 1.5f);
                     }
                 }

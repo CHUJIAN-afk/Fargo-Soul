@@ -1,11 +1,13 @@
 package First.fargo_soul.Item.Soul.TerraSoul.WillPower.Soulstone;
 
 import First.fargo_soul.Fargo_soul;
+import First.fargo_soul.Item.Soul.BaseSoul.SoulCoreItem;
 import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
 import First.fargo_soul.Item.Soul.TerraSoul.WillPower.WillPower;
 import First.fargo_soul.Utils.SoulUtils;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -31,7 +33,8 @@ public class PlatinumSoul extends SoulItem {
                     Collection<ItemEntity> itemEntities = event.getDrops();
                     for (ItemEntity itemEntity : itemEntities) {
                         ItemStack itemStack = itemEntity.getItem();
-                        if (!(itemStack.getItem() instanceof SoulItem)) {
+                        Item item = itemStack.getItem();
+                        if (!(item instanceof SoulCoreItem) && !(item instanceof SoulItem)) {
                             int scale = SoulUtils.isEquipped(attacker, WillPower.class) ? 8 : 5;
                             itemStack.setCount(itemStack.getCount() * scale);
                         }

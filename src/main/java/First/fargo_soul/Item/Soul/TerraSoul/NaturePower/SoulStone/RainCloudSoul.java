@@ -37,9 +37,9 @@ public class RainCloudSoul extends SoulItem {
                 Level level = target.level();
                 double chance = SoulUtils.isEquipped(target, NaturePower.class) && level.isRaining() ? 0.4 : 0.1;
                 SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(RainCloudSoul.class);
-                soulInfo.maxCooldown = 20;
-                if (soulInfo.cooldown == 0 && !attacker.equals(target) && SoulUtils.isEquipped(target, RainCloudSoul.class) && target.getRandom().nextDouble() < chance) {
-                    soulInfo.cooldown = soulInfo.maxCooldown;
+                soulInfo.setMaxCooldown(20);
+                if (soulInfo.isReady() && !attacker.equals(target) && SoulUtils.isEquipped(target, RainCloudSoul.class) && target.getRandom().nextDouble() < chance) {
+                    soulInfo.setCooldown(soulInfo.getMaxCooldown());
                     LightningBolt lightning = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
                     lightning.setPos(attacker.getBoundingBox().getCenter());
                     SoulUtils.addEntity(level, lightning);

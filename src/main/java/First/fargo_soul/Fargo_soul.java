@@ -7,8 +7,16 @@ import First.fargo_soul.Effect.EffectRegister;
 import First.fargo_soul.Entity.EntityRegister;
 import First.fargo_soul.Item.CreativeModeTabRegister;
 import First.fargo_soul.Item.ModItemRegister;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.SmokerBlockEntity;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.client.gui.ConfigurationScreen;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

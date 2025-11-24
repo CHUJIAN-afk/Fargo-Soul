@@ -46,9 +46,9 @@ public class TitaniumSoul extends SoulItem {
                 if (SoulUtils.isEquipped(target, TitaniumSoul.class)) {
                     Level level = target.level();
                     SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(TitaniumSoul.class);
-                    soulInfo.maxCooldown = 400;
-                    if (!event.isCanceled() && soulInfo.cooldown == 0) {
-                        soulInfo.cooldown = soulInfo.maxCooldown;
+                    soulInfo.setMaxCooldown(400);
+                    if (!event.isCanceled() && soulInfo.isReady()) {
+                        soulInfo.setCooldown(soulInfo.getMaxCooldown());
                         event.setCanceled(true);
                         SoulUtils.playSound(
                                 level,
@@ -79,7 +79,7 @@ public class TitaniumSoul extends SoulItem {
                         SoulsRegister.TitaniumSoul.getId(),
                         (1 - (attacker.getHealth() / attacker.getMaxHealth())) * 0.25,
                         AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
-                        SoulUtils.isEquipped(attacker, TitaniumSoul.class) && soulInfo.cooldown != 0 && soulInfo.cooldown < soulInfo.maxCooldown
+                        SoulUtils.isEquipped(attacker, TitaniumSoul.class) && !soulInfo.isReady() && soulInfo.getCooldown() < soulInfo.getMaxCooldown()
                 );
             }
         }

@@ -48,13 +48,13 @@ public class NinjaSoul extends SoulItem {
             if (event.getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
                 ResourceLocation resourceLocation = SoulsRegister.NinjaSoul.getId();
                 SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(NinjaSoul.class);
-                soulInfo.maxStacks = SoulUtils.isEquipped(attacker, DeathPower.class) ? 500 : 300;
+                soulInfo.setMaxStacks(SoulUtils.isEquipped(attacker, DeathPower.class) ? 500 : 300);
                 soulInfo.addStacks();
                 AttributeUtils.ConditionAttributeModifier(
                         attacker,
                         Attributes.ATTACK_DAMAGE,
                         resourceLocation,
-                        soulInfo.stacks * 0.01,
+                        soulInfo.getStacks() * 0.01,
                         AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
                         SoulUtils.isEquipped(attacker, NinjaSoul.class)
                 );
@@ -65,7 +65,7 @@ public class NinjaSoul extends SoulItem {
         public static void Damage(LivingIncomingDamageEvent event) {
             if (event.getSource().getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
                 SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(NinjaSoul.class);
-                soulInfo.stacks = 0;
+                soulInfo.removeStacks();
             }
         }
 

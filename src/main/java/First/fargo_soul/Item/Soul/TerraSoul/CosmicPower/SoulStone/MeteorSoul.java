@@ -15,6 +15,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -28,12 +29,15 @@ import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
+import java.util.List;
+import java.util.Map;
+
 public class MeteorSoul extends SoulItem {
 
     public MeteorSoul(Properties properties) {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PINK));
     }
-
+    
     @EventBusSubscriber(modid = Fargo_soul.MODID)
     public static class Event {
 
@@ -57,9 +61,9 @@ public class MeteorSoul extends SoulItem {
                 if (!attacker.equals(target) && SoulUtils.isEquipped(attacker, MeteorSoul.class)) {
                     double chance = SoulUtils.isEquipped(attacker, CosmicPower.class) ? 0.1 : 0.05;
                     SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(MeteorSoul.class);
-                    soulInfo.maxCooldown = 2;
-                    if (soulInfo.cooldown == 0 && target.getRandom().nextDouble() < chance) {
-                        soulInfo.cooldown = soulInfo.maxCooldown;
+                    soulInfo.setMaxCooldown(2);
+                    if (soulInfo.isReady() && target.getRandom().nextDouble() < chance) {
+                        soulInfo.setCooldown(soulInfo.getMaxCooldown());
                         Level level = attacker.level();
                         SmallFireball fireball = new SmallFireball(EntityType.SMALL_FIREBALL, level);
                         SoulUtils.shootTargetFromAttaker(fireball, attacker, target, 2, 2);

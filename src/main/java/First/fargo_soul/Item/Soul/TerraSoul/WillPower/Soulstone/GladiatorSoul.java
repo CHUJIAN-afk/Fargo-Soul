@@ -69,11 +69,11 @@ public class GladiatorSoul extends SoulItem {
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
                 if (!attacker.equals(target) && SoulUtils.isEquipped(attacker, GladiatorSoul.class)) {
                     SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GladiatorSoul.class);
-                    soulInfo.maxStacks = SoulUtils.isEquipped(attacker, WillPower.class) ? 12 : 24;
+                    soulInfo.setMaxStacks(SoulUtils.isEquipped(attacker, WillPower.class) ? 12 : 24);
                     soulInfo.addStacks();
-                    soulInfo.maxCooldown = 20;
-                    if (soulInfo.cooldown == 0 && soulInfo.stacks == soulInfo.maxStacks) {
-                        soulInfo.cooldown = soulInfo.maxCooldown;
+                    soulInfo.setMaxCooldown(20);
+                    if (soulInfo.getCooldown() == 0 && soulInfo.getStacks() == soulInfo.getMaxStacks()) {
+                        soulInfo.setCooldown(soulInfo.getMaxCooldown());
                         soulInfo.removeStacks();
                         Level level = attacker.level();
                         List<LivingEntity> livingEntityList = level.getEntitiesOfClass(LivingEntity.class, attacker.getBoundingBox().inflate(4), livingEntity -> {
@@ -93,7 +93,7 @@ public class GladiatorSoul extends SoulItem {
                             arrow.shoot(vec3.x, vec3.y, vec3.z, SoulUtils.random.nextFloat(0.8f, 1.6f), 0.5F);
                             arrow.setOwner(attacker);
                             SoulAbilityData.SoulInfo info = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SoulItem.class);
-                            info.enabled = true;
+                            info.setEnabled(true);
                             SoulUtils.addEntity(level, arrow);
 
                         }

@@ -34,9 +34,9 @@ public class TurtleSoul extends SoulItem {
 			if (event.getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
 				if (SoulUtils.isEquipped(attacker, TurtleSoul.class)) {
 					SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(TurtleSoul.class);
-					soulInfo.maxCooldown = 2400;
+					soulInfo.setMaxCooldown(2400);
 					boolean superLowHealth = attacker.getHealth() / attacker.getMaxHealth() < 0.25;
-					soulInfo.enabled = superLowHealth && soulInfo.cooldown == 0;
+					soulInfo.setEnabled(superLowHealth && soulInfo.isReady());
 				}
 			}
 		}
@@ -51,11 +51,11 @@ public class TurtleSoul extends SoulItem {
 			if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
 				if (!attacker.equals(target) && SoulUtils.isEquipped(target, TurtleSoul.class)) {
 					SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(TurtleSoul.class);
-					if (soulInfo.enabled) {
+					if (soulInfo.isEnabled()) {
 						event.setAmount(Math.max(event.getAmount() - target.getMaxHealth() * 0.04f, 0));
 						if (event.getAmount() > target.getHealth()) {
 							event.setCanceled(true);
-							soulInfo.cooldown = soulInfo.maxCooldown;
+							soulInfo.setCooldown(soulInfo.getMaxCooldown());
 						}
 					}
 				}

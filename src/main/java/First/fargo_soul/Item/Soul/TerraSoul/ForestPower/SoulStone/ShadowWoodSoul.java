@@ -30,11 +30,11 @@ public class ShadowWoodSoul extends SoulItem {
             if (event.getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
                 if (SoulUtils.isEquipped(attacker, ShadowWoodSoul.class)) {
                     SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(PineWoodSoul.class);
-                    soulInfo.maxCooldown = 100;
-                    if (soulInfo.cooldown == 0 && SoulUtils.getSoulTarget(attacker, 10) instanceof LivingEntity target) {
-                        soulInfo.cooldown = soulInfo.maxCooldown;
+                    soulInfo.setMaxCooldown(100);
+                    if (soulInfo.getCooldown() == 0 && SoulUtils.getSoulTarget(attacker, 10) instanceof LivingEntity target) {
+                        soulInfo.setCooldown(soulInfo.getMaxCooldown());
                         SoulAbilityData.SoulInfo info = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(attacker.getScoreboardName());
-                        info.enabled = true;
+                        info.setEnabled(true);
                     }
                 }
             }
@@ -45,7 +45,7 @@ public class ShadowWoodSoul extends SoulItem {
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
                 if (!attacker.equals(target) && SoulUtils.isEquipped(target, ShadowWoodSoul.class) && SoulUtils.canAttack(ShadowWoodSoul.class, attacker, attacker)) {
                     SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(target.getScoreboardName());
-                    if (soulInfo.enabled) {
+                    if (soulInfo.isEnabled()) {
                         int amount = SoulUtils.isEquipped(target, ForestPower.class) ? 3 : 2;
                         SoulUtils.attack(ShadowWoodSoul.class, attacker, target, attacker, DamageTypes.MAGIC, amount);
                         target.heal(amount);

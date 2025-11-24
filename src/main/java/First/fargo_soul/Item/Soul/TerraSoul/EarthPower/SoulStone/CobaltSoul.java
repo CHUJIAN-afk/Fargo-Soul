@@ -60,9 +60,9 @@ public class CobaltSoul extends SoulItem {
             if (event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
                 boolean equipped = SoulUtils.isEquipped(target, EarthPower.class);
                 SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(CobaltSoul.class);
-                soulInfo.maxCooldown = equipped ? 40 : 60;
-                if (SoulUtils.isEquipped(target, CobaltSoul.class) && soulInfo.cooldown == 0) {
-                    soulInfo.cooldown = soulInfo.maxCooldown;
+                soulInfo.setMaxCooldown(equipped ? 40 : 60);
+                if (SoulUtils.isEquipped(target, CobaltSoul.class) && soulInfo.isReady()) {
+                    soulInfo.setCooldown(soulInfo.getMaxCooldown());
                     Level level = target.level();
                     int value = equipped ? 3 : 2;
                     List<LivingEntity> targetList = target.level().getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(value));

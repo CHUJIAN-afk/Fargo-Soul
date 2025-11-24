@@ -88,8 +88,8 @@ public class ForbiddenSoul extends SoulItem {
                     Player player = context.player();
                     SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(ForbiddenSoul.class);
                     HitResult hitResult = player.pick(20.0, 0, false);
-                    if (soulInfo.cooldown == 0 && hitResult instanceof BlockHitResult blockHitResult) {
-                        soulInfo.cooldown = soulInfo.maxCooldown;
+                    if (soulInfo.isReady() && hitResult instanceof BlockHitResult blockHitResult) {
+                        soulInfo.setCooldown(soulInfo.getMaxCooldown());
                         BlockPos pos = blockHitResult.getBlockPos();
                         Vec3 blockPos = new Vec3(pos.getX(), pos.getY(), pos.getZ());
                         for (int i = 1; i < (SoulUtils.isEquipped(player, SpiritPower.class) ? 8 : 5); i++) {

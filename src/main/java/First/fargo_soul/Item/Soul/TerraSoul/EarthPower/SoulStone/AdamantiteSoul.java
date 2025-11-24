@@ -35,16 +35,16 @@ public class AdamantiteSoul extends SoulItem {
             if (event.getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
                 ResourceLocation resourceLocation = SoulsRegister.AdamantiteSoul.getId();
                 SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(AdamantiteSoul.class);
-                if (soulInfo.duration == 0) {
-                    soulInfo.stacks = 0;
+                if (soulInfo.getDuration() == 0) {
+                    soulInfo.removeStacks();
                 }
                 AttributeUtils.ConditionAttributeModifier(
                         attacker,
                         Attributes.ATTACK_SPEED,
                         resourceLocation,
-                        soulInfo.stacks * 0.05,
+                        soulInfo.getStacks() * 0.05,
                         AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
-                        SoulUtils.isEquipped(attacker, AdamantiteSoul.class) && soulInfo.stacks > 0
+                        SoulUtils.isEquipped(attacker, AdamantiteSoul.class) && soulInfo.getStacks() > 0
                 );
                 AttributeUtils.ConditionAttributeModifier(
                         attacker,
@@ -52,7 +52,7 @@ public class AdamantiteSoul extends SoulItem {
                         resourceLocation,
                         0.15,
                         AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
-                        SoulUtils.isEquipped(attacker, EarthPower.class) && soulInfo.stacks > soulInfo.maxStacks
+                        SoulUtils.isEquipped(attacker, EarthPower.class) && soulInfo.getStacks() > soulInfo.getMaxStacks()
                 );
             }
         }
@@ -62,10 +62,10 @@ public class AdamantiteSoul extends SoulItem {
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
                 if (!attacker.equals(target) && SoulUtils.isEquipped(attacker, AdamantiteSoul.class)) {
                     SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(AdamantiteSoul.class);
-                    soulInfo.maxStacks = 8;
+                    soulInfo.setMaxStacks(8);
                     soulInfo.addStacks();
-                    soulInfo.duration = 100;
-                    if (target instanceof Mob mob && mob.getTarget() != null && target.getRandom().nextDouble() < 0.05 && soulInfo.stacks == soulInfo.maxStacks) {
+                    soulInfo.setDuration(100);
+                    if (target instanceof Mob mob && mob.getTarget() != null && target.getRandom().nextDouble() < 0.05 && soulInfo.getStacks() == soulInfo.getMaxStacks()) {
                         mob.setTarget(null);
                     }
                 }

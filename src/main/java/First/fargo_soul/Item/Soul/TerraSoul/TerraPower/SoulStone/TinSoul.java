@@ -53,14 +53,14 @@ public class TinSoul extends SoulItem {
                         SoulUtils.isEquipped(player, TinSoul.class) && CriticalDamageAmount > 0
                 );
                 SoulAbilityData.SoulInfo SoulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(TinSoul.class);
-                SoulInfo.maxStacks = (SoulUtils.isEquipped(player, TerraPower.class) ? 100 : 60);
+                SoulInfo.setMaxStacks((SoulUtils.isEquipped(player, TerraPower.class) ? 100 : 60));
                 AttributeUtils.ConditionAttributeModifier(
                         player,
                         AttributeRegister.CriticalChance,
                         ResourceLocation.fromNamespaceAndPath(Fargo_soul.MODID, "tin_soul_addition"),
-                        SoulInfo.stacks * 0.01,
+                        SoulInfo.getStacks() * 0.01,
                         AttributeModifier.Operation.ADD_VALUE,
-                        SoulUtils.isEquipped(player, TinSoul.class) && SoulInfo.stacks > 0
+                        SoulUtils.isEquipped(player, TinSoul.class) && SoulInfo.getStacks() > 0
                 );
                 if (SoulUtils.isEquipped(player, TinSoul.class)) {
                     if (player.getRandom().nextDouble() < CriticalChance.getValue()) {
@@ -77,7 +77,7 @@ public class TinSoul extends SoulItem {
             if (event.getEntity() instanceof Player player && !player.level().isClientSide()) {
                 if (SoulUtils.isEquipped(player, TinSoul.class)) {
                     SoulAbilityData.SoulInfo SoulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(TinSoul.class);
-                    SoulInfo.shrinkStacks(SoulInfo.stacks / 2);
+                    SoulInfo.shrinkStacks(SoulInfo.getStacks() / 2);
                 }
             }
         }

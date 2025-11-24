@@ -48,9 +48,9 @@ public class DarkArtistSoul extends SoulItem {
                     Level level = attacker.level();
                     //箭矢
                     SoulAbilityData.SoulInfo DarkArtistArrow = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("DarkArtistArrow");
-                    DarkArtistArrow.maxCooldown = 200;
-                    if (DarkArtistArrow.cooldown == 0) {
-                        DarkArtistArrow.cooldown = DarkArtistArrow.maxCooldown;
+                    DarkArtistArrow.setMaxCooldown(200);
+                    if (DarkArtistArrow.isReady()) {
+                        DarkArtistArrow.setCooldown(DarkArtistArrow.getMaxCooldown());
                         for (int i = 0; i < 8; i++) {
                             Arrow arrow = new Arrow(EntityType.ARROW, level);
                             arrow.setBaseDamage(event.getAmount() * (SoulUtils.isEquipped(attacker, DeathPower.class) ? 0.25 : 0.15f));
@@ -66,10 +66,10 @@ public class DarkArtistSoul extends SoulItem {
                     }
                     //火球
                     SoulAbilityData.SoulInfo DarkArtistFireball = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("DarkArtistFireball");
-                    DarkArtistFireball.maxCooldown = 2;
+                    DarkArtistFireball.setMaxCooldown(2);
                     double chance = SoulUtils.isEquipped(attacker, DeathPower.class) ? 0.2 : 0.1;
-                    if (DarkArtistFireball.cooldown == 0 && target.getRandom().nextDouble() < chance) {
-                        DarkArtistFireball.cooldown = DarkArtistFireball.maxCooldown;
+                    if (DarkArtistFireball.isReady() && target.getRandom().nextDouble() < chance) {
+                        DarkArtistFireball.setCooldown(DarkArtistFireball.getMaxCooldown());
                         SmallFireball fireball = new SmallFireball(EntityType.SMALL_FIREBALL, level);
                         SoulUtils.shootTargetFromAttaker(fireball, attacker, target);
                         SoulUtils.setAbilityInvulnerable(fireball);

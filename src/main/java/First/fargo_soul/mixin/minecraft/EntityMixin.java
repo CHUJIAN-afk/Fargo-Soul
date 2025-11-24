@@ -54,7 +54,7 @@ public class EntityMixin {
     private void bypassCollision(BlockPos pos, BlockState state, CallbackInfoReturnable<Boolean> cir) {
         if (((Entity) (Object) this) instanceof Player player && SoulUtils.isEquipped(player, PenetratingNinjaSoul.class)) {
             SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(PenetratingNinjaSoul.class);
-            if (soulInfo.duration > 0) {
+            if (soulInfo.getDuration() > 0) {
                 cir.setReturnValue(false);
             }
         }

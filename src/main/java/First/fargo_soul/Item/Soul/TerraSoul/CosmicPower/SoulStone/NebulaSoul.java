@@ -35,9 +35,9 @@ public class NebulaSoul extends SoulItem {
             if (event.getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
                 if (SoulUtils.isEquipped(attacker, NebulaSoul.class)) {
                     SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(NebulaSoul.class);
-                    soulInfo.maxCooldown = SoulUtils.isEquipped(attacker, CosmicPower.class) ? 40 : 60;
-                    if (soulInfo.cooldown == 0) {
-                        soulInfo.cooldown = soulInfo.maxCooldown;
+                    soulInfo.setMaxCooldown(SoulUtils.isEquipped(attacker, CosmicPower.class) ? 40 : 60);
+                    if (soulInfo.isReady()) {
+                        soulInfo.setCooldown(soulInfo.getMaxCooldown());
                         Level level = attacker.level();
                         if (SoulUtils.getSoulTarget(attacker, 20) instanceof LivingEntity target) {
                             float amount = (8 + target.getMaxHealth() * 0.02f) * (SoulUtils.isEquipped(attacker, CosmicPower.class) ? 1.5f : 1f);

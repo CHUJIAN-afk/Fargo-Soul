@@ -90,8 +90,8 @@ public class StardustSoul extends SoulItem {
                 if (isEquipped) {
                     Player player = context.player();
                     SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(StardustSoul.class);
-                    if (soulInfo.cooldown == 0 && player.getServer() instanceof MinecraftServer server && !server.tickRateManager().isFrozen()) {
-                        soulInfo.cooldown = soulInfo.maxCooldown;
+                    if (soulInfo.isReady() && player.getServer() instanceof MinecraftServer server && !server.tickRateManager().isFrozen()) {
+                        soulInfo.setCooldown(soulInfo.getMaxCooldown());
                         server.tickRateManager().setFrozen(true);
                         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
                         int delay = SoulUtils.isEquipped(player, CosmicPower.class) ? 10 : 6;

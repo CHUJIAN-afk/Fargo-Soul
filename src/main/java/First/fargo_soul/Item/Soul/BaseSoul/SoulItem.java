@@ -120,36 +120,35 @@ public class SoulItem extends Item implements ICurioItem {
         @SubscribeEvent(priority = EventPriority.HIGHEST)
         public static void Damage(LivingIncomingDamageEvent event) {
             if (event.getSource().getDirectEntity() instanceof Entity entity && !entity.level().isClientSide()) {
-                SoulAbilityData.SoulInfo soulInfo = entity.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SoulItem.class);
-                if (soulInfo.enabled) {
+                SoulAbilityData.SoulInfo soulInfo1 = entity.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SoulAbilityData.SoulAttack);
+                SoulAbilityData.SoulInfo soulInfo2 = entity.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SoulItem.class);
+                if (soulInfo1.isEnabled() || soulInfo2.isEnabled()) {
                     event.getEntity().invulnerableTime = 0;
                 }
             }
         }
 
-        private static final List<Class<? extends SoulItem>> SprintList = Arrays.asList(
-                CrystalAssassinSoul.class,
-                PenetratingNinjaSoul.class,
-                GreenSoul.class
-        );
-
         private static List<Class<? extends SoulItem>> getSprintList() {
-            return SprintList;
+            return Arrays.asList(
+                    CrystalAssassinSoul.class,
+                    PenetratingNinjaSoul.class,
+                    GreenSoul.class
+            );
         }
 
         @SubscribeEvent
         public static void MonsterSprint(EntityTickEvent.Post event) {
             if (event.getEntity() instanceof Mob mob && mob.getTarget() instanceof LivingEntity target && !target.level().isClientSide()) {
                 SoulAbilityData.SoulInfo soulInfo = mob.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("Sprint");
-                soulInfo.maxCooldown = 100;
-                if (SoulUtils.isEquippedAny(mob, getSprintList()) && soulInfo.cooldown == 0) {
-                    soulInfo.cooldown = soulInfo.maxCooldown;
+                soulInfo.setCooldown(100);
+                if (SoulUtils.isEquippedAny(mob, getSprintList()) && soulInfo.isReady()) {
+                    soulInfo.setCooldown(soulInfo.getMaxCooldown());
                     mob.getLookControl().setLookAt(target);
                     double factor = 1.5;
                     if (SoulUtils.isEquipped(mob, RedRidingSoul.class)) {
                         SoulAbilityData.SoulInfo info = mob.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(RedRidingSoul.class);
-                        soulInfo.maxStacks = SoulUtils.isEquipped(mob, WillPower.class) ? 15 : 10;
-                        if (info.stacks == info.maxStacks) {
+                        soulInfo.setMaxCooldown(SoulUtils.isEquipped(mob, WillPower.class) ? 15 : 10);
+                        if (info.getStacks() == info.getMaxStacks()) {
                             factor *= 1.5f;
                         }
                     }
@@ -164,14 +163,14 @@ public class SoulItem extends Item implements ICurioItem {
         public static void Sprint(MovementInputUpdateEvent event) {
             if (event.getEntity() instanceof LocalPlayer player) {
                 SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getClientSoulInfo("Sprint");
-                soulInfo.maxCooldown = 40;
-                if (soulInfo.cooldown == 0 && KeyUtils.isDoubleTappingForward(event.getInput()) && SoulUtils.isEquippedAny(player, getSprintList())) {
-                    soulInfo.cooldown = soulInfo.maxCooldown;
+                soulInfo.setMaxCooldown(40);
+                if (soulInfo.isReady() && KeyUtils.isDoubleTappingForward(event.getInput()) && SoulUtils.isEquippedAny(player, getSprintList())) {
+                    soulInfo.setCooldown(soulInfo.getMaxCooldown());
                     double factor = 1.5;
                     if (SoulUtils.isEquipped(player, RedRidingSoul.class)) {
                         SoulAbilityData.SoulInfo info = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(RedRidingSoul.class);
-                        soulInfo.maxStacks = SoulUtils.isEquipped(player, WillPower.class) ? 15 : 10;
-                        if (info.stacks == info.maxStacks) {
+                        soulInfo.setMaxStacks(SoulUtils.isEquipped(player, WillPower.class) ? 15 : 10);
+                        if (info.getStacks() == info.getMaxStacks()) {
                             factor *= 1.5f;
                         }
                     }
@@ -191,9 +190,9 @@ public class SoulItem extends Item implements ICurioItem {
                         BeetleSoul.class
                 );
                 SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getClientSoulInfo("Fly");
-                soulInfo.maxStacks = getFlyTime(player);
-                if (soulInfo.stacks > 0 && event.getInput().jumping && SoulUtils.isEquippedAny(player, typeList)) {
-                    soulInfo.stacks--;
+                soulInfo.setMaxStacks(getFlyTime(player));
+                if (soulInfo.getStacks() > 0 && event.getInput().jumping && SoulUtils.isEquippedAny(player, typeList)) {
+                    soulInfo.shrinkStacks();
                     Vec3 deltaMovement = player.getDeltaMovement();
                     Vec3 newDeltaMovement = new Vec3(
                             deltaMovement.x(),
@@ -202,7 +201,7 @@ public class SoulItem extends Item implements ICurioItem {
                     );
                     player.setDeltaMovement(newDeltaMovement);
                 } else if (player.onGround()) {
-                    soulInfo.stacks = soulInfo.maxStacks;
+                    soulInfo.setStacks(soulInfo.getMaxStacks());
                 }
             }
         }
@@ -327,17 +326,17 @@ public class SoulItem extends Item implements ICurioItem {
                         mob,
                         Attributes.MAX_HEALTH,
                         ResourceLocation.fromNamespaceAndPath(Fargo_soul.MODID, "soul_add"),
-                        soulInfo.stacks * 5,
+                        soulInfo.getStacks() * 5,
                         AttributeModifier.Operation.ADD_VALUE,
-                        soulInfo.enabled
+                        soulInfo.isEnabled()
                 );
                 AttributeUtils.ConditionAttributeModifier(
                         mob,
                         Attributes.MAX_HEALTH,
                         ResourceLocation.fromNamespaceAndPath(Fargo_soul.MODID, "soul_total"),
-                        soulInfo.stacks,
+                        soulInfo.getStacks(),
                         AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL,
-                        soulInfo.enabled
+                        soulInfo.isEnabled()
                 );
             }
         }
@@ -350,8 +349,8 @@ public class SoulItem extends Item implements ICurioItem {
             double chance = 0.05;
             if (entity instanceof Enemy && entity instanceof Mob mob && !mob.level().isClientSide()) {
                 SoulAbilityData.SoulInfo soulInfo = mob.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("first");
-                if (!soulInfo.enabled) {
-                    soulInfo.enabled = true;
+                if (!soulInfo.isEnabled()) {
+                    soulInfo.setEnabled(true);
                     Optional<ICuriosItemHandler> curiosInventory = CuriosApi.getCuriosInventory(mob);
                     if (curiosInventory.isPresent()) {
                         if (soulItemList.isEmpty()) {
@@ -373,8 +372,8 @@ public class SoulItem extends Item implements ICurioItem {
                             }
                             List<SoulItem> allCurioItems = SoulUtils.getAllCurioItems(list);
                             if (!allCurioItems.isEmpty()) {
-                                info.enabled = true;
-                                info.stacks = allCurioItems.size();
+                                info.setEnabled(true);
+                                info.setStacks(allCurioItems.size());
                             }
                         }
                     }
@@ -387,7 +386,7 @@ public class SoulItem extends Item implements ICurioItem {
             Entity entity = event.getEntity();
             if (entity instanceof Enemy && entity instanceof Mob mob && !mob.level().isClientSide()) {
                 SoulAbilityData.SoulInfo info = mob.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("soul");
-                if (info.enabled) {
+                if (info.isEnabled()) {
                     Optional<ICuriosItemHandler> curiosInventory = CuriosApi.getCuriosInventory(mob);
                     curiosInventory.ifPresent(iCuriosItemHandler -> {
                         IItemHandlerModifiable equippedCurios = iCuriosItemHandler.getEquippedCurios();

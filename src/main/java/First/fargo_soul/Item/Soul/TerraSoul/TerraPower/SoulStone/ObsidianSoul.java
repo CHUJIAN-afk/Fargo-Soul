@@ -63,9 +63,9 @@ public class ObsidianSoul extends SoulItem {
                 );
                 if (SoulUtils.isEquipped(attacker, ObsidianSoul.class)) {
                     SoulAbilityData.SoulInfo SoulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(ObsidianSoul.class);
-                    SoulInfo.maxCooldown  = SoulUtils.isEquipped(attacker, TerraPower.class) ? 30 : 60;
-                    if (SoulInfo.cooldown == 0 && SoulUtils.getSoulTarget(attacker, 10) instanceof LivingEntity target) {
-                        SoulInfo.cooldown = SoulInfo.maxCooldown;
+                    SoulInfo.setMaxCooldown(SoulUtils.isEquipped(attacker, TerraPower.class) ? 30 : 60);
+                    if (SoulInfo.getCooldown() == 0 && SoulUtils.getSoulTarget(attacker, 10) instanceof LivingEntity target) {
+                        SoulInfo.setCooldown(SoulInfo.getMaxCooldown());
                         Level level = attacker.level();
                         SmallFireball fireball = new SmallFireball(EntityType.SMALL_FIREBALL, level);
                         SoulUtils.shootTargetFromAttaker(fireball, attacker, target, 1, SoulUtils.isEquipped(attacker, TerraPower.class) ? 1.3 : 1.0);

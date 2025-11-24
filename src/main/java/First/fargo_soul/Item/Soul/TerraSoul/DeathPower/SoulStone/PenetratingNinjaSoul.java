@@ -39,8 +39,8 @@ public class PenetratingNinjaSoul extends SoulItem {
             if (event.getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
                 if (SoulUtils.isEquipped(attacker, PenetratingNinjaSoul.class)) {
                     SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(PenetratingNinjaSoul.class);
-                    soulInfo.maxCooldown = 400;
-                    if (soulInfo.duration > 0) {
+                    soulInfo.setMaxCooldown(400);
+                    if (soulInfo.getDuration() > 0) {
                         List<LivingEntity> livingEntityList = attacker.level().getEntitiesOfClass(LivingEntity.class, attacker.getBoundingBox());
                         for (LivingEntity target : livingEntityList) {
                             float amount = attacker.getMaxHealth() * 0.1f;
@@ -62,7 +62,7 @@ public class PenetratingNinjaSoul extends SoulItem {
             if (event.getSource().getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
                 if ( SoulUtils.isEquipped(attacker, PenetratingNinjaSoul.class)){
                     SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(PenetratingNinjaSoul.class);
-                    if (soulInfo.duration > 0) {
+                    if (soulInfo.getDuration() > 0) {
                         event.setCanceled(true);
                     }
                 }
@@ -90,9 +90,9 @@ public class PenetratingNinjaSoul extends SoulItem {
                 if (isEquipped) {
                     Player player = context.player();
                     SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(PenetratingNinjaSoul.class);
-                    if (soulInfo.cooldown == 0) {
-                        soulInfo.cooldown = soulInfo.maxCooldown;
-                        soulInfo.duration = 20;
+                    if (soulInfo.getCooldown() == 0) {
+                        soulInfo.setCooldown(soulInfo.getMaxCooldown());
+                        soulInfo.setDuration(20);
                     }
                 }
             });

@@ -36,9 +36,9 @@ public class PineWoodSoul extends SoulItem {
                 if (SoulUtils.isEquipped(attacker, PineWoodSoul.class)) {
                     Level level = attacker.level();
                     SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(PineWoodSoul.class);
-                    soulInfo.maxCooldown = SoulUtils.isEquipped(attacker, ForestPower.class) ? 20 : 40;
-                    if (soulInfo.cooldown == 0 && SoulUtils.getSoulTarget(attacker, 10) instanceof LivingEntity target) {
-                        soulInfo.cooldown = soulInfo.maxCooldown;
+                    soulInfo.setMaxCooldown(SoulUtils.isEquipped(attacker, ForestPower.class) ? 20 : 40);
+                    if (soulInfo.isReady() && SoulUtils.getSoulTarget(attacker, 10) instanceof LivingEntity target) {
+                        soulInfo.setCooldown(soulInfo.getMaxCooldown());
                         Snowball snowball = new Snowball(EntityType.SNOWBALL, level);
                         SoulUtils.shootTargetFromAttaker(snowball, attacker, target, 1, 2);
                         SoulUtils.setAbilityInvulnerable(snowball);

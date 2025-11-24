@@ -32,9 +32,9 @@ public class MithrilSoul extends SoulItem {
             if (event.getSource().getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
                 if (SoulUtils.isEquipped(attacker, MithrilSoul.class)) {
                     SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(MithrilSoul.class);
-                    soulInfo.maxCooldown = SoulUtils.isEquipped(attacker, EarthPower.class) ? 160 : 220;
-                    if (soulInfo.cooldown == 0) {
-                        soulInfo.cooldown = soulInfo.maxCooldown;
+                    soulInfo.setMaxCooldown(SoulUtils.isEquipped(attacker, EarthPower.class) ? 160 : 220);
+                    if (soulInfo.isReady()) {
+                        soulInfo.setCooldown(soulInfo.getMaxCooldown());
                     }
                     ResourceLocation resourceLocation = SoulsRegister.MithrilSoul.getId();
                     AttributeUtils.ConditionAttributeModifier(
@@ -43,7 +43,7 @@ public class MithrilSoul extends SoulItem {
                             resourceLocation,
                             0.5,
                             AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
-                            soulInfo.cooldown >= 100 && soulInfo.cooldown <= soulInfo.maxCooldown
+                            soulInfo.getCooldown() >= 100 && soulInfo.getCooldown() <= soulInfo.getMaxCooldown()
                     );
                 }
             }

@@ -33,7 +33,7 @@ public class CrystalAssassinSoul extends SoulItem {
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
                 if (!attacker.equals(target) && SoulUtils.isEquipped(attacker, CrystalAssassinSoul.class)) {
                     SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(attacker.getScoreboardName());
-                    if (!soulInfo.enabled) {
+                    if (!soulInfo.isEnabled()) {
                         event.setAmount(event.getAmount() * 2.2f);
                     }
                 }
@@ -41,8 +41,8 @@ public class CrystalAssassinSoul extends SoulItem {
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
                 if (!attacker.equals(target) && SoulUtils.isEquipped(attacker, CrystalAssassinSoul.class)) {
                     SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(attacker.getScoreboardName());
-                    if (!soulInfo.enabled) {
-                        soulInfo.enabled = true;
+                    if (!soulInfo.isEnabled()) {
+                        soulInfo.setEnabled(true);
                         int duration = SoulUtils.isEquipped(attacker, DeathPower.class) ? 1 : 0;
                         int amplifier = SoulUtils.isEquipped(attacker, DeathPower.class) ? 7 : 3;
                         target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, duration, amplifier));

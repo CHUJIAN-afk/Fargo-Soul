@@ -55,7 +55,7 @@ public class FrostSoul extends SoulItem {
                 ItemRenderer itemRenderer = minecraft.getItemRenderer();
                 float ageInTicks = SoulUtils.getAgeInTicks(attacker, event.getPartialTick(), 3);
                 SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(FrostSoul.class);
-                int stacks = soulInfo.stacks;
+                int stacks = soulInfo.getStacks();
                 if (stacks > 0) {
                     double size = attacker.getBoundingBox().getSize();
                     float scale = (float) (size);
@@ -97,13 +97,13 @@ public class FrostSoul extends SoulItem {
                     Level level = attacker.level();
                     BlockPos onPos = attacker.getOnPos();
                     boolean cold = level.getBiome(onPos).value().coldEnoughToSnow(onPos);
-                    soulInfo.maxCooldown = cold ? 8 : 20;
-                    soulInfo.maxStacks = SoulUtils.isEquipped(attacker, NaturePower.class) ? 20 : 10;
-                    if (soulInfo.cooldown == 0) {
-                        soulInfo.cooldown = soulInfo.maxCooldown;
+                    soulInfo.setMaxCooldown(cold ? 8 : 20);
+                    soulInfo.setMaxStacks(SoulUtils.isEquipped(attacker, NaturePower.class) ? 20 : 10);
+                    if (soulInfo.isReady()) {
+                        soulInfo.setCooldown(soulInfo.getMaxCooldown());
                         soulInfo.addStacks();
                     }
-                    if (attacker.tickCount % (cold ? 2 : 5) == 0 && soulInfo.stacks > 0) {
+                    if (attacker.tickCount % (cold ? 2 : 5) == 0 && soulInfo.getStacks() > 0) {
                         if (SoulUtils.getSoulTarget(attacker, 10) instanceof LivingEntity target) {
                             soulInfo.shrinkStacks();
                             Snowball snowball = new Snowball(EntityType.SNOWBALL, level);

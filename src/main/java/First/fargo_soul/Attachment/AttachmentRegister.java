@@ -1,5 +1,6 @@
 package First.fargo_soul.Attachment;
 
+import First.fargo_soul.Attachment.Attachment.AbilityData;
 import First.fargo_soul.Attachment.Attachment.DamageData;
 import First.fargo_soul.Attachment.Attachment.SoulAbilityData;
 import First.fargo_soul.Attachment.Attachment.SoulData;
@@ -17,12 +18,14 @@ public class AttachmentRegister {
 	public static final Supplier<AttachmentType<SoulData>> SoulData;
 	public static final Supplier<AttachmentType<DamageData>> DamageData;
 	public static final Supplier<AttachmentType<SoulAbilityData>> SoulAbilityData;
+	public static final Supplier<AttachmentType<AbilityData>> AbilityData;
 
 	static {
 		Attachments = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, Fargo_soul.MODID);
 		SoulData = Attachments.register("soul_data", () -> AttachmentType.builder(SoulData::new).build());
 		DamageData = Attachments.register("damage_data", () -> AttachmentType.builder(DamageData::new).build());
 		SoulAbilityData = Attachments.register("soul_ability_data", () -> AttachmentType.serializable(SoulAbilityData::new).build());
+		AbilityData = Attachments.register("ability_data", () -> AttachmentType.serializable(AbilityData::new).build());
 	}
 
 	public static void register(IEventBus eventbus) {

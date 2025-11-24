@@ -20,6 +20,7 @@ public class KeyBinding {
     public static final KeyMapping VortexSoulKey;
     public static final KeyMapping ScoutingKey;
     public static final KeyMapping ForbiddenKey;
+    public static final KeyMapping SoulListKey;
 
     static {
         GoldSoulKey = KeyRegister("金身");
@@ -27,6 +28,7 @@ public class KeyBinding {
         VortexSoulKey = KeyRegister("传送");
         ScoutingKey = KeyRegister("侦查");
         ForbiddenKey = KeyRegister("风暴");
+        SoulListKey = KeyRegister("打开能力清单");
     }
 
     private static KeyMapping KeyRegister(String name) {
@@ -49,6 +51,7 @@ public class KeyBinding {
             event.register(VortexSoulKey);
             event.register(ScoutingKey);
             event.register(ForbiddenKey);
+            event.register(SoulListKey);
         }
     }
 

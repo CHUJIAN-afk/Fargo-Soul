@@ -37,17 +37,17 @@ public class RedRidingSoul extends SoulItem {
                         attacker,
                         Attributes.MOVEMENT_SPEED,
                         SoulsRegister.RedRidingSoul.getId(),
-                        soulInfo.stacks * 0.01f,
+                        soulInfo.getStacks() * 0.01f,
                         AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
-                        SoulUtils.isEquipped(attacker, RedRidingSoul.class) && soulInfo.stacks > 0
+                        SoulUtils.isEquipped(attacker, RedRidingSoul.class) && soulInfo.getStacks() > 0
                 );
                 AttributeUtils.ConditionAttributeModifier(
                         attacker,
                         AttributeRegister.ArmorPierce,
                         SoulsRegister.RedRidingSoul.getId(),
-                        soulInfo.stacks * 0.01f,
+                        soulInfo.getStacks() * 0.01f,
                         AttributeModifier.Operation.ADD_VALUE,
-                        SoulUtils.isEquipped(attacker, RedRidingSoul.class) && soulInfo.stacks > 0
+                        SoulUtils.isEquipped(attacker, RedRidingSoul.class) && soulInfo.getStacks() > 0
                 );
             }
         }
@@ -57,7 +57,7 @@ public class RedRidingSoul extends SoulItem {
             if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
                 if (!attacker.equals(target) && SoulUtils.isEquipped(attacker, RedRidingSoul.class)) {
                     SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(RedRidingSoul.class);
-                    soulInfo.maxStacks = SoulUtils.isEquipped(attacker, WillPower.class) ? 15 : 10;
+                    soulInfo.setMaxStacks(SoulUtils.isEquipped(attacker, WillPower.class) ? 15 : 10);
                     soulInfo.addStacks();
                     if (target.getArmorValue() > 0) {
                         event.setAmount(event.getAmount() * 1.2f);

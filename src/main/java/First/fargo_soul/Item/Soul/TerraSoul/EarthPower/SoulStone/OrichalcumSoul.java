@@ -24,7 +24,7 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
 
-public class OrichalcumSoul extends SoulItem {
+public class    OrichalcumSoul extends SoulItem {
 
     public OrichalcumSoul(Properties properties) {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PINK));
@@ -49,9 +49,9 @@ public class OrichalcumSoul extends SoulItem {
                 if (!attacker.equals(target) && SoulUtils.isEquipped(attacker, OrichalcumSoul.class) && target.getRandom().nextDouble() < chance) {
                     Level level = attacker.level();
                     SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(OrichalcumSoul.class);
-                    soulInfo.maxCooldown = 2;
-                    if (soulInfo.cooldown == 0) {
-                        soulInfo.cooldown = soulInfo.maxCooldown;
+                    soulInfo.setMaxCooldown(2);
+                    if (soulInfo.isReady()) {
+                        soulInfo.setCooldown(soulInfo.getMaxCooldown());
                         float amount = 1 + (event.getAmount() * 0.05f);
                         int amplifier = SoulUtils.isEquipped(attacker, EarthPower.class) ? 1 : 0;
                         SoulUtils.attack(attacker, target, DamageTypes.MAGIC, amount);
