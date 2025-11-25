@@ -98,7 +98,6 @@ public class SoulCoreItem extends Item {
 			}
 		}
 
-		@OnlyIn(Dist.CLIENT)
 		private static final Map<Integer, List<Component>> Tooltips = new HashMap<>();
 
 		@OnlyIn(Dist.CLIENT)
