@@ -18,7 +18,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.InputEvent;
@@ -72,6 +71,9 @@ public class ConfigScreen extends Screen {
                                 if (button instanceof ConfigAbilityButton configButton) {
                                     configButton.setActive(!configButton.isActive());
                                     PacketDistributor.sendToServer(new Packet(item.getClass().getName(), configButton.isActive()));
+                                    if (Minecraft.getInstance().player instanceof LocalPlayer localPlayer) {
+                                        localPlayer.getData(AttachmentRegister.AbilityData).getAbility().put(item.getClass().getName(), configButton.isActive());
+                                    }
                                 }
                             }
                     ));
@@ -90,29 +92,28 @@ public class ConfigScreen extends Screen {
         int maxVisibleButtons = visibleHeight / (BUTTON_HEIGHT + BUTTON_MARGIN);
         int maxScroll = Math.max(0, buttonList.size() - maxVisibleButtons);
         this.scrollOffset = Math.min(this.scrollOffset, maxScroll);
-
-        Map<String, Boolean> ability1 = Minecraft.getInstance().player.getData(AttachmentRegister.AbilityData).getAbility();
-        for (int i = scrollOffset; i < Math.min(buttonList.size(), scrollOffset + maxVisibleButtons); i++) {
-            ConfigAbilityButton originalButton = buttonList.get(i);
-            int yPos = 30 + (i - scrollOffset) * (BUTTON_HEIGHT + BUTTON_MARGIN);
-            boolean active = originalButton.isActive();
-            if (Minecraft.getInstance().player != null) {
-                active = ability1.getOrDefault(originalButton.getItemStack().getItem().getClass().getName(), false);
+        if (Minecraft.getInstance().player instanceof LocalPlayer localPlayer) {
+            Map<String, Boolean> ability1 = localPlayer.getData(AttachmentRegister.AbilityData).getAbility();
+            for (int i = scrollOffset; i < Math.min(buttonList.size(), scrollOffset + maxVisibleButtons); i++) {
+                ConfigAbilityButton originalButton = buttonList.get(i);
+                int yPos = 30 + (i - scrollOffset) * (BUTTON_HEIGHT + BUTTON_MARGIN);
+                boolean active = originalButton.isActive();
+                if (Minecraft.getInstance().player != null) {
+                    active = ability1.getOrDefault(originalButton.getItemStack().getItem().getClass().getName(), false);
+                }
+                ConfigAbilityButton button = new ConfigAbilityButton(
+                        this.width / 2 - 75,
+                        yPos,
+                        150,
+                        20,
+                        originalButton.getItemStack(),
+                        originalButton.getMessage(),
+                        originalButton.getComponent(),
+                        active,
+                        originalButton.getOnPress()
+                );
+                this.addRenderableWidget(button);
             }
-            // 只修改按钮的位置，保持其他属性不变
-            ConfigAbilityButton button = new ConfigAbilityButton(
-                    this.width / 2 - 75, // 调整位置给滚动条留出空间
-                    yPos, // 只变化y位置
-                    150, // 固定宽度
-                    20, // 固定高度
-                    originalButton.getItemStack(),
-                    originalButton.getMessage(),
-                    originalButton.getComponent(),
-                    active,
-                    originalButton.getOnPress()
-            );
-
-            this.addRenderableWidget(button);
         }
     }
 
@@ -189,15 +190,10 @@ public class ConfigScreen extends Screen {
 
     @Override
     public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        // 渲染背景
-        this.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
-
         // 渲染所有组件（包括按钮）
         super.render(guiGraphics, mouseX, mouseY, partialTick);
-
         // 绘制标题
         guiGraphics.drawString(this.font, this.title, this.width / 2 - this.font.width(this.title) / 2, 10, 0xFFFFFF);
-
         // 渲染滚动条
         renderScrollbar(guiGraphics);
     }

@@ -16,6 +16,7 @@ import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
@@ -24,7 +25,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-@EventBusSubscriber(modid = Fargo_soul.MODID)
 public class AbilityData implements INBTSerializable<CompoundTag> {
 
     private final Map<String, Boolean> ability = new HashMap<>();
@@ -61,14 +61,28 @@ public class AbilityData implements INBTSerializable<CompoundTag> {
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void Tick(EntityTickEvent.Post event) {
-        if (event.getEntity() instanceof Player player && !player.level().isClientSide()) {
-            if (player.tickCount % 10 == 0) {
-                AbilityData abilityData = player.getData(AttachmentRegister.AbilityData);
-                PacketDistributor.sendToAllPlayers(new Packet(player.getId(), serializeNBT(abilityData.getAbility())));
+    @EventBusSubscriber(modid = Fargo_soul.MODID)
+    public static class Event {
+
+        @SubscribeEvent(priority = EventPriority.LOWEST)
+        public static void Death(PlayerEvent.Clone event) {
+            if (event.isWasDeath()) {
+                Map<String, Boolean> ability1 = event.getOriginal().getData(AttachmentRegister.AbilityData).getAbility();
+                Map<String, Boolean> ability2 = event.getEntity().getData(AttachmentRegister.AbilityData).getAbility();
+                ability2.putAll(ability1);
             }
         }
+
+        @SubscribeEvent(priority = EventPriority.LOWEST)
+        public static void Tick(EntityTickEvent.Post event) {
+            if (event.getEntity() instanceof Player player && !player.level().isClientSide()) {
+                if (player.tickCount % 10 == 0) {
+                    AbilityData abilityData = player.getData(AttachmentRegister.AbilityData);
+                    PacketDistributor.sendToAllPlayers(new Packet(player.getId(), serializeNBT(abilityData.getAbility())));
+                }
+            }
+        }
+
     }
 
     public record Packet(int id, CompoundTag tag) implements CustomPacketPayload {
