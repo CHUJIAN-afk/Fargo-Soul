@@ -1,0 +1,53 @@
+{
+  "type": "fargo_soul:integration",
+  "ingredients": [
+    {
+      "count": 1,
+      "id": "fargo_soul:soul"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:nether_star"
+    },
+    {
+      "count": 1,
+      "id": "minecraft:bee_spawn_egg"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:honey_block"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:honey_bottle"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:honeycomb"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:flowering_azalea"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:pink_petals"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:feather"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:angler_pottery_sherd"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:yellow_candle"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:bee_soul"
+  }
+}

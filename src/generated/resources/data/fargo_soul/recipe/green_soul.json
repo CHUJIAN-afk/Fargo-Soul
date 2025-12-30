@@ -1,0 +1,53 @@
+{
+  "type": "fargo_soul:integration",
+  "ingredients": [
+    {
+      "count": 1,
+      "id": "fargo_soul:soul"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:nether_star"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:emerald_block"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:jungle_log"
+    },
+    {
+      "count": 256,
+      "id": "minecraft:amethyst_cluster"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:glow_berries"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:flowering_azalea_leaves"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:wild_armor_trim_smithing_template"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:sheaf_pottery_sherd"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:lime_candle"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:spore_blossom"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:green_soul"
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "type": "fargo_soul:integration",
+  "ingredients": [
+    {
+      "count": 1,
+      "id": "fargo_soul:soul"
+    },
+    {
+      "count": 1,
+      "id": "fargo_soul:terra_power"
+    },
+    {
+      "count": 1,
+      "id": "fargo_soul:earth_power"
+    },
+    {
+      "count": 1,
+      "id": "fargo_soul:nature_power"
+    },
+    {
+      "count": 1,
+      "id": "fargo_soul:life_power"
+    },
+    {
+      "count": 1,
+      "id": "fargo_soul:spirit_power"
+    },
+    {
+      "count": 1,
+      "id": "fargo_soul:will_power"
+    },
+    {
+      "count": 1,
+      "id": "fargo_soul:forest_power"
+    },
+    {
+      "count": 1,
+      "id": "fargo_soul:death_power"
+    },
+    {
+      "count": 1,
+      "id": "fargo_soul:cosmic_power"
+    },
+    {
+      "count": 8,
+      "id": "minecraft:goat_horn"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:trial_key"
+    },
+    {
+      "count": 32,
+      "id": "minecraft:ominous_trial_key"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:archer_pottery_sherd"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:prize_pottery_sherd"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:explorer_pottery_sherd"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:skull_pottery_sherd"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:heart_pottery_sherd"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:flow_pottery_sherd"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:silence_armor_trim_smithing_template"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:ward_armor_trim_smithing_template"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:eye_armor_trim_smithing_template"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:spire_armor_trim_smithing_template"
+    },
+    {
+      "count": 32,
+      "id": "minecraft:netherite_upgrade_smithing_template"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:nether_star"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:netherite_block"
+    },
+    {
+      "count": 32,
+      "id": "minecraft:beacon"
+    },
+    {
+      "count": 32,
+      "id": "minecraft:conduit"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:echo_shard"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:enchanted_golden_apple"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:totem_of_undying"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:recovery_compass"
+    },
+    {
+      "count": 8,
+      "id": "minecraft:music_disc_5"
+    },
+    {
+      "count": 8,
+      "id": "minecraft:music_disc_pigstep"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:terra_soul"
+  }
+}

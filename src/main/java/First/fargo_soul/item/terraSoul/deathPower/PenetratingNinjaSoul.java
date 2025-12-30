@@ -1,0 +1,104 @@
+package First.fargo_soul.item.terraSoul.deathPower;
+
+import First.fargo_soul.FargoSoul;
+import First.fargo_soul.attachment.SoulAbilityData;
+import First.fargo_soul.item.base.SoulItem;
+import First.fargo_soul.item.terraSoul.DeathPower;
+import First.fargo_soul.register.AttachmentRegister;
+import First.fargo_soul.register.ItemRegister;
+import First.fargo_soul.utils.CurioUtils;
+import First.fargo_soul.utils.SoulUtils;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+
+public class PenetratingNinjaSoul extends SoulItem {
+
+    public PenetratingNinjaSoul(Properties properties) {
+        super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.YELLOW));
+    }
+
+    @EventBusSubscriber(modid = FargoSoul.MODID)
+    public static class Event {
+
+        @SubscribeEvent
+        public static void Tick(EntityTickEvent.Post event) {
+            if (event.getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
+                if (CurioUtils.isEquipped(attacker, PenetratingNinjaSoul.class)) {
+                    SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(PenetratingNinjaSoul.class);
+                    soulInfo.setMaxCooldown(400);
+                    if (soulInfo.getDuration() > 0) {
+                        List<LivingEntity> livingEntityList = attacker.level().getEntitiesOfClass(LivingEntity.class, attacker.getBoundingBox());
+                        for (LivingEntity target : livingEntityList) {
+                            float amount = attacker.getMaxHealth() * 0.1f;
+                            int strength = 3;
+                            if (CurioUtils.isEquipped(attacker, DeathPower.class)) {
+                                amount += target.getMaxHealth() * 0.05f;
+                                strength++;
+                            }
+                            SoulUtils.attack(attacker, target, DamageTypes.WITHER, amount);
+                            target.knockback(strength, attacker.getX(), attacker.getZ());
+                        }
+                    }
+                }
+            }
+        }
+
+        @SubscribeEvent
+        public static void Damage(LivingIncomingDamageEvent event) {
+            if (event.getSource().getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
+                if ( CurioUtils.isEquipped(attacker, PenetratingNinjaSoul.class)){
+                    SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(PenetratingNinjaSoul.class);
+                    if (soulInfo.getDuration() > 0) {
+                        event.setCanceled(true);
+                    }
+                }
+            }
+        }
+
+    }
+
+    public record Packet(boolean isEquipped) implements CustomPacketPayload {
+
+        public static final Type<Packet> TYPE = new Type<>(ItemRegister.PenetratingNinjaSoulItem.getId());
+        public static final StreamCodec<ByteBuf, Packet> STREAM_CODEC = StreamCodec.composite(
+                ByteBufCodecs.BOOL,
+                Packet::isEquipped,
+                Packet::new
+        );
+
+        @Override
+        public @NotNull Type<? extends CustomPacketPayload> type() {
+            return TYPE;
+        }
+
+        public void handle(IPayloadContext context) {
+            context.enqueueWork(() -> {
+                if (isEquipped) {
+                    Player player = context.player();
+                    SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(PenetratingNinjaSoul.class);
+                    if (soulInfo.getCooldown() == 0) {
+                        soulInfo.setCooldown(soulInfo.getMaxCooldown());
+                        soulInfo.setDuration(20);
+                    }
+                }
+            });
+        }
+
+    }
+
+}

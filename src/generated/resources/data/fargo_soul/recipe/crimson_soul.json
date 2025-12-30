@@ -1,0 +1,53 @@
+{
+  "type": "fargo_soul:integration",
+  "ingredients": [
+    {
+      "count": 1,
+      "id": "fargo_soul:soul"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:nether_star"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:nether_wart"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:fermented_spider_eye"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:red_candle"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:heart_pottery_sherd"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:heartbreak_pottery_sherd"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:snout_armor_trim_smithing_template"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:redstone_block"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:ghast_tear"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:raw_iron"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:crimson_soul"
+  }
+}

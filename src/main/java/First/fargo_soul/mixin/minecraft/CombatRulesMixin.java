@@ -1,7 +1,7 @@
 package First.fargo_soul.mixin.minecraft;
 
 
-import First.fargo_soul.Attribute.AttributeRegister;
+import First.fargo_soul.register.AttributeRegister;
 import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;

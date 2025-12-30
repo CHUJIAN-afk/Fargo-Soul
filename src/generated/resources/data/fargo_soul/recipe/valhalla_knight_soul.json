@@ -1,0 +1,53 @@
+{
+  "type": "fargo_soul:integration",
+  "ingredients": [
+    {
+      "count": 1,
+      "id": "fargo_soul:soul"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:nether_star"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:saddle"
+    },
+    {
+      "count": 8,
+      "id": "minecraft:golden_horse_armor"
+    },
+    {
+      "count": 4,
+      "id": "minecraft:diamond_horse_armor"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:heart_pottery_sherd"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:shelter_pottery_sherd"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:ward_armor_trim_smithing_template"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:experience_bottle"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:ochre_froglight"
+    },
+    {
+      "count": 4,
+      "id": "minecraft:netherite_upgrade_smithing_template"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:valhalla_knight_soul"
+  }
+}

@@ -1,8 +1,8 @@
 package First.fargo_soul.mixin.minecraft;
 
 
-import First.fargo_soul.Item.Soul.TerraSoul.LifePower.SoulStone.PumpkinSoul;
-import First.fargo_soul.Utils.SoulUtils;
+import First.fargo_soul.item.terraSoul.lifePower.PumpkinSoul;
+import First.fargo_soul.utils.CurioUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -32,7 +32,7 @@ public class StemBlockMixin {
 	)
 	private void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, CallbackInfo ci) {
 		if (state.getBlock().defaultBlockState().is(Blocks.PUMPKIN_STEM)) {
-			List<LivingEntity> livingEntityList = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(5), attacker -> SoulUtils.isEquipped(attacker, PumpkinSoul.class));
+			List<LivingEntity> livingEntityList = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(5), attacker -> CurioUtils.isEquipped(attacker, PumpkinSoul.class));
 			if (!livingEntityList.isEmpty()) {
 				IntegerProperty age = StemBlock.AGE;
 				level.setBlock(pos, state.setValue(age, Math.min(state.getValue(age) + 2, 7)), 2);

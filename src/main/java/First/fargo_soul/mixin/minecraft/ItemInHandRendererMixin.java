@@ -1,11 +1,11 @@
 package First.fargo_soul.mixin.minecraft;
 
 
-import First.fargo_soul.Item.Soul.TerraSoul.TerraPower.SoulStone.TungstenSoul;
-import First.fargo_soul.Item.Soul.TerraSoul.TerraPower.TerraPower;
-import First.fargo_soul.Item.Soul.UniverseSoul.BerserkerSoul.Soul.BerserkerGloves;
-import First.fargo_soul.Item.Soul.UniverseSoul.BerserkerSoul.Soul.FireGloves;
-import First.fargo_soul.Utils.SoulUtils;
+import First.fargo_soul.item.terraSoul.TerraPower;
+import First.fargo_soul.item.terraSoul.terraPower.TungstenSoul;
+import First.fargo_soul.item.universeSoul.BerserkerSoul.Soul.BerserkerGloves;
+import First.fargo_soul.item.universeSoul.BerserkerSoul.Soul.FireGloves;
+import First.fargo_soul.utils.CurioUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -33,14 +33,14 @@ public class ItemInHandRendererMixin {
     private void ItemRender(LivingEntity entity, ItemStack itemStack, ItemDisplayContext displayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int seed, CallbackInfo ci) {
         if (entity instanceof Player player) {
             float scale = 1.0f;
-            if (SoulUtils.isEquipped(player, TungstenSoul.class)) {
-                scale += SoulUtils.isEquipped(player, TerraPower.class) ? 1.5f : 1.0f;
+            if (CurioUtils.isEquipped(player, TungstenSoul.class)) {
+                scale += CurioUtils.isEquipped(player, TerraPower.class) ? 1.5f : 1.0f;
             }
 
-            if (SoulUtils.isEquipped(player, BerserkerGloves.class) && itemStack.getItem() instanceof TieredItem) {
+            if (CurioUtils.isEquipped(player, BerserkerGloves.class) && itemStack.getItem() instanceof TieredItem) {
                 scale += 1;
             }
-            if (SoulUtils.isEquipped(player, FireGloves.class) && itemStack.getItem() instanceof TieredItem) {
+            if (CurioUtils.isEquipped(player, FireGloves.class) && itemStack.getItem() instanceof TieredItem) {
                 scale += 1;
             }
 

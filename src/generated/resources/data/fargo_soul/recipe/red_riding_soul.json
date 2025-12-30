@@ -1,0 +1,49 @@
+{
+  "type": "fargo_soul:integration",
+  "ingredients": [
+    {
+      "count": 1,
+      "id": "fargo_soul:soul"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:nether_star"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:red_wool"
+    },
+    {
+      "count": 32,
+      "id": "minecraft:crossbow"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:red_candle"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:howl_pottery_sherd"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:danger_pottery_sherd"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:wild_armor_trim_smithing_template"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:leather"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:feather"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:red_riding_soul"
+  }
+}

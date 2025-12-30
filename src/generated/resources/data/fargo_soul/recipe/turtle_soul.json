@@ -1,0 +1,53 @@
+{
+  "type": "fargo_soul:integration",
+  "ingredients": [
+    {
+      "count": 1,
+      "id": "fargo_soul:soul"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:nether_star"
+    },
+    {
+      "count": 8,
+      "id": "minecraft:turtle_helmet"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:turtle_scute"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:cactus"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:shield"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:prismarine_shard"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:ward_armor_trim_smithing_template"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:danger_pottery_sherd"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:lime_candle"
+    },
+    {
+      "count": 4,
+      "id": "minecraft:heart_of_the_sea"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:turtle_soul"
+  }
+}

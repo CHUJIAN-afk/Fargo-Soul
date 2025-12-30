@@ -1,0 +1,53 @@
+{
+  "type": "fargo_soul:integration",
+  "ingredients": [
+    {
+      "count": 1,
+      "id": "fargo_soul:soul"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:nether_star"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:jungle_log"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:sand"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:magma_block"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:fire_charge"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:coast_armor_trim_smithing_template"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:tide_armor_trim_smithing_template"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:burn_pottery_sherd"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:shelter_pottery_sherd"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:orange_candle"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:palm_wood_soul"
+  }
+}

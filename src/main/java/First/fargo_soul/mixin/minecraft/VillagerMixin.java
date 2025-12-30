@@ -1,9 +1,9 @@
 package First.fargo_soul.mixin.minecraft;
 
 
-import First.fargo_soul.Item.Soul.TerraSoul.ForestPower.ForestPower;
-import First.fargo_soul.Item.Soul.TerraSoul.ForestPower.SoulStone.WoodSoul;
-import First.fargo_soul.Utils.SoulUtils;
+import First.fargo_soul.item.terraSoul.ForestPower;
+import First.fargo_soul.item.terraSoul.forestPower.WoodSoul;
+import First.fargo_soul.utils.CurioUtils;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
@@ -21,9 +21,9 @@ public abstract class VillagerMixin {
             )
     )
     private int WoodSoul(int original, Player player) {
-        if (SoulUtils.isEquipped(player, WoodSoul.class)) {
+        if (CurioUtils.isEquipped(player, WoodSoul.class)) {
             int max = Math.max((int) (original * 1.5), 5);
-            max *= (SoulUtils.isEquipped(player, ForestPower.class)) ? 2 : 1;
+            max *= (CurioUtils.isEquipped(player, ForestPower.class)) ? 2 : 1;
             return max;
         }
         return original;

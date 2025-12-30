@@ -1,0 +1,53 @@
+{
+  "type": "fargo_soul:integration",
+  "ingredients": [
+    {
+      "count": 1,
+      "id": "fargo_soul:soul"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:nether_star"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:blue_ice"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:snowball"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:packed_ice"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:powder_snow_bucket"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:guster_pottery_sherd"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:wayfinder_armor_trim_smithing_template"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:light_blue_candle"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:miner_pottery_sherd"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:white_candle"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:frost_soul"
+  }
+}

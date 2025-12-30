@@ -1,0 +1,101 @@
+{
+  "type": "fargo_soul:integration",
+  "ingredients": [
+    {
+      "count": 1,
+      "id": "fargo_soul:soul"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:nether_star"
+    },
+    {
+      "count": 32,
+      "id": "minecraft:enchanting_table"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:bookshelf"
+    },
+    {
+      "count": 256,
+      "id": "minecraft:amethyst_cluster"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:echo_shard"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:lodestone"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:glowstone"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:pearlescent_froglight"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:ochre_froglight"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:verdant_froglight"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:brewer_pottery_sherd"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:ward_armor_trim_smithing_template"
+    },
+    {
+      "count": 32,
+      "id": "minecraft:respawn_anchor"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:lapis_block"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:dragon_breath"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:totem_of_undying"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:experience_bottle"
+    },
+    {
+      "count": 8,
+      "id": "minecraft:conduit"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:candle"
+    },
+    {
+      "count": 8,
+      "id": "minecraft:goat_horn"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:chiseled_polished_blackstone"
+    },
+    {
+      "count": 4,
+      "id": "minecraft:beacon"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:wizard_soul"
+  }
+}

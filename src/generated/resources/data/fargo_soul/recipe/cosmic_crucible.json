@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "fargo_soul:soul"
+    },
+    "B": {
+      "item": "minecraft:dragon_egg"
+    }
+  },
+  "pattern": [
+    "AAA",
+    "ABA",
+    "AAA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:cosmic_crucible"
+  }
+}

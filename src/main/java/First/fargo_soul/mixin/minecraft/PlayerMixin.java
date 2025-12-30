@@ -1,10 +1,11 @@
 package First.fargo_soul.mixin.minecraft;
 
 
-import First.fargo_soul.Item.Soul.TerraSoul.LifePower.SoulStone.BeeSoul;
-import First.fargo_soul.Item.Soul.TerraSoul.SpiritPower.SoulStone.AncientHolySoul;
-import First.fargo_soul.Item.Soul.TerraSoul.SpiritPower.SpiritPower;
-import First.fargo_soul.Utils.SoulUtils;
+import First.fargo_soul.item.terraSoul.SpiritPower;
+import First.fargo_soul.item.terraSoul.lifePower.BeeSoul;
+import First.fargo_soul.item.terraSoul.spiritPower.AncientHolySoul;
+import First.fargo_soul.utils.CurioUtils;
+import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.player.Player;
@@ -27,7 +28,7 @@ public class PlayerMixin {
     )
     public void eat(Level level, ItemStack food, FoodProperties foodProperties, CallbackInfoReturnable<ItemStack> cir) {
         Player player = (Player) (Object) this;
-        if (food.is(Items.HONEY_BOTTLE) && SoulUtils.isEquipped(player, BeeSoul.class)) {
+        if (food.is(Items.HONEY_BOTTLE) && CurioUtils.isEquipped(player, BeeSoul.class)) {
             player.heal(player.getMaxHealth() * 0.05f);
             Bee bee = new Bee(EntityType.BEE, level);
             bee.setPos(new Vec3(player.getRandomX(2), player.getRandomY() + 2, player.getRandomZ(2)));
@@ -42,8 +43,8 @@ public class PlayerMixin {
     )
     public void getAttackStrengthScale(float adjustTicks, CallbackInfoReturnable<Float> cir) {
         Player player = (Player) (Object) this;
-        if (SoulUtils.isEquipped(player, AncientHolySoul.class)) {
-            float lowStrength = SoulUtils.isEquipped(player, SpiritPower.class) ? 0.5f : 0.35f;
+        if (CurioUtils.isEquipped(player, AncientHolySoul.class)) {
+            float lowStrength = CurioUtils.isEquipped(player, SpiritPower.class) ? 0.5f : 0.35f;
             cir.setReturnValue(Math.max(cir.getReturnValue(), lowStrength));
         }
     }

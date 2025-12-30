@@ -5,10 +5,11 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "fargo_soul.refmap.json",
   "mixins": [
-    "curios.CuriosEntityManagerMixin",
+    "minecraft.AbstractArrowMixin",
     "minecraft.CombatRulesMixin",
     "minecraft.EntityMixin",
     "minecraft.ItemEntityMixin",
+    "minecraft.ExtraCodecsMixin",
     "minecraft.LivingEntityMixin",
     "minecraft.PlayerMixin",
     "minecraft.ProjectileUtilMixin",
@@ -19,8 +20,7 @@
   ],
   "client": [
     "minecraft.EntityRenderDispatcherMixin",
-    "minecraft.ItemInHandRendererMixin",
-    "minecraft.ItemRendererMixin"
+    "minecraft.ItemInHandRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

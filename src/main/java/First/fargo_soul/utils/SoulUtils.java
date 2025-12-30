@@ -1,0 +1,193 @@
+package First.fargo_soul.utils;
+
+import First.fargo_soul.item.base.SoulItem;
+import First.fargo_soul.register.AttachmentRegister;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageSources;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.OwnableEntity;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
+
+import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+
+public class SoulUtils {
+
+	public static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+	public static final Random random = new Random();
+	public static final List<SoulItem> RegisterSoulList = BuiltInRegistries.ITEM.stream()
+			.filter(item -> item instanceof SoulItem)
+			.map(item -> (SoulItem) item)
+			.toList();
+
+	public static void randomShoot(LivingEntity attacker, Projectile projectile, LivingEntity owner) {
+		Level level = attacker.level();
+		double theta = random.nextDouble() * Math.PI * 2;
+		double phi = Math.acos(2 * random.nextDouble() - 1);
+		double r = 0.5 + random.nextDouble() * 0.3;
+		Vec3 offset = new Vec3(r * Math.sin(phi) * Math.cos(theta), r * Math.sin(phi) * Math.sin(theta), r * Math.cos(phi));
+		Vec3 spawnPos = attacker.position().add(offset);
+		Vec3 velocity = offset.normalize().scale(0.8);
+		projectile.setOwner(owner);
+		projectile.moveTo(spawnPos.x, spawnPos.y, spawnPos.z, attacker.getYRot(), attacker.getXRot());
+		projectile.shoot(velocity.x, velocity.y, velocity.z, 0.6f, 6.0f);
+		addEntity(level, projectile);
+	}
+
+	public static List<Item> getArmorList(LivingEntity entity) {
+		List<Item> list = new ArrayList<>();
+		entity.getArmorSlots().forEach(itemStack -> list.add(itemStack.getItem()));
+		return list;
+	}
+
+	public static void addEntity(Level level, Entity entity) {
+		MinecraftServer server = level.getServer();
+		if (server != null) {
+			server.execute(() -> level.addFreshEntity(entity));
+		}
+	}
+
+	public static void CooldownEndSound(LivingEntity attacker, SoundEvent event, int second) {
+		Level level = attacker.level();
+		executorService.schedule(() -> playSound(
+				level,
+				attacker.position(),
+				event,
+				attacker.getSoundSource()
+		), second, TimeUnit.SECONDS);
+	}
+
+	public static void setAbilityInvulnerable(Projectile projectile) {
+		projectile.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("noInvulnerable").setEnabled(true);
+	}
+
+	public static void shootTargetFromAttaker(Projectile projectile, LivingEntity attacker, LivingEntity target) {
+		shootTargetFromAttaker(projectile, attacker, target, 1, 1);
+	}
+
+	public static double getRandomWithError(double baseValue, double errorRange) {
+		return baseValue + (random.nextFloat(-1, 1) * errorRange);
+	}
+
+	public static void shootTargetFromAttaker(Projectile projectile, LivingEntity attacker, LivingEntity target, double distance, double speed) {
+		double size = attacker.getBoundingBox().getSize() * distance;
+		double x = getRandomWithError(attacker.getX(), size);
+		double y = getRandomWithError(attacker.getY(), size);
+		double z = getRandomWithError(attacker.getZ(), size);
+		Vec3 pos = new Vec3(x, y, z);
+		projectile.setPos(pos);
+		Vec3 toTarget = target.getHitbox().getCenter().subtract(pos).normalize().scale(speed);
+		projectile.setOwner(attacker);
+		projectile.setDeltaMovement(toTarget);
+		addEntity(attacker.level(), projectile);
+	}
+
+	public static void playSound(Level level, Vec3 center, SoundEvent soundEvent, SoundSource soundSource) {
+		level.playSound(
+				null,
+				center.x(),
+				center.y(),
+				center.z(),
+				soundEvent,
+				soundSource,
+				1.0f,
+				random.nextFloat(0.4f, 0.8f)
+		);
+	}
+
+	public static BlockHitResult getTargetedBlock(Player player, double maxDistance) {
+		Vec3 eyePos = player.getEyePosition();
+		Vec3 lookVec = player.getLookAngle();
+		Vec3 endPos = eyePos.add(lookVec.scale(maxDistance));
+		ClipContext clipContext = new ClipContext(eyePos, endPos, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player);
+		return player.level().clip(clipContext);
+	}
+
+	public static LivingEntity getSoulTarget(LivingEntity attacker, float distance) {
+		LivingEntity target = null;
+		if (attacker instanceof Player player) {
+			List<LivingEntity> livingEntityList = player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(distance), livingEntity -> {
+				boolean a = livingEntity instanceof OwnableEntity ownableEntity && player.equals(ownableEntity.getOwner());
+				boolean b = livingEntity instanceof Enemy && player.distanceTo(livingEntity) < distance;
+				return !a && b;
+			});
+			if (!livingEntityList.isEmpty()) {
+				target = livingEntityList.get(player.getRandom().nextInt(livingEntityList.size()));
+			}
+		} else if (attacker instanceof Mob mob && mob.getTarget() instanceof LivingEntity target1) {
+			if (mob.distanceTo(target1) < distance) {
+				target = target1;
+			}
+		}
+		return target;
+	}
+
+	public static void applyOrUpdateEffect(LivingEntity entity, Holder<MobEffect> effect, int duration, int maxLevel) {
+		if (entity.getEffect(effect) instanceof MobEffectInstance existingEffect) {
+			int newAmplifier = Math.min(existingEffect.getAmplifier() + 1, maxLevel);
+			entity.removeEffect(effect);
+			entity.addEffect(new MobEffectInstance(effect, duration, newAmplifier));
+		} else {
+			entity.addEffect(new MobEffectInstance(effect, duration));
+		}
+	}
+
+	public static <T extends SoulItem> boolean canAttack(Class<T> type, LivingEntity by, LivingEntity target) {
+		long gameTime = target.level().getGameTime();
+		Map<Long, List<String>> damageData = target.getData(AttachmentRegister.SoulDamageData).getDamageData();
+		String key = type.getName() + by.getScoreboardName() + target.getScoreboardName();
+		List<String> stringList = damageData.computeIfAbsent(gameTime, k -> new ArrayList<>());
+        return !stringList.contains(key);
+    }
+
+	public static <T extends SoulItem> void attack(Class<T> type, LivingEntity by, LivingEntity attacker, LivingEntity target, ResourceKey<DamageType> damageTypeResourceKey, float amount) {
+		long gameTime = target.level().getGameTime();
+		Map<Long, List<String>> damageData = target.getData(AttachmentRegister.SoulDamageData).getDamageData();
+		String key = type.getName() + by.getScoreboardName() + target.getScoreboardName();
+		List<String> stringList = damageData.computeIfAbsent(gameTime, k -> new ArrayList<>());
+		if (!stringList.contains(key)) {
+			stringList.add(key);
+			attack(attacker, target, damageTypeResourceKey, amount);
+		} else {
+			stringList.add(key);
+		}
+	}
+
+	public static void attack(LivingEntity attacker, LivingEntity target, ResourceKey<DamageType> damageTypeResourceKey, float amount) {
+		if (target != null) {
+			target.invulnerableTime = 0;
+			DamageSources damageSources = target.level().damageSources();
+			DamageSource damageSource = damageSources.source(damageTypeResourceKey, attacker != null ? attacker : target);
+			target.hurt(damageSource, amount);
+		}
+	}
+
+	public <T> void addItemToTag(Function<ResourceLocation, Optional<? extends T>> idToValue, Map<ResourceLocation, Collection<T>> tags, ResourceLocation itemKey, ResourceLocation tagKey) {
+		if (idToValue.apply(itemKey).isPresent()) {
+			tags.computeIfAbsent(tagKey, k -> new ArrayList<>()).add(idToValue.apply(itemKey).get());
+		}
+	}
+
+}

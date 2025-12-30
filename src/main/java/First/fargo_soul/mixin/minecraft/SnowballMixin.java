@@ -1,7 +1,7 @@
 package First.fargo_soul.mixin.minecraft;
 
-import First.fargo_soul.Item.Soul.TerraSoul.NaturePower.SoulStone.FrostSoul;
-import First.fargo_soul.Utils.SoulUtils;
+import First.fargo_soul.item.terraSoul.naturePower.FrostSoul;
+import First.fargo_soul.utils.CurioUtils;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Snowball;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,7 +21,7 @@ public class SnowballMixin {
 	)
 	private float hurt(float amount) {
 		Snowball snowball = (Snowball) (Object) this;
-		if (snowball.getOwner() instanceof LivingEntity attacker && SoulUtils.isEquipped(attacker, FrostSoul.class)) {
+		if (snowball.getOwner() instanceof LivingEntity attacker && CurioUtils.isEquipped(attacker, FrostSoul.class)) {
 			amount += 2;
 			amount *= 3;
 		}

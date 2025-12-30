@@ -1,0 +1,53 @@
+{
+  "type": "fargo_soul:integration",
+  "ingredients": [
+    {
+      "count": 1,
+      "id": "fargo_soul:soul"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:nether_star"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:sand"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:gold_ingot"
+    },
+    {
+      "count": 32,
+      "id": "minecraft:guster_pottery_sherd"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:dune_armor_trim_smithing_template"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:arms_up_pottery_sherd"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:breeze_rod"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:lapis_lazuli"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:ochre_froglight"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:magma_block"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:forbidden_soul"
+  }
+}

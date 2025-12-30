@@ -1,0 +1,53 @@
+{
+  "type": "fargo_soul:integration",
+  "ingredients": [
+    {
+      "count": 1,
+      "id": "fargo_soul:soul"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:nether_star"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:dark_oak_log"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:sculk"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:echo_shard"
+    },
+    {
+      "count": 32,
+      "id": "minecraft:wither_rose"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:fermented_spider_eye"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:host_armor_trim_smithing_template"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:black_candle"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:mourner_pottery_sherd"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:crying_obsidian"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:ebony_wood_soul"
+  }
+}

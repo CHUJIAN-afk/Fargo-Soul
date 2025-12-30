@@ -1,0 +1,53 @@
+{
+  "type": "fargo_soul:integration",
+  "ingredients": [
+    {
+      "count": 1,
+      "id": "fargo_soul:soul"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:nether_star"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:acacia_log"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:mangrove_log"
+    },
+    {
+      "count": 32,
+      "id": "minecraft:fishing_rod"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:lead"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:wild_armor_trim_smithing_template"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:angler_pottery_sherd"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:red_candle"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:copper_grate"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:pointed_dripstone"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:rose_wood_soul"
+  }
+}

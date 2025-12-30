@@ -1,0 +1,101 @@
+{
+  "type": "fargo_soul:integration",
+  "ingredients": [
+    {
+      "count": 1,
+      "id": "fargo_soul:soul"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:nether_star"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:ender_pearl"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:chorus_fruit"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:ender_eye"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:lodestone"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:eye_armor_trim_smithing_template"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:spire_armor_trim_smithing_template"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:recovery_compass"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:echo_shard"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:sculk_shrieker"
+    },
+    {
+      "count": 1,
+      "id": "minecraft:music_disc_5"
+    },
+    {
+      "count": 8,
+      "id": "minecraft:goat_horn"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:disc_fragment_5"
+    },
+    {
+      "count": 256,
+      "id": "minecraft:amethyst_cluster"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:phantom_membrane"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:obsidian"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:crying_obsidian"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:dragon_breath"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:end_rod"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:scrape_pottery_sherd"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:gilded_blackstone"
+    },
+    {
+      "count": 4,
+      "id": "minecraft:conduit"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:vortex_soul"
+  }
+}

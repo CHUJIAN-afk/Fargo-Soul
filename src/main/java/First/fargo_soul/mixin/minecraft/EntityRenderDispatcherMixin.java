@@ -1,6 +1,6 @@
 package First.fargo_soul.mixin.minecraft;
 
-import First.fargo_soul.Fargo_soul;
+import First.fargo_soul.FargoSoul;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.world.entity.Entity;
@@ -21,7 +21,7 @@ public class EntityRenderDispatcherMixin {
 	private <T extends Entity> void getRenderer(T entity, CallbackInfoReturnable<EntityRenderer<? super T>> cir) {
 		EntityType<?> type = entity.getType();
 		if (cir.getReturnValue() == null) {
-			Fargo_soul.logger.debug(type.getDescriptionId());
+			FargoSoul.logger.debug(type.getDescriptionId());
 		}
 	}
 

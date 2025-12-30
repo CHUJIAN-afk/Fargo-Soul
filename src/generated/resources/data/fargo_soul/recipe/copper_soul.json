@@ -1,0 +1,53 @@
+{
+  "type": "fargo_soul:integration",
+  "ingredients": [
+    {
+      "count": 1,
+      "id": "fargo_soul:soul"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:nether_star"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:copper_block"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:raw_copper"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:lightning_rod"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:copper_bulb"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:copper_grate"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:flow_pottery_sherd"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:raiser_armor_trim_smithing_template"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:yellow_candle"
+    },
+    {
+      "count": 1,
+      "id": "minecraft:beacon"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:copper_soul"
+  }
+}

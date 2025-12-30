@@ -1,0 +1,53 @@
+{
+  "type": "fargo_soul:integration",
+  "ingredients": [
+    {
+      "count": 1,
+      "id": "fargo_soul:soul"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:nether_star"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:cauldron"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:fermented_spider_eye"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:poisonous_potato"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:danger_pottery_sherd"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:host_armor_trim_smithing_template"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:blackstone_slab"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:cyan_candle"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:raw_iron"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:pointed_dripstone"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:lead_soul"
+  }
+}

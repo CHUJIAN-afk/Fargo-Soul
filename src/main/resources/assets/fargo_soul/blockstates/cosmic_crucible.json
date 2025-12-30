@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "fargo_soul:block/cosmic_crucible",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "fargo_soul:block/cosmic_crucible",
+      "y": 0
+    },
+    "facing=south": {
+      "model": "fargo_soul:block/cosmic_crucible",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "fargo_soul:block/cosmic_crucible",
+      "y": 270
+    }
+  }
+}

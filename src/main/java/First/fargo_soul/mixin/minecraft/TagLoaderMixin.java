@@ -1,6 +1,8 @@
 package First.fargo_soul.mixin.minecraft;
 
-import First.fargo_soul.Event.AddItemTagEvent;
+import First.fargo_soul.event.modEvent.AddItemTagEvent;
+import First.fargo_soul.utils.SoulUtils;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagLoader;
 import net.neoforged.neoforge.common.NeoForge;
@@ -28,6 +30,28 @@ public class TagLoaderMixin<T> {
 	)
 	private void addSimpleTag(Map<ResourceLocation, List<TagLoader.EntryWithSource>> builders, CallbackInfoReturnable<Map<ResourceLocation, Collection<T>>> cir) {
 		Map<ResourceLocation, Collection<T>> tags = cir.getReturnValue();
+		SoulUtils.RegisterSoulList.stream()
+				.map(BuiltInRegistries.ITEM::getKey)
+				.forEach(itemKey -> idToValue.apply(itemKey).ifPresent(value -> tags.computeIfAbsent(ResourceLocation.fromNamespaceAndPath("curios", "soul"), k -> new ArrayList<>()).add(value)));
+
+		AddItemTagEvent event = new AddItemTagEvent();
+		NeoForge.EVENT_BUS.post(event);
+		event.getMap().forEach((tag, list) -> list.forEach(item -> {
+			ResourceLocation resourceLocation = BuiltInRegistries.ITEM.getKey(item);
+			if (idToValue.apply(resourceLocation).isPresent()) {
+				tags.computeIfAbsent(tag, k -> new ArrayList<>()).add(idToValue.apply(resourceLocation).get());
+			}
+		}));
+
+/*
+		SoulUtils.RegisterSoulList.forEach(soulItem -> {
+			ResourceLocation resourceLocation = BuiltInRegistries.ITEM.getKey(soulItem);
+			if (idToValue.apply(resourceLocation).isPresent()) {
+				tags.computeIfAbsent(tag, k -> new ArrayList<>()).add(idToValue.apply(resourceLocation).get());
+			}
+		});
+*/
+/*
 		AddItemTagEvent event = new AddItemTagEvent();
 		NeoForge.EVENT_BUS.post(event);
 		event.getMap().forEach((tag, list) -> list.forEach(resourceLocation -> {
@@ -35,6 +59,7 @@ public class TagLoaderMixin<T> {
 				tags.computeIfAbsent(tag, k -> new ArrayList<>()).add(idToValue.apply(resourceLocation).get());
 			}
 		}));
+		*/
 		cir.setReturnValue(tags);
 	}
 

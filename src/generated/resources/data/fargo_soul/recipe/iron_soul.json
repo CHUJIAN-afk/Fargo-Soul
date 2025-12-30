@@ -1,0 +1,53 @@
+{
+  "type": "fargo_soul:integration",
+  "ingredients": [
+    {
+      "count": 1,
+      "id": "fargo_soul:soul"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:nether_star"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:iron_block"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:raw_iron"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:hopper"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:lodestone"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:miner_pottery_sherd"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:sentry_armor_trim_smithing_template"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:anvil"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:gray_candle"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:bucket"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:iron_soul"
+  }
+}

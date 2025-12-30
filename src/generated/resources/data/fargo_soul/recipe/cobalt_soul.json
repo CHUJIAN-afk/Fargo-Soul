@@ -1,0 +1,53 @@
+{
+  "type": "fargo_soul:integration",
+  "ingredients": [
+    {
+      "count": 1,
+      "id": "fargo_soul:soul"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:nether_star"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:lapis_block"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:blue_candle"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:tnt"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:fire_charge"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:lava_bucket"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:coast_armor_trim_smithing_template"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:oxidized_copper_bulb"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:warped_nylium"
+    },
+    {
+      "count": 256,
+      "id": "minecraft:blue_ice"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:cobalt_soul"
+  }
+}

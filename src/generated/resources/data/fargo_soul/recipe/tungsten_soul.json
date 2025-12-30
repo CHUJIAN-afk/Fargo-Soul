@@ -1,0 +1,53 @@
+{
+  "type": "fargo_soul:integration",
+  "ingredients": [
+    {
+      "count": 1,
+      "id": "fargo_soul:soul"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:nether_star"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:gilded_blackstone"
+    },
+    {
+      "count": 32,
+      "id": "minecraft:blade_pottery_sherd"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:spire_armor_trim_smithing_template"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:end_rod"
+    },
+    {
+      "count": 4,
+      "id": "minecraft:trident"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:white_candle"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:polished_blackstone_bricks"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:dripstone_block"
+    },
+    {
+      "count": 1,
+      "id": "minecraft:mace"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:tungsten_soul"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "type": "fargo_soul:integration",
+  "ingredients": [
+    {
+      "count": 1,
+      "id": "fargo_soul:soul"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:nether_star"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:lightning_rod"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:copper_block"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:prismarine_shard"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:blue_candle"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:flow_pottery_sherd"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:tide_armor_trim_smithing_template"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:echo_shard"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:water_bucket"
+    },
+    {
+      "count": 4,
+      "id": "minecraft:conduit"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:rain_cloud_soul"
+  }
+}

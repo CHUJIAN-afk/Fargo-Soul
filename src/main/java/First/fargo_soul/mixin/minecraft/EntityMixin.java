@@ -1,14 +1,14 @@
 package First.fargo_soul.mixin.minecraft;
 
 
-import First.fargo_soul.Attachment.Attachment.SoulAbilityData;
-import First.fargo_soul.Attachment.AttachmentRegister;
-import First.fargo_soul.Item.Soul.BaseSoul.SoulItem;
-import First.fargo_soul.Item.Soul.TerraSoul.CosmicPower.SoulStone.MeteorSoul;
-import First.fargo_soul.Item.Soul.TerraSoul.DeathPower.SoulStone.PenetratingNinjaSoul;
-import First.fargo_soul.Item.Soul.TerraSoul.WillPower.Soulstone.ValhallaKnightSoul;
-import First.fargo_soul.Item.Soul.TerraSoul.WillPower.WillPower;
-import First.fargo_soul.Utils.SoulUtils;
+import First.fargo_soul.attachment.SoulAbilityData;
+import First.fargo_soul.item.base.SoulItem;
+import First.fargo_soul.item.terraSoul.WillPower;
+import First.fargo_soul.item.terraSoul.cosmicPower.MeteorSoul;
+import First.fargo_soul.item.terraSoul.deathPower.PenetratingNinjaSoul;
+import First.fargo_soul.item.terraSoul.willPower.ValhallaKnightSoul;
+import First.fargo_soul.register.AttachmentRegister;
+import First.fargo_soul.utils.CurioUtils;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -39,7 +39,7 @@ public class EntityMixin {
     private boolean push(Entity instance, double x, double y, double z) {
         Entity entity = (Entity) (Object) this;
         if (entity instanceof LivingEntity attacker) {
-            return !SoulUtils.isEquipped(attacker, MeteorSoul.class);
+            return !CurioUtils.isEquipped(attacker, MeteorSoul.class);
         }
         return true;
     }
@@ -52,7 +52,7 @@ public class EntityMixin {
             cancellable = true
     )
     private void bypassCollision(BlockPos pos, BlockState state, CallbackInfoReturnable<Boolean> cir) {
-        if (((Entity) (Object) this) instanceof Player player && SoulUtils.isEquipped(player, PenetratingNinjaSoul.class)) {
+        if (((Entity) (Object) this) instanceof Player player && CurioUtils.isEquipped(player, PenetratingNinjaSoul.class)) {
             SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(PenetratingNinjaSoul.class);
             if (soulInfo.getDuration() > 0) {
                 cir.setReturnValue(false);
@@ -89,7 +89,7 @@ public class EntityMixin {
             LivingEntity passenger = null;
             if (!passengers.isEmpty()) {
                 for (Entity passenger1 : passengers) {
-                    if (passenger1 instanceof LivingEntity livingEntity && SoulUtils.isEquipped(livingEntity, ValhallaKnightSoul.class) && SoulUtils.isEquipped(livingEntity, WillPower.class)) {
+                    if (passenger1 instanceof LivingEntity livingEntity && CurioUtils.isEquipped(livingEntity, ValhallaKnightSoul.class) && CurioUtils.isEquipped(livingEntity, WillPower.class)) {
                         passenger = livingEntity;
                         break;
                     }

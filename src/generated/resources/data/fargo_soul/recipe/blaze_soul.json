@@ -1,0 +1,101 @@
+{
+  "type": "fargo_soul:integration",
+  "ingredients": [
+    {
+      "count": 1,
+      "id": "fargo_soul:soul"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:nether_star"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:netherite_upgrade_smithing_template"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:blaze_rod"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:blaze_powder"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:fire_charge"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:magma_cream"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:magma_block"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:lava_bucket"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:glowstone"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:shroomlight"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:tnt"
+    },
+    {
+      "count": 48,
+      "id": "minecraft:wither_skeleton_skull"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:netherrack"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:basalt"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:soul_sand"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:soul_soil"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:nether_quartz_ore"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:nether_gold_ore"
+    },
+    {
+      "count": 192,
+      "id": "minecraft:nether_wart"
+    },
+    {
+      "count": 192,
+      "id": "minecraft:red_nether_bricks"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:torch"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:crying_obsidian"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:blaze_soul"
+  }
+}

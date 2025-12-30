@@ -1,0 +1,53 @@
+{
+  "type": "fargo_soul:integration",
+  "ingredients": [
+    {
+      "count": 1,
+      "id": "fargo_soul:soul"
+    },
+    {
+      "count": 12,
+      "id": "minecraft:nether_star"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:lava_bucket"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:magma_block"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:fire_charge"
+    },
+    {
+      "count": 128,
+      "id": "minecraft:blaze_rod"
+    },
+    {
+      "count": 32,
+      "id": "minecraft:burn_pottery_sherd"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:danger_pottery_sherd"
+    },
+    {
+      "count": 768,
+      "id": "minecraft:orange_candle"
+    },
+    {
+      "count": 384,
+      "id": "minecraft:gilded_blackstone"
+    },
+    {
+      "count": 4,
+      "id": "minecraft:netherite_upgrade_smithing_template"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:lava_soul"
+  }
+}

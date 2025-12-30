@@ -1,0 +1,53 @@
+package First.fargo_soul.client.tooltip;
+
+import First.fargo_soul.item.base.SoulItem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.Item;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+
+@OnlyIn(Dist.CLIENT)
+public record SoulTooltipComponent(
+		int width,
+		int height,
+		float scale,
+		Item item
+) implements ClientTooltipComponent, TooltipComponent {
+
+	@Override
+	public int getWidth(@NotNull Font font) {
+		return (int) (width * scale);
+	}
+
+	@Override
+	public int getHeight() {
+		return (int) (height * scale);
+	}
+
+	@Override
+	public void renderImage(@NotNull Font font, int tooltipX, int tooltipY, @NotNull GuiGraphics guiGraphics) {
+		PoseStack pose = guiGraphics.pose();
+		pose.pushPose();
+		pose.translate(tooltipX, tooltipY, 0);
+		pose.scale(scale, scale, scale);
+		if (item instanceof SoulItem soulItem) {
+			List<SoulItem> soulItemList = soulItem.getSoulItemList();
+			guiGraphics.renderItem(soulItem.getDefaultInstance(), 0, 0);
+			for (SoulItem item : soulItemList) {
+				int i = soulItemList.indexOf(item);
+				guiGraphics.renderItem(soulItemList.get(i).getDefaultInstance(), (i + 1) * 16, 0);
+			}
+		} else {
+			guiGraphics.renderItem(item.getDefaultInstance(), 16, 0);
+		}
+		pose.popPose();
+	}
+
+}
