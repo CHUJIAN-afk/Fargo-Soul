@@ -5,9 +5,8 @@ import First.fargo_soul.FargoSoul;
 import First.fargo_soul.attachment.SoulAbilityData;
 import First.fargo_soul.attachment.SoulAbilityEnabledData;
 import First.fargo_soul.attachment.SoulListData;
-import First.fargo_soul.client.button.ConfigAbilityButton;
 import First.fargo_soul.client.renderer.blockEntityRender.CosmicCrucibleBlockEntityRenderer;
-import First.fargo_soul.client.screen.ConfigScreen;
+import First.fargo_soul.client.screen.SoulScreen;
 import First.fargo_soul.client.tooltip.SoulTooltipComponent;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.CosmicPower;
@@ -36,12 +35,11 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
@@ -59,7 +57,6 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @EventBusSubscriber(modid = FargoSoul.MODID, value = Dist.CLIENT)
@@ -76,32 +73,12 @@ public class ClientEvent {
         if (event.getKey() == KeyRegister.SoulListKey.getKey().getValue()) {
             Minecraft minecraft = Minecraft.getInstance();
             if (minecraft.player instanceof LocalPlayer player) {
-                Map<SoulItem, Boolean> ability = player.getData(AttachmentRegister.AbilityEnabledData).getAbility();
-                List<ConfigAbilityButton> testButtons = new ArrayList<>();
-                List<SoulItem> itemList = CurioUtils.getSoulFromList(CurioUtils.getSoulFromSlots(player));
-                for (SoulItem item : itemList) {
-                    ItemStack itemStack = item.getDefaultInstance();
-                    Boolean isActive = ability.getOrDefault(item, true);
-                    testButtons.add(new ConfigAbilityButton(
-                            0, 0, 150, 20,
-                            itemStack,
-                            item.getName(itemStack),
-                            null,
-                            isActive,
-                            button -> {
-                                if (button instanceof ConfigAbilityButton configButton) {
-                                    configButton.setActive(!configButton.isActive());
-                                    ResourceLocation resourceLocation = BuiltInRegistries.ITEM.getKey(item);
-                                    if (Minecraft.getInstance().player instanceof LocalPlayer localPlayer) {
-                                        SoulAbilityEnabledData enabledData = localPlayer.getData(AttachmentRegister.AbilityEnabledData);
-                                        enabledData.setEnabled(item, configButton.isActive());
-                                    }
-                                    PacketDistributor.sendToServer(new ConfigScreen.Packet(resourceLocation, configButton.isActive()));
-                                }
-                            }
-                    ));
+                List<SoulItem> soulFromSlots = CurioUtils.getSoulFromSlots(player);
+                if (!soulFromSlots.isEmpty()) {
+                    minecraft.setScreen(new SoulScreen(soulFromSlots));
+                } else {
+                    player.displayClientMessage(Component.translatable("fargo_soul.screen.is_empty").withStyle(ChatFormatting.GOLD),true);
                 }
-                minecraft.setScreen(new ConfigScreen(Component.literal("能力清单"), testButtons));
             }
         }
     }
@@ -156,6 +133,7 @@ public class ClientEvent {
 
             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
             Level level = livingEntity.level();
+            RandomSource random = level.getRandom();
             float scale = (float) livingEntity.getBoundingBox().getSize();
             int renderLight = CurioUtils.isEquipped(livingEntity, WizardSoul.class) ? LightTexture.FULL_BRIGHT : packedLight;
             int id = livingEntity.getId();
@@ -167,7 +145,7 @@ public class ClientEvent {
             poseStack.mulPose(Axis.ZP.rotationDegrees(ageInTicks));
             float ringRadius = 1.2f * scale * (float) (Math.cos(ageInTicks * 0.1f) * 0.2f + 1f);
             for (SoulItem soulItem : soulItemList) {
-
+                random.setSeed(soulItem.hashCode() + id);
                 int i = soulItemList.indexOf(soulItem);
                 float angle = (float) i / soulItemList.size() * Mth.TWO_PI + ageInTicks * 0.05f;
                 float x = (float) Math.cos(angle) * ringRadius;
@@ -175,11 +153,11 @@ public class ClientEvent {
                 poseStack.pushPose();
                 poseStack.translate(x, 0, z);
 
-                poseStack.mulPose(Axis.YP.rotationDegrees(ageInTicks * 3 + i * 30));
-                poseStack.mulPose(Axis.ZP.rotationDegrees(ageInTicks * 3 + i * 30));
+                poseStack.mulPose(Axis.YP.rotationDegrees(ageInTicks * random.nextFloat()));
+                poseStack.mulPose(Axis.XP.rotationDegrees(ageInTicks * random.nextFloat()));
+                poseStack.mulPose(Axis.ZP.rotationDegrees(ageInTicks * random.nextFloat()));
                 float itemScale = 0.35f * scale * (float) (Math.cos(ageInTicks * 0.1f) * 0.2f + 1f);
                 poseStack.scale(itemScale, itemScale, itemScale);
-
                 itemRenderer.renderStatic(
                         soulItem.getDefaultInstance(),
                         ItemDisplayContext.FIXED,
@@ -188,9 +166,8 @@ public class ClientEvent {
                         poseStack,
                         multiBufferSource,
                         level,
-                        id + i
+                        soulItem.hashCode()
                 );
-
                 poseStack.popPose();
             }
             poseStack.popPose();

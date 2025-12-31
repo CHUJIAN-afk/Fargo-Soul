@@ -385,5 +385,7 @@
   "item.fargo_soul.valhalla_knight_soul.attribute.3": "Mount immune to fall damage",
   "item.fargo_soul.valhalla_knight_soul.attribute.4": "Healing received increased to 115%",
   "item.fargo_soul.valhalla_knight_soul.tooltip.1": "\"The call of Valhalla\"",
-  "tooltip.fargo_soul.cosmic_crucible": "Can be used for fusion, and the space contained can store a large number of items (default 64 squares, maximum stacking of a single slot is 2,147,483,647)\\nInsert items from the top by inserting or interacting with them, and right-click empty-handed to take out the most recently placed items\\nKeep the contents after destroying"
+  "tooltip.fargo_soul.cosmic_crucible": "Can be used for fusion, and the space contained can store a large number of items (default 64 squares, maximum stacking of a single slot is 2,147,483,647)\\nInsert items from the top by inserting or interacting with them, and right-click empty-handed to take out the most recently placed items\\nKeep the contents after destroying",
+  "fargo_soul.screen.soul": "Soul ability control interface",
+  "fargo_soul.screen.is_empty": "You are not carrying any Souls"
 }

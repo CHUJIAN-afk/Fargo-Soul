@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
+import java.util.Collections;
 import java.util.List;
 
 public class SoulItem extends Item implements ICurioItem {
@@ -37,8 +38,9 @@ public class SoulItem extends Item implements ICurioItem {
     public boolean canEquip(SlotContext slotContext, ItemStack itemStack) {
         LivingEntity livingEntity = slotContext.entity();
         SoulItem soulItem = (SoulItem) itemStack.getItem();
-        List<SoulItem> soulFromList = CurioUtils.getSoulFromSlots(livingEntity);
-        return !soulFromList.contains(soulItem);
+        List<SoulItem> soulFromList = CurioUtils.getSoulFromList(CurioUtils.getSoulFromSlots(livingEntity));
+        List<SoulItem> targetList = CurioUtils.getSoulFromSoul(soulItem);
+        return Collections.disjoint(soulFromList, targetList);
     }
 
     @Override
@@ -47,8 +49,8 @@ public class SoulItem extends Item implements ICurioItem {
     }
 
     @Override
-    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return true;
+    public boolean canEquipFromUse(SlotContext slotContext, ItemStack itemStack) {
+        return canEquip(slotContext, itemStack);
     }
 
 }

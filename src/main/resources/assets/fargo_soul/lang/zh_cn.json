@@ -385,5 +385,7 @@
   "item.fargo_soul.valhalla_knight_soul.attribute.3": "使坐骑免疫坠落伤害",
   "item.fargo_soul.valhalla_knight_soul.attribute.4": "持有者受到的治疗提升至115%",
   "item.fargo_soul.valhalla_knight_soul.tooltip.1": "“瓦尔哈拉的呼唤”",
-  "tooltip.fargo_soul.cosmic_crucible": "可用于融合，内含的空间可储存巨量物品(默认64格，单格堆叠上限2,147,483,647)\n通过投入或交互顶部放入物品，空手右键拿出最近放入的物品\n破坏后保留内容物"
+  "tooltip.fargo_soul.cosmic_crucible": "可用于融合，内含的空间可储存巨量物品(默认64格，单格堆叠上限2,147,483,647)\n通过投入或交互顶部放入物品，空手右键拿出最近放入的物品\n破坏后保留内容物",
+  "fargo_soul.screen.soul": "魂石能力控制界面",
+  "fargo_soul.screen.is_empty": "你没有携带任何魂石"
 }

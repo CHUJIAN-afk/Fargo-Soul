@@ -2,7 +2,7 @@ package First.fargo_soul.register;
 
 
 import First.fargo_soul.FargoSoul;
-import First.fargo_soul.client.screen.ConfigScreen;
+import First.fargo_soul.client.screen.SoulScreen;
 import First.fargo_soul.item.terraSoul.cosmicPower.StardustSoul;
 import First.fargo_soul.item.terraSoul.cosmicPower.VortexSoul;
 import First.fargo_soul.item.terraSoul.deathPower.PenetratingNinjaSoul;
@@ -25,7 +25,7 @@ public class NetworkPacketRegister {
         registrar.playToServer(PenetratingNinjaSoul.Packet.TYPE, PenetratingNinjaSoul.Packet.STREAM_CODEC, PenetratingNinjaSoul.Packet::handle);
         registrar.playToServer(ForbiddenSoul.Packet.TYPE, ForbiddenSoul.Packet.STREAM_CODEC, ForbiddenSoul.Packet::handle);
         registrar.playToServer(GoldSoul.Packet.TYPE, GoldSoul.Packet.STREAM_CODEC, GoldSoul.Packet::handle);
-        registrar.playToServer(ConfigScreen.Packet.TYPE, ConfigScreen.Packet.STREAM_CODEC, ConfigScreen.Packet::handle);
+        registrar.playToServer(SoulScreen.Packet.TYPE, SoulScreen.Packet.STREAM_CODEC, SoulScreen.Packet::handle);
     }
 
 }
