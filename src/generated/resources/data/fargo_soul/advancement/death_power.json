@@ -1,0 +1,41 @@
+{
+  "parent": "fargo_soul:terra_soul",
+  "criteria": {
+    "has_fargo_soul:death_power": {
+      "conditions": {
+        "items": [
+          {
+            "items": "fargo_soul:death_power"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "color": "dark_red",
+      "extra": [
+        {
+          "color": "#B428FF",
+          "translate": "item.fargo_soul.death_power"
+        }
+      ],
+      "translate": "fargo_soul.advancement.get"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "fargo_soul:death_power"
+    },
+    "title": {
+      "translate": "advancement.fargo_soul.death_power.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_fargo_soul:death_power"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

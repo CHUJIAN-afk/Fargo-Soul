@@ -1,0 +1,39 @@
+{
+  "criteria": {
+    "has_fargo_soul:cosmic_crucible": {
+      "conditions": {
+        "items": [
+          {
+            "items": "fargo_soul:cosmic_crucible"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "background": "minecraft:textures/block/deepslate_bricks.png",
+    "description": {
+      "color": "dark_red",
+      "extra": [
+        {
+          "translate": "block.fargo_soul.cosmic_crucible"
+        }
+      ],
+      "translate": "fargo_soul.advancement.get"
+    },
+    "icon": {
+      "count": 1,
+      "id": "fargo_soul:cosmic_crucible"
+    },
+    "title": {
+      "translate": "advancement.fargo_soul.root.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_fargo_soul:cosmic_crucible"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

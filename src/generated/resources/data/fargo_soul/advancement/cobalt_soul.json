@@ -1,0 +1,40 @@
+{
+  "parent": "fargo_soul:earth_power",
+  "criteria": {
+    "has_fargo_soul:cobalt_soul": {
+      "conditions": {
+        "items": [
+          {
+            "items": "fargo_soul:cobalt_soul"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "color": "dark_red",
+      "extra": [
+        {
+          "color": "#FF9696",
+          "translate": "item.fargo_soul.cobalt_soul"
+        }
+      ],
+      "translate": "fargo_soul.advancement.get"
+    },
+    "icon": {
+      "count": 1,
+      "id": "fargo_soul:cobalt_soul"
+    },
+    "title": {
+      "translate": "advancement.fargo_soul.cobalt_soul.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_fargo_soul:cobalt_soul"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

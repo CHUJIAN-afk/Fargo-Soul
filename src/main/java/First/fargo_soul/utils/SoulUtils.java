@@ -30,13 +30,14 @@ import net.minecraft.world.phys.Vec3;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 public class SoulUtils {
 
 	public static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-	public static final Random random = new Random();
+	public static final Random random = ThreadLocalRandom.current();
 	public static final List<SoulItem> RegisterSoulList = BuiltInRegistries.ITEM.stream()
 			.filter(item -> item instanceof SoulItem)
 			.map(item -> (SoulItem) item)

@@ -1,0 +1,41 @@
+{
+  "parent": "fargo_soul:cosmic_crucible",
+  "criteria": {
+    "has_fargo_soul:terra_soul": {
+      "conditions": {
+        "items": [
+          {
+            "items": "fargo_soul:terra_soul"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "color": "dark_red",
+      "extra": [
+        {
+          "color": "#00BE00",
+          "translate": "item.fargo_soul.terra_soul"
+        }
+      ],
+      "translate": "fargo_soul.advancement.get"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "fargo_soul:terra_soul"
+    },
+    "title": {
+      "translate": "advancement.fargo_soul.terra_soul.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_fargo_soul:terra_soul"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

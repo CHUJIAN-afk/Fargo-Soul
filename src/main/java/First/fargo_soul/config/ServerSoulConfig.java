@@ -18,9 +18,9 @@ public class ServerSoulConfig {
 
     public static final ModConfigSpec.DoubleValue SoulSizeMultiplierPerSoul = Builder.defineInRange("soul_size_multiplier_per_soul", 0.05, 0.0, 1.0);
 
-    public static final ModConfigSpec.BooleanValue AllowCreaturesThatSpawnThroughUnnaturalPathsToCarrySouls = Builder.define("allow_creatures_that_spawn_through_unnatural_paths_to_carry_souls", true);
+    public static final ModConfigSpec.BooleanValue AllowCreaturesThatSpawnThroughUnnaturalPathsToCarrySouls = Builder.define("allow_creatures_that_spawn_through_unnatural_paths_to_carry_souls", false);
 
-    public static final ModConfigSpec.BooleanValue AllowCreaturesThatSpawnThroughUnnaturalPathsToDropSouls = Builder.define("allow_creatures_that_spawn_through_unnatural_paths_to_drop_souls", true);
+    public static final ModConfigSpec.BooleanValue AllowCreaturesThatSpawnThroughUnnaturalPathsToDropSouls = Builder.define("allow_creatures_that_spawn_through_unnatural_paths_to_drop_souls", false);
 
     public static final ModConfigSpec.BooleanValue AllowFriendlyMobSoul = Builder.define("allow_friendly_mob_soul", true);
 

@@ -23,12 +23,12 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ItemRegister {
 
-    public static final DeferredRegister.Items ItemRegister = DeferredRegister.createItems(FargoSoul.MODID);
+    private static final DeferredRegister.Items Register = DeferredRegister.createItems(FargoSoul.MODID);
 
-    public static final DeferredItem<Item> GreenCrystal = ItemRegister.registerItem("green_crystal", Item::new);
-    public static final DeferredItem<Item> Soul = ItemRegister.registerItem("soul", properties -> new Item(properties.rarity(Rarity.EPIC).fireResistant()));
+    public static final DeferredItem<Item> GreenCrystal = Register.registerItem("green_crystal", Item::new);
+    public static final DeferredItem<Item> Soul = Register.registerItem("soul", properties -> new Item(properties.rarity(Rarity.EPIC).fireResistant()));
 
-    public static final DeferredItem<BlockItem> CosmicCrucibleBlockItem = ItemRegister.registerSimpleBlockItem(BlockRegister.CosmicCrucible,new Item.Properties().stacksTo(1).rarity(Rarity.EPIC));
+    public static final DeferredItem<BlockItem> CosmicCrucibleBlockItem = Register.registerSimpleBlockItem(BlockRegister.CosmicCrucible,new Item.Properties().stacksTo(1).rarity(Rarity.EPIC));
 
     public static final DeferredItem<SoulItem> WoodSoulItem = register("wood_soul", WoodSoul.class);
     public static final DeferredItem<SoulItem> PineWoodSoulItem = register("pine_wood_soul", PineWoodSoul.class);
@@ -105,11 +105,11 @@ public class ItemRegister {
     public static final DeferredItem<SoulItem> TerraSoulItem = register("terra_soul", TerraSoul.class);
 
     private static <T extends SoulItem> DeferredItem<SoulItem> register(String name, Class<T> tClass) {
-        return RegisterUtils.registerItem(ItemRegister, name, tClass);
+        return RegisterUtils.registerItem(Register, name, tClass);
     }
 
     public static void register(IEventBus eventBus) {
-        ItemRegister.register(eventBus);
+        Register.register(eventBus);
     }
 
 }
