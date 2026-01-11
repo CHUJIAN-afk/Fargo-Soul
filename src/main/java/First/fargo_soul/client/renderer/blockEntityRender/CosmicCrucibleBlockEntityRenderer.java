@@ -117,7 +117,7 @@ public class CosmicCrucibleBlockEntityRenderer implements BlockEntityRenderer<Co
         random.setSeed(blockEntity.getBlockPos().hashCode());
         float ageInTicks = RenderUtils.getAgeInTicks(level, partialTick, random.nextFloat() * 0.4f + 0.6f);
         float radius = (float) (Math.sin(ageInTicks * 0.025) * 0.01 + 0.19);
-        int segments = 32;
+        int segments = 64;
         VertexConsumer builder = buffer.getBuffer(BlackHoleRenderType.BlackHoleEventHorizon);
         Matrix4f matrix = poseStack.last().pose();
         for (int i = 0; i < segments; i++) {

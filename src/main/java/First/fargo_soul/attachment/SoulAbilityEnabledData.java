@@ -1,8 +1,6 @@
 package First.fargo_soul.attachment;
 
-import First.fargo_soul.FargoSoul;
 import First.fargo_soul.item.base.SoulItem;
-import First.fargo_soul.register.AttachmentRegister;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -11,13 +9,9 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.neoforged.bus.api.EventPriority;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.attachment.AttachmentSyncHandler;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import net.neoforged.neoforge.common.util.INBTSerializable;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -103,19 +97,6 @@ public class SoulAbilityEnabledData implements INBTSerializable<CompoundTag>, At
             }
         }
         return new SoulAbilityEnabledData(abilityList);
-    }
-
-    @EventBusSubscriber(modid = FargoSoul.MODID)
-    public static class Event {
-
-        @SubscribeEvent(priority = EventPriority.LOWEST)
-        public static void death(PlayerEvent.Clone event) {
-            if (event.isWasDeath()) {
-                SoulAbilityEnabledData original = event.getOriginal().getData(AttachmentRegister.AbilityEnabledData);
-                event.getEntity().setData(AttachmentRegister.AbilityEnabledData, original);
-            }
-        }
-
     }
 
 }

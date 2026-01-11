@@ -14,12 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public record SoulTooltipComponent(
-		int width,
-		int height,
-		float scale,
-		Item item
-) implements ClientTooltipComponent, TooltipComponent {
+public record SoulTooltipComponent(int width, int height, float scale, Item item) implements ClientTooltipComponent, TooltipComponent {
 
 	@Override
 	public int getWidth(@NotNull Font font) {

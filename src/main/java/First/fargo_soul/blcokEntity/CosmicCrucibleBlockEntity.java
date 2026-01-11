@@ -45,6 +45,14 @@ public class CosmicCrucibleBlockEntity extends BlockEntity {
         this.inventory = new CosmicCrucibleItemHandler(this);
     }
 
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                BlockEntityRegister.CosmicCrucible.get(),
+                (be, context) -> be.getItemHandler()
+        );
+    }
+
     public CosmicCrucibleItemHandler getItemHandler() {
         return inventory;
     }
@@ -78,9 +86,9 @@ public class CosmicCrucibleBlockEntity extends BlockEntity {
     }
 
     private void collectItems() {
-        if (level == null || level.isClientSide()) return;
+        if (level == null) return;
         Vec3 center = getBlockPos().above().getCenter().add(0, -0.25, 0);
-        List<ItemEntity> items = level.getEntitiesOfClass(ItemEntity.class, new AABB(getBlockPos()).inflate(10), itemEntity -> itemEntity.getY() >= getBlockPos().getY());
+        List<ItemEntity> items = level.getEntitiesOfClass(ItemEntity.class, new AABB(getBlockPos()).inflate(10));
         for (ItemEntity entity : items) {
             Vec3 delta = center.subtract(entity.position());
             double distSqr = delta.lengthSqr();
@@ -194,14 +202,6 @@ public class CosmicCrucibleBlockEntity extends BlockEntity {
         if (tag.contains("Inventory")) {
             inventory.deserializeNBT(registries, tag.getCompound("Inventory"));
         }
-    }
-
-    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.registerBlockEntity(
-                Capabilities.ItemHandler.BLOCK,
-                BlockEntityRegister.CosmicCrucible.get(),
-                (be, context) -> be.getItemHandler()
-        );
     }
 
     public static class CosmicCrucibleItemHandler extends ItemStackHandler {

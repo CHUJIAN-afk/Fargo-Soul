@@ -1,11 +1,15 @@
 package First.fargo_soul.utils;
 
 import First.fargo_soul.item.base.SoulItem;
+import First.fargo_soul.item.terraSoul.deathPower.CrystalAssassinSoul;
+import First.fargo_soul.item.terraSoul.deathPower.PenetratingNinjaSoul;
+import First.fargo_soul.item.terraSoul.lifePower.BeeSoul;
+import First.fargo_soul.item.terraSoul.lifePower.BeetleSoul;
+import First.fargo_soul.item.terraSoul.naturePower.GreenSoul;
 import First.fargo_soul.register.AttachmentRegister;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -27,22 +31,22 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 
 public class SoulUtils {
 
 	public static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 	public static final Random random = ThreadLocalRandom.current();
-	public static final List<SoulItem> RegisterSoulList = BuiltInRegistries.ITEM.stream()
-			.filter(item -> item instanceof SoulItem)
-			.map(item -> (SoulItem) item)
-			.toList();
-
+	public static final List<SoulItem> RegisterSoulList = BuiltInRegistries.ITEM.stream().filter(item -> item instanceof SoulItem).map(item -> (SoulItem) item).toList();
+	public static final List<SoulItem> AttributeSoulList = RegisterSoulList.stream().filter(soulItem -> !soulItem.getAttributeModifiers().isEmpty()).toList();
+	
 	public static void randomShoot(LivingEntity attacker, Projectile projectile, LivingEntity owner) {
 		Level level = attacker.level();
 		double theta = random.nextDouble() * Math.PI * 2;
@@ -72,14 +76,13 @@ public class SoulUtils {
 
 	public static void CooldownEndSound(LivingEntity attacker, SoundEvent event, int second) {
 		Level level = attacker.level();
-		executorService.schedule(() -> playSound(
-				level,
-				attacker.position(),
-				event,
-				attacker.getSoundSource()
-		), second, TimeUnit.SECONDS);
+		executorService.schedule(() -> playSound(level, attacker.position(), event, attacker.getSoundSource()), second, TimeUnit.SECONDS);
 	}
 
+	/**
+	 * 设置射弹无视敌人无敌帧
+	 * @param projectile 射弹实体
+	 */
 	public static void setAbilityInvulnerable(Projectile projectile) {
 		projectile.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("noInvulnerable").setEnabled(true);
 	}
@@ -92,6 +95,14 @@ public class SoulUtils {
 		return baseValue + (random.nextFloat(-1, 1) * errorRange);
 	}
 
+	/**
+	 * 从攻击者位置向目标位置发射射弹，随机距离和速度
+	 * @param projectile 射弹实体
+	 * @param attacker 攻击者实体
+	 * @param target 目标实体
+	 * @param distance 随机距离范围
+	 * @param speed 射弹速度
+	 */
 	public static void shootTargetFromAttaker(Projectile projectile, LivingEntity attacker, LivingEntity target, double distance, double speed) {
 		double size = attacker.getBoundingBox().getSize() * distance;
 		double x = getRandomWithError(attacker.getX(), size);
@@ -105,6 +116,13 @@ public class SoulUtils {
 		addEntity(attacker.level(), projectile);
 	}
 
+	/**
+	 * 播放音效
+	 * @param level 等级对象
+	 * @param center 音效中心位置
+	 * @param soundEvent 音效事件
+	 * @param soundSource 音效源
+	 */
 	public static void playSound(Level level, Vec3 center, SoundEvent soundEvent, SoundSource soundSource) {
 		level.playSound(
 				null,
@@ -177,18 +195,35 @@ public class SoulUtils {
 	}
 
 	public static void attack(LivingEntity attacker, LivingEntity target, ResourceKey<DamageType> damageTypeResourceKey, float amount) {
-		if (target != null) {
-			target.invulnerableTime = 0;
-			DamageSources damageSources = target.level().damageSources();
-			DamageSource damageSource = damageSources.source(damageTypeResourceKey, attacker != null ? attacker : target);
-			target.hurt(damageSource, amount);
-		}
+		target.invulnerableTime = 0;
+		DamageSources damageSources = target.level().damageSources();
+		DamageSource damageSource = damageSources.source(damageTypeResourceKey, attacker != null ? attacker : target);
+		target.hurt(damageSource, amount);
 	}
 
-	public <T> void addItemToTag(Function<ResourceLocation, Optional<? extends T>> idToValue, Map<ResourceLocation, Collection<T>> tags, ResourceLocation itemKey, ResourceLocation tagKey) {
-		if (idToValue.apply(itemKey).isPresent()) {
-			tags.computeIfAbsent(tagKey, k -> new ArrayList<>()).add(idToValue.apply(itemKey).get());
+    @SuppressWarnings("unchecked")
+    public static Class<? extends SoulItem>[] getSprintList() {
+        return new Class[]{
+                CrystalAssassinSoul.class,
+                PenetratingNinjaSoul.class,
+                GreenSoul.class
+        };
+    }
+
+	@SuppressWarnings("unchecked")
+	public static Class<? extends SoulItem>[] getFlyList() {
+		return new Class[]{
+				BeeSoul.class,
+				BeetleSoul.class
+		};
+	}
+
+	public static int getFlyTime(Player player) {
+		int time = 60;
+		if (CurioUtils.isEquipped(player, GreenSoul.class)) {
+			time += 40;
 		}
+		return time;
 	}
 
 }

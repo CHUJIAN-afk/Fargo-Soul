@@ -11,12 +11,15 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -28,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+
 public class SoulScreen extends Screen {
 
     private final List<SoulItem> origin;
@@ -35,7 +39,7 @@ public class SoulScreen extends Screen {
     private final Map<SoulItem, ButtonInfo> buttonInfoMap = new HashMap<>();
 
     public SoulScreen(List<SoulItem> origin) {
-        super(Component.translatable("fargo_soul.screen.soul"));
+        super( Component.translatable("fargo_soul.screen.soul"));
         this.origin = origin;
     }
 
@@ -46,6 +50,7 @@ public class SoulScreen extends Screen {
 
     @Override
     protected void init() {
+        super.init();
         this.clearWidgets();
         buttonInfoMap.clear();
         updateButtonPositions();
@@ -62,12 +67,12 @@ public class SoulScreen extends Screen {
         for (SoulItem item : items) {
             int currentY = columnY[depth].get();
             SoulButton btn = new SoulButton(item);
-            int x = 10 + depth * (btn.getWidth() + 20);
+            int x = 10 + depth * (btn.getWidth() + 10);
             int y = currentY - (int) scrollY;
             btn.setPosition(x, y);
             this.addRenderableWidget(btn);
             buttonInfoMap.put(item, new ButtonInfo(x, y, btn.getWidth(), btn.getHeight(), parent));
-            columnY[depth].addAndGet(btn.getHeight() + 10);
+            columnY[depth].addAndGet(btn.getHeight() + 1);
             if (!item.getSoulItemList().isEmpty()) {
                 columnY[depth + 1].set(Math.max(columnY[depth + 1].get(), currentY));
                 addRecursive(item.getSoulItemList(), depth + 1, columnY, item);
@@ -92,6 +97,7 @@ public class SoulScreen extends Screen {
     }
 
     private void drawTreeConnections(GuiGraphics guiGraphics) {
+        int connectionColor = 0xFFFFFFFF;
         for (Map.Entry<SoulItem, ButtonInfo> entry : buttonInfoMap.entrySet()) {
             ButtonInfo childInfo = entry.getValue();
             SoulItem parentItem = childInfo.parent();
@@ -103,9 +109,9 @@ public class SoulScreen extends Screen {
                     int childLeftX = childInfo.x() - 1;
                     int childCenterY = childInfo.y() + childInfo.height() / 2;
                     int midX = parentRightX + (childLeftX - parentRightX) / 2;
-                    guiGraphics.hLine(parentRightX, midX, parentCenterY, 0xFFFFFFFF);
-                    guiGraphics.vLine(midX, Math.min(parentCenterY, childCenterY), Math.max(parentCenterY, childCenterY), 0xFFFFFFFF);
-                    guiGraphics.hLine(midX, childLeftX, childCenterY, 0xFFFFFFFF);
+                    guiGraphics.hLine(parentRightX, midX, parentCenterY, connectionColor);
+                    guiGraphics.vLine(midX, Math.min(parentCenterY, childCenterY), Math.max(parentCenterY, childCenterY), connectionColor);
+                    guiGraphics.hLine(midX, childLeftX, childCenterY, connectionColor);
                 }
             }
         }
@@ -122,7 +128,7 @@ public class SoulScreen extends Screen {
             super(
                     0,
                     0,
-                    Minecraft.getInstance().getWindow().getGuiScaledWidth() / 5,
+                    120,
                     20,
                     soulItem.getName(soulItem.getDefaultInstance()),
                     button -> {
@@ -143,30 +149,30 @@ public class SoulScreen extends Screen {
 
         @Override
         protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-            int backgroundColor = this.isActive ? 0xFF4CAF50 : 0xFF555555;
-            int borderColor = this.isActive ? 0xFF2E7D32 : 0xFF333333;
-            guiGraphics.fill(this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height, backgroundColor);
-            guiGraphics.renderOutline(this.getX(), this.getY(), this.width, this.height, borderColor);
+            super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
             ItemStack defaultInstance = soulItem.getDefaultInstance();
-            guiGraphics.renderItem(defaultInstance, this.getX() + 5, this.getY() + 2);
-            guiGraphics.drawString(Minecraft.getInstance().font, soulItem.getName(defaultInstance), this.getX() + 25, this.getY() + 6, 0xFFFFFF, true);
+            guiGraphics.renderItem(defaultInstance, this.getX() + 2, this.getY() + 2);
+            boolean active = this.isActive();
+            String icon = active ? "✔" : "✘";
+            int iconColor = active ? 0xFF55FF55 : 0xFFFF5555;
+            int iconX = this.getX() + this.width - 15;
+            int iconY = this.getY() + (this.height - 8) / 2;
+            guiGraphics.drawString(Minecraft.getInstance().font, icon, iconX, iconY, iconColor, true);
             if (this.isHovered()) {
-                List<SoulItem> soulFromSoul = CurioUtils.getSoulFromSoul(soulItem);
                 List<Component> componentList = new ArrayList<>();
                 componentList.add(soulItem.getName(defaultInstance));
-                componentList.add(Component.empty());
-                for (SoulItem item : soulFromSoul) {
-                    componentList.addAll(CurioUtils.getSoulItemAttributesComponent(item));
+                List<Component> soulItemAttributesComponent = CurioUtils.getSoulItemAttributesComponent(soulItem);
+                if (!soulItemAttributesComponent.isEmpty()) {
                     componentList.add(Component.empty());
+                    componentList.addAll(soulItemAttributesComponent);
                 }
-                guiGraphics.renderTooltip(
-                        Minecraft.getInstance().font,
-                        componentList,
-                        defaultInstance.getTooltipImage(),
-                        mouseX,
-                        mouseY
-                );
+                guiGraphics.renderTooltip(Minecraft.getInstance().font, componentList, defaultInstance.getTooltipImage(), mouseX, mouseY);
             }
+        }
+
+        @Override
+        public void playDownSound(@NotNull SoundManager handler) {
+            handler.play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, this.isActive() ? 0.85F : 1.15F));
         }
 
         public boolean isActive() {
@@ -176,6 +182,7 @@ public class SoulScreen extends Screen {
         public void setActive(boolean active) {
             isActive = active;
         }
+
     }
 
     public record Packet(ResourceLocation resourceLocation, boolean is) implements CustomPacketPayload {

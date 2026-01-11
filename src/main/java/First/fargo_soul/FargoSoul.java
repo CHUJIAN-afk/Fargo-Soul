@@ -34,7 +34,6 @@ public class FargoSoul {
         EffectRegister.register(eventBus);//药水效果注册
         AttributeRegister.register(eventBus);//属性注册
         AttachmentRegister.register(eventBus);//数据组件注册
-        DataComponentsRegister.register(eventBus);//物品组件注册
         RecipeTypeRegister.register(eventBus);//配方类型注册
         RecipeSerializerRegister.register(eventBus);//配方序列化注册
         modContainer.registerConfig(ModConfig.Type.SERVER, ServerSoulConfig.Spec);
@@ -43,5 +42,5 @@ public class FargoSoul {
             modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
         }
     }
-
+    
 }

@@ -54,37 +54,36 @@ public class SoulListData implements INBTSerializable<CompoundTag>, AttachmentSy
 	}
 
 
-        @Override
-        public CompoundTag serializeNBT(HolderLookup.@NotNull Provider provider) {
-            CompoundTag tag = new CompoundTag();
-            ListTag listTag = new ListTag();
-            for (SoulItem soulItem : soulItemList) {
-                CompoundTag itemTag = new CompoundTag();
-                ResourceLocation key = BuiltInRegistries.ITEM.getKey(soulItem);
-                itemTag.putString("item", key.toString());
-                listTag.add(itemTag);
-            }
-            tag.put("soulItemList", listTag);
-            return tag;
-        }
+	@Override
+	public CompoundTag serializeNBT(HolderLookup.@NotNull Provider provider) {
+		CompoundTag tag = new CompoundTag();
+		ListTag listTag = new ListTag();
+		for (SoulItem soulItem : soulItemList) {
+			CompoundTag itemTag = new CompoundTag();
+			ResourceLocation key = BuiltInRegistries.ITEM.getKey(soulItem);
+			itemTag.putString("item", key.toString());
+			listTag.add(itemTag);
+		}
+		tag.put("soulItemList", listTag);
+		return tag;
+	}
 
-        @Override
-        public void deserializeNBT(HolderLookup.@NotNull Provider provider, CompoundTag compoundTag) {
-            soulItemList.clear();
-            if (compoundTag.contains("soulItemList", Tag.TAG_LIST)) {
-                ListTag listTag = compoundTag.getList("soulItemList", Tag.TAG_COMPOUND);
-                for (Tag tag : listTag) {
-                    if (tag instanceof CompoundTag itemTag) {
-                        String itemKey = itemTag.getString("item");
-                        Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(itemKey));
-                        if (item instanceof SoulItem soulItem) {
-                            soulItemList.add(soulItem);
-                        }
-                    }
-                }
-            }
-        }
-
+	@Override
+	public void deserializeNBT(HolderLookup.@NotNull Provider provider, CompoundTag compoundTag) {
+		soulItemList.clear();
+		if (compoundTag.contains("soulItemList", Tag.TAG_LIST)) {
+			ListTag listTag = compoundTag.getList("soulItemList", Tag.TAG_COMPOUND);
+			for (Tag tag : listTag) {
+				if (tag instanceof CompoundTag itemTag) {
+					String itemKey = itemTag.getString("item");
+					Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(itemKey));
+					if (item instanceof SoulItem soulItem) {
+						soulItemList.add(soulItem);
+					}
+				}
+			}
+		}
+	}
 
 	@Override
 	public void write(@NotNull RegistryFriendlyByteBuf buf, SoulListData data, boolean clientPacket) {

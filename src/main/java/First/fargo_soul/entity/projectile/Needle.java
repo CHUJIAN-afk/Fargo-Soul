@@ -14,12 +14,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import org.jetbrains.annotations.NotNull;
 
-public class NeedleProjectile extends AbstractArrow {
+public class Needle extends AbstractArrow {
 
-    private static final EntityDataAccessor<Byte> DATA_PIERCE_LEVEL_ID = SynchedEntityData.defineId(NeedleProjectile.class, EntityDataSerializers.BYTE);
-    private static final EntityDataAccessor<Byte> DATA_CRITICAL_ID = SynchedEntityData.defineId(NeedleProjectile.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Byte> DATA_PIERCE_LEVEL_ID = SynchedEntityData.defineId(Needle.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Byte> DATA_CRITICAL_ID = SynchedEntityData.defineId(Needle.class, EntityDataSerializers.BYTE);
 
-    public NeedleProjectile(EntityType<? extends NeedleProjectile> type, Level level) {
+    public Needle(EntityType<? extends Needle> type, Level level) {
         super(type, level);
         this.pickup = Pickup.ALLOWED;
     }
@@ -49,7 +49,7 @@ public class NeedleProjectile extends AbstractArrow {
 
     @Override
     protected @NotNull ItemStack getDefaultPickupItem() {
-        return Items.AIR.getDefaultInstance();
+        return Items.CACTUS.getDefaultInstance();
     }
 
 }

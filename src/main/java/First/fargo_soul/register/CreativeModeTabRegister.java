@@ -18,11 +18,11 @@ import java.util.List;
 
 public class CreativeModeTabRegister {
 
-    public static final DeferredRegister<CreativeModeTab> CreativeModeTabRegister =
+    public static final DeferredRegister<CreativeModeTab> Register =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, FargoSoul.MODID);
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FargoSoulTab =
-            CreativeModeTabRegister.register(FargoSoul.MODID, () -> {
+            Register.register(FargoSoul.MODID, () -> {
                 CreativeModeTab.Builder builder = CreativeModeTab.builder();
                 builder.title(Component.translatable("itemGroup.fargo_soul"));
                 builder.icon(() -> ItemRegister.TerraSoulItem.get().getDefaultInstance());
@@ -39,7 +39,7 @@ public class CreativeModeTabRegister {
             });
 
     public static void register(IEventBus eventBus) {
-        CreativeModeTabRegister.register(eventBus);
+        Register.register(eventBus);
     }
 
 }

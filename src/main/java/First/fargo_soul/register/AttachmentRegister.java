@@ -14,11 +14,11 @@ import java.util.function.Supplier;
 
 public class AttachmentRegister {
 
-	private static final DeferredRegister<AttachmentType<?>> Attachments =
+	private static final DeferredRegister<AttachmentType<?>> Register =
 			DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, FargoSoul.MODID);
 
 	public static final Supplier<AttachmentType<SoulAbilityData>> SoulAbilityData =
-			Attachments.register("soul_ability_data", () -> {
+			Register.register("soul_ability_data", () -> {
 				Supplier<SoulAbilityData> data = SoulAbilityData::new;
 				AttachmentType.Builder<SoulAbilityData> builder = AttachmentType.serializable(data);
 				builder.sync(data.get());
@@ -26,15 +26,16 @@ public class AttachmentRegister {
 			});
 
 	public static final Supplier<AttachmentType<SoulAbilityEnabledData>> AbilityEnabledData =
-			Attachments.register("ability_enabled_data", () -> {
+			Register.register("ability_enabled_data", () -> {
 				Supplier<SoulAbilityEnabledData> data = SoulAbilityEnabledData::new;
 				AttachmentType.Builder<SoulAbilityEnabledData> builder = AttachmentType.serializable(data);
 				builder.sync(data.get());
+				builder.copyOnDeath();
 				return builder.build();
 			});
 
 	public static final Supplier<AttachmentType<SoulListData>> SoulListData =
-			Attachments.register("soul_data", () -> {
+			Register.register("soul_list_data", () -> {
 				Supplier<SoulListData> data = SoulListData::new;
 				AttachmentType.Builder<SoulListData> builder = AttachmentType.serializable(data);
 				builder.sync(data.get());
@@ -42,10 +43,10 @@ public class AttachmentRegister {
 			});
 
 	public static final Supplier<AttachmentType<SoulDamageData>> SoulDamageData =
-			Attachments.register("soul_damage_data", () -> AttachmentType.builder(SoulDamageData::new).build());
+			Register.register("soul_damage_data", () -> AttachmentType.builder(SoulDamageData::new).build());
 
 	public static void register(IEventBus eventbus) {
-		Attachments.register(eventbus);
+		Register.register(eventbus);
 	}
 
 }

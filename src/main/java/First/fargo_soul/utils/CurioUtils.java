@@ -1,6 +1,5 @@
 package First.fargo_soul.utils;
 
-import First.fargo_soul.FargoSoul;
 import First.fargo_soul.attachment.SoulAbilityEnabledData;
 import First.fargo_soul.attachment.SoulListData;
 import First.fargo_soul.item.base.SoulItem;
@@ -24,14 +23,23 @@ public class CurioUtils {
 
     @SafeVarargs
     public static boolean isEquipped(LivingEntity livingEntity, Class<? extends SoulItem>... types) {
-        List<Class<? extends SoulItem>> targetClassList = List.of(types);
         SoulListData soulListData = livingEntity.getData(AttachmentRegister.SoulListData);
         SoulAbilityEnabledData enabledData = livingEntity.getData(AttachmentRegister.AbilityEnabledData);
-        List<SoulItem> itemList = soulListData.getSoulItemList();
-        return itemList.stream()
-                .filter(enabledData::isEnabled)
-                .map(SoulItem::getClass)
-                .anyMatch(targetClassList::contains);
+        for (SoulItem item : soulListData.getSoulItemList()) {
+            if (enabledData.isEnabled(item) && List.of(types).contains(item.getClass())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 获取实体身上所有的魂石，包括未启用的
+     *
+     * @return 实体身上所有的魂石，包括未启用的
+     */
+    public static List<SoulItem> getEntitySoulItem(LivingEntity livingEntity) {
+        return getSoulFromList(getSoulFromSlots(livingEntity));
     }
 
     public static void updateSoulList(LivingEntity livingEntity) {
@@ -78,43 +86,6 @@ public class CurioUtils {
         return OringinCurioList;
     }
 
-    private static final Map<String, List<Component>> ComponentMap = new HashMap<>();
-    private static final Map<String, ModRarity> RarityMap = new HashMap<>();
-
-    public static List<Component> getComponent(SoulItem soulItem, String string) {
-        String key = soulItem.getDescriptionId() + string;
-        if (!ComponentMap.containsKey(key)) {
-            List<Component> componentList = new ArrayList<>();
-            Map<String, String> languageData = Language.getInstance().getLanguageData();
-            List<String> keyList = new ArrayList<>();
-            languageData.keySet().forEach(key1 -> {
-                if (key1.contains(FargoSoul.MODID + "." + BuiltInRegistries.ITEM.getKey(soulItem).getPath() + "." + string)) {
-                    keyList.add(key1);
-                }
-            });
-            keyList.sort(Comparator.comparingInt(CurioUtils::extractLastNumber));
-            for (String key1 : keyList) {
-                MutableComponent attribute = Component.translatable(key1);
-                if (!string.equals("tooltip") && soulItem.components().get(ConfluenceMagicLib.MOD_RARITY.get()) instanceof ModRarity modRarity) {
-                    RarityMap.put(key, modRarity);
-                }
-                componentList.add(attribute);
-            }
-            ComponentMap.put(key, componentList);
-        }
-        List<Component> componentList = new ArrayList<>();
-        for (Component component : ComponentMap.get(key)) {
-            MutableComponent copy = component.copy();
-            if (string.equals("tooltip")) {
-                copy.withStyle(ChatFormatting.DARK_GRAY);
-            } else {
-                copy.withColor(RarityMap.get(key).color());
-            }
-            componentList.add(copy);
-        }
-        return componentList;
-    }
-
     public static int extractLastNumber(String s) {
         int number = 0;
         int power = 1;
@@ -159,4 +130,5 @@ public class CurioUtils {
             return new ArrayList<>(mutableComponents);
         });
     }
+    
 }

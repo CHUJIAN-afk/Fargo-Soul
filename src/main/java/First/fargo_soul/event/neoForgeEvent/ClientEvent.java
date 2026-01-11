@@ -5,80 +5,139 @@ import First.fargo_soul.FargoSoul;
 import First.fargo_soul.attachment.SoulAbilityData;
 import First.fargo_soul.attachment.SoulAbilityEnabledData;
 import First.fargo_soul.attachment.SoulListData;
+import First.fargo_soul.client.gui.SoulGuiLayer;
 import First.fargo_soul.client.renderer.blockEntityRender.CosmicCrucibleBlockEntityRenderer;
+import First.fargo_soul.client.renderer.entityRenderer.BoneRenderer;
+import First.fargo_soul.client.renderer.entityRenderer.NeedleRenderer;
 import First.fargo_soul.client.screen.SoulScreen;
+import First.fargo_soul.client.tooltip.CosmicCrucibleItemTooltipComponent;
 import First.fargo_soul.client.tooltip.SoulTooltipComponent;
+import First.fargo_soul.config.ClientConfig;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.CosmicPower;
 import First.fargo_soul.item.terraSoul.cosmicPower.WizardSoul;
-import First.fargo_soul.item.terraSoul.deathPower.CrystalAssassinSoul;
 import First.fargo_soul.item.terraSoul.deathPower.PenetratingNinjaSoul;
-import First.fargo_soul.item.terraSoul.lifePower.BeeSoul;
-import First.fargo_soul.item.terraSoul.lifePower.BeetleSoul;
-import First.fargo_soul.item.terraSoul.naturePower.GreenSoul;
+import First.fargo_soul.item.terraSoul.naturePower.LavaSoul;
+import First.fargo_soul.item.terraSoul.terraPower.ObsidianSoul;
 import First.fargo_soul.item.terraSoul.willPower.RedRidingSoul;
-import First.fargo_soul.register.AttachmentRegister;
-import First.fargo_soul.register.BlockEntityRegister;
-import First.fargo_soul.register.ItemRegister;
-import First.fargo_soul.register.KeyRegister;
+import First.fargo_soul.register.*;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.KeyUtils;
 import First.fargo_soul.utils.RenderUtils;
+import First.fargo_soul.utils.SoulUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import com.mojang.math.Axis;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @EventBusSubscriber(modid = FargoSoul.MODID, value = Dist.CLIENT)
 public class ClientEvent {
-/*
+
+    @SubscribeEvent
+    public static void renderFog(ViewportEvent.RenderFog event) {
+        Camera camera = event.getCamera();
+        Minecraft minecraft = Minecraft.getInstance();
+        BlockPos blockPos = camera.getBlockPosition();
+        if (minecraft.level instanceof Level level && minecraft.player instanceof LocalPlayer player) {
+            if (CurioUtils.isEquipped(player, ObsidianSoul.class)) {
+                FluidState fluidState = level.getFluidState(blockPos);
+                if (camera.getPosition().y < blockPos.getY() + fluidState.getHeight(level, blockPos)) {
+                    Fluid fluid = fluidState.getType();
+                    Entity entity = camera.getEntity();
+                    if (!entity.isSpectator() && fluid.equals(Fluids.FLOWING_LAVA)) {
+                        event.setNearPlaneDistance(-4.0f);
+                        event.setFarPlaneDistance(20.0f);
+                        event.setCanceled(true);
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    private static void onBlockOverlay(RenderBlockScreenEffectEvent event) {
+        if (event.getOverlayType().equals(RenderBlockScreenEffectEvent.OverlayType.FIRE) && CurioUtils.isEquipped(event.getPlayer(), LavaSoul.class)) {
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void soulRender(RenderLivingEvent.Post<?, ?> event) {
+        SoulUtils.RegisterSoulList.forEach(soulItem -> soulItem.render(event));
+    }
+
     @SubscribeEvent
     public static void registerGuiLayers(RegisterGuiLayersEvent event) {
         event.registerAbove(VanillaGuiLayers.HOTBAR, FargoSoul.rl("soul_overlay"), SoulGuiLayer::render);
     }
-*/
+
+    @SubscribeEvent
+    public static void soulMovementInputUpdate(MovementInputUpdateEvent event) {
+        if (event.getEntity() instanceof LocalPlayer player) {
+            SoulUtils.RegisterSoulList.forEach(soulItem -> soulItem.movementInput(player, event.getInput()));
+        }
+    }
+
+    @SubscribeEvent
+    public static void soulKeyPressed(InputEvent.Key event) {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.player instanceof LocalPlayer player) {
+            SoulUtils.RegisterSoulList.forEach(soulItem -> soulItem.keyPressed(player, event.getKey()));
+        }
+    }
+
+    @SubscribeEvent
+    public static void RegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(EntityRegister.NeedleEntity.get(), NeedleRenderer::new);
+        event.registerEntityRenderer(EntityRegister.BoneEntity.get(), BoneRenderer::new);
+    }
 
     @SubscribeEvent
     public static void openScreen(InputEvent.Key event) {
-        if (event.getKey() == KeyRegister.SoulListKey.getKey().getValue()) {
-            Minecraft minecraft = Minecraft.getInstance();
-            if (minecraft.player instanceof LocalPlayer player) {
-                List<SoulItem> soulFromSlots = CurioUtils.getSoulFromSlots(player);
-                if (!soulFromSlots.isEmpty()) {
-                    minecraft.setScreen(new SoulScreen(soulFromSlots));
-                } else {
-                    player.displayClientMessage(Component.translatable("fargo_soul.screen.is_empty").withStyle(ChatFormatting.GOLD),true);
-                }
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.player instanceof LocalPlayer player && event.getKey() == KeyRegister.SoulListKey.getKey().getValue()) {
+            List<SoulItem> soulFromSlots = CurioUtils.getSoulFromSlots(player);
+            if (!soulFromSlots.isEmpty()) {
+                minecraft.setScreen(new SoulScreen(soulFromSlots));
+            } else {
+                player.displayClientMessage(Component.translatable("fargo_soul.screen.is_empty").withStyle(ChatFormatting.GOLD), true);
             }
         }
     }
@@ -89,35 +148,19 @@ public class ClientEvent {
         if (stack.is(ItemRegister.CosmicCrucibleBlockItem.get())) {
             List<Component> toolTip = event.getToolTip();
             toolTip.add(Component.translatable("tooltip.fargo_soul.cosmic_crucible").withStyle(ChatFormatting.GRAY));
-
-            CustomData customData = stack.get(DataComponents.BLOCK_ENTITY_DATA);
-            if (customData != null && event.getEntity() != null) {
-                ListTag items = customData.copyTag().getCompound("Inventory").getList("Items", 10);
-                int size = items.size();
-                int max = Math.min(size, 9);
-                for (int i = 0; i < max; i++) {
-                    Optional<ItemStack> s = ItemStack.parse(event.getEntity().registryAccess(), items.getCompound(i));
-                    if (s.isPresent() && !s.get().isEmpty()) {
-                        toolTip.add(Component.literal(" ◈ ").append(s.get().getHoverName()).append(" x" + s.get().getCount()).withStyle(ChatFormatting.DARK_AQUA));
-                    }
-                    if (i == max - 1 && size > 9) {
-                        toolTip.add(Component.literal(" ◈ 以及另外 " + (size - 9) + " 种物品").withStyle(ChatFormatting.DARK_PURPLE));
-                    }
-                }
-            }
         }
     }
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(
-                BlockEntityRegister.CosmicCrucible.get(),
-                CosmicCrucibleBlockEntityRenderer::new
-        );
+        event.registerBlockEntityRenderer(BlockEntityRegister.CosmicCrucible.get(), CosmicCrucibleBlockEntityRenderer::new);
     }
 
     @SubscribeEvent
     public static void render(RenderLivingEvent.Post<?, ?> event) {
+        if (!ClientConfig.CreatureSoulRendering.get()) {
+            return;
+        }
         LivingEntity livingEntity = event.getEntity();
         SoulListData soulListData = livingEntity.getData(AttachmentRegister.SoulListData);
         SoulAbilityEnabledData enabledData = livingEntity.getData(AttachmentRegister.AbilityEnabledData);
@@ -201,15 +244,40 @@ public class ClientEvent {
 
     @SubscribeEvent
     public static void RegisterClientTooltipComponentFactoriesEvent(RegisterClientTooltipComponentFactoriesEvent event) {
-        event.register(SoulTooltipComponent.class, soulTooltipComponent -> soulTooltipComponent);
+        event.register(SoulTooltipComponent.class, tooltipComponent -> tooltipComponent);
+        event.register(CosmicCrucibleItemTooltipComponent.class, tooltipComponent -> tooltipComponent);
     }
 
     @SubscribeEvent
-    public static void RenderTooltipHandler(RenderTooltipEvent.GatherComponents event) {
-        if (event.getItemStack().getItem() instanceof SoulItem soulItem) {
+    public static void renderSoulItemTooltipHandler(RenderTooltipEvent.GatherComponents event) {
+        if (event.getItemStack().getItem() instanceof SoulItem soulItem && ClientConfig.EmbedAChildSoulInTheItemTooltip.get()) {
             List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
             int size = tooltipElements.size();
-            tooltipElements.add(Math.min(size, 1), Either.right(new SoulTooltipComponent((soulItem.getSoulItemList().size() + 1) * 16, 16, 1.5f, soulItem)));
+            tooltipElements.add(Math.min(size, 1), Either.right(new SoulTooltipComponent((soulItem.getSoulItemList().size() + 1) * 16, 16, 1f, soulItem)));
+        }
+    }
+
+    @SubscribeEvent
+    public static void renderCosmicCrucibleItemTooltipHandler(RenderTooltipEvent.GatherComponents event) {
+        if (event.getItemStack().is(ItemRegister.CosmicCrucibleBlockItem)) {
+            ItemStack stack = event.getItemStack();
+            CustomData customData = stack.get(DataComponents.BLOCK_ENTITY_DATA);
+            ClientLevel level = Minecraft.getInstance().level;
+            if (customData != null && level != null) {
+                ListTag items = customData.copyTag().getCompound("Inventory").getList("Items", 10);
+                List<ItemStack> itemStackList = new ArrayList<>();
+                for (int i = 0; i < items.size(); i++) {
+                    CompoundTag itemTag = items.getCompound(i);
+                    ItemStack itemStack = ItemStack.parse(level.registryAccess(), itemTag).orElse(ItemStack.EMPTY);
+                    if (!itemStack.isEmpty()) {
+                        itemStackList.add(itemStack);
+                    }
+                }
+                if (!itemStackList.isEmpty()) {
+                    List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
+                    tooltipElements.add(tooltipElements.size(), Either.right(new CosmicCrucibleItemTooltipComponent(itemStackList)));
+                }
+            }
         }
     }
 
@@ -219,7 +287,7 @@ public class ClientEvent {
             SoulAbilityData soulAbilityData = SoulAbilityData.getSoulAbilityData(player);
             SoulAbilityData.SoulInfo soulInfo = soulAbilityData.getSoulInfo("Sprint", true);
             soulInfo.setMaxCooldown(40);
-            if (soulInfo.isReady() && KeyUtils.isDoubleTappingForward(event.getInput()) && CurioUtils.isEquipped(player, getSprintList())) {
+            if (soulInfo.isReady() && KeyUtils.isDoubleTappingForward(event.getInput()) && CurioUtils.isEquipped(player, SoulUtils.getSprintList())) {
                 soulInfo.setCooldown(soulInfo.getMaxCooldown());
                 double factor = 1.5;
                 if (CurioUtils.isEquipped(player, RedRidingSoul.class)) {
@@ -238,8 +306,8 @@ public class ClientEvent {
     public static void Fly(MovementInputUpdateEvent event) {
         if (event.getEntity() instanceof LocalPlayer player) {
             SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("Fly", true);
-            soulInfo.setMaxStacks(getFlyTime(player));
-            if (soulInfo.getStacks() > 0 && event.getInput().jumping && CurioUtils.isEquipped(player, getFlyList())) {
+            soulInfo.setMaxStacks(SoulUtils.getFlyTime(player));
+            if (soulInfo.getStacks() > 0 && event.getInput().jumping && CurioUtils.isEquipped(player, SoulUtils.getFlyList())) {
                 soulInfo.shrinkStacks();
                 Vec3 deltaMovement = player.getDeltaMovement();
                 Vec3 newDeltaMovement = new Vec3(
@@ -252,31 +320,6 @@ public class ClientEvent {
                 soulInfo.setStacks(soulInfo.getMaxStacks());
             }
         }
-    }
-
-    public static int getFlyTime(Player player) {
-        int time = 60;
-        if (CurioUtils.isEquipped(player, GreenSoul.class)) {
-            time += 40;
-        }
-        return time;
-    }
-
-    @SuppressWarnings("unchecked")
-    public static Class<? extends SoulItem>[] getSprintList() {
-        return new Class[]{
-                CrystalAssassinSoul.class,
-                PenetratingNinjaSoul.class,
-                GreenSoul.class
-        };
-    }
-
-    @SuppressWarnings("unchecked")
-    public static Class<? extends SoulItem>[] getFlyList() {
-        return new Class[]{
-                BeeSoul.class,
-                BeetleSoul.class
-        };
     }
 
 }

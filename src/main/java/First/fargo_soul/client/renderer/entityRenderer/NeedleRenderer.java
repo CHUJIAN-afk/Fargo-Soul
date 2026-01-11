@@ -1,7 +1,7 @@
 package First.fargo_soul.client.renderer.entityRenderer;
 
 import First.fargo_soul.FargoSoul;
-import First.fargo_soul.entity.projectile.NeedleProjectile;
+import First.fargo_soul.entity.projectile.Needle;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
@@ -20,7 +20,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
-public class NeedleRenderer extends EntityRenderer<NeedleProjectile> {
+public class NeedleRenderer extends EntityRenderer<Needle> {
 
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(FargoSoul.MODID,"cactus_soul");
     private final ItemStack needleStack = new ItemStack(Items.CACTUS);
@@ -30,7 +30,7 @@ public class NeedleRenderer extends EntityRenderer<NeedleProjectile> {
     }
 
     @Override
-    public void render(NeedleProjectile entity, float yaw, float partialTick, PoseStack poseStack, @NotNull MultiBufferSource buffer, int light) {
+    public void render(Needle entity, float yaw, float partialTick, PoseStack poseStack, @NotNull MultiBufferSource buffer, int light) {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTick, entity.xRotO, entity.getXRot())));
         poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTick, entity.yRotO, entity.getYRot()) - 90));
@@ -51,7 +51,7 @@ public class NeedleRenderer extends EntityRenderer<NeedleProjectile> {
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull NeedleProjectile entity) {
+    public @NotNull ResourceLocation getTextureLocation(@NotNull Needle entity) {
         return TEXTURE;
     }
 

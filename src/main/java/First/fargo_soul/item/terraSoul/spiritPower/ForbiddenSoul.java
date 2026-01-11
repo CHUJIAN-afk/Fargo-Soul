@@ -1,6 +1,5 @@
 package First.fargo_soul.item.terraSoul.spiritPower;
 
-import First.fargo_soul.FargoSoul;
 import First.fargo_soul.attachment.SoulAbilityData;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.SpiritPower;
@@ -9,12 +8,12 @@ import First.fargo_soul.register.ItemRegister;
 import First.fargo_soul.register.KeyRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.ParticleUtils;
+import First.fargo_soul.utils.RenderUtils;
 import First.fargo_soul.utils.SoulUtils;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -25,48 +24,38 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import org.confluence.lib.ConfluenceMagicLib;
-import org.confluence.lib.common.component.ModRarity;
 import org.jetbrains.annotations.NotNull;
-import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class ForbiddenSoul extends SoulItem {
-    public static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
     public ForbiddenSoul(Properties properties) {
-        super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PINK));
+        super(properties);
     }
 
-    @EventBusSubscriber
-    public static class Event {
-
-        @SubscribeEvent
-        public static void CurioChangeEvent(CurioChangeEvent event) {
-            event.getEntity().getData(AttachmentRegister.SoulAbilityData).getSoulInfo(ForbiddenSoul.class).setMaxCooldown(600);
+    @Override
+    public void tick(LivingEntity ticker) {
+        if (!ticker.level().isClientSide()) {
+            SoulAbilityData.getSoulInfo(ticker, ForbiddenSoul.class).setMaxCooldown(600);
         }
+    }
 
-        @OnlyIn(Dist.CLIENT)
-        @SubscribeEvent
-        public static void VortexSoulInputHandler(InputEvent.Key event) {
-            if (KeyRegister.ForbiddenKey.consumeClick()) {
-                if (Minecraft.getInstance().player instanceof LocalPlayer player) {
-                    PacketDistributor.sendToServer(new Packet(CurioUtils.isEquipped(player, ForbiddenSoul.class)));
-                }
-            }
+    @Override
+    public void keyPressed(Player player, int key) {
+        if (KeyRegister.ForbiddenKey.consumeClick()) {
+            PacketDistributor.sendToServer(new Packet(CurioUtils.isEquipped(player, ForbiddenSoul.class)));
         }
+    }
 
+    @Override
+    public List<Component> getGuiTooltip(Player player) {
+        List<Component> tooltip = super.getGuiTooltip(player);
+        tooltip.add(RenderUtils.createCooldownTooltip(this, "风暴冷却", SoulAbilityData.getSoulInfo(player, ForbiddenSoul.class)));
+        return tooltip;
     }
 
     public record Packet(boolean isEquipped) implements CustomPacketPayload {

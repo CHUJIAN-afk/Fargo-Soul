@@ -15,23 +15,22 @@ import top.theillusivec4.curios.api.type.capability.ICurioItem;
 import java.util.Collections;
 import java.util.List;
 
-public class SoulItem extends Item implements ICurioItem {
+public abstract class SoulItem extends Item implements ICurioItem, ISoulItem {
 
     public SoulItem(Properties properties) {
         super(properties.stacksTo(1).durability(0).rarity(Rarity.EPIC));
     }
 
-    public List<SoulItem> getSoulItemList() {
-        return List.of();
+    public ModRarity getModRarity() {
+        return this.components().getOrDefault(ConfluenceMagicLib.MOD_RARITY.get(), ModRarity.COMMON);
     }
 
     @Override
     public @NotNull Component getName(@NotNull ItemStack stack) {
         Component component = super.getName(stack);
-        if (stack.get(ConfluenceMagicLib.MOD_RARITY) instanceof ModRarity modRarity) {
-            return component.copy().withColor(modRarity.color());
-        }
-        return component;
+        ModRarity modRarity = stack.get(ConfluenceMagicLib.MOD_RARITY);
+        modRarity = modRarity != null ? modRarity : ModRarity.COMMON;
+        return component.copy().withColor(modRarity.color());
     }
 
     @Override
@@ -54,11 +53,3 @@ public class SoulItem extends Item implements ICurioItem {
     }
 
 }
-
-
-
-
-
-
-
-

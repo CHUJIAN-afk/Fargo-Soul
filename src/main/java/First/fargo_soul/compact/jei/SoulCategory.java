@@ -28,12 +28,11 @@ public class SoulCategory implements IRecipeCategory<SoulRecipe> {
     private final IDrawable icon;
     private final Component localizedName;
 
-
     public SoulCategory(IGuiHelper helper) {
         this.helper = helper;
         this.background = helper.createBlankDrawable(144, 144);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ItemRegister.CosmicCrucibleBlockItem.asItem()));
-        this.localizedName = Component.literal("坩埚融合");
+        this.localizedName = Component.translatable("jei.fargo_soul.category.soul");
     }
 
     @Override

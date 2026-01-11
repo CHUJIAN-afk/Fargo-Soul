@@ -9,6 +9,7 @@ import First.fargo_soul.event.modEvent.AddItemTagEvent;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.willPower.RedRidingSoul;
 import First.fargo_soul.register.AttachmentRegister;
+import First.fargo_soul.register.AttributeRegister;
 import First.fargo_soul.utils.AttributeUtils;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.SoulUtils;
@@ -30,9 +31,10 @@ import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
-import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
+import net.neoforged.neoforge.event.entity.living.*;
+import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
+import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import top.theillusivec4.curios.api.CuriosApi;
 
@@ -41,10 +43,89 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static First.fargo_soul.event.neoForgeEvent.ClientEvent.getSprintList;
+import static First.fargo_soul.utils.SoulUtils.getSprintList;
 
 @EventBusSubscriber(modid = FargoSoul.MODID)
 public class Event {
+
+    @SubscribeEvent
+    public static void soulDrop(LivingDropsEvent event) {
+        SoulUtils.RegisterSoulList.forEach(soulItem -> soulItem.drop(event));
+    }
+
+    @SubscribeEvent
+    public static void soulShieldBlock(LivingShieldBlockEvent event) {
+        SoulUtils.RegisterSoulList.forEach(soulItem -> soulItem.shieldBlock(event));
+    }
+
+    @SubscribeEvent
+    public static void soulItemUseFinish(LivingEntityUseItemEvent.Finish event) {
+        SoulUtils.RegisterSoulList.forEach(soulItem -> soulItem.itemUseFinish(event));
+    }
+
+    @SubscribeEvent
+    public static void soulPickup(ItemEntityPickupEvent.Post event) {
+        SoulUtils.RegisterSoulList.forEach(soulItem -> soulItem.pickup(event));
+    }
+
+    @SubscribeEvent
+    public static void soulCriticalHit(CriticalHitEvent event) {
+        SoulUtils.RegisterSoulList.forEach(soulItem -> soulItem.criticalHit(event));
+    }
+
+    @SubscribeEvent
+    public static void soulHeal(LivingHealEvent event) {
+        SoulUtils.RegisterSoulList.forEach(soulItem -> soulItem.heal(event));
+    }
+
+    @SubscribeEvent
+    public static void soulTargetChange(LivingChangeTargetEvent event) {
+        SoulUtils.RegisterSoulList.forEach(soulItem -> soulItem.targetChange(event));
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void soulDeath(LivingDeathEvent event) {
+        for (SoulItem soulItem : SoulUtils.RegisterSoulList) {
+            if (!event.isCanceled()) {
+                soulItem.death(event);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void soulApplicable(MobEffectEvent.Applicable event) {
+        SoulUtils.RegisterSoulList.forEach(soulItem -> soulItem.effectApplicable(event));
+    }
+
+    @SubscribeEvent
+    public static void soulTick(EntityTickEvent.Post event) {
+        if (event.getEntity() instanceof LivingEntity livingEntity) {
+            SoulUtils.AttributeSoulList.forEach(soulItem -> soulItem.getAttributeModifiers().forEach((attribute, attributeModifier) -> AttributeUtils.condition(livingEntity, attribute, attributeModifier.id(), attributeModifier.amount(), attributeModifier.operation(), CurioUtils.isEquipped(livingEntity, soulItem.getClass()))));
+            SoulUtils.RegisterSoulList.forEach(soulItem -> soulItem.tick(livingEntity));
+        }
+    }
+
+    @SubscribeEvent
+    public static void soulDamage(LivingIncomingDamageEvent event) {
+        SoulUtils.RegisterSoulList.forEach(soulItem -> soulItem.hurt(event));
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void attributeDamage(LivingIncomingDamageEvent event) {
+        if (event.getSource().getEntity() instanceof LivingEntity attacker) {
+            event.setAmount((float) (event.getAmount() * (1 + attacker.getAttributeValue(AttributeRegister.Damage))));
+        }
+    }
+
+    @SubscribeEvent
+    public static void EntityAttributeModificationEvent(EntityAttributeModificationEvent event) {
+        event.getTypes().forEach(entityType -> {
+            event.add(entityType, AttributeRegister.CriticalChance);
+            event.add(entityType, AttributeRegister.CriticalDamage);
+            event.add(entityType, AttributeRegister.ArmorPierce);
+            event.add(entityType, AttributeRegister.Damage);
+        });
+    }
 
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
@@ -84,7 +165,7 @@ public class Event {
                     mob.syncData(AttachmentRegister.SoulListData);
                     soulInfo.setMaxStacks(soulFromList.size());
                     soulInfo.setStacks(soulFromList.size());
-                    AttributeUtils.ConditionAttributeModifier(
+                    AttributeUtils.condition(
                             mob,
                             Attributes.MAX_HEALTH,
                             ResourceLocation.fromNamespaceAndPath(FargoSoul.MODID, "soul_health_add"),
@@ -92,7 +173,7 @@ public class Event {
                             AttributeModifier.Operation.ADD_VALUE,
                             soulInfo.isEnabled()
                     );
-                    AttributeUtils.ConditionAttributeModifier(
+                    AttributeUtils.condition(
                             mob,
                             Attributes.MAX_HEALTH,
                             ResourceLocation.fromNamespaceAndPath(FargoSoul.MODID, "soul_health_total"),
@@ -100,7 +181,7 @@ public class Event {
                             AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL,
                             soulInfo.isEnabled()
                     );
-                    AttributeUtils.ConditionAttributeModifier(
+                    AttributeUtils.condition(
                             mob,
                             Attributes.SCALE,
                             ResourceLocation.fromNamespaceAndPath(FargoSoul.MODID, "soul_scale"),
@@ -172,6 +253,5 @@ public class Event {
             }
         }
     }
-
 
 }

@@ -2,7 +2,7 @@ package First.fargo_soul.mixin.minecraft;
 
 
 import First.fargo_soul.entity.projectile.Bone;
-import First.fargo_soul.entity.projectile.NeedleProjectile;
+import First.fargo_soul.entity.projectile.Needle;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -22,7 +22,7 @@ public class AbstractArrowMixin {
     )
     private void tickDespawn(CallbackInfo ci) {
         AbstractArrow abstractArrow = (AbstractArrow) (Object) this;
-        if (abstractArrow instanceof NeedleProjectile || abstractArrow instanceof Bone) {
+        if (abstractArrow instanceof Needle || abstractArrow instanceof Bone) {
             if (life > 40) {
                 abstractArrow.discard();
                 ci.cancel();

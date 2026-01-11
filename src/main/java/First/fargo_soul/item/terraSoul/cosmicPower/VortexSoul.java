@@ -1,6 +1,5 @@
 package First.fargo_soul.item.terraSoul.cosmicPower;
 
-import First.fargo_soul.FargoSoul;
 import First.fargo_soul.attachment.SoulAbilityData;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.CosmicPower;
@@ -9,13 +8,13 @@ import First.fargo_soul.register.ItemRegister;
 import First.fargo_soul.register.KeyRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.ParticleUtils;
+import First.fargo_soul.utils.RenderUtils;
 import First.fargo_soul.utils.SoulUtils;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -31,45 +30,32 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import org.confluence.lib.ConfluenceMagicLib;
-import org.confluence.lib.common.component.ModRarity;
 import org.jetbrains.annotations.NotNull;
-import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class VortexSoul extends SoulItem {
 
     public VortexSoul(Properties properties) {
-        super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.RED));
+        super(properties);
     }
 
-    @EventBusSubscriber(modid = FargoSoul.MODID)
-    public static class Event {
-
-        @SubscribeEvent
-        public static void CurioChangeEvent(CurioChangeEvent event) {
-            event.getEntity().getData(AttachmentRegister.SoulAbilityData).getSoulInfo(VortexSoul.class).setMaxCooldown(400);
+    @Override
+    public void tick(LivingEntity ticker) {
+        if (!ticker.level().isClientSide() && CurioUtils.isEquipped(ticker, VortexSoul.class)) {
+            SoulAbilityData.getSoulInfo(ticker, VortexSoul.class).setMaxCooldown(400);
         }
+    }
 
-        @OnlyIn(Dist.CLIENT)
-        @SubscribeEvent
-        public static void VortexSoulInputHandler(InputEvent.Key event) {
-            if (event.getKey() == KeyRegister.VortexSoulKey.getKey().getValue()) {
-                if (Minecraft.getInstance().player instanceof LocalPlayer player) {
-                    PacketDistributor.sendToServer(new Packet(CurioUtils.isEquipped(player, VortexSoul.class)));
-                }
-            }
+    @Override
+    public void keyPressed(Player player, int key) {
+        if (key == KeyRegister.VortexSoulKey.getKey().getValue()) {
+            PacketDistributor.sendToServer(new Packet(CurioUtils.isEquipped(player, VortexSoul.class)));
         }
-
     }
 
     public record Packet(boolean isEquipped) implements CustomPacketPayload {
@@ -134,7 +120,12 @@ public class VortexSoul extends SoulItem {
 
     }
 
-
-
+    @Override
+    public List<Component> getGuiTooltip(Player player) {
+        List<Component> tooltip = new ArrayList<>();
+        SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(player, VortexSoul.class);
+        tooltip.add(RenderUtils.createCooldownTooltip(this, "传送冷却", soulInfo));
+        return tooltip;
+    }
 
 }

@@ -21,8 +21,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @EventBusSubscriber(modid = FargoSoul.MODID)
 public class SoulAbilityData implements INBTSerializable<CompoundTag>, AttachmentSyncHandler<SoulAbilityData> {
@@ -39,6 +39,13 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 
 	public static SoulAbilityData getSoulAbilityData(LivingEntity livingEntity) {
 		return livingEntity.getData(AttachmentRegister.SoulAbilityData);
+	}
+	public static SoulInfo getSoulInfo(LivingEntity livingEntity, String id) {
+		return getSoulAbilityData(livingEntity).getSoulInfo(id);
+	}
+
+	public static <T extends SoulItem> SoulInfo getSoulInfo(LivingEntity livingEntity, Class<T> type) {
+		return getSoulAbilityData(livingEntity).getSoulInfo(type.getName());
 	}
 
 	public Map<String, SoulInfo> getSoulInfoList() {
@@ -74,7 +81,6 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 						});
 			}
 			if (!attacker.level().isClientSide()) {
-				AtomicBoolean syncData = new AtomicBoolean(false);
 				soulInfoList.values().stream()
 						.filter(soulInfo -> !soulInfo.isClient())
 						.forEach(soulInfo -> {
@@ -84,15 +90,8 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 							if (soulInfo.getDuration() > 0) {
 								soulInfo.shrinkDuration();
 							}
-							if (soulInfo.isChange()) {
-								soulInfo.setChange(false);
-								syncData.set(true);
-							}
 						});
-				int tickCount = attacker instanceof Player ? 2 : 20;
-				if (syncData.get() && attacker.tickCount % tickCount == 0) {
-					attacker.syncData(AttachmentRegister.SoulAbilityData);
-				}
+				attacker.syncData(AttachmentRegister.SoulAbilityData);
 			}
 		}
 	}
@@ -142,9 +141,14 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 
 	@Override
 	public void write(@NotNull RegistryFriendlyByteBuf buf, @NotNull SoulAbilityData data, boolean clientPacket) {
-		Map<String, SoulInfo> soulInfo = data.SoulInfoList;
-		buf.writeVarInt(soulInfo.size());
-		soulInfo.forEach((key, info) -> {
+		List<Map.Entry<String, SoulInfo>> entryList = data.SoulInfoList.entrySet().stream()
+				.filter(entry -> entry.getValue().isChange())
+				.toList();
+		buf.writeVarInt(entryList.size());
+		entryList.forEach(entry -> {
+			String key = entry.getKey();
+			SoulInfo info = entry.getValue();
+			info.setChange(false);
 			buf.writeUtf(key);
 			buf.writeVarInt(info.cooldown);
 			buf.writeVarInt(info.maxCooldown);
@@ -205,6 +209,7 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 			this.enabled = false;
 			this.change = true;
 			this.client = client;
+
 		}
 
 		public boolean isClient() {
@@ -328,15 +333,15 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 		}
 
 		public void setEnabled(boolean enabled) {
-			if(this.enabled != enabled) {
+			if (this.enabled != enabled) {
 				this.enabled = enabled;
 				this.change = true;
 			}
 		}
 
-        public boolean isChange() {
-            return change;
-        }
+		public boolean isChange() {
+			return change;
+		}
 
 		public void setChange(boolean change) {
 			this.change = change;

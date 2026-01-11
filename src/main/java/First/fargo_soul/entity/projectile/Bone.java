@@ -42,7 +42,7 @@ public class Bone extends AbstractArrow {
 
     @Override
     protected @NotNull ItemStack getDefaultPickupItem() {
-        return Items.AIR.getDefaultInstance();
+        return Items.BONE.getDefaultInstance();
     }
 
 }

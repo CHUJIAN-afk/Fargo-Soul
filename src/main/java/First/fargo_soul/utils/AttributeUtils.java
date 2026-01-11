@@ -9,7 +9,11 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
 public class AttributeUtils {
 
-    public static void ConditionAttributeModifier(LivingEntity livingEntity, Holder<Attribute> attribute, ResourceLocation resourceLocation, double amount, AttributeModifier.Operation operation, boolean condition) {
+    public static void condition(LivingEntity livingEntity, Holder<Attribute> attribute, AttributeModifier attributeModifier, boolean condition) {
+        condition(livingEntity, attribute, attributeModifier.id(), attributeModifier.amount(), attributeModifier.operation(), condition);
+    }
+
+    public static void condition(LivingEntity livingEntity, Holder<Attribute> attribute, ResourceLocation resourceLocation, double amount, AttributeModifier.Operation operation, boolean condition) {
         if (condition) {
             if (livingEntity.getAttribute(attribute) instanceof AttributeInstance attributeInstance) {
                 AttributeModifier attributeModifier = attributeInstance.getModifier(resourceLocation);
@@ -38,6 +42,22 @@ public class AttributeUtils {
                 attributeInstance.removeModifier(resourceLocation);
             }
         }
+    }
+
+    public static AttributeModifier value(ResourceLocation resourceLocation, double amount) {
+        return createModifier(resourceLocation, amount, AttributeModifier.Operation.ADD_VALUE);
+    }
+
+    public static AttributeModifier total(ResourceLocation resourceLocation, double amount) {
+        return createModifier(resourceLocation, amount, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+    }
+
+    public static AttributeModifier base(ResourceLocation resourceLocation, double amount) {
+        return createModifier(resourceLocation, amount, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+    }
+
+    private static AttributeModifier createModifier(ResourceLocation resourceLocation, double amount, AttributeModifier.Operation operation) {
+        return new AttributeModifier(resourceLocation, amount, operation);
     }
 
 }
