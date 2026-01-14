@@ -1,15 +1,15 @@
 package First.fargo_soul.item.terraSoul.spiritPower;
 
 import First.fargo_soul.attachment.SoulAbilityData;
+import First.fargo_soul.client.gui.SoulGuiLayer;
+import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.SpiritPower;
 import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.ItemRegister;
 import First.fargo_soul.utils.AttributeUtils;
 import First.fargo_soul.utils.CurioUtils;
-import First.fargo_soul.utils.RenderUtils;
 import First.fargo_soul.utils.SoulUtils;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -68,12 +68,9 @@ public class GhostSoul extends SoulItem {
     }
 
     @Override
-    public List<Component> getGuiTooltip(Player player) {
-        List<Component> tooltip = super.getGuiTooltip(player);
-        SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(player, GhostSoul.class);
-        tooltip.add(RenderUtils.createCooldownTooltip(this, "复活冷却", soulInfo));
-        tooltip.add(RenderUtils.createStackTooltip(this, "灵魂能量", soulInfo));
-        return tooltip;
+    public void getSoulRenderInfo(SoulGuiLayer.SoulRenderManager soulRenderManager) {
+        soulRenderManager.add(this, GhostSoul.class, SoulRenderType.Cooldown);
+        soulRenderManager.add(this, GhostSoul.class, SoulRenderType.Stack);
     }
 
 }

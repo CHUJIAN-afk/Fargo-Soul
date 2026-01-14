@@ -1,25 +1,22 @@
 package First.fargo_soul.item.terraSoul.forestPower;
 
 import First.fargo_soul.attachment.SoulAbilityData;
+import First.fargo_soul.client.gui.SoulGuiLayer;
+import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.ForestPower;
 import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.ParticleUtils;
-import First.fargo_soul.utils.RenderUtils;
 import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Snowball;
 import net.minecraft.world.level.Level;
-
-import java.util.List;
 
 public class PineWoodSoul extends SoulItem {
 
@@ -59,10 +56,8 @@ public class PineWoodSoul extends SoulItem {
     }
 
     @Override
-    public List<Component> getGuiTooltip(Player player) {
-        List<Component> tooltip = super.getGuiTooltip(player);
-        tooltip.add(RenderUtils.createCooldownTooltip(this, "雪球冷却", player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(PineWoodSoul.class)));
-        return tooltip;
+    public void getSoulRenderInfo(SoulGuiLayer.SoulRenderManager soulRenderManager) {
+        soulRenderManager.add(this, PineWoodSoul.class, SoulRenderType.Cooldown);
     }
 
 }

@@ -18,6 +18,7 @@ import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CurioUtils {
 
@@ -26,7 +27,7 @@ public class CurioUtils {
         SoulListData soulListData = livingEntity.getData(AttachmentRegister.SoulListData);
         SoulAbilityEnabledData enabledData = livingEntity.getData(AttachmentRegister.AbilityEnabledData);
         for (SoulItem item : soulListData.getSoulItemList()) {
-            if (enabledData.isEnabled(item) && List.of(types).contains(item.getClass())) {
+            if (List.of(types).contains(item.getClass()) && enabledData.isEnabled(item)) {
                 return true;
             }
         }
@@ -105,7 +106,7 @@ public class CurioUtils {
     private static final Map<SoulItem, List<Component>> toolTipList = new HashMap<>();
 
     public static List<Component> getSoulItemAttributesComponent(SoulItem soulItem) {
-        return attributeList.computeIfAbsent(soulItem, k -> {
+        List<Component> components = attributeList.computeIfAbsent(soulItem, k -> {
             Map<String, String> languageData = Language.getInstance().getLanguageData();
             ModRarity modRarity = soulItem.components().getOrDefault(ConfluenceMagicLib.MOD_RARITY.get(), ModRarity.GRAY);
             List<MutableComponent> mutableComponents = languageData.keySet().stream()
@@ -116,6 +117,14 @@ public class CurioUtils {
                     .toList();
             return new ArrayList<>(mutableComponents);
         });
+        ModRarity rarity = soulItem.getModRarity();
+        if (rarity == ModRarity.MASTER || rarity == ModRarity.EXPERT || rarity == ModRarity.QUEST) {
+            return components.stream()
+                    .map(Component::copy)
+                    .map(component -> component.withColor(rarity.color()))
+                    .collect(Collectors.toList());
+        }
+        return components;
     }
 
     public static List<Component> getSoulItemTooltipComponent(SoulItem soulItem) {

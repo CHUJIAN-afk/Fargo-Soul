@@ -1,6 +1,9 @@
 package First.fargo_soul.item.terraSoul.willPower;
 
 import First.fargo_soul.attachment.SoulAbilityData;
+import First.fargo_soul.client.gui.SoulGuiLayer;
+import First.fargo_soul.client.gui.SoulRenderType;
+import First.fargo_soul.event.modEvent.SprintEvent;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.WillPower;
 import First.fargo_soul.register.AttachmentRegister;
@@ -8,8 +11,6 @@ import First.fargo_soul.register.AttributeRegister;
 import First.fargo_soul.register.ItemRegister;
 import First.fargo_soul.utils.AttributeUtils;
 import First.fargo_soul.utils.CurioUtils;
-import First.fargo_soul.utils.RenderUtils;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -17,8 +18,6 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
-
-import java.util.List;
 
 public class RedRidingSoul extends SoulItem {
 
@@ -70,11 +69,19 @@ public class RedRidingSoul extends SoulItem {
     }
 
     @Override
-    public List<Component> getGuiTooltip(Player player) {
-        List<Component> tooltip = super.getGuiTooltip(player);
-        SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(player, RedRidingSoul.class);
-        tooltip.add(RenderUtils.createStackTooltip(this, "游击", soulInfo));
-        return tooltip;
+    public void sprintClient(SprintEvent.Client event) {
+        Player player = event.getEntity();
+        if (CurioUtils.isEquipped(player, RedRidingSoul.class)) {
+            SoulAbilityData.SoulInfo info = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(RedRidingSoul.class);
+            if (info.getStacks() == info.getMaxStacks()) {
+                event.setVec3(event.getVec3().scale(1.5));
+            }
+        }
+    }
+
+    @Override
+    public void getSoulRenderInfo(SoulGuiLayer.SoulRenderManager soulRenderManager) {
+        soulRenderManager.add(this, RedRidingSoul.class, SoulRenderType.Stack);
     }
 
 }

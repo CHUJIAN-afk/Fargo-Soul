@@ -1,11 +1,12 @@
 package First.fargo_soul.item.base;
 
 import First.fargo_soul.client.gui.SoulGuiLayer;
+import First.fargo_soul.event.modEvent.PlayerFlyEvent;
+import First.fargo_soul.event.modEvent.SprintEvent;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.Input;
 import net.minecraft.core.Holder;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -16,12 +17,25 @@ import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public interface ISoulItem {
 
-    default void getRenderInfo(List<SoulGuiLayer.SoulRenderInfo> renderInfoList) {
+    default void fly(PlayerFlyEvent event){
+
+    }
+
+    default void sprintServer(SprintEvent.Server event) {
+
+    }
+
+    default void sprintClient(SprintEvent.Client event) {
+
+    }
+
+    default void getSoulRenderInfo(SoulGuiLayer.SoulRenderManager soulRenderManager) {
 
     }
 
@@ -70,10 +84,11 @@ public interface ISoulItem {
 
     /**
      * 子魂石列表
+     *
      * @return 子魂石列表
      */
     default List<SoulItem> getSoulItemList() {
-        return List.of();
+        return new ArrayList<>();
     }
 
     /**
@@ -81,7 +96,7 @@ public interface ISoulItem {
      * @return 常驻属性修改器
      */
     default Map<Holder<Attribute>, AttributeModifier> getAttributeModifiers() {
-        return Map.of();
+        return new HashMap<>();
     }
 
     /**
@@ -101,11 +116,7 @@ public interface ISoulItem {
     default void renderGui(Player player, GuiGraphics guiGraphics, float partialTick, Font font) {
 
     }
-
-    default List<Component> getGuiTooltip(Player player) {
-        return new ArrayList<>();
-    }
-
+    
     default void keyPressed(Player player, int key) {
 
     }

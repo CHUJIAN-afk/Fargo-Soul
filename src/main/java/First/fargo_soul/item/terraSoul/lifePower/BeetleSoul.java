@@ -1,6 +1,9 @@
 package First.fargo_soul.item.terraSoul.lifePower;
 
 import First.fargo_soul.attachment.SoulAbilityData;
+import First.fargo_soul.client.gui.SoulGuiLayer;
+import First.fargo_soul.client.gui.SoulRenderType;
+import First.fargo_soul.event.modEvent.PlayerFlyEvent;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.LifePower;
 import First.fargo_soul.register.AttachmentRegister;
@@ -8,16 +11,11 @@ import First.fargo_soul.register.AttributeRegister;
 import First.fargo_soul.register.ItemRegister;
 import First.fargo_soul.utils.AttributeUtils;
 import First.fargo_soul.utils.CurioUtils;
-import First.fargo_soul.utils.RenderUtils;
-import net.minecraft.network.chat.Component;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-
-import java.util.List;
 
 public class BeetleSoul extends SoulItem {
 
@@ -87,11 +85,16 @@ public class BeetleSoul extends SoulItem {
     }
 
     @Override
-    public List<Component> getGuiTooltip(Player player) {
-        List<Component> tooltip = super.getGuiTooltip(player);
-        tooltip.add(RenderUtils.createStackTooltip(this, "甲虫耐力", player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("BeetleEndurance")));
-        tooltip.add(RenderUtils.createStackTooltip(this, "甲虫力量", player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("BeetleMight")));
-        return tooltip;
+    public void fly(PlayerFlyEvent event) {
+        if (CurioUtils.isEquipped(event.getEntity(), BeetleSoul.class)) {
+            event.setAllowingFly(true);
+        }
+    }
+
+    @Override
+    public void getSoulRenderInfo(SoulGuiLayer.SoulRenderManager soulRenderManager) {
+        soulRenderManager.add(this, "BeetleEndurance", SoulRenderType.Stack);
+        soulRenderManager.add(this, "BeetleMight", SoulRenderType.Stack);
     }
 
 }

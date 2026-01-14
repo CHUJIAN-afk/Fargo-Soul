@@ -1,21 +1,20 @@
 package First.fargo_soul.item.terraSoul.earthPower;
 
 import First.fargo_soul.attachment.SoulAbilityData;
+import First.fargo_soul.client.gui.SoulGuiLayer;
+import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.EarthPower;
 import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.ItemRegister;
 import First.fargo_soul.utils.AttributeUtils;
 import First.fargo_soul.utils.CurioUtils;
-import First.fargo_soul.utils.RenderUtils;
 import First.fargo_soul.utils.SoulUtils;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
@@ -76,10 +75,8 @@ public class TitaniumSoul extends SoulItem {
     }
 
     @Override
-    public List<Component> getGuiTooltip(Player player) {
-        List<Component> tooltip = super.getGuiTooltip(player);
-        tooltip.add(RenderUtils.createCooldownTooltip(this, "钛金护盾冷却", player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(TitaniumSoul.class)));
-        return tooltip;
+    public void getSoulRenderInfo(SoulGuiLayer.SoulRenderManager soulRenderManager) {
+        soulRenderManager.add(this, TitaniumSoul.class, SoulRenderType.Stack);
     }
 
 }

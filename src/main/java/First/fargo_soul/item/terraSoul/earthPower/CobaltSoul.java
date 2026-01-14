@@ -1,27 +1,25 @@
 package First.fargo_soul.item.terraSoul.earthPower;
 
 import First.fargo_soul.attachment.SoulAbilityData;
+import First.fargo_soul.client.gui.SoulGuiLayer;
+import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.EarthPower;
 import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.EffectRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.ParticleUtils;
-import First.fargo_soul.utils.RenderUtils;
 import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -94,10 +92,8 @@ public class CobaltSoul extends SoulItem {
     }
 
     @Override
-    public List<Component> getGuiTooltip(Player player) {
-        List<Component> list = new ArrayList<>();
-        list.add(RenderUtils.createCooldownTooltip(this, "钴蓝爆炸冷却", SoulAbilityData.getSoulInfo(player, CobaltSoul.class)));
-        return list;
+    public void getSoulRenderInfo(SoulGuiLayer.SoulRenderManager soulRenderManager) {
+        soulRenderManager.add(this, CobaltSoul.class, SoulRenderType.Cooldown);
     }
-    
+
 }

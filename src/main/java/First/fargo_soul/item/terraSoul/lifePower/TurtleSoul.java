@@ -1,24 +1,21 @@
 package First.fargo_soul.item.terraSoul.lifePower;
 
 import First.fargo_soul.attachment.SoulAbilityData;
+import First.fargo_soul.client.gui.SoulGuiLayer;
+import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.entity.projectile.Needle;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.LifePower;
 import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.EntityRegister;
 import First.fargo_soul.utils.CurioUtils;
-import First.fargo_soul.utils.RenderUtils;
 import First.fargo_soul.utils.SoulUtils;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-
-import java.util.List;
 
 public class TurtleSoul extends SoulItem {
 
@@ -96,10 +93,8 @@ public class TurtleSoul extends SoulItem {
 	}
 
 	@Override
-	public List<Component> getGuiTooltip(Player player) {
-		List<Component> tooltip = super.getGuiTooltip(player);
-		tooltip.add(RenderUtils.createCooldownTooltip(this, "龟壳冷却", player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(TurtleSoul.class)));
-		return tooltip;
+	public void getSoulRenderInfo(SoulGuiLayer.SoulRenderManager soulRenderManager) {
+		soulRenderManager.add(this, TurtleSoul.class, SoulRenderType.Cooldown);
 	}
 
 }

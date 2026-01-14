@@ -26,16 +26,16 @@ public class FargoSoul {
     }
 
     public FargoSoul(IEventBus eventBus, ModContainer modContainer) {
-        ItemRegister.register(eventBus);//物品注册
-        BlockRegister.register(eventBus);//方块注册
-        BlockEntityRegister.register(eventBus);//方块实体注册
-        CreativeModeTabRegister.register(eventBus);//创造模式物品栏
-        EntityRegister.register(eventBus);//实体注册
-        EffectRegister.register(eventBus);//药水效果注册
-        AttributeRegister.register(eventBus);//属性注册
-        AttachmentRegister.register(eventBus);//数据组件注册
-        RecipeTypeRegister.register(eventBus);//配方类型注册
-        RecipeSerializerRegister.register(eventBus);//配方序列化注册
+        ItemRegister.register(eventBus);
+        BlockRegister.register(eventBus);
+        BlockEntityRegister.register(eventBus);
+        CreativeModeTabRegister.register(eventBus);
+        EntityRegister.register(eventBus);
+        EffectRegister.register(eventBus);
+        AttributeRegister.register(eventBus);
+        AttachmentRegister.register(eventBus);
+        RecipeTypeRegister.register(eventBus);
+        RecipeSerializerRegister.register(eventBus);
         modContainer.registerConfig(ModConfig.Type.SERVER, ServerSoulConfig.Spec);
         modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfig.Spec);
         if (FMLEnvironment.dist == Dist.CLIENT) {

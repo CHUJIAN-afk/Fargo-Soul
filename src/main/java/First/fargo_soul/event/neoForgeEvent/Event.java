@@ -7,7 +7,6 @@ import First.fargo_soul.blcokEntity.CosmicCrucibleBlockEntity;
 import First.fargo_soul.config.ServerSoulConfig;
 import First.fargo_soul.event.modEvent.AddItemTagEvent;
 import First.fargo_soul.item.base.SoulItem;
-import First.fargo_soul.item.terraSoul.willPower.RedRidingSoul;
 import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.AttributeRegister;
 import First.fargo_soul.utils.AttributeUtils;
@@ -15,6 +14,7 @@ import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -23,8 +23,10 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.neoforged.bus.api.EventPriority;
@@ -35,6 +37,7 @@ import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import top.theillusivec4.curios.api.CuriosApi;
 
@@ -42,8 +45,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static First.fargo_soul.utils.SoulUtils.getSprintList;
 
 @EventBusSubscriber(modid = FargoSoul.MODID)
 public class Event {
@@ -222,34 +223,28 @@ public class Event {
         }
     }
 
-    @SubscribeEvent
-    public static void mobsterSprint(EntityTickEvent.Post event) {
-        if (event.getEntity() instanceof Mob mob && !mob.level().isClientSide()) {
-            SoulAbilityData soulAbilityData = SoulAbilityData.getSoulAbilityData(mob);
-            SoulAbilityData.SoulInfo soulInfo = soulAbilityData.getSoulInfo("Sprint");
-            if (CurioUtils.isEquipped(mob, getSprintList())) {
-                soulInfo.setMaxCooldown(100);
-                if (mob.getTarget() instanceof LivingEntity target && soulInfo.isReady()) {
-                    soulInfo.setCooldown(soulInfo.getMaxCooldown());
-                    mob.getLookControl().setLookAt(target);
-                    double factor = 1.5;
-                    if (CurioUtils.isEquipped(mob, RedRidingSoul.class)) {
-                        SoulAbilityData.SoulInfo info = soulAbilityData.getSoulInfo(RedRidingSoul.class);
-                        if (info.getStacks() == info.getMaxStacks()) {
-                            factor *= 1.5f;
-                        }
-                    }
-                    mob.addDeltaMovement(mob.getLookAngle().scale(factor));
-                }
-            }
-        }
-    }
-
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void hurt(LivingIncomingDamageEvent event) {
         if (event.getSource().getDirectEntity() instanceof Projectile projectile && !projectile.level().isClientSide()) {
             if (projectile.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("noInvulnerable").isEnabled()) {
                 event.getEntity().invulnerableTime = 0;
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void in(PlayerInteractEvent.EntityInteract event) {
+        Player player = event.getEntity();
+        if (player.getMainHandItem().is(Items.DEBUG_STICK) && event.getHand().equals(InteractionHand.MAIN_HAND)) {
+            if (event.getTarget() instanceof LivingEntity target) {
+                if (player.getOffhandItem().getItem() instanceof SoulItem soulItem) {
+                    target.getData(AttachmentRegister.SoulListData).getSoulItemList().addAll(CurioUtils.getSoulFromSoul(soulItem));
+                    target.syncData(AttachmentRegister.SoulListData);
+                }
+                if (player.getOffhandItem().isEmpty()) {
+                    target.getData(AttachmentRegister.SoulListData).getSoulItemList().removeIf(soulItem -> true);
+                    target.syncData(AttachmentRegister.SoulListData);
+                }
             }
         }
     }

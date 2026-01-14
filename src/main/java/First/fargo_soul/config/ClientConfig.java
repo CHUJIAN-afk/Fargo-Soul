@@ -33,6 +33,9 @@ public class ClientConfig {
     public static final ModConfigSpec.IntValue ShowSoulTooltipYOffset =
             Builder.defineInRange("show_soul_tooltip_y_offset", 0, -1000, 1000);
 
+    public static final ModConfigSpec.IntValue InformationInterval =
+            Builder.defineInRange("information_interval", 10, 1, 100);
+
     public static final ModConfigSpec Spec = Builder.build();
 
 }

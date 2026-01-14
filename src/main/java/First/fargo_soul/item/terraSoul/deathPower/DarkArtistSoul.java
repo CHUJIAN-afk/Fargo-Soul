@@ -1,15 +1,15 @@
 package First.fargo_soul.item.terraSoul.deathPower;
 
 import First.fargo_soul.attachment.SoulAbilityData;
+import First.fargo_soul.client.gui.SoulGuiLayer;
+import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.DeathPower;
 import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.ParticleUtils;
-import First.fargo_soul.utils.RenderUtils;
 import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -17,14 +17,10 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DarkArtistSoul extends SoulItem {
 
@@ -89,11 +85,9 @@ public class DarkArtistSoul extends SoulItem {
     }
 
     @Override
-    public List<Component> getGuiTooltip(Player player) {
-        List<Component> tooltip = new ArrayList<>();
-        tooltip.add(RenderUtils.createCooldownTooltip(this, "箭雨冷却", SoulAbilityData.getSoulInfo(player, "DarkArtistArrow")));
-        tooltip.add(RenderUtils.createCooldownTooltip(this, "火球冷却", SoulAbilityData.getSoulInfo(player, "DarkArtistFireball")));
-        return tooltip;
+    public void getSoulRenderInfo(SoulGuiLayer.SoulRenderManager soulRenderManager) {
+        soulRenderManager.add(this, "DarkArtistArrow", SoulRenderType.Cooldown);
+        soulRenderManager.add(this, "DarkArtistFireball", SoulRenderType.Cooldown);
     }
 
 }

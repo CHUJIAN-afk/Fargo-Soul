@@ -13,13 +13,13 @@ import First.fargo_soul.client.screen.SoulScreen;
 import First.fargo_soul.client.tooltip.CosmicCrucibleItemTooltipComponent;
 import First.fargo_soul.client.tooltip.SoulTooltipComponent;
 import First.fargo_soul.config.ClientConfig;
+import First.fargo_soul.event.modEvent.PlayerFlyEvent;
+import First.fargo_soul.event.modEvent.SprintEvent;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.CosmicPower;
 import First.fargo_soul.item.terraSoul.cosmicPower.WizardSoul;
-import First.fargo_soul.item.terraSoul.deathPower.PenetratingNinjaSoul;
 import First.fargo_soul.item.terraSoul.naturePower.LavaSoul;
 import First.fargo_soul.item.terraSoul.terraPower.ObsidianSoul;
-import First.fargo_soul.item.terraSoul.willPower.RedRidingSoul;
 import First.fargo_soul.register.*;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.KeyUtils;
@@ -61,6 +61,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -117,10 +118,7 @@ public class ClientEvent {
 
     @SubscribeEvent
     public static void soulKeyPressed(InputEvent.Key event) {
-        Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.player instanceof LocalPlayer player) {
-            SoulUtils.RegisterSoulList.forEach(soulItem -> soulItem.keyPressed(player, event.getKey()));
-        }
+        PacketDistributor.sendToServer(new NetworkPacketRegister.KeyPressPacket(event.getKey()));
     }
 
     @SubscribeEvent
@@ -282,39 +280,39 @@ public class ClientEvent {
     }
 
     @SubscribeEvent
-    public static void Sprint(MovementInputUpdateEvent event) {
+    public static void soulSprint(MovementInputUpdateEvent event) {
         if (event.getEntity() instanceof LocalPlayer player) {
             SoulAbilityData soulAbilityData = SoulAbilityData.getSoulAbilityData(player);
             SoulAbilityData.SoulInfo soulInfo = soulAbilityData.getSoulInfo("Sprint", true);
             soulInfo.setMaxCooldown(40);
-            if (soulInfo.isReady() && KeyUtils.isDoubleTappingForward(event.getInput()) && CurioUtils.isEquipped(player, SoulUtils.getSprintList())) {
+            Vec3 vec3 = player.getLookAngle().scale(1.5);
+            SprintEvent.Client sprintEvent = new SprintEvent.Client(player, vec3);
+            NeoForge.EVENT_BUS.post(sprintEvent);
+            for (SoulItem soulItem : SoulUtils.RegisterSoulList) {
+                soulItem.sprintClient(sprintEvent);
+            }
+            if (soulInfo.isReady() && sprintEvent.isSprinting() && KeyUtils.isDoubleTappingForward(event.getInput())) {
                 soulInfo.setCooldown(soulInfo.getMaxCooldown());
-                double factor = 1.5;
-                if (CurioUtils.isEquipped(player, RedRidingSoul.class)) {
-                    SoulAbilityData.SoulInfo info = soulAbilityData.getSoulInfo(RedRidingSoul.class);
-                    if (info.getStacks() == info.getMaxStacks()) {
-                        factor *= 1.5f;
-                    }
-                }
-                player.addDeltaMovement(player.getLookAngle().scale(factor));
-                PacketDistributor.sendToServer(new PenetratingNinjaSoul.Packet(CurioUtils.isEquipped(player, PenetratingNinjaSoul.class)));
+                player.addDeltaMovement(sprintEvent.getVec3());
+                PacketDistributor.sendToServer(new NetworkPacketRegister.SprintPacket());
             }
         }
     }
 
     @SubscribeEvent
-    public static void Fly(MovementInputUpdateEvent event) {
+    public static void fly(MovementInputUpdateEvent event) {
         if (event.getEntity() instanceof LocalPlayer player) {
             SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("Fly", true);
-            soulInfo.setMaxStacks(SoulUtils.getFlyTime(player));
-            if (soulInfo.getStacks() > 0 && event.getInput().jumping && CurioUtils.isEquipped(player, SoulUtils.getFlyList())) {
+            PlayerFlyEvent flyEvent = new PlayerFlyEvent(player);
+            NeoForge.EVENT_BUS.post(flyEvent);
+            for (SoulItem soulItem : SoulUtils.RegisterSoulList) {
+                soulItem.fly(flyEvent);
+            }
+            soulInfo.setMaxStacks(flyEvent.getMaxFlyTime());
+            if (soulInfo.getStacks() > 0 && event.getInput().jumping && flyEvent.isAllowingFly()) {
                 soulInfo.shrinkStacks();
                 Vec3 deltaMovement = player.getDeltaMovement();
-                Vec3 newDeltaMovement = new Vec3(
-                        deltaMovement.x(),
-                        Math.min(deltaMovement.y() + 0.25, 0.5),
-                        deltaMovement.z()
-                );
+                Vec3 newDeltaMovement = new Vec3(deltaMovement.x(), Math.min(deltaMovement.y() + 0.25, 0.5), deltaMovement.z());
                 player.setDeltaMovement(newDeltaMovement);
             } else if (player.onGround()) {
                 soulInfo.setStacks(soulInfo.getMaxStacks());

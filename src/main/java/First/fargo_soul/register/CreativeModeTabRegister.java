@@ -31,9 +31,11 @@ public class CreativeModeTabRegister {
                     output.accept(ItemRegister.Soul);
                     List<SoulItem> soulItemList = new ArrayList<>(SoulUtils.RegisterSoulList);
                     Collections.reverse(soulItemList);
-                    soulItemList.stream()
-                            .filter(soulItem -> BuiltInRegistries.ITEM.getKey(soulItem).getNamespace().equals(FargoSoul.MODID))
-                            .forEach(output::accept);
+                    for (SoulItem soulItem : soulItemList) {
+                        if (BuiltInRegistries.ITEM.getKey(soulItem).getNamespace().equals(FargoSoul.MODID)) {
+                            output.accept(soulItem);
+                        }
+                    }
                 });
                 return builder.build();
             });

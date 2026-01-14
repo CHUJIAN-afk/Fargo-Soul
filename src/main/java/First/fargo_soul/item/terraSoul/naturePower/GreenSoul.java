@@ -1,6 +1,10 @@
 package First.fargo_soul.item.terraSoul.naturePower;
 
 import First.fargo_soul.attachment.SoulAbilityData;
+import First.fargo_soul.client.gui.SoulGuiLayer;
+import First.fargo_soul.client.gui.SoulRenderType;
+import First.fargo_soul.event.modEvent.PlayerFlyEvent;
+import First.fargo_soul.event.modEvent.SprintEvent;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.NaturePower;
 import First.fargo_soul.register.AttachmentRegister;
@@ -17,7 +21,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -25,13 +28,10 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
-
-import java.util.List;
 
 
 public class GreenSoul extends SoulItem {
@@ -115,11 +115,25 @@ public class GreenSoul extends SoulItem {
     }
 
     @Override
-    public List<Component> getGuiTooltip(Player player) {
-        List<Component> tooltip = super.getGuiTooltip(player);
-        tooltip.add(RenderUtils.createCooldownTooltip(this, "叶绿水晶冷却", player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(player.getScoreboardName())));
-        return tooltip;
+    public void getSoulRenderInfo(SoulGuiLayer.SoulRenderManager soulRenderManager) {
+        soulRenderManager.add(this, GreenSoul.class, SoulRenderType.Cooldown);
     }
+
+    @Override
+    public void fly(PlayerFlyEvent event) {
+        if (event.isAllowingFly()) {
+            event.addMaxFlyTime(40);
+        }
+    }
+
+    @Override
+    public void sprintClient(SprintEvent.Client event) {
+        LivingEntity livingEntity = event.getEntity();
+        if (CurioUtils.isEquipped(livingEntity, GreenSoul.class)) {
+            event.setSprinting(true);
+        }
+    }
+
 }
 
 

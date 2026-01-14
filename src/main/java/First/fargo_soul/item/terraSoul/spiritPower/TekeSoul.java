@@ -1,18 +1,15 @@
 package First.fargo_soul.item.terraSoul.spiritPower;
 
 import First.fargo_soul.attachment.SoulAbilityData;
+import First.fargo_soul.client.gui.SoulGuiLayer;
+import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.SpiritPower;
 import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.utils.CurioUtils;
-import First.fargo_soul.utils.RenderUtils;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
-import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
-
-import java.util.List;
 
 public class TekeSoul extends SoulItem {
 
@@ -40,11 +37,8 @@ public class TekeSoul extends SoulItem {
     }
 
     @Override
-    public List<Component> getGuiTooltip(Player player) {
-        List<Component> tooltip = super.getGuiTooltip(player);
-        SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(player, TekeSoul.class);
-        tooltip.add(RenderUtils.createCooldownTooltip(this, "复活冷却", soulInfo));
-        return tooltip;
+    public void getSoulRenderInfo(SoulGuiLayer.SoulRenderManager soulRenderManager) {
+        soulRenderManager.add(this, TekeSoul.class, SoulRenderType.Cooldown);
     }
 
 }

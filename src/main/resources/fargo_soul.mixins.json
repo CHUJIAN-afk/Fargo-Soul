@@ -13,12 +13,14 @@
     "minecraft.LivingEntityMixin",
     "minecraft.PlayerMixin",
     "minecraft.ProjectileUtilMixin",
+    "minecraft.ServerBlockStateBaseMixin",
     "minecraft.SnowballMixin",
     "minecraft.StemBlockMixin",
     "minecraft.TagLoaderMixin",
     "minecraft.VillagerMixin"
   ],
   "client": [
+    "minecraft.ClientBlockStateBaseMixin",
     "minecraft.EntityRenderDispatcherMixin",
     "minecraft.ItemInHandRendererMixin"
   ],

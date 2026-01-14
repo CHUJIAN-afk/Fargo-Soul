@@ -1,23 +1,19 @@
 package First.fargo_soul.item.terraSoul.earthPower;
 
 import First.fargo_soul.attachment.SoulAbilityData;
+import First.fargo_soul.client.gui.SoulGuiLayer;
+import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.EarthPower;
 import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.ItemRegister;
 import First.fargo_soul.utils.AttributeUtils;
 import First.fargo_soul.utils.CurioUtils;
-import First.fargo_soul.utils.RenderUtils;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class AdamantiteSoul extends SoulItem {
@@ -55,12 +51,9 @@ public class AdamantiteSoul extends SoulItem {
     }
 
     @Override
-    public List<Component> getGuiTooltip(Player player) {
-        List<Component> list = new ArrayList<>();
-        SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(player, AdamantiteSoul.class);
-        list.add(RenderUtils.createStackTooltip(this, "精金镀层冷却", soulInfo));
-        list.add(RenderUtils.createDurationTooltip(this, "精金镀层", soulInfo));
-        return list;
+    public void getSoulRenderInfo(SoulGuiLayer.SoulRenderManager soulRenderManager) {
+        soulRenderManager.add(this, AdamantiteSoul.class, SoulRenderType.Stack);
+        soulRenderManager.add(this, AdamantiteSoul.class, SoulRenderType.Duration);
     }
 
 }

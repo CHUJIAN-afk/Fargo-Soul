@@ -83,7 +83,7 @@ public abstract class RenderUtils {
         return tooltip;
     }
 
-    private enum TooltipType {
+    public enum TooltipType {
         Duration, Stack, Cooldown
     }
 

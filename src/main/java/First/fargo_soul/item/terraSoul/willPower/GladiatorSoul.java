@@ -1,13 +1,13 @@
 package First.fargo_soul.item.terraSoul.willPower;
 
 import First.fargo_soul.attachment.SoulAbilityData;
+import First.fargo_soul.client.gui.SoulGuiLayer;
+import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.WillPower;
 import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.utils.CurioUtils;
-import First.fargo_soul.utils.RenderUtils;
 import First.fargo_soul.utils.SoulUtils;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
@@ -61,7 +61,6 @@ public class GladiatorSoul extends SoulItem {
                 }
             }
         }
-
         if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
             if (CurioUtils.isEquipped(attacker, GladiatorSoul.class)) {
                 SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GladiatorSoul.class);
@@ -103,11 +102,9 @@ public class GladiatorSoul extends SoulItem {
     }
 
     @Override
-    public List<Component> getGuiTooltip(Player player) {
-        List<Component> tooltip = super.getGuiTooltip(player);
-        SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(player, GladiatorSoul.class);
-        tooltip.add(RenderUtils.createDurationTooltip(this, "箭雨攻击", soulInfo));
-        return tooltip;
+    public void getSoulRenderInfo(SoulGuiLayer.SoulRenderManager soulRenderManager) {
+        soulRenderManager.add(this, GladiatorSoul.class, SoulRenderType.Cooldown);
+        soulRenderManager.add(this, GladiatorSoul.class, SoulRenderType.Stack);
     }
 
 }

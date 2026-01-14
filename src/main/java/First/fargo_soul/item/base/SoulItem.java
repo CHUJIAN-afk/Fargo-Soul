@@ -5,6 +5,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
@@ -49,7 +50,7 @@ public abstract class SoulItem extends Item implements ICurioItem, ISoulItem {
 
     @Override
     public boolean canEquipFromUse(SlotContext slotContext, ItemStack itemStack) {
-        return canEquip(slotContext, itemStack);
+        return canEquip(slotContext, itemStack) && !slotContext.entity().getMainHandItem().is(Items.DEBUG_STICK);
     }
 
 }

@@ -1,19 +1,18 @@
 package First.fargo_soul.item.terraSoul.cosmicPower;
 
 import First.fargo_soul.attachment.SoulAbilityData;
+import First.fargo_soul.client.gui.SoulGuiLayer;
+import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.CosmicPower;
 import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.ItemRegister;
 import First.fargo_soul.utils.AttributeUtils;
 import First.fargo_soul.utils.CurioUtils;
-import First.fargo_soul.utils.RenderUtils;
 import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.client.player.Input;
 import net.minecraft.core.Holder;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -26,8 +25,8 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import org.jetbrains.annotations.UnknownNullability;
 
-import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class MeteorSoul extends SoulItem {
 
@@ -46,17 +45,22 @@ public class MeteorSoul extends SoulItem {
     public void hurt(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
             if (!attacker.equals(target) && CurioUtils.isEquipped(attacker, MeteorSoul.class)) {
-                double chance = CurioUtils.isEquipped(attacker, CosmicPower.class) ? 0.1 : 0.05;
+                double chance = CurioUtils.isEquipped(attacker, CosmicPower.class) ? 0.8 : 0.2;
                 SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(MeteorSoul.class);
                 soulInfo.setMaxCooldown(20);
                 if (soulInfo.isReady()) {
-                    soulInfo.setCooldown(soulInfo.getMaxCooldown());
                     Level level = attacker.level();
+                    int count = 0;
                     while (target.getRandom().nextDouble() < chance) {
-                        SmallFireball fireball = new SmallFireball(EntityType.SMALL_FIREBALL, level);
-                        SoulUtils.shootTargetFromAttaker(fireball, attacker, target, 2, 2);
-                        SoulUtils.setAbilityInvulnerable(fireball);
-                        SoulUtils.playSound(level, fireball.position(), SoundEvents.GHAST_SHOOT, SoundSource.PLAYERS);
+                        soulInfo.setCooldown(soulInfo.getMaxCooldown());
+                        SoulUtils.executorService.schedule(() -> {
+                            SmallFireball fireball = new SmallFireball(EntityType.SMALL_FIREBALL, level);
+                            fireball.clearFire();
+                            SoulUtils.shootTargetFromAttaker(fireball, attacker, target, 2, 2);
+                            SoulUtils.setAbilityInvulnerable(fireball);
+                            SoulUtils.playSound(level, fireball.position(), SoundEvents.GHAST_SHOOT, fireball.getSoundSource());
+                        }, count * 200L, TimeUnit.MILLISECONDS);
+                        count++;
                     }
                 }
             }
@@ -71,11 +75,8 @@ public class MeteorSoul extends SoulItem {
     }
 
     @Override
-    public List<Component> getGuiTooltip(Player player) {
-        List<Component> tooltip = super.getGuiTooltip(player);
-        SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(MeteorSoul.class);
-        tooltip.add(RenderUtils.createCooldownTooltip(this, "流星冷却", soulInfo));
-        return tooltip;
+    public void getSoulRenderInfo(SoulGuiLayer.SoulRenderManager soulRenderManager) {
+        soulRenderManager.add(this, MeteorSoul.class, SoulRenderType.Cooldown);
     }
-    
+
 }

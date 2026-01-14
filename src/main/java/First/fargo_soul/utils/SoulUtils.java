@@ -1,11 +1,6 @@
 package First.fargo_soul.utils;
 
 import First.fargo_soul.item.base.SoulItem;
-import First.fargo_soul.item.terraSoul.deathPower.CrystalAssassinSoul;
-import First.fargo_soul.item.terraSoul.deathPower.PenetratingNinjaSoul;
-import First.fargo_soul.item.terraSoul.lifePower.BeeSoul;
-import First.fargo_soul.item.terraSoul.lifePower.BeetleSoul;
-import First.fargo_soul.item.terraSoul.naturePower.GreenSoul;
 import First.fargo_soul.register.AttachmentRegister;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -199,31 +194,6 @@ public class SoulUtils {
 		DamageSources damageSources = target.level().damageSources();
 		DamageSource damageSource = damageSources.source(damageTypeResourceKey, attacker != null ? attacker : target);
 		target.hurt(damageSource, amount);
-	}
-
-    @SuppressWarnings("unchecked")
-    public static Class<? extends SoulItem>[] getSprintList() {
-        return new Class[]{
-                CrystalAssassinSoul.class,
-                PenetratingNinjaSoul.class,
-                GreenSoul.class
-        };
-    }
-
-	@SuppressWarnings("unchecked")
-	public static Class<? extends SoulItem>[] getFlyList() {
-		return new Class[]{
-				BeeSoul.class,
-				BeetleSoul.class
-		};
-	}
-
-	public static int getFlyTime(Player player) {
-		int time = 60;
-		if (CurioUtils.isEquipped(player, GreenSoul.class)) {
-			time += 40;
-		}
-		return time;
 	}
 
 }

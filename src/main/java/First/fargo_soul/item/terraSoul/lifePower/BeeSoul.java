@@ -1,5 +1,6 @@
 package First.fargo_soul.item.terraSoul.lifePower;
 
+import First.fargo_soul.event.modEvent.PlayerFlyEvent;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.LifePower;
 import First.fargo_soul.utils.CurioUtils;
@@ -75,6 +76,13 @@ public class BeeSoul extends SoulItem {
                     bee.setTarget(target);
                 }
             }
+        }
+    }
+
+    @Override
+    public void fly(PlayerFlyEvent event) {
+        if (CurioUtils.isEquipped(event.getEntity(), BeeSoul.class)) {
+            event.setAllowingFly(true);
         }
     }
 

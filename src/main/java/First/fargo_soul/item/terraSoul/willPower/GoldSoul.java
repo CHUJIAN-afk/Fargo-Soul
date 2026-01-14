@@ -1,28 +1,24 @@
 package First.fargo_soul.item.terraSoul.willPower;
 
 import First.fargo_soul.attachment.SoulAbilityData;
+import First.fargo_soul.client.gui.SoulGuiLayer;
+import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.WillPower;
 import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.EffectRegister;
-import First.fargo_soul.register.ItemRegister;
 import First.fargo_soul.register.KeyRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.RenderUtils;
 import First.fargo_soul.utils.SoulUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -40,11 +36,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -198,53 +191,26 @@ public class GoldSoul extends SoulItem {
 
     @Override
     public void keyPressed(Player player, int key) {
-        if (key == KeyRegister.GoldSoulKey.getKey().getValue()) {
-            PacketDistributor.sendToServer(new Packet(CurioUtils.isEquipped(player, GoldSoul.class)));
+        if (key == KeyRegister.GoldSoulKey.getKey().getValue() && CurioUtils.isEquipped(player, GoldSoul.class)) {
+            SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GoldSoul.class);
+            soulInfo.setMaxCooldown(2400);
+            if (soulInfo.getCooldown() == 0) {
+                soulInfo.setCooldown(soulInfo.getMaxCooldown());
+                soulInfo.setDuration(CurioUtils.isEquipped(player, WillPower.class) ? 140 : 100);
+                SoulUtils.playSound(
+                        player.level(),
+                        player.position(),
+                        SoundEvents.APPLY_EFFECT_RAID_OMEN,
+                        SoundSource.PLAYERS
+                );
+            }
         }
     }
 
     @Override
-    public List<Component> getGuiTooltip(Player player) {
-        List<Component> tooltip = super.getGuiTooltip(player);
-        SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(player, GoldSoul.class);
-        tooltip.add(RenderUtils.createCooldownTooltip(this, "金身冷却", soulInfo));
-        return tooltip;
-    }
-
-    public record Packet(boolean isEquipped) implements CustomPacketPayload {
-
-        public static final Type<Packet> TYPE = new Type<>(ItemRegister.GoldSoulItem.getId());
-        public static final StreamCodec<ByteBuf, Packet> STREAM_CODEC = StreamCodec.composite(
-                ByteBufCodecs.BOOL,
-                Packet::isEquipped,
-                Packet::new
-        );
-
-        @Override
-        public @NotNull Type<? extends CustomPacketPayload> type() {
-            return TYPE;
-        }
-
-        public void handle(IPayloadContext context) {
-            context.enqueueWork(() -> {
-                if (isEquipped) {
-                    Player player = context.player();
-                    SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GoldSoul.class);
-                    soulInfo.setMaxCooldown(2400);
-                    if (soulInfo.getCooldown() == 0) {
-                        soulInfo.setCooldown(soulInfo.getMaxCooldown());
-                        soulInfo.setDuration(CurioUtils.isEquipped(player, WillPower.class) ? 140 : 100);
-                        SoulUtils.playSound(
-                                player.level(),
-                                player.position(),
-                                SoundEvents.APPLY_EFFECT_RAID_OMEN,
-                                SoundSource.PLAYERS
-                        );
-                    }
-                }
-            });
-        }
-
+    public void getSoulRenderInfo(SoulGuiLayer.SoulRenderManager soulRenderManager) {
+        soulRenderManager.add(this, GoldSoul.class, SoulRenderType.Cooldown);
+        soulRenderManager.add(this, GoldSoul.class, SoulRenderType.Duration);
     }
 
 }

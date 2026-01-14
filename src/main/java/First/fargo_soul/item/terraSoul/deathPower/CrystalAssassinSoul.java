@@ -1,6 +1,7 @@
 package First.fargo_soul.item.terraSoul.deathPower;
 
 import First.fargo_soul.attachment.SoulAbilityData;
+import First.fargo_soul.event.modEvent.SprintEvent;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.DeathPower;
 import First.fargo_soul.register.AttachmentRegister;
@@ -29,6 +30,14 @@ public class CrystalAssassinSoul extends SoulItem {
                     target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, duration, amplifier));
                 }
             }
+        }
+    }
+
+    @Override
+    public void sprintClient(SprintEvent.Client event) {
+        LivingEntity livingEntity = event.getEntity();
+        if (CurioUtils.isEquipped(livingEntity, CrystalAssassinSoul.class)) {
+            event.setSprinting(true);
         }
     }
 

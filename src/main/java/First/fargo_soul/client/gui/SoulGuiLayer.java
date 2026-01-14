@@ -1,134 +1,169 @@
 package First.fargo_soul.client.gui;
 
-import First.fargo_soul.attachment.SoulAbilityEnabledData;
+import First.fargo_soul.FargoSoul;
+import First.fargo_soul.attachment.SoulAbilityData;
 import First.fargo_soul.config.ClientConfig;
 import First.fargo_soul.item.base.SoulItem;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.utils.CurioUtils;
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
-import com.mojang.blaze3d.systems.RenderSystem;
+import First.fargo_soul.utils.SoulUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 
-import java.awt.*;
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SoulGuiLayer {
 
-    private static final Table<SoulItem, Integer, SoulRenderInfo> SoulTooltipManager = HashBasedTable.create();
+    public static final Map<Object, SoulRenderInfo> SoulTooltipManager = new LinkedHashMap<>();
+    public static final int MaxRenderTime = 40;
+    private static long lastUpdateTime = 0;
 
     public static void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
-        if (!ClientConfig.ShowSoulTooltip.get()) return;
-        float partialTick = deltaTracker.getGameTimeDeltaPartialTick(true);
-        if (Minecraft.getInstance().player instanceof LocalPlayer player) {
-            Font font = Minecraft.getInstance().font;
-            List<SoulItem> soulItemList = CurioUtils.getEntitySoulItem(player);
-            SoulAbilityEnabledData enabledData = player.getData(AttachmentRegister.AbilityEnabledData);
-            soulItemList = soulItemList.stream().filter(enabledData::isEnabled).toList();
-            long gameTime = player.level().getGameTime();
+        if (ClientConfig.ShowSoulTooltip.get() && Minecraft.getInstance().player instanceof LocalPlayer player) {
+            List<SoulItem> soulItemList = SoulUtils.RegisterSoulList;
+            float partialTick = deltaTracker.getGameTimeDeltaTicks();
             for (SoulItem soulItem : soulItemList) {
-                soulItem.renderGui(player, guiGraphics, partialTick, font);
-                List<SoulRenderInfo> renderInfoList = new ArrayList<>();
-                soulItem.getRenderInfo(renderInfoList);
-                List<Component> guiTooltip = soulItem.getGuiTooltip(player);
-                for (Component component : guiTooltip) {
-                    SoulRenderInfo renderInfo = SoulTooltipManager.get(soulItem, guiTooltip.indexOf(component));
-                    if (renderInfo == null && !component.equals(Component.empty())) {
-                        renderInfo = new SoulRenderInfo(soulItem, component, gameTime - 40);
-                        SoulTooltipManager.put(soulItem, guiTooltip.indexOf(component), renderInfo);
-                    }
-                    if (renderInfo != null && !renderInfo.getTooltip().toString().equals(component.toString())) {
-                        renderInfo.setTooltip(component);
-                        renderInfo.setStartTime(gameTime);
+                soulItem.renderGui(player, guiGraphics, partialTick, Minecraft.getInstance().font);
+            }
+            long gameTime = player.level().getGameTime();
+            if (lastUpdateTime != gameTime) {
+                lastUpdateTime = gameTime;
+                SoulGuiLayer.SoulRenderManager renderManager = new SoulGuiLayer.SoulRenderManager(player, SoulTooltipManager);
+                for (SoulItem soulItem : soulItemList) {
+                    if (CurioUtils.isEquipped(player, soulItem.getClass())) {
+                        soulItem.getSoulRenderInfo(renderManager);
                     }
                 }
             }
-            renderSoulTooltips(enabledData, guiGraphics, font, gameTime);
+            render(guiGraphics, gameTime);
         }
     }
 
-    private static void renderSoulTooltips(SoulAbilityEnabledData enabledData, GuiGraphics guiGraphics, Font font, long gameTime) {
-        if (!SoulTooltipManager.isEmpty()) {
-            PoseStack poseStack = guiGraphics.pose();
-            poseStack.pushPose();
-            float scale = ClientConfig.ShowSoulTooltipScale.get().floatValue();
-            poseStack.scale(scale, scale, scale);
-            int xOffset = ClientConfig.ShowSoulTooltipXOffset.get();
-            int yOffset = ClientConfig.ShowSoulTooltipYOffset.get();
-            int scaledHeight = Minecraft.getInstance().getWindow().getGuiScaledHeight();
-            int totalLines = 0;
-            for (SoulRenderInfo renderInfo : SoulTooltipManager.values()) {
-                if (gameTime - renderInfo.getStartTime() < 40 && enabledData.isEnabled(renderInfo.soulItem)) {
-                    totalLines++;
-                }
+    private static void render(GuiGraphics guiGraphics, long gameTime) {
+        PoseStack poseStack = guiGraphics.pose();
+        poseStack.pushPose();
+        float scale = ClientConfig.ShowSoulTooltipScale.get().floatValue();
+        poseStack.scale(scale, scale, scale);
+        int xOffset = ClientConfig.ShowSoulTooltipXOffset.get();
+        int yOffset = ClientConfig.ShowSoulTooltipYOffset.get();
+        Collection<SoulRenderInfo> soulRenderInfos = SoulTooltipManager.values();
+        int interval = ClientConfig.InformationInterval.get();
+        int currentY = 2 + (int) ((yOffset) * scale);
+        int x = 2 + (int) ((xOffset) * scale);
+        for (SoulRenderInfo renderInfo : soulRenderInfos) {
+            long timeDiff = gameTime - renderInfo.startTime;
+            if (timeDiff < MaxRenderTime) {
+                float renderPercentage = (float) timeDiff / MaxRenderTime;
+                renderInfo.alpha = renderPercentage < 0.1f ? 1f : renderPercentage < 0.2f ? 1f - (renderPercentage - 0.1f) : renderPercentage < 0.9f ? 0.9f : 0.9f * (1f - (renderPercentage - 0.9f) * 10f);
+                renderInfo.x = x;
+                renderInfo.y = currentY;
+                currentY += interval;
+                renderInfo.render(guiGraphics);
             }
-            int interval = (int) (10 + ((float) (scaledHeight - (totalLines * 16)) / (float) scaledHeight) * 6);
-            RenderSystem.enableBlend();
-            RenderSystem.defaultBlendFunc();
-            int currentY = 20 + (int) ((yOffset) * scale);
-            int x = 2 + (int) ((xOffset) * scale);
-            for (SoulRenderInfo renderInfo : SoulTooltipManager.values()) {
-                SoulItem soulItem = renderInfo.getSoulItem();
-                long timeDiff = gameTime - renderInfo.getStartTime();
-                if (timeDiff < 40 && enabledData.isEnabled(soulItem)) {
-                    poseStack.pushPose();
-                    poseStack.translate(0, 0, 1000);
-                    guiGraphics.renderItem(soulItem.getDefaultInstance(), x, currentY - 16);
-                    poseStack.popPose();
-                    float alpha = timeDiff < 4 ? 1.3f : timeDiff < 10 ? 1.5f - timeDiff * 0.05f : timeDiff < 35 ? 1.0f : 1.0f - (timeDiff - 35f) / 5.0f;
-                    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha * 0.8F);
-
-                    guiGraphics.renderTooltip(font, renderInfo.getTooltip(), x - 7, currentY);
-
-                    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-                    currentY += interval;
-                }
-            }
-            poseStack.popPose();
         }
+        poseStack.popPose();
     }
 
-    public static final class SoulRenderInfo {
+    public static class SoulRenderManager {
+
+        private final Player player;
+        private final long startTime;
+        private final Map<Object, SoulRenderInfo> SoulTooltipManager;
+
+        public SoulRenderManager(Player player, Map<Object, SoulRenderInfo> SoulTooltipManager) {
+            this.player = player;
+            this.startTime = player.level().getGameTime();
+            this.SoulTooltipManager = SoulTooltipManager;
+        }
+
+        public <T extends SoulItem> void add(SoulItem soulItem, Class<T> tClass, SoulRenderType type) {
+            add(soulItem, tClass.getName(), type);
+        }
+
+        public void add(SoulItem soulItem, String id, SoulRenderType type) {
+            SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(player, id);
+            Object key = List.of(soulItem, id, type);
+            SoulRenderInfo soulRenderInfo = SoulTooltipManager.computeIfAbsent(key, k -> new SoulRenderInfo(soulItem, startTime - 40, 0, soulItem.getModRarity().color(), type));
+            soulRenderInfo.setPercentage(switch (type) {
+                case Duration -> (float) soulInfo.getDuration() / soulInfo.getMaxDuration();
+                case Stack -> (float) soulInfo.getStacks() / soulInfo.getMaxStacks();
+                case Cooldown -> 1 - (float) soulInfo.getCooldown() / soulInfo.getMaxCooldown();
+            });
+            if (soulRenderInfo.isChange || (soulRenderInfo.percentage > 0 && type == SoulRenderType.Stack)) {
+                soulRenderInfo.startTime = startTime;
+                soulRenderInfo.isChange = false;
+            }
+        }
+
+    }
+
+    public static class SoulRenderInfo {
 
         private final SoulItem soulItem;
-        private Component tooltip;
+        private final int color;
+        private final SoulRenderType soulRenderType;
+        private final ResourceLocation frame;
+        private final ResourceLocation core;
+        private final int coreWidth;
+        private final int height;
         private long startTime;
-        private int color;
-        private float percentage;
+        private boolean isChange = false;
+        private int x, y;
+        private float alpha, percentage;
 
-        public SoulRenderInfo(SoulItem soulItem, Component tooltip, long startTime) {
+        public SoulRenderInfo(SoulItem soulItem, long startTime, float percentage, int color, SoulRenderType soulRenderType) {
             this.soulItem = soulItem;
-            this.tooltip = tooltip;
             this.startTime = startTime;
-            this.color = 0xFFFFFFFF;
-            this.percentage = 0.0F;
+            this.percentage = percentage;
+            this.color = color;
+            this.soulRenderType = soulRenderType;
+            switch (soulRenderType) {
+                case Duration -> {
+                    frame = FargoSoul.rl("textures/basic/duration_bar.png");
+                    core = FargoSoul.rl("textures/basic/duration.png");
+                    coreWidth = 32;
+                    height = 6;
+                }
+                case Stack -> {
+                    frame = FargoSoul.rl("textures/basic/stack_bar.png");
+                    core = FargoSoul.rl("textures/basic/stack.png");
+                    coreWidth = 31;
+                    height = 12;
+                }
+                case Cooldown -> {
+                    frame = FargoSoul.rl("textures/basic/cooldown_bar.png");
+                    core = FargoSoul.rl("textures/basic/cooldown.png");
+                    coreWidth = 31;
+                    height = 6;
+                }
+                default -> throw new IllegalStateException("Unsupported render TYPE: " + soulRenderType);
+            }
         }
 
-        public SoulItem getSoulItem() {
-            return soulItem;
+        public void render(GuiGraphics guiGraphics) {
+            guiGraphics.setColor(1.0F, 1.0F, 1.0F, alpha);
+            guiGraphics.renderItem(soulItem.getDefaultInstance(), x, y);
+            int barX = x + 13;
+            int barY = soulRenderType == SoulRenderType.Stack ? y + 2 : y + 5;
+            guiGraphics.blit(frame, barX, barY, 0, 0, 33, height, 33, height);
+            guiGraphics.setColor(((color >> 16) & 0xFF) / 255.0F, ((color >> 8) & 0xFF) / 255.0F, (color & 0xFF) / 255.0F, alpha);
+            guiGraphics.blit(core, barX, barY, 0, 0, Math.round(percentage * coreWidth), height, coreWidth, height);
+            guiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
         }
 
-        public Component getTooltip() {
-            return tooltip;
-        }
-
-        public long getStartTime() {
-            return startTime;
-        }
-
-        public void setTooltip(Component tooltip) {
-            this.tooltip = tooltip;
-        }
-
-        public void setStartTime(long startTime) {
-            this.startTime = startTime;
+        public void setPercentage(float percentage) {
+            percentage = Math.round(percentage * 1000) / 1000.0f;
+            if (this.percentage != percentage) {
+                this.percentage = percentage;
+                isChange = true;
+            }
         }
 
     }

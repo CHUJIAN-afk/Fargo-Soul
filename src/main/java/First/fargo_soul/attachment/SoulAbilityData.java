@@ -75,6 +75,9 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 							if (soulInfo.getMaxCooldown() != -1) {
 								soulInfo.shrinkCooldown();
 							}
+							if (soulInfo.getStacks() > soulInfo.getMaxStacks()) {
+								soulInfo.setStacks(soulInfo.getMaxStacks());
+							}
 							if (soulInfo.getDuration() > 0) {
 								soulInfo.shrinkDuration();
 							}
@@ -86,6 +89,9 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 						.forEach(soulInfo -> {
 							if (soulInfo.getMaxCooldown() != -1) {
 								soulInfo.shrinkCooldown();
+							}
+							if (soulInfo.getStacks() > soulInfo.getMaxStacks()) {
+								soulInfo.setStacks(soulInfo.getMaxStacks());
 							}
 							if (soulInfo.getDuration() > 0) {
 								soulInfo.shrinkDuration();
@@ -105,6 +111,7 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 			listTag.putInt("cooldown", info.cooldown);
 			listTag.putInt("maxCooldown", info.maxCooldown);
 			listTag.putInt("duration", info.duration);
+			listTag.putInt("maxDuration", info.maxDuration);
 			listTag.putInt("minStacks", info.minStacks);
 			listTag.putInt("stacks", info.stacks);
 			listTag.putInt("maxStacks", info.maxStacks);
@@ -129,6 +136,7 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 					info.cooldown = listTag.getInt("cooldown");
 					info.maxCooldown = listTag.getInt("maxCooldown");
 					info.duration = listTag.getInt("duration");
+					info.maxDuration = listTag.getInt("maxDuration");
 					info.minStacks = listTag.getInt("minStacks");
 					info.stacks = listTag.getInt("stacks");
 					info.maxStacks = listTag.getInt("maxStacks");
@@ -153,6 +161,7 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 			buf.writeVarInt(info.cooldown);
 			buf.writeVarInt(info.maxCooldown);
 			buf.writeVarInt(info.duration);
+			buf.writeVarInt(info.maxDuration);
 			buf.writeVarInt(info.minStacks);
 			buf.writeVarInt(info.stacks);
 			buf.writeVarInt(info.maxStacks);
@@ -170,6 +179,7 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 			info.cooldown = buf.readVarInt();
 			info.maxCooldown = buf.readVarInt();
 			info.duration = buf.readVarInt();
+			info.maxDuration = buf.readVarInt();
 			info.minStacks = buf.readVarInt();
 			info.stacks = buf.readVarInt();
 			info.maxStacks = buf.readVarInt();
@@ -188,6 +198,7 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 		private int cooldown;
 		private int maxCooldown;
 		private int duration;
+		private int maxDuration;
 		private int minStacks;
 		private int stacks;
 		private int maxStacks;
@@ -203,13 +214,13 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 			this.cooldown = -1;
 			this.maxCooldown = -1;
 			this.duration = 0;
+			this.maxDuration = 0;
 			this.minStacks = 0;
 			this.stacks = 0;
 			this.maxStacks = 0;
 			this.enabled = false;
 			this.change = true;
 			this.client = client;
-
 		}
 
 		public boolean isClient() {
@@ -266,6 +277,9 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 		public void setDuration(int duration) {
 			if (duration >= 0 && this.duration != duration) {
 				this.duration = duration;
+				if (duration > maxDuration) {
+					setMaxDuration(duration);
+				}
 				this.change = true;
 			}
 		}
@@ -347,6 +361,16 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 			this.change = change;
 		}
 
+        public int getMaxDuration() {
+            return maxDuration;
+		}
+
+		public void setMaxDuration(int maxDuration) {
+			if (this.maxDuration != maxDuration) {
+				this.maxDuration = maxDuration;
+				this.change = true;
+			}
+		}
 	}
 
 }

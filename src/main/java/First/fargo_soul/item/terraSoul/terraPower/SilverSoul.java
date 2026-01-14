@@ -1,13 +1,17 @@
 package First.fargo_soul.item.terraSoul.terraPower;
 
 import First.fargo_soul.attachment.SoulAbilityData;
+import First.fargo_soul.client.gui.SoulGuiLayer;
+import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.TerraPower;
 import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.ItemRegister;
-import First.fargo_soul.utils.*;
+import First.fargo_soul.utils.AttributeUtils;
+import First.fargo_soul.utils.CurioUtils;
+import First.fargo_soul.utils.ParticleUtils;
+import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -19,8 +23,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
-
-import java.util.List;
 
 public class SilverSoul extends SoulItem {
 
@@ -34,10 +36,10 @@ public class SilverSoul extends SoulItem {
             AttributeUtils.condition(
                     ticker,
                     Attributes.ARMOR,
-                    ItemRegister.ObsidianSoulItem.getId(),
+                    ItemRegister.SilverSoulItem.getId(),
                     10,
                     AttributeModifier.Operation.ADD_VALUE,
-                    CurioUtils.isEquipped(ticker, SilverSoul.class) && (ticker instanceof Player || (ticker instanceof Mob mob && mob.getTarget() != null))
+                    CurioUtils.isEquipped(ticker, SilverSoul.class) && (ticker instanceof Player && ticker.isBlocking() || (ticker instanceof Mob mob && mob.getTarget() != null))
             );
             SoulAbilityData.SoulInfo SoulInfo = ticker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SilverSoul.class);
             SoulInfo.setMaxCooldown(20);
@@ -54,13 +56,16 @@ public class SilverSoul extends SoulItem {
 
     @Override
     public void shieldBlock(LivingShieldBlockEvent event) {
-        if (event.getEntity() instanceof LivingEntity target && event.getDamageSource().getEntity() instanceof LivingEntity attacker && !target.level().isClientSide()) {
+        if (event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
+            LivingEntity attacker = event.getDamageSource().getEntity() instanceof LivingEntity ? (LivingEntity) event.getDamageSource().getEntity() : null;
             if (CurioUtils.isEquipped(target, SilverSoul.class)) {
-                SoulAbilityData.SoulInfo SoulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SilverSoul.class);
+                SoulAbilityData.SoulInfo SoulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SilverSoul.class);
                 if (event.getBlocked() && SoulInfo.getCooldown() == 0 && SoulInfo.getStacks() > 0 && SoulInfo.getStacks() < (CurioUtils.isEquipped(target, TerraPower.class) ? 6 : 4)) {
                     SoulInfo.setDuration(20);
                     SoulInfo.setCooldown(SoulInfo.getMaxCooldown());
-                    attacker.hurt(target.damageSources().mobAttack(target), event.getBlockedDamage() * 2.0f);
+                    if (attacker != null) {
+                        attacker.hurt(target.damageSources().mobAttack(target), event.getBlockedDamage() * 2.0f);
+                    }
                     Level level = target.level();
                     SoulUtils.playSound(
                             level,
@@ -68,14 +73,16 @@ public class SilverSoul extends SoulItem {
                             SoundEvents.ANVIL_PLACE,
                             SoundSource.PLAYERS
                     );
-                    ParticleUtils.spawnParticleLine(
-                            (ServerLevel) level,
-                            target.getBoundingBox().getCenter(),
-                            attacker.getBoundingBox().getCenter(),
-                            ParticleTypes.CRIT,
-                            20,
-                            0.1f
-                    );
+                    if (attacker != null) {
+                        ParticleUtils.spawnParticleLine(
+                                (ServerLevel) level,
+                                target.getBoundingBox().getCenter(),
+                                attacker.getBoundingBox().getCenter(),
+                                ParticleTypes.CRIT,
+                                20,
+                                0.1f
+                        );
+                    }
                     ParticleUtils.spawnParticleSphere(
                             (ServerLevel) level,
                             target.getX(),
@@ -104,12 +111,9 @@ public class SilverSoul extends SoulItem {
     }
 
     @Override
-    public List<Component> getGuiTooltip(Player player) {
-        List<Component> tooltip = super.getGuiTooltip(player);
-        SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(player, SilverSoul.class);
-        tooltip.add(RenderUtils.createCooldownTooltip(this, "反弹冷却", soulInfo));
-        tooltip.add(RenderUtils.createDurationTooltip(this, "惊人一刻", soulInfo));
-        return tooltip;
+    public void getSoulRenderInfo(SoulGuiLayer.SoulRenderManager soulRenderManager) {
+        soulRenderManager.add(this, SilverSoul.class, SoulRenderType.Cooldown);
+        soulRenderManager.add(this, SilverSoul.class, SoulRenderType.Duration);
     }
 
 }

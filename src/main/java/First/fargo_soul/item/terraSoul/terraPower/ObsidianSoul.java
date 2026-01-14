@@ -1,13 +1,18 @@
 package First.fargo_soul.item.terraSoul.terraPower;
 
 import First.fargo_soul.attachment.SoulAbilityData;
+import First.fargo_soul.client.gui.SoulGuiLayer;
+import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.TerraPower;
 import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.ItemRegister;
-import First.fargo_soul.utils.*;
+import First.fargo_soul.utils.AttributeUtils;
+import First.fargo_soul.utils.CurioUtils;
+import First.fargo_soul.utils.ParticleUtils;
+import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -15,14 +20,12 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-
-import java.util.List;
 
 
 public class ObsidianSoul extends SoulItem {
@@ -34,11 +37,18 @@ public class ObsidianSoul extends SoulItem {
     @Override
     public void tick(LivingEntity ticker) {
         if (!ticker.level().isClientSide()) {
-            int amount = 8 - ticker.getArmorValue();
+            ResourceLocation location = ItemRegister.ObsidianSoulItem.getId();
+            int exAmount = 0;
+            if (ticker.getAttribute(Attributes.ARMOR) instanceof AttributeInstance instance) {
+                if (instance.getModifier(location) instanceof AttributeModifier modifier) {
+                    exAmount = (int) modifier.amount();
+                }
+            }
+            int amount = Math.min(100, 8 - (ticker.getArmorValue() - exAmount));
             AttributeUtils.condition(
                     ticker,
                     Attributes.ARMOR,
-                    ItemRegister.ObsidianSoulItem.getId(),
+                    location,
                     amount,
                     AttributeModifier.Operation.ADD_VALUE,
                     CurioUtils.isEquipped(ticker, ObsidianSoul.class) && amount > 0
@@ -81,11 +91,8 @@ public class ObsidianSoul extends SoulItem {
     }
 
     @Override
-    public List<Component> getGuiTooltip(Player player) {
-        List<Component> tooltip = super.getGuiTooltip(player);
-        SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(player, ObsidianSoul.class);
-        tooltip.add(RenderUtils.createCooldownTooltip(this, "火球冷却", soulInfo));
-        return tooltip;
+    public void getSoulRenderInfo(SoulGuiLayer.SoulRenderManager soulRenderManager) {
+        soulRenderManager.add(this, ObsidianSoul.class, SoulRenderType.Cooldown);
     }
 
 }
