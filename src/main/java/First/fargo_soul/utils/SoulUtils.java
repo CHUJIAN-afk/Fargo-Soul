@@ -13,10 +13,7 @@ import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.OwnableEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -41,7 +38,18 @@ public class SoulUtils {
 	public static final Random random = ThreadLocalRandom.current();
 	public static final List<SoulItem> RegisterSoulList = BuiltInRegistries.ITEM.stream().filter(item -> item instanceof SoulItem).map(item -> (SoulItem) item).toList();
 	public static final List<SoulItem> AttributeSoulList = RegisterSoulList.stream().filter(soulItem -> !soulItem.getAttributeModifiers().isEmpty()).toList();
-	
+	public static final List<EntityType<?>> ProjectileList = BuiltInRegistries.ENTITY_TYPE.stream().toList();
+
+
+	public static List<LivingEntity> getTargetList(LivingEntity attacker, double range) {
+		return attacker.level().getEntitiesOfClass(LivingEntity.class, attacker.getBoundingBox().inflate(range), living -> {
+			boolean isActive0 = attacker instanceof Player && living instanceof Enemy;
+			boolean isActive1 = attacker instanceof Mob mob && living.equals(mob.getTarget());
+			boolean isActive2 = attacker instanceof Enemy && !(living instanceof Enemy);
+			return (isActive0 || isActive1 || isActive2) && living.distanceTo(attacker) <= range;
+		});
+	}
+
 	public static void randomShoot(LivingEntity attacker, Projectile projectile, LivingEntity owner) {
 		Level level = attacker.level();
 		double theta = random.nextDouble() * Math.PI * 2;

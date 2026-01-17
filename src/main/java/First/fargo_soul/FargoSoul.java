@@ -34,8 +34,8 @@ public class FargoSoul {
         EffectRegister.register(eventBus);
         AttributeRegister.register(eventBus);
         AttachmentRegister.register(eventBus);
-        RecipeTypeRegister.register(eventBus);
         RecipeSerializerRegister.register(eventBus);
+        RecipeTypeRegister.register(eventBus);
         modContainer.registerConfig(ModConfig.Type.SERVER, ServerSoulConfig.Spec);
         modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfig.Spec);
         if (FMLEnvironment.dist == Dist.CLIENT) {

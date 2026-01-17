@@ -36,6 +36,9 @@ public class ClientConfig {
     public static final ModConfigSpec.IntValue InformationInterval =
             Builder.defineInRange("information_interval", 10, 1, 100);
 
+    public static final ModConfigSpec.BooleanValue ResidentShowSoulInformation =
+            Builder.define("resident_show_soul_information", false);
+
     public static final ModConfigSpec Spec = Builder.build();
 
 }

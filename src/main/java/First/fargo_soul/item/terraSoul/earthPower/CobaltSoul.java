@@ -1,7 +1,7 @@
 package First.fargo_soul.item.terraSoul.earthPower;
 
 import First.fargo_soul.attachment.SoulAbilityData;
-import First.fargo_soul.client.gui.SoulGuiLayer;
+import First.fargo_soul.client.gui.SoulGuiRenderManager;
 import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.EarthPower;
@@ -13,7 +13,7 @@ import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -31,15 +31,12 @@ public class CobaltSoul extends SoulItem {
 
     @Override
     public void tick(LivingEntity ticker) {
-        if (!ticker.level().isClientSide()) {
-            SoulAbilityData.getSoulInfo(ticker, CobaltSoul.class).setMaxCooldown(60);
-            if (CurioUtils.isEquipped(ticker, CobaltSoul.class)) {
-                Level level = ticker.level();
-                List<LivingEntity> targetList = level.getEntitiesOfClass(LivingEntity.class, ticker.getBoundingBox().inflate(2));
-                targetList.remove(ticker);
-                for (LivingEntity target : targetList) {
-                    target.addEffect(new MobEffectInstance(EffectRegister.Oil, 219));
-                }
+        Level level = ticker.level();
+        if (CurioUtils.isEquipped(ticker, CobaltSoul.class) && !level.isClientSide()) {
+            List<LivingEntity> targetList = level.getEntitiesOfClass(LivingEntity.class, ticker.getBoundingBox().inflate(2));
+            targetList.remove(ticker);
+            for (LivingEntity target : targetList) {
+                target.addEffect(new MobEffectInstance(EffectRegister.Oil, 219));
             }
         }
     }
@@ -54,13 +51,10 @@ public class CobaltSoul extends SoulItem {
                 soulInfo.setCooldown(soulInfo.getMaxCooldown());
                 Level level = target.level();
                 int value = equipped ? 3 : 2;
-                List<LivingEntity> targetList = target.level().getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(value));
-                targetList.remove(target);
-                for (LivingEntity entity : targetList) {
-                    float amount = equipped ? 6 : 4;
-                    entity.hurt(entity.damageSources().mobAttack(entity), amount);
-                    int duration = equipped ? 900 : 600;
-                    entity.addEffect(new MobEffectInstance(EffectRegister.Oil, duration, 0));
+                List<LivingEntity> targetList = SoulUtils.getTargetList(target, value);
+                for (LivingEntity living : targetList) {
+                    SoulUtils.attack(target, living, DamageTypes.MOB_ATTACK, equipped ? 6 : 4);
+                    living.addEffect(new MobEffectInstance(EffectRegister.Oil, equipped ? 900 : 600, 0));
                 }
                 ParticleUtils.spawnParticleSphere(
                         (ServerLevel) level,
@@ -76,7 +70,7 @@ public class CobaltSoul extends SoulItem {
                         level,
                         target.position(),
                         SoundEvents.GENERIC_EXPLODE.value(),
-                        SoundSource.PLAYERS
+                        target.getSoundSource()
                 );
             }
         }
@@ -92,7 +86,7 @@ public class CobaltSoul extends SoulItem {
     }
 
     @Override
-    public void getSoulRenderInfo(SoulGuiLayer.SoulRenderManager soulRenderManager) {
+    public void getSoulRenderInfo(SoulGuiRenderManager.SoulRenderManager soulRenderManager) {
         soulRenderManager.add(this, CobaltSoul.class, SoulRenderType.Cooldown);
     }
 

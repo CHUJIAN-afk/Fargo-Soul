@@ -7,23 +7,31 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@OnlyIn(Dist.CLIENT)
-public record SoulTooltipComponent(int width, int height, float scale, Item item) implements ClientTooltipComponent, TooltipComponent {
+public class SoulTooltipComponent implements ClientTooltipComponent, TooltipComponent {
+
+	private final SoulItem soulItem;
+	private final List<Item> renderList;
+	private final int width;
+
+	public SoulTooltipComponent(@NotNull SoulItem soulItem) {
+		this.soulItem = soulItem;
+		this.renderList = new ArrayList<>(soulItem.getSoulItemList());
+		this.width = (renderList.size() + 1) * 16;
+	}
 
 	@Override
 	public int getWidth(@NotNull Font font) {
-		return (int) (width * scale);
+		return width;
 	}
 
 	@Override
 	public int getHeight() {
-		return (int) (height * scale);
+		return 16;
 	}
 
 	@Override
@@ -31,16 +39,9 @@ public record SoulTooltipComponent(int width, int height, float scale, Item item
 		PoseStack pose = guiGraphics.pose();
 		pose.pushPose();
 		pose.translate(tooltipX, tooltipY, 0);
-		pose.scale(scale, scale, scale);
-		if (item instanceof SoulItem soulItem) {
-			List<SoulItem> soulItemList = soulItem.getSoulItemList();
-			guiGraphics.renderItem(soulItem.getDefaultInstance(), 0, 0);
-			for (SoulItem item : soulItemList) {
-				int i = soulItemList.indexOf(item);
-				guiGraphics.renderItem(soulItemList.get(i).getDefaultInstance(), (i + 1) * 16, 0);
-			}
-		} else {
-			guiGraphics.renderItem(item.getDefaultInstance(), 16, 0);
+		guiGraphics.renderItem(soulItem.getDefaultInstance(), 0, 0);
+		for (Item item : renderList) {
+			guiGraphics.renderItem(item.getDefaultInstance(), (renderList.indexOf(item) + 1) * 16, 0);
 		}
 		pose.popPose();
 	}

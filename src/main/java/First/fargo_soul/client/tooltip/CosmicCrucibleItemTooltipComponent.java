@@ -9,9 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public record CosmicCrucibleItemTooltipComponent(
-        List<ItemStack> list
-) implements ClientTooltipComponent, TooltipComponent {
+public record CosmicCrucibleItemTooltipComponent(List<ItemStack> list) implements ClientTooltipComponent, TooltipComponent {
 
     private static final int ItemsPerRow = 9;
     private static final int SlotSize = 16;

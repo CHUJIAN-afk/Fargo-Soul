@@ -19,49 +19,63 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SoulGuiLayer {
+public class SoulGuiRenderManager {
 
-    public static final Map<Object, SoulRenderInfo> SoulTooltipManager = new LinkedHashMap<>();
+    public static final Map<Object, SoulRenderInfo> SoulInfoManager = new LinkedHashMap<>();
     public static final int MaxRenderTime = 40;
     private static long lastUpdateTime = 0;
 
-    public static void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
-        if (ClientConfig.ShowSoulTooltip.get() && Minecraft.getInstance().player instanceof LocalPlayer player) {
-            List<SoulItem> soulItemList = SoulUtils.RegisterSoulList;
-            float partialTick = deltaTracker.getGameTimeDeltaTicks();
-            for (SoulItem soulItem : soulItemList) {
-                soulItem.renderGui(player, guiGraphics, partialTick, Minecraft.getInstance().font);
+    public static void guiRender(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.player instanceof LocalPlayer player && player.level().isClientSide()) {
+            for (SoulItem soulItem : SoulUtils.RegisterSoulList) {
+                soulItem.renderGui(player, guiGraphics, deltaTracker.getGameTimeDeltaTicks(), minecraft.font);
             }
-            long gameTime = player.level().getGameTime();
-            if (lastUpdateTime != gameTime) {
-                lastUpdateTime = gameTime;
-                SoulGuiLayer.SoulRenderManager renderManager = new SoulGuiLayer.SoulRenderManager(player, SoulTooltipManager);
-                for (SoulItem soulItem : soulItemList) {
-                    if (CurioUtils.isEquipped(player, soulItem.getClass())) {
-                        soulItem.getSoulRenderInfo(renderManager);
-                    }
-                }
-            }
-            render(guiGraphics, gameTime);
         }
     }
 
-    private static void render(GuiGraphics guiGraphics, long gameTime) {
+    public static void infoRender(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+        if (Minecraft.getInstance().player instanceof LocalPlayer player && player.level().isClientSide()) {
+            if (ClientConfig.ShowSoulTooltip.get()) {
+                List<SoulItem> soulItemList = SoulUtils.RegisterSoulList;
+                float partialTick = deltaTracker.getGameTimeDeltaTicks();
+                for (SoulItem soulItem : soulItemList) {
+                    soulItem.renderGui(player, guiGraphics, partialTick, Minecraft.getInstance().font);
+                }
+                long gameTime = player.level().getGameTime();
+                if (lastUpdateTime != gameTime) {
+                    lastUpdateTime = gameTime;
+                    SoulGuiRenderManager.SoulRenderManager renderManager = new SoulGuiRenderManager.SoulRenderManager(player, SoulInfoManager);
+                    for (SoulItem soulItem : soulItemList) {
+                        if (CurioUtils.isEquipped(player, soulItem.getClass())) {
+                            soulItem.getSoulRenderInfo(renderManager);
+                        }
+                    }
+                }
+                infoRender(guiGraphics, gameTime,partialTick);
+            }
+        }
+    }
+
+    private static void infoRender(GuiGraphics guiGraphics, long gameTime, float partialTick) {
         PoseStack poseStack = guiGraphics.pose();
         poseStack.pushPose();
         float scale = ClientConfig.ShowSoulTooltipScale.get().floatValue();
         poseStack.scale(scale, scale, scale);
         int xOffset = ClientConfig.ShowSoulTooltipXOffset.get();
         int yOffset = ClientConfig.ShowSoulTooltipYOffset.get();
-        Collection<SoulRenderInfo> soulRenderInfos = SoulTooltipManager.values();
+        Collection<SoulRenderInfo> soulRenderInfos = SoulInfoManager.values();
         int interval = ClientConfig.InformationInterval.get();
         int currentY = 2 + (int) ((yOffset) * scale);
         int x = 2 + (int) ((xOffset) * scale);
         for (SoulRenderInfo renderInfo : soulRenderInfos) {
             long timeDiff = gameTime - renderInfo.startTime;
-            if (timeDiff < MaxRenderTime) {
-                float renderPercentage = (float) timeDiff / MaxRenderTime;
-                renderInfo.alpha = renderPercentage < 0.1f ? 1f : renderPercentage < 0.2f ? 1f - (renderPercentage - 0.1f) : renderPercentage < 0.9f ? 0.9f : 0.9f * (1f - (renderPercentage - 0.9f) * 10f);
+            float renderPercentage = (float) timeDiff / MaxRenderTime;
+            renderInfo.alpha = renderPercentage < 0.1f ? 1f : renderPercentage < 0.2f ? 1f - (renderPercentage - 0.1f) : renderPercentage < 0.9f ? 0.9f : 0.9f * (1f - (renderPercentage - 0.9f) * 10f);
+            if (Minecraft.getInstance().player != null && ClientConfig.ResidentShowSoulInformation.get() && CurioUtils.isEquipped(Minecraft.getInstance().player, renderInfo.soulItem.getClass())) {
+                renderInfo.alpha = 1f;
+            }
+            if (renderInfo.alpha > 0) {
                 renderInfo.x = x;
                 renderInfo.y = currentY;
                 currentY += interval;
@@ -116,7 +130,7 @@ public class SoulGuiLayer {
         private long startTime;
         private boolean isChange = false;
         private int x, y;
-        private float alpha, percentage;
+        private float alpha, percentage, scale, targetScale;
 
         public SoulRenderInfo(SoulItem soulItem, long startTime, float percentage, int color, SoulRenderType soulRenderType) {
             this.soulItem = soulItem;
@@ -124,6 +138,8 @@ public class SoulGuiLayer {
             this.percentage = percentage;
             this.color = color;
             this.soulRenderType = soulRenderType;
+            this.scale = 1f;
+            this.targetScale = 1f;
             switch (soulRenderType) {
                 case Duration -> {
                     frame = FargoSoul.rl("textures/basic/duration_bar.png");
@@ -149,6 +165,8 @@ public class SoulGuiLayer {
 
         public void render(GuiGraphics guiGraphics) {
             guiGraphics.setColor(1.0F, 1.0F, 1.0F, alpha);
+            if (percentage == 1) {
+            }
             guiGraphics.renderItem(soulItem.getDefaultInstance(), x, y);
             int barX = x + 13;
             int barY = soulRenderType == SoulRenderType.Stack ? y + 2 : y + 5;

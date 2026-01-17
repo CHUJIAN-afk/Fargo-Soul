@@ -37,12 +37,14 @@ public class PumpkinSoul extends SoulItem {
                     level.setBlockAndUpdate(position, Blocks.PUMPKIN_STEM.defaultBlockState());
                 }
                 if (level.getBlockState(below).getBlock() instanceof PumpkinBlock) {
-                    level.setBlockAndUpdate(position, Blocks.AIR.defaultBlockState());
+                    level.destroyBlock(below,false);
                     List<LivingEntity> targetList = ticker.level().getEntitiesOfClass(LivingEntity.class, ticker.getBoundingBox().inflate(2));
                     targetList.remove(ticker);
                     for (LivingEntity target : targetList) {
                         SoulUtils.attack(ticker, target, DamageTypes.EXPLOSION, CurioUtils.isEquipped(ticker, LifePower.class) ? 6 : 3);
-                        target.spawnAtLocation(Items.PUMPKIN_SEEDS);
+                        if (CurioUtils.isEquipped(ticker, LifePower.class)) {
+                            target.spawnAtLocation(Items.PUMPKIN_SEEDS);
+                        }
                     }
                     ParticleUtils.spawnParticleSphere(
                             (ServerLevel) level,

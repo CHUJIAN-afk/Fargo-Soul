@@ -34,6 +34,15 @@ public class CurioUtils {
         return false;
     }
 
+    public static int getDepth(SoulItem soulItem) {
+        int depth = 0;
+        List<SoulItem> soulItemList = soulItem.getSoulItemList();
+        for (SoulItem child : soulItemList) {
+            depth = Math.max(depth, getDepth(child) + 1);
+        }
+        return depth;
+    }
+
     /**
      * 获取实体身上所有的魂石，包括未启用的
      *

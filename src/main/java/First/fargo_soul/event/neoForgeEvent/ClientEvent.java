@@ -5,7 +5,7 @@ import First.fargo_soul.FargoSoul;
 import First.fargo_soul.attachment.SoulAbilityData;
 import First.fargo_soul.attachment.SoulAbilityEnabledData;
 import First.fargo_soul.attachment.SoulListData;
-import First.fargo_soul.client.gui.SoulGuiLayer;
+import First.fargo_soul.client.gui.SoulGuiRenderManager;
 import First.fargo_soul.client.renderer.blockEntityRender.CosmicCrucibleBlockEntityRenderer;
 import First.fargo_soul.client.renderer.entityRenderer.BoneRenderer;
 import First.fargo_soul.client.renderer.entityRenderer.NeedleRenderer;
@@ -106,7 +106,8 @@ public class ClientEvent {
 
     @SubscribeEvent
     public static void registerGuiLayers(RegisterGuiLayersEvent event) {
-        event.registerAbove(VanillaGuiLayers.HOTBAR, FargoSoul.rl("soul_overlay"), SoulGuiLayer::render);
+        event.registerAbove(VanillaGuiLayers.HOTBAR, FargoSoul.rl("soul_info_overlay"), SoulGuiRenderManager::infoRender);
+        event.registerAbove(VanillaGuiLayers.HOTBAR, FargoSoul.rl("soul_render_overlay"), SoulGuiRenderManager::guiRender);
     }
 
     @SubscribeEvent
@@ -118,7 +119,9 @@ public class ClientEvent {
 
     @SubscribeEvent
     public static void soulKeyPressed(InputEvent.Key event) {
-        PacketDistributor.sendToServer(new NetworkPacketRegister.KeyPressPacket(event.getKey()));
+        if (Minecraft.getInstance().getConnection() != null) {
+            PacketDistributor.sendToServer(new NetworkPacketRegister.KeyPressPacket(event.getKey()));
+        }
     }
 
     @SubscribeEvent
@@ -251,7 +254,7 @@ public class ClientEvent {
         if (event.getItemStack().getItem() instanceof SoulItem soulItem && ClientConfig.EmbedAChildSoulInTheItemTooltip.get()) {
             List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
             int size = tooltipElements.size();
-            tooltipElements.add(Math.min(size, 1), Either.right(new SoulTooltipComponent((soulItem.getSoulItemList().size() + 1) * 16, 16, 1f, soulItem)));
+            tooltipElements.add(Math.min(size, 1), Either.right(new SoulTooltipComponent(soulItem)));
         }
     }
 

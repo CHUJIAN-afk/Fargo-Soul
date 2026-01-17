@@ -39,7 +39,7 @@ public class MushroomSoul extends SoulItem {
                         target.getBoundingBox().getCenter(),
                         ParticleTypes.WARPED_SPORE,
                         1.0f,
-                        200,
+                        5,
                         0.5f
                 );
             }

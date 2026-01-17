@@ -1,7 +1,7 @@
 package First.fargo_soul.item.terraSoul.lifePower;
 
 import First.fargo_soul.attachment.SoulAbilityData;
-import First.fargo_soul.client.gui.SoulGuiLayer;
+import First.fargo_soul.client.gui.SoulGuiRenderManager;
 import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.entity.projectile.Needle;
 import First.fargo_soul.item.base.SoulItem;
@@ -93,7 +93,7 @@ public class TurtleSoul extends SoulItem {
 	}
 
 	@Override
-	public void getSoulRenderInfo(SoulGuiLayer.SoulRenderManager soulRenderManager) {
+	public void getSoulRenderInfo(SoulGuiRenderManager.SoulRenderManager soulRenderManager) {
 		soulRenderManager.add(this, TurtleSoul.class, SoulRenderType.Cooldown);
 	}
 

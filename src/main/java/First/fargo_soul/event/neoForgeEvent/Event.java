@@ -6,6 +6,7 @@ import First.fargo_soul.attachment.SoulAbilityData;
 import First.fargo_soul.blcokEntity.CosmicCrucibleBlockEntity;
 import First.fargo_soul.config.ServerSoulConfig;
 import First.fargo_soul.event.modEvent.AddItemTagEvent;
+import First.fargo_soul.item.TerraSoul;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.AttributeRegister;
@@ -108,7 +109,9 @@ public class Event {
 
     @SubscribeEvent
     public static void soulDamage(LivingIncomingDamageEvent event) {
-        SoulUtils.RegisterSoulList.forEach(soulItem -> soulItem.hurt(event));
+        if (event.getEntity() != event.getSource().getEntity()) {
+            SoulUtils.RegisterSoulList.forEach(soulItem -> soulItem.hurt(event));
+        }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
@@ -225,8 +228,16 @@ public class Event {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void hurt(LivingIncomingDamageEvent event) {
+        if (event.getSource().getEntity() == event.getEntity() && CurioUtils.isEquipped(event.getEntity(), TerraSoul.class)) {
+            event.setCanceled(true);
+            return;
+        }
         if (event.getSource().getDirectEntity() instanceof Projectile projectile && !projectile.level().isClientSide()) {
             if (projectile.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("noInvulnerable").isEnabled()) {
+                if (event.getEntity() == projectile.getOwner()) {
+                    event.setCanceled(true);
+                    return;
+                }
                 event.getEntity().invulnerableTime = 0;
             }
         }

@@ -1,7 +1,7 @@
 package First.fargo_soul.item.terraSoul.earthPower;
 
 import First.fargo_soul.attachment.SoulAbilityData;
-import First.fargo_soul.client.gui.SoulGuiLayer;
+import First.fargo_soul.client.gui.SoulGuiRenderManager;
 import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.EarthPower;
@@ -37,7 +37,7 @@ public class MithrilSoul extends SoulItem {
     }
 
     @Override
-    public void getSoulRenderInfo(SoulGuiLayer.SoulRenderManager soulRenderManager) {
+    public void getSoulRenderInfo(SoulGuiRenderManager.SoulRenderManager soulRenderManager) {
         soulRenderManager.add(this, MithrilSoul.class, SoulRenderType.Cooldown);
         soulRenderManager.add(this, MithrilSoul.class, SoulRenderType.Duration);
     }

@@ -1,8 +1,9 @@
 package First.fargo_soul.item.terraSoul.cosmicPower;
 
 import First.fargo_soul.attachment.SoulAbilityData;
-import First.fargo_soul.client.gui.SoulGuiLayer;
+import First.fargo_soul.client.gui.SoulGuiRenderManager;
 import First.fargo_soul.client.gui.SoulRenderType;
+import First.fargo_soul.item.TerraSoul;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.CosmicPower;
 import First.fargo_soul.register.AttachmentRegister;
@@ -36,7 +37,7 @@ public class StardustSoul extends SoulItem {
     @Override
     public void tick(LivingEntity ticker) {
         if (!ticker.level().isClientSide() && CurioUtils.isEquipped(ticker, StardustSoul.class)) {
-            SoulAbilityData.getSoulInfo(ticker, StardustSoul.class).setMaxCooldown(3600);
+            SoulAbilityData.getSoulInfo(ticker, StardustSoul.class).setMaxCooldown(CurioUtils.isEquipped(ticker, TerraSoul.class) ? 1800 : 3600);
         }
     }
 
@@ -55,7 +56,7 @@ public class StardustSoul extends SoulItem {
     }
 
     @Override
-    public void getSoulRenderInfo(SoulGuiLayer.SoulRenderManager soulRenderManager) {
+    public void getSoulRenderInfo(SoulGuiRenderManager.SoulRenderManager soulRenderManager) {
         soulRenderManager.add(this, StardustSoul.class, SoulRenderType.Cooldown);
         soulRenderManager.add(this, StardustSoul.class, SoulRenderType.Duration);
     }

@@ -1,6 +1,7 @@
 package First.fargo_soul.item.base;
 
-import First.fargo_soul.client.gui.SoulGuiLayer;
+import First.fargo_soul.attachment.SoulAbilityData;
+import First.fargo_soul.client.gui.SoulGuiRenderManager;
 import First.fargo_soul.event.modEvent.PlayerFlyEvent;
 import First.fargo_soul.event.modEvent.SprintEvent;
 import net.minecraft.client.gui.Font;
@@ -23,104 +24,71 @@ import java.util.Map;
 
 public interface ISoulItem {
 
+    default <T extends SoulItem> SoulAbilityData.SoulInfo getInfo(LivingEntity livingEntity, Class<T> tClass) {
+        return SoulAbilityData.getSoulInfo(livingEntity,tClass);
+    }
+
+    default SoulAbilityData.SoulInfo getInfo(LivingEntity livingEntity, String id) {
+        return SoulAbilityData.getSoulInfo(livingEntity,id);
+    }
+
     default void fly(PlayerFlyEvent event){
-
     }
-
     default void sprintServer(SprintEvent.Server event) {
-
     }
-
     default void sprintClient(SprintEvent.Client event) {
+    }
+    default void getSoulRenderInfo(SoulGuiRenderManager.SoulRenderManager soulRenderManager) {
 
     }
-
-    default void getSoulRenderInfo(SoulGuiLayer.SoulRenderManager soulRenderManager) {
-
-    }
-
     default void drop(LivingDropsEvent event) {
 
     }
-
     default void shieldBlock(LivingShieldBlockEvent event) {
 
     }
-
     default void pickup(ItemEntityPickupEvent.Post event) {
 
     }
-
     default void itemUseFinish(LivingEntityUseItemEvent.Finish event) {
 
     }
-
     default void render(RenderLivingEvent.Post<?, ?> event) {
 
     }
-
     default void criticalHit(CriticalHitEvent event) {
 
     }
-
     default void heal(LivingHealEvent event) {
 
     }
-
     default void targetChange(LivingChangeTargetEvent event) {
 
     }
-
-    /**
-     * 实体死亡时调用，如果事件在之前被取消，不会调用
-     */
     default void death(LivingDeathEvent event) {
 
     }
-
     default void effectApplicable(MobEffectEvent.Applicable event) {
 
     }
-
-    /**
-     * 子魂石列表
-     *
-     * @return 子魂石列表
-     */
     default List<SoulItem> getSoulItemList() {
         return new ArrayList<>();
     }
-
-    /**
-     * 穿戴时实体的常驻属性修改器
-     * @return 常驻属性修改器
-     */
     default Map<Holder<Attribute>, AttributeModifier> getAttributeModifiers() {
         return new HashMap<>();
     }
-
-    /**
-     * 穿戴时实体触发tick事件时调用
-     */
     default void tick(LivingEntity ticker) {
 
     }
-
-    /**
-     * 穿戴时当实体触发伤害事件时调用
-     */
     default void hurt(LivingIncomingDamageEvent event) {
 
     }
-
     default void renderGui(Player player, GuiGraphics guiGraphics, float partialTick, Font font) {
 
     }
-    
     default void keyPressed(Player player, int key) {
 
     }
-
     default void movementInput(Player player, Input input) {
 
 

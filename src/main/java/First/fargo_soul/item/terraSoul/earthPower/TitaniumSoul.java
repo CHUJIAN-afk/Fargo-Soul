@@ -1,7 +1,7 @@
 package First.fargo_soul.item.terraSoul.earthPower;
 
 import First.fargo_soul.attachment.SoulAbilityData;
-import First.fargo_soul.client.gui.SoulGuiLayer;
+import First.fargo_soul.client.gui.SoulGuiRenderManager;
 import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.item.base.SoulItem;
 import First.fargo_soul.item.terraSoul.EarthPower;
@@ -75,8 +75,8 @@ public class TitaniumSoul extends SoulItem {
     }
 
     @Override
-    public void getSoulRenderInfo(SoulGuiLayer.SoulRenderManager soulRenderManager) {
-        soulRenderManager.add(this, TitaniumSoul.class, SoulRenderType.Stack);
+    public void getSoulRenderInfo(SoulGuiRenderManager.SoulRenderManager soulRenderManager) {
+        soulRenderManager.add(this, TitaniumSoul.class, SoulRenderType.Cooldown);
     }
 
 }
