@@ -1,9 +1,9 @@
 package First.fargo_soul.client.gui;
 
 import First.fargo_soul.FargoSoul;
-import First.fargo_soul.attachment.SoulAbilityData;
+import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.config.ClientConfig;
-import First.fargo_soul.item.base.SoulItem;
+import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.SoulUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -52,12 +52,12 @@ public class SoulGuiRenderManager {
                         }
                     }
                 }
-                infoRender(guiGraphics, gameTime,partialTick);
+                infoRender(guiGraphics, gameTime);
             }
         }
     }
 
-    private static void infoRender(GuiGraphics guiGraphics, long gameTime, float partialTick) {
+    private static void infoRender(GuiGraphics guiGraphics, long gameTime) {
         PoseStack poseStack = guiGraphics.pose();
         poseStack.pushPose();
         float scale = ClientConfig.ShowSoulTooltipScale.get().floatValue();
@@ -130,7 +130,7 @@ public class SoulGuiRenderManager {
         private long startTime;
         private boolean isChange = false;
         private int x, y;
-        private float alpha, percentage, scale, targetScale;
+        private float alpha, percentage;
 
         public SoulRenderInfo(SoulItem soulItem, long startTime, float percentage, int color, SoulRenderType soulRenderType) {
             this.soulItem = soulItem;
@@ -138,8 +138,6 @@ public class SoulGuiRenderManager {
             this.percentage = percentage;
             this.color = color;
             this.soulRenderType = soulRenderType;
-            this.scale = 1f;
-            this.targetScale = 1f;
             switch (soulRenderType) {
                 case Duration -> {
                     frame = FargoSoul.rl("textures/basic/duration_bar.png");
@@ -165,8 +163,6 @@ public class SoulGuiRenderManager {
 
         public void render(GuiGraphics guiGraphics) {
             guiGraphics.setColor(1.0F, 1.0F, 1.0F, alpha);
-            if (percentage == 1) {
-            }
             guiGraphics.renderItem(soulItem.getDefaultInstance(), x, y);
             int barX = x + 13;
             int barY = soulRenderType == SoulRenderType.Stack ? y + 2 : y + 5;

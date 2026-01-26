@@ -1,6 +1,6 @@
 package First.fargo_soul.client.renderer.blockEntityRender;
 
-import First.fargo_soul.blcokEntity.CosmicCrucibleBlockEntity;
+import First.fargo_soul.common.blcokEntity.CosmicCrucibleBlockEntity;
 import First.fargo_soul.client.renderType.BlackHoleRenderType;
 import First.fargo_soul.config.ClientConfig;
 import First.fargo_soul.utils.RenderUtils;

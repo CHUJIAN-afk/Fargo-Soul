@@ -1,8 +1,8 @@
 package First.fargo_soul.mixin.minecraft;
 
 
-import First.fargo_soul.entity.projectile.Bone;
-import First.fargo_soul.entity.projectile.Needle;
+import First.fargo_soul.common.entity.projectile.Bone;
+import First.fargo_soul.common.entity.projectile.Needle;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

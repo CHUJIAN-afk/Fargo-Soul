@@ -1,8 +1,8 @@
 package First.fargo_soul.mixin.minecraft;
 
 
-import First.fargo_soul.item.terraSoul.ForestPower;
-import First.fargo_soul.item.terraSoul.forestPower.WoodSoul;
+import First.fargo_soul.common.item.terraSoul.ForestPower;
+import First.fargo_soul.common.item.terraSoul.forestPower.WoodSoul;
 import First.fargo_soul.utils.CurioUtils;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.world.entity.npc.Villager;

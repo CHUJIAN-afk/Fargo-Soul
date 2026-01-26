@@ -1,7 +1,7 @@
 package First.fargo_soul.mixin.minecraft;
 
-import First.fargo_soul.attachment.SoulAbilityData;
-import First.fargo_soul.item.terraSoul.deathPower.PenetratingNinjaSoul;
+import First.fargo_soul.common.attachment.SoulAbilityData;
+import First.fargo_soul.common.item.terraSoul.deathPower.PenetratingNinjaSoul;
 import First.fargo_soul.register.AttachmentRegister;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.player.LocalPlayer;

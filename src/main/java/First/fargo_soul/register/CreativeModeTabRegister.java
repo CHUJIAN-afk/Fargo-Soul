@@ -1,7 +1,7 @@
 package First.fargo_soul.register;
 
 import First.fargo_soul.FargoSoul;
-import First.fargo_soul.item.base.SoulItem;
+import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;

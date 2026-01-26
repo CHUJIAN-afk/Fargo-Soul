@@ -2,7 +2,7 @@ package First.fargo_soul.compact.jei;
 
 
 import First.fargo_soul.FargoSoul;
-import First.fargo_soul.recipe.SoulRecipe;
+import First.fargo_soul.common.recipe.SoulRecipe;
 import First.fargo_soul.register.ItemRegister;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;

@@ -1,10 +1,10 @@
 package First.fargo_soul.mixin.minecraft;
 
 
-import First.fargo_soul.item.base.SoulItem;
-import First.fargo_soul.item.terraSoul.WillPower;
-import First.fargo_soul.item.terraSoul.cosmicPower.MeteorSoul;
-import First.fargo_soul.item.terraSoul.willPower.ValhallaKnightSoul;
+import First.fargo_soul.common.item.base.SoulItem;
+import First.fargo_soul.common.item.terraSoul.WillPower;
+import First.fargo_soul.common.item.terraSoul.cosmicPower.MeteorSoul;
+import First.fargo_soul.common.item.terraSoul.willPower.ValhallaKnightSoul;
 import First.fargo_soul.utils.CurioUtils;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.world.entity.Entity;

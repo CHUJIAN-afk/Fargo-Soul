@@ -1,7 +1,7 @@
 package First.fargo_soul.client.renderer.entityRenderer;
 
 import First.fargo_soul.FargoSoul;
-import First.fargo_soul.entity.projectile.Bone;
+import First.fargo_soul.common.entity.projectile.Bone;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;

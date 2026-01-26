@@ -1,7 +1,7 @@
 package First.fargo_soul.register;
 
 import First.fargo_soul.FargoSoul;
-import First.fargo_soul.recipe.SoulRecipe;
+import First.fargo_soul.common.recipe.SoulRecipe;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.bus.api.IEventBus;

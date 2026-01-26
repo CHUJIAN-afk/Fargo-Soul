@@ -24,10 +24,6 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies."${mod_id}"]]
-modId="curios"
-mandatory=true
-
-[[dependencies."${mod_id}"]]
 modId="confluence"
 type="optional"
 versionRange="[,1.1.5.1]"

@@ -1,10 +1,11 @@
 package First.fargo_soul.client.tooltip;
 
-import First.fargo_soul.item.base.SoulItem;
+import First.fargo_soul.common.item.base.SoulItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.gui.screens.inventory.tooltip.TooltipRenderUtil;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
@@ -26,18 +27,20 @@ public class SoulTooltipComponent implements ClientTooltipComponent, TooltipComp
 
 	@Override
 	public int getWidth(@NotNull Font font) {
-		return width;
+		return 0;
 	}
 
 	@Override
 	public int getHeight() {
-		return 16;
+		return -2;
 	}
 
 	@Override
 	public void renderImage(@NotNull Font font, int tooltipX, int tooltipY, @NotNull GuiGraphics guiGraphics) {
 		PoseStack pose = guiGraphics.pose();
 		pose.pushPose();
+		tooltipY -= 25;
+		TooltipRenderUtil.renderTooltipBackground(guiGraphics, tooltipX, tooltipY, width, 16, 16, -267386864, -267386864, 0xFF0000FF, 0xFFFFD700);
 		pose.translate(tooltipX, tooltipY, 0);
 		guiGraphics.renderItem(soulItem.getDefaultInstance(), 0, 0);
 		for (Item item : renderList) {

@@ -1,7 +1,7 @@
 package First.fargo_soul.register;
 
 import First.fargo_soul.FargoSoul;
-import First.fargo_soul.blcokEntity.CosmicCrucibleBlockEntity;
+import First.fargo_soul.common.blcokEntity.CosmicCrucibleBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;

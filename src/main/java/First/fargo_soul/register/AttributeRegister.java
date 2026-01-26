@@ -16,8 +16,6 @@ public class AttributeRegister {
     public static final Holder<Attribute> CriticalDamage = register("critical_damage", 2.0D);
     public static final Holder<Attribute> ArmorPierce = register("armor_pierce", 0.0D);
     public static final Holder<Attribute> Damage = register("damage", 0.0f);
-    //public static final Holder<Attribute> RangedDamage = register("ranged_damage", 1.0D);
-    //public static final Holder<Attribute> RangedSpeed = register("ranged_speed", 1.0D);
 
     private static Holder<Attribute> register(String name, double defaultValue) {
         return Register.register(name, () -> new RangedAttribute(FargoSoul.rl(name).toString(), defaultValue, 0.0, Double.MAX_VALUE).setSyncable(true));

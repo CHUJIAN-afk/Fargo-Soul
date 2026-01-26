@@ -1,6 +1,6 @@
 package First.fargo_soul.mixin.minecraft;
 
-import First.fargo_soul.item.terraSoul.cosmicPower.WizardSoul;
+import First.fargo_soul.common.item.terraSoul.cosmicPower.WizardSoul;
 import First.fargo_soul.utils.CurioUtils;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;

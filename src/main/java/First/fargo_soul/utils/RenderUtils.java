@@ -1,14 +1,20 @@
 package First.fargo_soul.utils;
 
-import First.fargo_soul.attachment.SoulAbilityData;
-import First.fargo_soul.item.base.SoulItem;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.confluence.lib.common.component.ModRarity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class RenderUtils {
 
@@ -22,99 +28,104 @@ public abstract class RenderUtils {
         return Mth.lerp(partialTick, render - speed, render);
     }
 
-    /**
-     * 生成标准格式的持续时间提示文本
-     *
-     * @param soulItem 物品
-     * @param soulInfo 灵魂能力数据
-     * @return 持续时间提示组件
-     */
-    public static Component createDurationTooltip(SoulItem soulItem, String key, SoulAbilityData.SoulInfo soulInfo) {
-        return createTooltip(soulItem, key, soulInfo, TooltipType.Duration);
-    }
-
-    /**
-     * 生成标准格式的层数提示文本
-     *
-     * @param soulItem  物品
-     * @param soulInfo  灵魂能力数据
-     * @return 层数提示组件
-     */
-    public static Component createStackTooltip(SoulItem soulItem, String key, SoulAbilityData.SoulInfo soulInfo) {
-        return createTooltip(soulItem, key, soulInfo, TooltipType.Stack);
-    }
-
-    /**
-     * 生成标准格式的冷却提示文本
-     *
-     * @param soulItem 物品
-     * @param soulInfo 灵魂能力数据
-     * @return 冷却提示组件
-     */
-    public static Component createCooldownTooltip(SoulItem soulItem, String key, SoulAbilityData.SoulInfo soulInfo) {
-        return createTooltip(soulItem, key, soulInfo, TooltipType.Cooldown);
-    }
-
-    private static Component createTooltip(SoulItem soulItem, String key, SoulAbilityData.SoulInfo soulInfo, TooltipType type) {
-        ModRarity modRarity = soulItem.getModRarity();
-        MutableComponent tooltip = Component.literal(" ".repeat(6));
-        tooltip = tooltip.append(Component.translatable(key).withColor(modRarity.color()));
-        tooltip = tooltip.append(Component.literal(" ".repeat(4)));
-        switch (type) {
-            case Duration:
-                float seconds = soulInfo.getDuration() / 20.0f;
-                tooltip = tooltip.append(Component.literal(String.format("%.0fs", seconds)).withColor(modRarity.color()));
-                break;
-            case Stack:
-                if (soulInfo.getMaxStacks() > 0) {
-                    float percentage = (float) soulInfo.getStacks() / soulInfo.getMaxStacks();
-                    tooltip = tooltip.append(createBar(percentage, modRarity));
-                    break;
-                }
-                return Component.empty();
-            case Cooldown:
-                if (soulInfo.getMaxCooldown() > 0) {
-                    float percentage = 1 - (float) soulInfo.getCooldown() / soulInfo.getMaxCooldown();
-                    tooltip = tooltip.append(createBar(percentage, modRarity));
-                    break;
-                }
-                return Component.empty();
+    public static void renderItemRings(
+            Level level,
+            PoseStack poseStack,
+            MultiBufferSource multiBufferSource,
+            List<ItemStack> renderList,
+            int rings,
+            float radius,
+            float scale,
+            float yOffset,
+            int packedLight,
+            float ageInTicks,
+            RandomSource random,
+            int seed
+    ) {
+        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
+        List<List<ItemStack>> renderListList = new ArrayList<>();
+        for (int i = 0; i < rings; i++) {
+            renderListList.add(new ArrayList<>());
         }
-        return tooltip;
+        for (int i = 0; i < renderList.size(); i++) {
+            renderListList.get(i % rings).add(renderList.get(i));
+        }
+        for (List<ItemStack> renderItems : renderListList) {
+            poseStack.pushPose();
+            poseStack.translate(0, yOffset, 0);
+            random.setSeed(renderListList.indexOf(renderItems));
+            poseStack.mulPose(Axis.YP.rotationDegrees(ageInTicks * random.nextFloat()));
+            poseStack.mulPose(Axis.XP.rotationDegrees(ageInTicks * random.nextFloat()));
+            poseStack.mulPose(Axis.ZP.rotationDegrees(ageInTicks * random.nextFloat()));
+            for (ItemStack renderStack : renderItems) {
+                random.setSeed(renderStack.getItem().hashCode() + seed);
+                seed++;
+                int i = renderItems.indexOf(renderStack);
+                float angle = (float) i / renderItems.size() * Mth.TWO_PI + ageInTicks * 0.05f;
+                float x = (float) Math.cos(angle) * radius;
+                float z = (float) Math.sin(angle) * radius;
+                poseStack.pushPose();
+                poseStack.translate(x, 0, z);
+                poseStack.mulPose(Axis.YP.rotationDegrees(ageInTicks * random.nextFloat()));
+                poseStack.mulPose(Axis.XP.rotationDegrees(ageInTicks * random.nextFloat()));
+                poseStack.mulPose(Axis.ZP.rotationDegrees(ageInTicks * random.nextFloat()));
+                poseStack.scale(scale, scale, scale);
+                itemRenderer.renderStatic(
+                        renderStack,
+                        ItemDisplayContext.FIXED,
+                        packedLight,
+                        OverlayTexture.NO_OVERLAY,
+                        poseStack,
+                        multiBufferSource,
+                        level,
+                        random.nextInt()
+                );
+                poseStack.popPose();
+            }
+            poseStack.popPose();
+        }
     }
 
-    public enum TooltipType {
-        Duration, Stack, Cooldown
-    }
+    public static void renderItemRing(
+            Level level,
+            PoseStack poseStack,
+            MultiBufferSource multiBufferSource,
+            List<ItemStack> renderItems,
+            float radius,
+            float scale,
+            float yOffset,
+            int packedLight,
+            float ageInTicks,
+            RandomSource random,
+            int seed
+    ) {
+        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 
-    /**
-     * 生成标准长度的进度条文本
-     * @param percentage 百分比 (0.0-1.0)
-     * @return 格式化的进度条
-     */
-    public static Component createBar(float percentage, ModRarity modRarity) {
-        int length = 8;
-        int totalSteps = length * 8;
-        int currentSteps = (int) (percentage * totalSteps);
-        currentSteps = Math.max(0, Math.min(currentSteps, totalSteps));
-        int fullBlocks = currentSteps / 8;
-        int partialStep = currentSteps % 8;
-        MutableComponent bar = Component.literal("");
-        int usedLength = 0;
-        for (int i = 0; i < fullBlocks; i++) {
-            bar.append(Component.literal("█").withColor(modRarity.color()));
-            usedLength++;
+        for (ItemStack renderStack : renderItems) {
+            random.setSeed(renderStack.getItem().hashCode() + seed);
+            seed++;
+            int i = renderItems.indexOf(renderStack);
+            float angle = (float) i / renderItems.size() * Mth.TWO_PI + ageInTicks * 0.05f;
+            float x = (float) Math.cos(angle) * radius;
+            float z = (float) Math.sin(angle) * radius;
+            poseStack.pushPose();
+            poseStack.translate(x, yOffset, z);
+            poseStack.mulPose(Axis.YP.rotationDegrees(ageInTicks * random.nextFloat()));
+            poseStack.mulPose(Axis.XP.rotationDegrees(ageInTicks * random.nextFloat()));
+            poseStack.mulPose(Axis.ZP.rotationDegrees(ageInTicks * random.nextFloat()));
+            poseStack.scale(scale, scale, scale);
+            itemRenderer.renderStatic(
+                    renderStack,
+                    ItemDisplayContext.FIXED,
+                    packedLight,
+                    OverlayTexture.NO_OVERLAY,
+                    poseStack,
+                    multiBufferSource,
+                    level,
+                    random.nextInt()
+            );
+            poseStack.popPose();
         }
-        if (partialStep > 0 && usedLength < length) {
-            String[] partialChars = {"", "▏", "▎", "▍", "▌", "▋", "▊", "▉"};
-            bar.append(Component.literal(partialChars[partialStep]).withColor(modRarity.color()));
-            usedLength++;
-        }
-        while (usedLength < length) {
-            bar.append(Component.literal("░").withStyle(ChatFormatting.DARK_GRAY));
-            usedLength++;
-        }
-        return bar;
     }
 
 }

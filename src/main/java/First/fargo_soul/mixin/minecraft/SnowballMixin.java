@@ -1,6 +1,6 @@
 package First.fargo_soul.mixin.minecraft;
 
-import First.fargo_soul.item.terraSoul.naturePower.FrostSoul;
+import First.fargo_soul.common.item.terraSoul.naturePower.FrostSoul;
 import First.fargo_soul.utils.CurioUtils;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Snowball;

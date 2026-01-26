@@ -1,6 +1,6 @@
 package First.fargo_soul.utils;
 
-import First.fargo_soul.item.base.SoulItem;
+import First.fargo_soul.common.item.base.SoulItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;

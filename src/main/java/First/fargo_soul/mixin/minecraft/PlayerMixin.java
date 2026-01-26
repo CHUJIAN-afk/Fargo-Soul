@@ -1,9 +1,9 @@
 package First.fargo_soul.mixin.minecraft;
 
 
-import First.fargo_soul.item.terraSoul.SpiritPower;
-import First.fargo_soul.item.terraSoul.lifePower.BeeSoul;
-import First.fargo_soul.item.terraSoul.spiritPower.AncientHolySoul;
+import First.fargo_soul.common.item.terraSoul.SpiritPower;
+import First.fargo_soul.common.item.terraSoul.lifePower.BeeSoul;
+import First.fargo_soul.common.item.terraSoul.spiritPower.AncientHolySoul;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.world.entity.EntityType;

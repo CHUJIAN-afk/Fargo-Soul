@@ -21,9 +21,8 @@ public class KeyRegister {
     public static final KeyMapping GoldSoulKey = register("金身");
     public static final KeyMapping StardustSoulKey = register("冻结");
     public static final KeyMapping VortexSoulKey = register("传送");
-    public static final KeyMapping ScoutingKey = register("侦查");
     public static final KeyMapping ForbiddenKey = register("风暴");
-    public static final KeyMapping SoulListKey = register("打开能力清单");
+    public static final KeyMapping SoulMenuKey = register("打开魂石空间");
 
     private static KeyMapping register(String name) {
         KeyMapping keyMapping = new KeyMapping(
@@ -36,7 +35,6 @@ public class KeyRegister {
         keyList.add(keyMapping);
         return keyMapping;
     }
-
 
     @SubscribeEvent
     public static void registerKeyMappingsEvent(RegisterKeyMappingsEvent event) {

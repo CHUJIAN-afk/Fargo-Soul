@@ -1,6 +1,6 @@
 package First.fargo_soul.dadageneeator.builder;
 
-import First.fargo_soul.recipe.SoulRecipe;
+import First.fargo_soul.common.recipe.SoulRecipe;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;

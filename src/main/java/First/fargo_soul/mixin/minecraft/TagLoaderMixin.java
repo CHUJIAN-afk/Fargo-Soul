@@ -1,6 +1,6 @@
 package First.fargo_soul.mixin.minecraft;
 
-import First.fargo_soul.event.modEvent.AddItemTagEvent;
+import First.fargo_soul.common.event.modEvent.AddItemTagEvent;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;

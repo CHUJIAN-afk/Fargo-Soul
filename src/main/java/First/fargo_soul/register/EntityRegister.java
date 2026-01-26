@@ -1,8 +1,8 @@
 package First.fargo_soul.register;
 
 import First.fargo_soul.FargoSoul;
-import First.fargo_soul.entity.projectile.Bone;
-import First.fargo_soul.entity.projectile.Needle;
+import First.fargo_soul.common.entity.projectile.Bone;
+import First.fargo_soul.common.entity.projectile.Needle;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;

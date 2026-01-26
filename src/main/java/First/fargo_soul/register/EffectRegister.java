@@ -1,8 +1,8 @@
 package First.fargo_soul.register;
 
 import First.fargo_soul.FargoSoul;
-import First.fargo_soul.effect.harmful.*;
-import First.fargo_soul.effect.neutral.*;
+import First.fargo_soul.common.effect.harmful.*;
+import First.fargo_soul.common.effect.neutral.*;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;

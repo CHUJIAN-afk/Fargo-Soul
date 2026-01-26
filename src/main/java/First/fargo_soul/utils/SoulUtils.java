@@ -1,6 +1,6 @@
 package First.fargo_soul.utils;
 
-import First.fargo_soul.item.base.SoulItem;
+import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.register.AttachmentRegister;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -14,10 +14,12 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
@@ -40,6 +42,13 @@ public class SoulUtils {
 	public static final List<SoulItem> AttributeSoulList = RegisterSoulList.stream().filter(soulItem -> !soulItem.getAttributeModifiers().isEmpty()).toList();
 	public static final List<EntityType<?>> ProjectileList = BuiltInRegistries.ENTITY_TYPE.stream().toList();
 
+	public static void addItemEetity(Level level, ItemStack itemStack, Vec3 center) {
+		ItemEntity itemEntity = new ItemEntity(level, center.x, center.y, center.z, itemStack);
+		itemEntity.setDeltaMovement(new Vec3(random.nextFloat(-0.5F, 0.5F), random.nextFloat(-0.5F, 0.5F), random.nextFloat(0.5F)));
+		if (itemEntity != null) {
+			addEntity(level, itemEntity);
+		}
+	}
 
 	public static List<LivingEntity> getTargetList(LivingEntity attacker, double range) {
 		return attacker.level().getEntitiesOfClass(LivingEntity.class, attacker.getBoundingBox().inflate(range), living -> {
@@ -72,7 +81,7 @@ public class SoulUtils {
 
 	public static void addEntity(Level level, Entity entity) {
 		MinecraftServer server = level.getServer();
-		if (server != null) {
+		if (server != null && entity.getId() > 0) {
 			server.execute(() -> level.addFreshEntity(entity));
 		}
 	}

@@ -1,21 +1,22 @@
 package First.fargo_soul.utils;
 
-import First.fargo_soul.attachment.SoulAbilityEnabledData;
-import First.fargo_soul.attachment.SoulListData;
-import First.fargo_soul.item.base.SoulItem;
+import First.fargo_soul.common.attachment.SoulAbilityEnabledData;
+import First.fargo_soul.common.attachment.SoulListData;
+import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.register.AttachmentRegister;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -34,15 +35,6 @@ public class CurioUtils {
         return false;
     }
 
-    public static int getDepth(SoulItem soulItem) {
-        int depth = 0;
-        List<SoulItem> soulItemList = soulItem.getSoulItemList();
-        for (SoulItem child : soulItemList) {
-            depth = Math.max(depth, getDepth(child) + 1);
-        }
-        return depth;
-    }
-
     /**
      * 获取实体身上所有的魂石，包括未启用的
      *
@@ -58,6 +50,19 @@ public class CurioUtils {
         soulListData.setSoulItemList(list);
         if (!livingEntity.level().isClientSide()) {
             livingEntity.syncData(AttachmentRegister.SoulListData);
+        }
+        for (SoulItem soulItem : SoulUtils.AttributeSoulList) {
+            Map<Holder<Attribute>, AttributeModifier> modifiers = soulItem.getAttributeModifiers();
+            for (Map.Entry<Holder<Attribute>, AttributeModifier> entry : modifiers.entrySet()) {
+                AttributeUtils.condition(
+                        livingEntity,
+                        entry.getKey(),
+                        entry.getValue().id(),
+                        entry.getValue().amount(),
+                        entry.getValue().operation(),
+                        CurioUtils.isEquipped(livingEntity, soulItem.getClass())
+                );
+            }
         }
     }
 
@@ -82,18 +87,14 @@ public class CurioUtils {
     }
 
     public static List<SoulItem> getSoulFromSlots(LivingEntity livingEntity) {
-        List<SoulItem> OringinCurioList = new ArrayList<>();
-        Optional<ICuriosItemHandler> optional = CuriosApi.getCuriosInventory(livingEntity);
-        optional.ifPresent(iCuriosItemHandler -> {
-            IItemHandlerModifiable curios = iCuriosItemHandler.getEquippedCurios();
-            for (int i = 0; i < curios.getSlots(); i++) {
-                ItemStack stack = curios.getStackInSlot(i);
-                if (stack.getItem() instanceof SoulItem soulItem) {
-                    OringinCurioList.add(soulItem);
-                }
+        NonNullList<ItemStack> items = livingEntity.getData(AttachmentRegister.SoulContainerData).getSoulContainer().getItems();
+        List<SoulItem> result = new ArrayList<>();
+        for (ItemStack itemStack : items) {
+            if (itemStack.getItem() instanceof SoulItem soulItem) {
+                result.add(soulItem);
             }
-        });
-        return OringinCurioList;
+        }
+        return result;
     }
 
     public static int extractLastNumber(String s) {

@@ -1,7 +1,7 @@
 package First.fargo_soul.mixin.minecraft;
 
 
-import First.fargo_soul.item.terraSoul.lifePower.PumpkinSoul;
+import First.fargo_soul.common.item.terraSoul.lifePower.PumpkinSoul;
 import First.fargo_soul.utils.CurioUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

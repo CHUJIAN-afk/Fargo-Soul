@@ -1,7 +1,7 @@
 package First.fargo_soul.register;
 
 import First.fargo_soul.FargoSoul;
-import First.fargo_soul.block.CosmicCrucibleBlock;
+import First.fargo_soul.common.block.CosmicCrucibleBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;

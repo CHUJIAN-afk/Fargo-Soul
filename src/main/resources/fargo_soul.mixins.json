@@ -9,6 +9,7 @@
     "minecraft.CombatRulesMixin",
     "minecraft.EntityMixin",
     "minecraft.ExtraCodecsMixin",
+    "minecraft.InventoryMenuAccessor",
     "minecraft.ItemEntityMixin",
     "minecraft.LivingEntityMixin",
     "minecraft.PlayerMixin",
@@ -21,8 +22,10 @@
   ],
   "client": [
     "minecraft.ClientBlockStateBaseMixin",
+    "minecraft.CreativeModeInventoryScreenMixin",
     "minecraft.EntityRenderDispatcherMixin",
-    "minecraft.ItemInHandRendererMixin"
+    "minecraft.ItemInHandRendererMixin",
+    "minecraft.ScreenAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
