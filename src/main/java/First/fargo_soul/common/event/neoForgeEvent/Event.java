@@ -4,6 +4,7 @@ package First.fargo_soul.common.event.neoForgeEvent;
 import First.fargo_soul.FargoSoul;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.blcokEntity.CosmicCrucibleBlockEntity;
+import First.fargo_soul.common.dataComponents.SoulRarity;
 import First.fargo_soul.common.item.TerraSoul;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.config.ServerSoulConfig;
@@ -38,6 +39,7 @@ import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -46,6 +48,44 @@ import java.util.Set;
 
 @EventBusSubscriber(modid = FargoSoul.MODID)
 public class Event {
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void colorChange(ServerTickEvent.Pre event) {
+        SoulRarity expert = SoulRarity.EXPERT;
+        if (expert.getColor() == -1) expert.setColor(0xFF0000);
+        int expertColor = expert.getColor();
+        int er = (expertColor >> 16) & 0xFF;
+        int eg = (expertColor >> 8) & 0xFF;
+        int eb = expertColor & 0xFF;
+        int ediscoStyle = (expertColor >> 24) & 0xFF;
+        switch (ediscoStyle) {
+            case 0: if (eg < 255) eg = Math.min(eg + 7, 255); if (eg == 255) { er = 248; ediscoStyle = 1; } break;
+            case 1: if (er > 0) er = Math.max(er - 7, 0); if (er == 0) { eb = 7; ediscoStyle = 2; } break;
+            case 2: if (eb < 255) eb = Math.min(eb + 7, 255); if (eb == 255) { eg = 248; ediscoStyle = 3; } break;
+            case 3: if (eg > 0) eg = Math.max(eg - 7, 0); if (eg == 0) { er = 7; ediscoStyle = 4; } break;
+            case 4: if (er < 255) er = Math.min(er + 7, 255); if (er == 255) { eb = 248; ediscoStyle = 5; } break;
+            case 5: if (eb > 0) eb = Math.max(eb - 7, 0); if (eb == 0) ediscoStyle = 0; break;
+        }
+        expert.setColor((ediscoStyle << 24) | (er << 16) | (eg << 8) | eb);
+
+        SoulRarity master = SoulRarity.MASTER;
+        if (master.getColor() == -2) master.setColor(0xFF0000);
+        int masterColor = master.getColor();
+        int mr = (masterColor >> 16) & 0xFF;
+        int mg = (masterColor >> 8) & 0xFF;
+        int mb = masterColor & 0xFF;
+        int mdiscoStyle = (masterColor >> 24) & 0xFF;
+        int speed = 14;
+        switch (mdiscoStyle) {
+            case 0: if (mg < 255) mg = Math.min(mg + speed, 255); if (mg == 255) { mr = 241; mdiscoStyle = 1; } break;
+            case 1: if (mr > 0) mr = Math.max(mr - speed, 0); if (mr == 0) { mb = 14; mdiscoStyle = 2; } break;
+            case 2: if (mb < 255) mb = Math.min(mb + speed, 255); if (mb == 255) { mg = 241; mdiscoStyle = 3; } break;
+            case 3: if (mg > 0) mg = Math.max(mg - speed, 0); if (mg == 0) { mr = 14; mdiscoStyle = 4; } break;
+            case 4: if (mr < 255) mr = Math.min(mr + speed, 255); if (mr == 255) { mb = 241; mdiscoStyle = 5; } break;
+            case 5: if (mb > 0) mb = Math.max(mb - speed, 0); if (mb == 0) mdiscoStyle = 0; break;
+        }
+        master.setColor((mdiscoStyle << 24) | (mr << 16) | (mg << 8) | mb);
+    }
 
     @SubscribeEvent
     public static void soulDrop(LivingDropsEvent event) {

@@ -2,6 +2,7 @@ package First.fargo_soul.utils;
 
 import First.fargo_soul.common.attachment.SoulAbilityEnabledData;
 import First.fargo_soul.common.attachment.SoulListData;
+import First.fargo_soul.common.dataComponents.SoulRarity;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.register.AttachmentRegister;
 import net.minecraft.ChatFormatting;
@@ -15,8 +16,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
-import org.confluence.lib.ConfluenceMagicLib;
-import org.confluence.lib.common.component.ModRarity;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -118,20 +117,20 @@ public class CurioUtils {
     public static List<Component> getSoulItemAttributesComponent(SoulItem soulItem) {
         List<Component> components = attributeList.computeIfAbsent(soulItem, k -> {
             Map<String, String> languageData = Language.getInstance().getLanguageData();
-            ModRarity modRarity = soulItem.components().getOrDefault(ConfluenceMagicLib.MOD_RARITY.get(), ModRarity.GRAY);
+            SoulRarity modRarity = soulItem.getSoulRarity();
             List<MutableComponent> mutableComponents = languageData.keySet().stream()
                     .filter(key -> key.contains("." + BuiltInRegistries.ITEM.getKey(soulItem).getPath() + "." + "attribute"))
                     .sorted(Comparator.comparingInt(CurioUtils::extractLastNumber))
                     .map(Component::translatable)
-                    .map(component -> component.withColor(modRarity.color()))
+                    .map(component -> component.withColor(modRarity.getColor()))
                     .toList();
             return new ArrayList<>(mutableComponents);
         });
-        ModRarity rarity = soulItem.getModRarity();
-        if (rarity == ModRarity.MASTER || rarity == ModRarity.EXPERT || rarity == ModRarity.QUEST) {
+        SoulRarity rarity = soulItem.getSoulRarity();
+        if (rarity == SoulRarity.MASTER || rarity == SoulRarity.EXPERT || rarity == SoulRarity.QUEST) {
             return components.stream()
                     .map(Component::copy)
-                    .map(component -> component.withColor(rarity.color()))
+                    .map(component -> component.withColor(rarity.getColor()))
                     .collect(Collectors.toList());
         }
         return components;

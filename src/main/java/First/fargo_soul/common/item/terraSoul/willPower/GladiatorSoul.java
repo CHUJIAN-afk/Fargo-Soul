@@ -1,8 +1,8 @@
 package First.fargo_soul.common.item.terraSoul.willPower;
 
-import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.client.gui.SoulGuiRenderManager;
 import First.fargo_soul.client.gui.SoulRenderType;
+import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.WillPower;
 import First.fargo_soul.register.AttachmentRegister;
@@ -18,15 +18,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import org.confluence.lib.ConfluenceMagicLib;
-import org.confluence.lib.common.component.ModRarity;
 
 import java.util.List;
 
 public class GladiatorSoul extends SoulItem {
 
     public GladiatorSoul(Properties properties) {
-        super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.GREEN));
+        super(properties);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package First.fargo_soul.common.item.terraSoul.willPower;
 
-import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.client.gui.SoulGuiRenderManager;
 import First.fargo_soul.client.gui.SoulRenderType;
+import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.WillPower;
 import First.fargo_soul.register.AttachmentRegister;
@@ -36,15 +36,13 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
-import org.confluence.lib.ConfluenceMagicLib;
-import org.confluence.lib.common.component.ModRarity;
 
 import java.util.List;
 
 public class GoldSoul extends SoulItem {
 
     public GoldSoul(Properties properties) {
-        super(properties.component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PINK));
+        super(properties);
     }
 
     @Override

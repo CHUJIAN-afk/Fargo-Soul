@@ -72,6 +72,7 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
@@ -79,6 +80,13 @@ import java.util.List;
 
 @EventBusSubscriber(modid = FargoSoul.MODID, value = Dist.CLIENT)
 public class ClientEvent {
+
+    @SubscribeEvent
+    public static void onLevelLoad(LevelEvent.Load event) {
+        if (event.getLevel().isClientSide()) {
+            SoulGuiRenderManager.SoulInfoManager.clear();
+        }
+    }
 
     @SubscribeEvent
     public static void openScreen(ScreenEvent.Init.Post event) {

@@ -1,8 +1,8 @@
 package First.fargo_soul.common.item.terraSoul;
 
-import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.client.gui.SoulGuiRenderManager;
 import First.fargo_soul.client.gui.SoulRenderType;
+import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.register.EffectRegister;
 import First.fargo_soul.register.ItemRegister;
@@ -20,12 +20,12 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -36,7 +36,6 @@ import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 
 import java.util.List;
-import java.util.Random;
 
 import static First.fargo_soul.register.ItemRegister.*;
 
@@ -103,11 +102,10 @@ public class NaturePower extends SoulItem {
                 if (soulInfo.isReady() && SoulUtils.getSoulTarget(ticker, 10) instanceof LivingEntity target) {
                     soulInfo.setCooldown(soulInfo.getMaxCooldown());
                     SoulUtils.attack(ticker, target, DamageTypes.MAGIC, 20);
-                    Random random = SoulUtils.random;
-                    Item item = random.nextBoolean() ? Items.RED_MUSHROOM : Items.BROWN_MUSHROOM;
-                    ItemStack stack = item.getDefaultInstance().copy();
-                    stack.setCount(5);
-                    target.spawnAtLocation(stack);
+                    RandomSource random = ticker.getRandom();
+                    ItemStack itemStack = random.nextBoolean() ? Items.RED_MUSHROOM.getDefaultInstance() : Items.BROWN_MUSHROOM.getDefaultInstance();
+                    itemStack.setCount(5);
+                    SoulUtils.addItemEetity(level, itemStack, target.getBoundingBox().getCenter());
                     for (int i = 0; i < 5; i++) {
                         SoulUtils.attack(ticker, target, DamageTypes.MAGIC, 4);
                     }
@@ -115,8 +113,20 @@ public class NaturePower extends SoulItem {
                     target.addEffect(new MobEffectInstance(MobEffects.POISON, 39));
                     Vec3 position = ticker.position();
                     double size = ticker.getBoundingBox().getSize();
-                    ParticleUtils.spawnParticleLine((ServerLevel) level, position.add(random.nextDouble(size), 0, random.nextDouble(size)), target.getBoundingBox().getCenter(), ParticleTypes.ELECTRIC_SPARK, 20, 0);
-                    SoulUtils.playSound(level, position, SoundEvents.ILLUSIONER_CAST_SPELL, ticker.getSoundSource());
+                    ParticleUtils.spawnParticleLine(
+                            (ServerLevel) level,
+                            position.add(random.nextDouble() * size, 0, random.nextDouble() * size),
+                            target.getBoundingBox().getCenter(),
+                            ParticleTypes.ELECTRIC_SPARK,
+                            20,
+                            0
+                    );
+                    SoulUtils.playSound(
+                            level,
+                            position,
+                            SoundEvents.ILLUSIONER_CAST_SPELL,
+                            ticker.getSoundSource()
+                    );
                 }
             }
             {

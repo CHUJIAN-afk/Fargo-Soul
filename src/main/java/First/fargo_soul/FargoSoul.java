@@ -26,6 +26,7 @@ public class FargoSoul {
     }
 
     public FargoSoul(IEventBus eventBus, ModContainer modContainer) {
+        DataComponentsRegister.register(eventBus);
         ItemRegister.register(eventBus);
         BlockRegister.register(eventBus);
         BlockEntityRegister.register(eventBus);

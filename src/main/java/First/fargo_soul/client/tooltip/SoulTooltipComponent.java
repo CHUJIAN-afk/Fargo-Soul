@@ -40,7 +40,18 @@ public class SoulTooltipComponent implements ClientTooltipComponent, TooltipComp
 		PoseStack pose = guiGraphics.pose();
 		pose.pushPose();
 		tooltipY -= 25;
-		TooltipRenderUtil.renderTooltipBackground(guiGraphics, tooltipX, tooltipY, width, 16, 16, -267386864, -267386864, 0xFF0000FF, 0xFFFFD700);
+		TooltipRenderUtil.renderTooltipBackground(
+				guiGraphics,
+				tooltipX,
+				tooltipY,
+				width,
+				16,
+				16,
+				-267386864,
+				-267386864,
+				soulItem.getSoulRarity().getARGB(),
+				soulItem.getSoulRarity().getInverseARGB()
+		);
 		pose.translate(tooltipX, tooltipY, 0);
 		guiGraphics.renderItem(soulItem.getDefaultInstance(), 0, 0);
 		for (Item item : renderList) {
