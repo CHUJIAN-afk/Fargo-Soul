@@ -9,7 +9,7 @@ import net.minecraft.network.codec.StreamCodec;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public final class SoulRarity implements DataComponentType<SoulRarity> {
+public record SoulRarity(String name, int color) implements DataComponentType<SoulRarity> {
 
     public static final SoulRarity COMMON = new SoulRarity("common", 16777215);
     public static final SoulRarity UNCOMMON = new SoulRarity("uncommon", 16777045);
@@ -34,24 +34,19 @@ public final class SoulRarity implements DataComponentType<SoulRarity> {
     public static final SoulRarity MASTER = new SoulRarity("master", -2);
     public static final SoulRarity QUEST = new SoulRarity("quest", 0xFFAF00);
 
+    public static int ExpertColor = EXPERT.color;
+    public static int MasterColor = MASTER.color;
+
     public static final Codec<SoulRarity> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.STRING.fieldOf("name").forGetter(SoulRarity::getName),
-            Codec.INT.fieldOf("color").forGetter(SoulRarity::getColor)
+            Codec.STRING.fieldOf("name").forGetter(SoulRarity::name),
+            Codec.INT.fieldOf("color").forGetter(SoulRarity::color)
     ).apply(instance, SoulRarity::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, SoulRarity> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.STRING_UTF8, SoulRarity::getName,
-            ByteBufCodecs.INT, SoulRarity::getColor,
+            ByteBufCodecs.STRING_UTF8, SoulRarity::name,
+            ByteBufCodecs.INT, SoulRarity::color,
             SoulRarity::new
     );
-
-    private final String name;
-    private int color;
-
-    private SoulRarity(String name, int color) {
-        this.name = name;
-        this.color = color;
-    }
 
     @Override
     public @Nullable Codec<SoulRarity> codec() {
@@ -63,39 +58,25 @@ public final class SoulRarity implements DataComponentType<SoulRarity> {
         return STREAM_CODEC;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public int getColor() {
+    @Override
+    public int color() {
+        if (this.equals(EXPERT)) {
+            return ExpertColor;
+        }
+        if (this.equals(MASTER)) {
+            return MasterColor;
+        }
         return color;
     }
 
-    public void setColor(int color) {
-        this.color = color;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof SoulRarity soulRarity) {
-            return this.name.equals(soulRarity.name);
-        }
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return this.name.hashCode() + this.color;
-    }
-
     public int getARGB() {
-        return 0xFF000000 | color;
+        return 0xFF000000 | color();
     }
 
     public int getInverseARGB() {
-        int r = (color >> 16) & 0xFF;
-        int g = (color >> 8) & 0xFF;
-        int b = color & 0xFF;
+        int r = (color() >> 16) & 0xFF;
+        int g = (color() >> 8) & 0xFF;
+        int b = color() & 0xFF;
         return 0xFF000000 | ((255 - r) << 16) | ((255 - g) << 8) | (255 - b);
     }
 

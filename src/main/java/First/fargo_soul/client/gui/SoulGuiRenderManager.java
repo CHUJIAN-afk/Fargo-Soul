@@ -104,7 +104,7 @@ public class SoulGuiRenderManager {
         public void add(SoulItem soulItem, String id, SoulRenderType type) {
             SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(player, id);
             Object key = List.of(soulItem, id, type);
-            SoulRenderInfo soulRenderInfo = SoulTooltipManager.computeIfAbsent(key, k -> new SoulRenderInfo(soulItem, startTime - 40, 0, soulItem.getSoulRarity().getColor(), type));
+            SoulRenderInfo soulRenderInfo = SoulTooltipManager.computeIfAbsent(key, k -> new SoulRenderInfo(soulItem, startTime - 40, 0, soulItem.getSoulRarity().color(), type));
             soulRenderInfo.setPercentage(switch (type) {
                 case Duration -> (float) soulInfo.getDuration() / soulInfo.getMaxDuration();
                 case Stack -> (float) soulInfo.getStacks() / soulInfo.getMaxStacks();

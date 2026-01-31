@@ -11,10 +11,10 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
-public record KeyPressPacket(int key) implements CustomPacketPayload {
+public record KeyHandlePacket(String key) implements CustomPacketPayload {
 
-    public static final Type<KeyPressPacket> TYPE = new Type<>(FargoSoul.rl("key_press"));
-    public static final StreamCodec<ByteBuf, KeyPressPacket> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.INT, KeyPressPacket::key, KeyPressPacket::new);
+    public static final Type<KeyHandlePacket> TYPE = new Type<>(FargoSoul.rl("key_handle"));
+    public static final StreamCodec<ByteBuf, KeyHandlePacket> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.STRING_UTF8, KeyHandlePacket::key, KeyHandlePacket::new);
 
     @Override
     public @NotNull Type<? extends CustomPacketPayload> type() {
@@ -25,7 +25,7 @@ public record KeyPressPacket(int key) implements CustomPacketPayload {
         context.enqueueWork(() -> {
             Player player = context.player();
             for (SoulItem soulItem : SoulUtils.RegisterSoulList) {
-                soulItem.keyPressed(player, key);
+                soulItem.keyHandle(player, key);
             }
         });
     }

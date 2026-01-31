@@ -20,7 +20,7 @@ public abstract class SoulItem extends Item implements ISoulItem {
 
     @Override
     public @NotNull Component getName(@NotNull ItemStack stack) {
-        return super.getName(stack).copy().withColor(getSoulRarity().getColor());
+        return super.getName(stack).copy().withColor(getSoulRarity().color());
     }
 
 }

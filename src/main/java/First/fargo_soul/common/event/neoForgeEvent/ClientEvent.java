@@ -13,6 +13,7 @@ import First.fargo_soul.client.tooltip.SoulTooltipComponent;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.attachment.SoulAbilityEnabledData;
 import First.fargo_soul.common.attachment.SoulListData;
+import First.fargo_soul.common.dataComponents.SoulRarity;
 import First.fargo_soul.common.event.modEvent.PlayerFlyEvent;
 import First.fargo_soul.common.event.modEvent.SprintEvent;
 import First.fargo_soul.common.item.base.SoulItem;
@@ -22,7 +23,7 @@ import First.fargo_soul.common.item.terraSoul.naturePower.LavaSoul;
 import First.fargo_soul.common.item.terraSoul.terraPower.ObsidianSoul;
 import First.fargo_soul.config.ClientConfig;
 import First.fargo_soul.mixin.minecraft.ScreenAccessor;
-import First.fargo_soul.networkPacket.KeyPressPacket;
+import First.fargo_soul.networkPacket.KeyHandlePacket;
 import First.fargo_soul.networkPacket.OpenSoulContainerPacket;
 import First.fargo_soul.networkPacket.SprintPacket;
 import First.fargo_soul.register.*;
@@ -56,6 +57,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -66,6 +68,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
@@ -80,6 +83,45 @@ import java.util.List;
 
 @EventBusSubscriber(modid = FargoSoul.MODID, value = Dist.CLIENT)
 public class ClientEvent {
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void colorChange(ClientTickEvent.Pre event) {
+        int expert = SoulRarity.ExpertColor;
+        if (expert == -1) expert = 0xFF0000;
+        int expertColor = expert;
+        int er = (expertColor >> 16) & 0xFF;
+        int eg = (expertColor >> 8) & 0xFF;
+        int eb = expertColor & 0xFF;
+        int ediscoStyle = (expertColor >> 24) & 0xFF;
+        switch (ediscoStyle) {
+            case 0: if (eg < 255) eg = Math.min(eg + 7, 255); if (eg == 255) { er = 248; ediscoStyle = 1; } break;
+            case 1: if (er > 0) er = Math.max(er - 7, 0); if (er == 0) { eb = 7; ediscoStyle = 2; } break;
+            case 2: if (eb < 255) eb = Math.min(eb + 7, 255); if (eb == 255) { eg = 248; ediscoStyle = 3; } break;
+            case 3: if (eg > 0) eg = Math.max(eg - 7, 0); if (eg == 0) { er = 7; ediscoStyle = 4; } break;
+            case 4: if (er < 255) er = Math.min(er + 7, 255); if (er == 255) { eb = 248; ediscoStyle = 5; } break;
+            case 5: if (eb > 0) eb = Math.max(eb - 7, 0); if (eb == 0) ediscoStyle = 0; break;
+        }
+        SoulRarity.ExpertColor = ((ediscoStyle << 24) | (er << 16) | (eg << 8) | eb);
+
+        int master = SoulRarity.MasterColor;
+        if (master == -2) master = 0xFF0000;
+        int masterColor = master;
+        int mr = (masterColor >> 16) & 0xFF;
+        int mg = (masterColor >> 8) & 0xFF;
+        int mb = masterColor & 0xFF;
+        int mdiscoStyle = (masterColor >> 24) & 0xFF;
+        int speed = 14;
+        switch (mdiscoStyle) {
+            case 0: if (mg < 255) mg = Math.min(mg + speed, 255); if (mg == 255) { mr = 241; mdiscoStyle = 1; } break;
+            case 1: if (mr > 0) mr = Math.max(mr - speed, 0); if (mr == 0) { mb = 14; mdiscoStyle = 2; } break;
+            case 2: if (mb < 255) mb = Math.min(mb + speed, 255); if (mb == 255) { mg = 241; mdiscoStyle = 3; } break;
+            case 3: if (mg > 0) mg = Math.max(mg - speed, 0); if (mg == 0) { mr = 14; mdiscoStyle = 4; } break;
+            case 4: if (mr < 255) mr = Math.min(mr + speed, 255); if (mr == 255) { mb = 241; mdiscoStyle = 5; } break;
+            case 5: if (mb > 0) mb = Math.max(mb - speed, 0); if (mb == 0) mdiscoStyle = 0; break;
+        }
+        SoulRarity.MasterColor = ((mdiscoStyle << 24) | (mr << 16) | (mg << 8) | mb);
+    }
+
 
     @SubscribeEvent
     public static void onLevelLoad(LevelEvent.Load event) {
@@ -166,8 +208,14 @@ public class ClientEvent {
 
     @SubscribeEvent
     public static void soulKeyPressed(InputEvent.Key event) {
-        if (Minecraft.getInstance().getConnection() != null) {
-            PacketDistributor.sendToServer(new KeyPressPacket(event.getKey()));
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.getConnection() != null && minecraft.player instanceof Player player) {
+            for (SoulItem soulItem : SoulUtils.RegisterSoulList) {
+                String key = soulItem.keyPressed(player, event.getKey());
+                if (key != null) {
+                    PacketDistributor.sendToServer(new KeyHandlePacket(key));
+                }
+            }
         }
     }
 
