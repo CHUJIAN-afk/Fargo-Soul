@@ -2,7 +2,7 @@ package First.fargo_soul.register;
 
 
 import First.fargo_soul.FargoSoul;
-import First.fargo_soul.networkPacket.KeyPressPacket;
+import First.fargo_soul.networkPacket.KeyHandlePacket;
 import First.fargo_soul.networkPacket.OpenSoulContainerPacket;
 import First.fargo_soul.networkPacket.SoulContainerButtonPacket;
 import First.fargo_soul.networkPacket.SprintPacket;
@@ -19,7 +19,7 @@ public class NetworkPacketRegister {
     @SubscribeEvent
     public static void registerPayloadHandlers(RegisterPayloadHandlersEvent event) {
         PayloadRegistrar registrar = event.registrar("1");
-        registrar.playToServer(KeyPressPacket.TYPE, KeyPressPacket.STREAM_CODEC, KeyPressPacket::handle);
+        registrar.playToServer(KeyHandlePacket.TYPE, KeyHandlePacket.STREAM_CODEC, KeyHandlePacket::handle);
         registrar.playToServer(SprintPacket.TYPE, SprintPacket.STREAM_CODEC, SprintPacket::handle);
         registrar.playToServer(SoulContainerButtonPacket.TYPE, SoulContainerButtonPacket.STREAM_CODEC, SoulContainerButtonPacket::handle);
         registrar.playToServer(OpenSoulContainerPacket.TYPE, OpenSoulContainerPacket.STREAM_CODEC, OpenSoulContainerPacket::handle);
