@@ -188,22 +188,19 @@ public class GoldSoul extends SoulItem {
     }
 
     @Override
-    public String keyPressed(Player player, int key) {
+    public void keyPressed(Player player, int key) {
         if (key == KeyRegister.GoldSoulKey.getKey().getValue() && CurioUtils.isEquipped(player, GoldSoul.class)) {
-            return GoldSoul.class.getSimpleName();
-        }
-        return null;
-    }
-
-    @Override
-    public void keyHandle(Player player, String key) {
-        if (key.equals(GoldSoul.class.getSimpleName())) {
             SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GoldSoul.class);
             soulInfo.setMaxCooldown(2400);
             if (soulInfo.getCooldown() == 0) {
                 soulInfo.setCooldown(soulInfo.getMaxCooldown());
                 soulInfo.setDuration(CurioUtils.isEquipped(player, WillPower.class) ? 140 : 100);
-                SoulUtils.playSound(player.level(), player.position(), SoundEvents.APPLY_EFFECT_RAID_OMEN, SoundSource.PLAYERS);
+                SoulUtils.playSound(
+                        player.level(),
+                        player.position(),
+                        SoundEvents.APPLY_EFFECT_RAID_OMEN,
+                        SoundSource.PLAYERS
+                );
             }
         }
     }

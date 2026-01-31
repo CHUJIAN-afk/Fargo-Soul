@@ -1,8 +1,8 @@
 package First.fargo_soul.common.item;
 
 import First.fargo_soul.common.attachment.SoulAbilityData;
-import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.menu.SoulContainer;
+import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.register.KeyRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.ParticleUtils;
@@ -10,6 +10,7 @@ import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.Entity;
@@ -45,17 +46,11 @@ public class TerraSoul extends SoulItem {
     }
 
     @Override
-    public String keyPressed(Player player, int key) {
-        if (key == KeyRegister.SoulMenuKey.getKey().getValue()) {
-            return "SoulMenu";
-        }
-        return null;
-    }
-
-    @Override
-    public void keyHandle(Player player, String key) {
-        if (key.equals("SoulMenu") && !(player.containerMenu instanceof SoulContainer)) {
-            player.openMenu(new SimpleMenuProvider(SoulContainer::new, Component.literal("魂")));
+    public void keyPressed(Player player, int key) {
+        if (key == KeyRegister.SoulMenuKey.getKey().getValue() && player instanceof ServerPlayer serverPlayer) {
+            if (!(serverPlayer.containerMenu instanceof SoulContainer)) {
+                serverPlayer.openMenu(new SimpleMenuProvider(SoulContainer::new, Component.literal("魂")));
+            }
         }
     }
 

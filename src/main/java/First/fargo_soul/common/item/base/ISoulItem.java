@@ -98,11 +98,7 @@ public interface ISoulItem {
     default void renderGui(Player player, GuiGraphics guiGraphics, float partialTick, Font font) {
     }
 
-    default String keyPressed(Player player, int key) {
-        return null;
-    }
-
-    default void keyHandle(Player player, String key) {
+    default void keyPressed(Player player, int key) {
     }
 
     default void movementInput(Player player, Input input) {

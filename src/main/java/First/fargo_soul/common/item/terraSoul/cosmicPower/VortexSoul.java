@@ -43,16 +43,8 @@ public class VortexSoul extends SoulItem {
     }
 
     @Override
-    public String keyPressed(Player player, int key) {
+    public void keyPressed(Player player, int key) {
         if (key == KeyRegister.VortexSoulKey.getKey().getValue() && CurioUtils.isEquipped(player, VortexSoul.class)) {
-            return VortexSoul.class.getSimpleName();
-        }
-        return null;
-    }
-
-    @Override
-    public void keyHandle(Player player, String key) {
-        if (key.equals(VortexSoul.class.getSimpleName())) {
             Level level = player.level();
             SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(VortexSoul.class);
             int maxDistance = CurioUtils.isEquipped(player, CosmicPower.class) ? 1024 : 512;

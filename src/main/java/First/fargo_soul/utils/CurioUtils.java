@@ -122,7 +122,7 @@ public class CurioUtils {
                     .filter(key -> key.contains("." + BuiltInRegistries.ITEM.getKey(soulItem).getPath() + "." + "attribute"))
                     .sorted(Comparator.comparingInt(CurioUtils::extractLastNumber))
                     .map(Component::translatable)
-                    .map(component -> component.withColor(modRarity.color()))
+                    .map(component -> component.withColor(modRarity.getColor()))
                     .toList();
             return new ArrayList<>(mutableComponents);
         });
@@ -130,7 +130,7 @@ public class CurioUtils {
         if (rarity == SoulRarity.MASTER || rarity == SoulRarity.EXPERT || rarity == SoulRarity.QUEST) {
             return components.stream()
                     .map(Component::copy)
-                    .map(component -> component.withColor(rarity.color()))
+                    .map(component -> component.withColor(rarity.getColor()))
                     .collect(Collectors.toList());
         }
         return components;

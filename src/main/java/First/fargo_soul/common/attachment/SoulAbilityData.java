@@ -71,16 +71,14 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 		if (event.getEntity() instanceof LivingEntity ticker && ticker.hasData(AttachmentRegister.SoulAbilityData)) {
 			Map<String, SoulInfo> soulInfoList = ticker.getData(AttachmentRegister.SoulAbilityData).getSoulInfoList();
 			Level level = ticker.level();
-			boolean syncData = false;
 			for (SoulInfo soulInfo : soulInfoList.values()) {
 				if ((level.isClientSide() && soulInfo.isClient() && ticker instanceof Player) || (!level.isClientSide() && !soulInfo.isClient())) {
 					if (soulInfo.getMaxCooldown() != -1) soulInfo.shrinkCooldown();
 					if (soulInfo.getStacks() > soulInfo.getMaxStacks()) soulInfo.setStacks(soulInfo.getMaxStacks());
 					if (soulInfo.getDuration() > 0) soulInfo.shrinkDuration();
-					if (!syncData && soulInfo.isChange()) syncData = true;
 				}
 			}
-			if (!level.isClientSide() && syncData) {
+			if (!level.isClientSide()) {
 				ticker.syncData(AttachmentRegister.SoulAbilityData);
 			}
 		}
@@ -135,7 +133,7 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 	public void write(@NotNull RegistryFriendlyByteBuf buf, @NotNull SoulAbilityData data, boolean clientPacket) {
 		List<Map.Entry<String, SoulInfo>> entryList = data.SoulInfoList.entrySet().stream().filter(entry -> entry.getValue().isChange()).toList();
 		buf.writeVarInt(entryList.size());
-		for (Map.Entry<String, SoulInfo> entry : entryList) {
+		entryList.forEach(entry -> {
 			String key = entry.getKey();
 			SoulInfo info = entry.getValue();
 			info.setChange(false);
@@ -148,7 +146,7 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 			buf.writeVarInt(info.stacks);
 			buf.writeVarInt(info.maxStacks);
 			buf.writeBoolean(info.enabled);
-		}
+		});
 	}
 
 	@Override
@@ -168,9 +166,12 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 			info.enabled = buf.readBoolean();
 			soulInfo.put(key, info);
 		}
-		SoulAbilityData result = data != null ? data : new SoulAbilityData();
-		result.SoulInfoList.putAll(soulInfo);
-		return result;
+		if (data != null) {
+			data.SoulInfoList.putAll(soulInfo);
+			return data;
+		} else {
+			return new SoulAbilityData(soulInfo);
+		}
 	}
 
 	public static class SoulInfo {

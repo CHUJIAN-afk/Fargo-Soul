@@ -42,16 +42,8 @@ public class StardustSoul extends SoulItem {
     }
 
     @Override
-    public String keyPressed(Player player, int key) {
+    public void keyPressed(Player player, int key) {
         if (key == KeyRegister.StardustSoulKey.getKey().getValue() && CurioUtils.isEquipped(player, StardustSoul.class)) {
-            return StardustSoul.class.getSimpleName();
-        }
-        return null;
-    }
-
-    @Override
-    public void keyHandle(Player player, String key) {
-        if (key.equals(StardustSoul.class.getSimpleName())) {
             SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(StardustSoul.class);
             if (soulInfo.isReady() && player.getServer() instanceof MinecraftServer server && !server.tickRateManager().isFrozen()) {
                 soulInfo.setCooldown(soulInfo.getMaxCooldown());

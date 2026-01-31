@@ -37,16 +37,8 @@ public class ForbiddenSoul extends SoulItem {
     }
 
     @Override
-    public String keyPressed(Player player, int key) {
-        if (CurioUtils.isEquipped(player, ForbiddenSoul.class) && KeyRegister.ForbiddenKey.getKey().getValue() == key) {
-            return ForbiddenSoul.class.getSimpleName();
-        }
-        return null;
-    }
-
-    @Override
-    public void keyHandle(Player player, String key) {
-        if (key.equals(ForbiddenSoul.class.getSimpleName())) {
+    public void keyPressed(Player player, int key) {
+        if (KeyRegister.ForbiddenKey.consumeClick() && CurioUtils.isEquipped(player, ForbiddenSoul.class)) {
             SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(ForbiddenSoul.class);
             HitResult hitResult = player.pick(20.0, 0, false);
             if (soulInfo.isReady() && hitResult instanceof BlockHitResult blockHitResult) {
