@@ -1,7 +1,7 @@
 package First.fargo_soul.client.button;
 
 import First.fargo_soul.common.item.base.SoulItem;
-import First.fargo_soul.networkPacket.SoulContainerButtonPacket;
+import First.fargo_soul.network.SoulContainerButtonPacket;
 import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.utils.CurioUtils;
 import net.minecraft.client.Minecraft;

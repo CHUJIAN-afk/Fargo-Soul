@@ -1,4 +1,4 @@
-package First.fargo_soul.networkPacket;
+package First.fargo_soul.network;
 
 import First.fargo_soul.FargoSoul;
 import First.fargo_soul.common.event.modEvent.SprintEvent;

@@ -2,10 +2,10 @@ package First.fargo_soul.register;
 
 
 import First.fargo_soul.FargoSoul;
-import First.fargo_soul.networkPacket.KeyHandlePacket;
-import First.fargo_soul.networkPacket.OpenSoulContainerPacket;
-import First.fargo_soul.networkPacket.SoulContainerButtonPacket;
-import First.fargo_soul.networkPacket.SprintPacket;
+import First.fargo_soul.network.KeyHandlePacket;
+import First.fargo_soul.network.OpenSoulContainerPacket;
+import First.fargo_soul.network.SoulContainerButtonPacket;
+import First.fargo_soul.network.SprintPacket;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;

@@ -1,7 +1,7 @@
 package First.fargo_soul.client.button;
 
 import First.fargo_soul.common.menu.SoulContainer;
-import First.fargo_soul.networkPacket.OpenSoulContainerPacket;
+import First.fargo_soul.network.OpenSoulContainerPacket;
 import First.fargo_soul.register.NetworkPacketRegister;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
