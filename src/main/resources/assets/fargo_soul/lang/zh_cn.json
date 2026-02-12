@@ -21,6 +21,7 @@
   "fargo_soul.configuration.information_interval": "魂石信息显示间隔",
   "fargo_soul.configuration.soul_info_max_render_time": "魂石信息最大显示时间",
   "fargo_soul.configuration.resident_show_soul_information": "是否常驻显示魂石信息",
+  "fargo_soul.configuration.black_soul_list": "生物魂石黑名单",
   "itemGroup.fargo_soul": "Fargo 魂石",
   "curios.identifier.soul": "魂",
   "key.shift.tooltip.1": "按住 [",

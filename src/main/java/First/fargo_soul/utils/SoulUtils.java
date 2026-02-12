@@ -17,6 +17,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -24,6 +25,7 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +84,9 @@ public class SoulUtils {
 	public static void addEntity(Level level, Entity entity) {
 		MinecraftServer server = level.getServer();
 		if (server != null && entity.getId() > 0) {
+			if (entity instanceof AbstractArrow abstractArrow) {
+				abstractArrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+			}
 			server.execute(() -> level.addFreshEntity(entity));
 		}
 	}

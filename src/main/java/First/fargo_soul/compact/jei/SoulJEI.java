@@ -20,7 +20,6 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
 import java.util.List;
 
 @JeiPlugin
@@ -54,7 +53,9 @@ public class SoulJEI implements IModPlugin {
 		registration.addGuiContainerHandler(SoulContainerScreen.class, new IGuiContainerHandler<>() {
 
 			@Override
-			public @NotNull List<Rect2i> getGuiExtraAreas(@NotNull SoulContainerScreen containerScreen) {
+			public @NotNull List<Rect2i> getGuiExtraAreas(@NotNull SoulContainerScreen screen) {
+				return List.of(new Rect2i(screen.getXPos() - 4, screen.getYPos() - 4, screen.getWidth() + 8, screen.getHeight() + 8));
+				/*
 				Collection<SoulContainerScreen.ButtonInfo> values = containerScreen.getButtonInfoMap().values();
 				if (!values.isEmpty()) {
 					int xPos = values.stream().mapToInt(SoulContainerScreen.ButtonInfo::x).min().getAsInt();
@@ -64,6 +65,7 @@ public class SoulJEI implements IModPlugin {
 					return List.of(new Rect2i(xPos, yPos, maxX - xPos, maxY - yPos));
 				}
 				return IGuiContainerHandler.super.getGuiExtraAreas(containerScreen);
+				*/
 			}
 
 		});

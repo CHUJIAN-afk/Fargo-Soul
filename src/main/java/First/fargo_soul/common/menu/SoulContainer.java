@@ -42,13 +42,20 @@ public class SoulContainer extends AbstractContainerMenu {
         Player player = inventory.player;
         int offsetX = 0;
         int offsetY = -8;
-        int[][] soulSlotPositions = {{116, 26}, {134, 26}, {108, 44}, {126, 44}, {144, 44}, {116, 62}, {134, 62}};
+        int[][] soulSlotPositions = {
+                {115, 26},
+                {133, 26},
+                {106, 42},
+                {124, 42},
+                {142, 42},
+                {115, 58},
+                {133, 58}
+        };
         for (int i = 0; i < soulSlotPositions.length; i++) {
             int x = soulSlotPositions[i][0] + offsetX;
             int y = soulSlotPositions[i][1] + offsetY;
             addSlot(new SoulSlot(soulContainer, i, x, y, player));
         }
-        //添加盔甲槽位
         for (int k = 0; k < InventoryMenuAccessor.getSlotIds().length; k++) {
             EquipmentSlot equipmentslot = InventoryMenuAccessor.getSlotIds()[k];
             ResourceLocation resourcelocation = InventoryMenuAccessor.TEXTURE_EMPTY_SLOTS().get(equipmentslot);

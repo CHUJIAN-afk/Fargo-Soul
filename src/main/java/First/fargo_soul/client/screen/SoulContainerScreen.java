@@ -12,13 +12,16 @@ import First.fargo_soul.utils.CurioUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.tooltip.TooltipRenderUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static net.minecraft.client.gui.screens.inventory.InventoryScreen.renderEntityInInventoryFollowsMouse;
@@ -40,6 +43,7 @@ public class SoulContainerScreen extends AbstractContainerScreen<SoulContainer> 
     protected void init() {
         super.init();
         titleLabelX = 97;
+        scrollY = -getGuiTop() - 2;
         updateButtonPositions();
     }
 
@@ -55,13 +59,34 @@ public class SoulContainerScreen extends AbstractContainerScreen<SoulContainer> 
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
-        this.scrollY = this.scrollY - scrollY * 20;
+        this.scrollY -= scrollY * 18;
         updateButtonPositions();
         return true;
     }
 
     @Override
+    protected void renderSlot(@NotNull GuiGraphics guiGraphics, @NotNull Slot slot) {
+        if (slot instanceof SoulSlot) {
+            PoseStack pose = guiGraphics.pose();
+            pose.pushPose();
+            int x = slot.x;
+            int y = slot.y;
+            float scale = 1.5f;
+            pose.translate(x + 8, y + 8, 0);
+            pose.scale(scale, scale, 1);
+            pose.translate(-(x + 8), -(y + 8), 0);
+            super.renderSlot(guiGraphics, slot);
+            pose.popPose();
+        } else {
+            super.renderSlot(guiGraphics, slot);
+        }
+    }
+
+    @Override
     public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        if (!buttonInfoMap.isEmpty()) {
+            TooltipRenderUtil.renderTooltipBackground(guiGraphics, getXPos(), getYPos(), getWidth(), getHeight(), 0);
+        }
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         drawTreeConnections(guiGraphics);
         for (Slot slot : menu.slots) {
@@ -72,13 +97,10 @@ public class SoulContainerScreen extends AbstractContainerScreen<SoulContainer> 
     }
 
     @Override
-    protected void renderSlot(@NotNull GuiGraphics guiGraphics, @NotNull Slot slot) {
-        super.renderSlot(guiGraphics, slot);
-    }
-
-    @Override
     protected void renderSlotHighlight(@NotNull GuiGraphics guiGraphics, @NotNull Slot slot, int mouseX, int mouseY, float partialTick) {
-        super.renderSlotHighlight(guiGraphics, slot, mouseX, mouseY, partialTick);
+        if (!(slot instanceof SoulSlot)) {
+            super.renderSlotHighlight(guiGraphics, slot, mouseX, mouseY, partialTick);
+        }
         PoseStack pose = guiGraphics.pose();
         pose.pushPose();
         pose.translate(-getGuiLeft(), -getGuiTop(), 0);
@@ -90,18 +112,6 @@ public class SoulContainerScreen extends AbstractContainerScreen<SoulContainer> 
     protected void renderBg(@NotNull GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
         guiGraphics.blit(FargoSoul.rl("textures/gui/soul_container.png"), leftPos, topPos, 0, 0, imageWidth, imageHeight);
         renderEntityInInventoryFollowsMouse(guiGraphics, leftPos + 26, topPos + 8, leftPos + 75, topPos + 78, 30, 0.0625F, mouseX, mouseY, player);
-        for (Slot slot : menu.slots) {
-            PoseStack pose = guiGraphics.pose();
-            pose.pushPose();
-            pose.translate(getGuiLeft(), getGuiTop(), 0);
-            if (slot instanceof SoulSlot soulSlot) {
-                soulSlot.renderSlotBg(guiGraphics);
-                if (slot.getItem().isEmpty()) {
-                    soulSlot.renderEmptySlot(guiGraphics);
-                }
-            }
-            pose.popPose();
-        }
     }
 
     @Override
@@ -120,7 +130,7 @@ public class SoulContainerScreen extends AbstractContainerScreen<SoulContainer> 
         clearWidgets();
         buttonInfoMap.clear();
         AtomicInteger[] columnY = new AtomicInteger[20];
-        for (int i = 0; i < columnY.length; i++) columnY[i] = new AtomicInteger(4);
+        for (int i = 0; i < columnY.length; i++) columnY[i] = new AtomicInteger(0);
         addRecursive(origin, 0, columnY, null);
     }
 
@@ -137,7 +147,7 @@ public class SoulContainerScreen extends AbstractContainerScreen<SoulContainer> 
         for (SoulItem item : items) {
             int currentY = columnY[depth].get();
             SoulContainerButton btn = new SoulContainerButton(item);
-            int x = getGuiLeft() + getXSize() + depth * (btn.getWidth() + 10);
+            int x = 6 + getGuiLeft() + getXSize() + depth * (btn.getWidth() + 10);
             int y = currentY - (int) scrollY;
             btn.setPosition(x, y);
             this.addRenderableWidget(btn);
@@ -176,8 +186,44 @@ public class SoulContainerScreen extends AbstractContainerScreen<SoulContainer> 
 
     }
 
-    public Map<SoulItem, ButtonInfo> getButtonInfoMap() {
-        return buttonInfoMap;
+    public int getXPos() {
+        if (!buttonInfoMap.isEmpty()) {
+            return buttonInfoMap.values().stream().mapToInt(SoulContainerScreen.ButtonInfo::x).min().getAsInt();
+        }
+        return getGuiLeft() + getXSize();
+    }
+
+    public int getYPos() {
+        if (!buttonInfoMap.isEmpty()) {
+            return buttonInfoMap.values().stream().mapToInt(SoulContainerScreen.ButtonInfo::y).min().getAsInt();
+        }
+        return getGuiTop();
+    }
+
+    public int getWidth() {
+        if (!buttonInfoMap.isEmpty()) {
+            return (buttonInfoMap.values().stream().mapToInt(b -> b.x() + b.width()).max().getAsInt() - getXPos());
+        }
+        return 0;
+    }
+
+    public int getHeight() {
+        if (!buttonInfoMap.isEmpty()) {
+            return (buttonInfoMap.values().stream().mapToInt(b -> b.y() + b.height()).max().getAsInt() - getYPos());
+        }
+        return 0;
+    }
+
+    public boolean isHovering(Slot slot, double mouseX, double mouseY) {
+        if (slot instanceof SoulSlot) {
+            int i = this.leftPos;
+            int j = this.topPos;
+            double centerX = i + slot.x + 8;
+            double centerY = j + slot.y + 8;
+            double distance = Math.sqrt((mouseX - centerX) * (mouseX - centerX) + (mouseY - centerY) * (mouseY - centerY));
+            return distance <= 8;
+        }
+        return super.isHovering(slot.x, slot.y, 16, 16, mouseX, mouseY);
     }
 
 }

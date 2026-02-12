@@ -5,7 +5,6 @@ import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.TerraPower;
-import First.fargo_soul.common.item.terraSoul.earthPower.CobaltSoul;
 import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.SoulUtils;
@@ -31,7 +30,7 @@ public class CopperSoul extends SoulItem {
     @Override
     public void hurt(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
-            SoulAbilityData.SoulInfo SoulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(CobaltSoul.class);
+            SoulAbilityData.SoulInfo SoulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(CopperSoul.class);
             SoulInfo.setMaxCooldown(40);
             if (!attacker.equals(target) && SoulInfo.getCooldown() == 0 && CurioUtils.isEquipped(attacker, CopperSoul.class) && attacker.getRandom().nextDouble() < (target.isInWaterOrRain() ? 0.2 : 0.1)) {
                 SoulInfo.setCooldown(SoulInfo.getMaxCooldown());

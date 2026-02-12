@@ -21,7 +21,7 @@
   "fargo_soul.configuration.information_interval": "The interval of showing the soul information",
   "fargo_soul.configuration.soul_info_max_render_time": "The maximum time of showing the soul information",
   "fargo_soul.configuration.resident_show_soul_information": "Whether to show the soul information permanently",
-  "fargo_soul.configuration.black_soul_list": "禁止生物自然携带哪些魂石",
+  "fargo_soul.configuration.black_soul_list": "生物魂石黑名单",
   "itemGroup.fargo_soul": "Fargo Souls",
   "curios.identifier.soul": "Soul",
   "key.shift.tooltip.1": "Hold [",

@@ -1,7 +1,5 @@
 package First.fargo_soul.common.entity.projectile;
 
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
@@ -16,9 +14,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class Needle extends AbstractArrow {
 
-    private static final EntityDataAccessor<Byte> DATA_PIERCE_LEVEL_ID = SynchedEntityData.defineId(Needle.class, EntityDataSerializers.BYTE);
-    private static final EntityDataAccessor<Byte> DATA_CRITICAL_ID = SynchedEntityData.defineId(Needle.class, EntityDataSerializers.BYTE);
-
     public Needle(EntityType<? extends Needle> type, Level level) {
         super(type, level);
         this.pickup = Pickup.CREATIVE_ONLY;
@@ -27,8 +22,6 @@ public class Needle extends AbstractArrow {
     @Override
     protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(DATA_PIERCE_LEVEL_ID, (byte) 10);
-        builder.define(DATA_CRITICAL_ID, (byte) 11);
     }
 
     @Override
