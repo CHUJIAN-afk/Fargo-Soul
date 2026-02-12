@@ -1,7 +1,7 @@
 package First.fargo_soul.common.item.base;
 
-import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.client.gui.SoulGuiRenderManager;
+import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.event.modEvent.PlayerFlyEvent;
 import First.fargo_soul.common.event.modEvent.SprintEvent;
 import net.minecraft.client.gui.Font;

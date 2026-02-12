@@ -37,6 +37,7 @@ import com.mojang.math.Axis;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
@@ -122,7 +123,6 @@ public class ClientEvent {
         SoulRarity.MasterColor = ((mdiscoStyle << 24) | (mr << 16) | (mg << 8) | mb);
     }
 
-
     @SubscribeEvent
     public static void onLevelLoad(LevelEvent.Load event) {
         if (event.getLevel().isClientSide()) {
@@ -138,9 +138,19 @@ public class ClientEvent {
             if (screen instanceof InventoryScreen || screen instanceof SoulContainerScreen) {
                 int x = guiLeft + 27;
                 int y = guiTop + 68;
-                OpenSoulContainerButton containerButton = new OpenSoulContainerButton(x, y);
-                containerButton.setTooltip(Tooltip.create(Component.translatable("curios.identifier.soul")));
-                ((ScreenAccessor) screen).invokeAddRenderableWidget(containerButton);
+                List<Renderable> renderables = screen.renderables;
+                OpenSoulContainerButton button = renderables.stream()
+                        .filter(renderable -> renderable instanceof OpenSoulContainerButton)
+                        .map(renderable -> (OpenSoulContainerButton) (renderable))
+                        .findFirst()
+                        .orElse(null);
+                if (button == null) {
+                    OpenSoulContainerButton containerButton = new OpenSoulContainerButton(x, y);
+                    containerButton.setTooltip(Tooltip.create(Component.translatable("curios.identifier.soul")));
+                    ((ScreenAccessor) screen).invokeAddRenderableWidget(containerButton);
+                } else {
+                    button.setPosition(x, y);
+                }
             }
             if (screen instanceof CreativeModeInventoryScreen) {
                 int x = guiLeft + 75;

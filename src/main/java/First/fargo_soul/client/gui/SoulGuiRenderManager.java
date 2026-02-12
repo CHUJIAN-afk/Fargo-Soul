@@ -2,8 +2,8 @@ package First.fargo_soul.client.gui;
 
 import First.fargo_soul.FargoSoul;
 import First.fargo_soul.common.attachment.SoulAbilityData;
-import First.fargo_soul.config.ClientConfig;
 import First.fargo_soul.common.item.base.SoulItem;
+import First.fargo_soul.config.ClientConfig;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.SoulUtils;
 import com.mojang.blaze3d.vertex.PoseStack;

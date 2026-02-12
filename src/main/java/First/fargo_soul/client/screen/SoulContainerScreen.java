@@ -18,9 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static net.minecraft.client.gui.screens.inventory.InventoryScreen.renderEntityInInventoryFollowsMouse;
@@ -57,7 +55,7 @@ public class SoulContainerScreen extends AbstractContainerScreen<SoulContainer> 
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
-        this.scrollY -= scrollY * 20;
+        this.scrollY = this.scrollY - scrollY * 20;
         updateButtonPositions();
         return true;
     }
@@ -122,7 +120,7 @@ public class SoulContainerScreen extends AbstractContainerScreen<SoulContainer> 
         clearWidgets();
         buttonInfoMap.clear();
         AtomicInteger[] columnY = new AtomicInteger[20];
-        for (int i = 0; i < columnY.length; i++) columnY[i] = new AtomicInteger(getGuiTop() + 1);
+        for (int i = 0; i < columnY.length; i++) columnY[i] = new AtomicInteger(4);
         addRecursive(origin, 0, columnY, null);
     }
 
@@ -176,6 +174,10 @@ public class SoulContainerScreen extends AbstractContainerScreen<SoulContainer> 
 
     public record ButtonInfo(int x, int y, int width, int height, SoulItem parent) {
 
+    }
+
+    public Map<SoulItem, ButtonInfo> getButtonInfoMap() {
+        return buttonInfoMap;
     }
 
 }

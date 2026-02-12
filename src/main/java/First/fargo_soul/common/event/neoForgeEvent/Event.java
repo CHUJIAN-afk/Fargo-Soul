@@ -12,6 +12,7 @@ import First.fargo_soul.register.AttributeRegister;
 import First.fargo_soul.utils.AttributeUtils;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.SoulUtils;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -150,14 +151,17 @@ public class Event {
             RandomSource random = mob.getRandom();
             SoulAbilityData.SoulInfo soulInfo = mob.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("mob_soul");
             if ((condition1 || condition2) && random.nextDouble() < ServerSoulConfig.SoulChance.get() && !soulInfo.isEnabled()) {
-                soulInfo.setEnabled(c1);
                 Set<SoulItem> soulItems = new HashSet<>();
                 for (int i = 0; i < 4; i++) {
-                    soulItems.add(RegisterSoulList.get(random.nextInt(RegisterSoulList.size())));
+                    SoulItem item = RegisterSoulList.get(random.nextInt(RegisterSoulList.size()));
+                    if (!ServerSoulConfig.BlackSoulList.get().contains(BuiltInRegistries.ITEM.getKey(item).toString())) {
+                        soulItems.add(item);
+                    }
                 }
                 List<SoulItem> soulItemList = soulItems.stream().toList();
                 List<SoulItem> soulFromList = CurioUtils.getSoulFromList(soulItemList);
                 if (!soulFromList.isEmpty()) {
+                    soulInfo.setEnabled(c1);
                     mob.getData(AttachmentRegister.SoulListData).setSoulItemList(soulFromList);
                     mob.syncData(AttachmentRegister.SoulListData);
                     soulInfo.setMaxStacks(soulFromList.size());

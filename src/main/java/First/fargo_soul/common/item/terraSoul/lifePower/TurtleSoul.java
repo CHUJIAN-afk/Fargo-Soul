@@ -1,8 +1,8 @@
 package First.fargo_soul.common.item.terraSoul.lifePower;
 
-import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.client.gui.SoulGuiRenderManager;
 import First.fargo_soul.client.gui.SoulRenderType;
+import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.entity.projectile.Needle;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.LifePower;

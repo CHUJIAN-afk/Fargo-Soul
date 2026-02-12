@@ -1,7 +1,7 @@
 package First.fargo_soul.client.renderer.blockEntityRender;
 
-import First.fargo_soul.common.blcokEntity.CosmicCrucibleBlockEntity;
 import First.fargo_soul.client.renderType.BlackHoleRenderType;
+import First.fargo_soul.common.blcokEntity.CosmicCrucibleBlockEntity;
 import First.fargo_soul.config.ClientConfig;
 import First.fargo_soul.utils.RenderUtils;
 import com.mojang.blaze3d.vertex.PoseStack;

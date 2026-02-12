@@ -1,15 +1,18 @@
 package First.fargo_soul.common.item.terraSoul.terraPower;
 
-import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.client.gui.SoulGuiRenderManager;
 import First.fargo_soul.client.gui.SoulRenderType;
+import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.TerraPower;
 import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.utils.CurioUtils;
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
@@ -25,11 +28,13 @@ public class IronSoul extends SoulItem {
 
     @Override
     public void tick(LivingEntity ticker) {
-        if (!ticker.level().isClientSide()) {
-            if (CurioUtils.isEquipped(ticker, IronSoul.class)) {
-                Level level = ticker.level();
-                List<ItemEntity> itemEntityList = level.getEntitiesOfClass(ItemEntity.class, ticker.getBoundingBox().inflate(CurioUtils.isEquipped(ticker, TerraPower.class) ? 6 : 4), itemEntity -> !itemEntity.hasPickUpDelay());
-                for (ItemEntity itemEntity : itemEntityList) {
+        Level level = ticker.level();
+        if (!level.isClientSide() && ticker instanceof Player player && CurioUtils.isEquipped(ticker, IronSoul.class)) {
+            Inventory inventory = player.getInventory();
+            NonNullList<ItemStack> items = inventory.items;
+            List<ItemEntity> itemEntityList = level.getEntitiesOfClass(ItemEntity.class, ticker.getBoundingBox().inflate(CurioUtils.isEquipped(ticker, TerraPower.class) ? 6 : 4));
+            for (ItemEntity itemEntity : itemEntityList) {
+                if (!itemEntity.hasPickUpDelay() && items.stream().anyMatch(itemStack -> itemStack.isEmpty() || ItemEntity.areMergable(itemStack.copy(), itemEntity.getItem().copy()))) {
                     Vec3 delta = ticker.getBoundingBox().getCenter().subtract(itemEntity.getBoundingBox().getCenter()).normalize();
                     delta.scale(CurioUtils.isEquipped(ticker, TerraPower.class) ? 1.5 : 1);
                     itemEntity.setDeltaMovement(itemEntity.getDeltaMovement().add(delta));

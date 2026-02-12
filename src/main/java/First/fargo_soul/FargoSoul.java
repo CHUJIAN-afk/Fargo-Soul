@@ -4,12 +4,11 @@ import First.fargo_soul.config.ClientConfig;
 import First.fargo_soul.config.ServerSoulConfig;
 import First.fargo_soul.register.*;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.slf4j.Logger;
@@ -20,10 +19,6 @@ public class FargoSoul {
 
     public static final String MODID = "fargo_soul";
     public static final Logger logger = LoggerFactory.getLogger(MODID);
-
-    public static ResourceLocation rl(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MODID, path);
-    }
 
     public FargoSoul(IEventBus eventBus, ModContainer modContainer) {
         DataComponentsRegister.register(eventBus);
@@ -39,10 +34,14 @@ public class FargoSoul {
         RecipeTypeRegister.register(eventBus);
         MenuRegister.register(eventBus);
         modContainer.registerConfig(ModConfig.Type.SERVER, ServerSoulConfig.Spec);
-        modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfig.Spec);
-        if (FMLEnvironment.dist == Dist.CLIENT) {
+        if (FMLLoader.getDist().isClient()) {
+            modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfig.Spec);
             modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
         }
     }
-    
+
+    public static ResourceLocation rl(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MODID, path);
+    }
+
 }

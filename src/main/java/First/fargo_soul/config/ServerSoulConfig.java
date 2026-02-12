@@ -1,6 +1,11 @@
 package First.fargo_soul.config;
 
+import First.fargo_soul.common.item.base.SoulItem;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.common.ModConfigSpec;
+
+import java.util.List;
 
 public class ServerSoulConfig {
 
@@ -25,6 +30,15 @@ public class ServerSoulConfig {
     public static final ModConfigSpec.BooleanValue AllowFriendlyMobSoul = Builder.define("allow_friendly_mob_soul", true);
 
     public static final ModConfigSpec.BooleanValue AllowHostileMobSoul = Builder.define("allow_hostile_mob_soul", true);
+
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> BlackSoulList =
+            Builder.defineListAllowEmpty("black_soul_list", List.of("fargo_soul:terra_soul"), () -> "minecraft:air", object -> {
+                if (object instanceof String string) {
+                    ResourceLocation location = ResourceLocation.tryParse(string);
+                    return (location != null && BuiltInRegistries.ITEM.get(location) instanceof SoulItem) || string.equals("minecraft:air");
+                }
+                return false;
+            });
 
     public static final ModConfigSpec Spec = Builder.build();
 

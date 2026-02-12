@@ -1,9 +1,9 @@
 package First.fargo_soul.mixin.minecraft;
 
 
-import First.fargo_soul.config.ClientConfig;
 import First.fargo_soul.common.item.terraSoul.TerraPower;
 import First.fargo_soul.common.item.terraSoul.terraPower.TungstenSoul;
+import First.fargo_soul.config.ClientConfig;
 import First.fargo_soul.utils.CurioUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.ItemInHandRenderer;

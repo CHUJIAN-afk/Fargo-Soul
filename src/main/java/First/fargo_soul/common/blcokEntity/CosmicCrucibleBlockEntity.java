@@ -1,8 +1,8 @@
 package First.fargo_soul.common.blcokEntity;
 
-import First.fargo_soul.config.ServerSoulConfig;
 import First.fargo_soul.common.recipe.SoulRecipe;
 import First.fargo_soul.common.recipe.SoulRecipeInput;
+import First.fargo_soul.config.ServerSoulConfig;
 import First.fargo_soul.register.BlockEntityRegister;
 import First.fargo_soul.register.RecipeTypeRegister;
 import First.fargo_soul.utils.ParticleUtils;
