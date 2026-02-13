@@ -61,7 +61,7 @@ public class GhostSoul extends SoulItem {
                 target.getActiveEffects().removeIf(mobEffectInstance -> mobEffectInstance.getEffect().value().getCategory().equals(MobEffectCategory.HARMFUL));
                 List<LivingEntity> livingEntityList = target.level().getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(3), livingEntity -> target instanceof Player ? livingEntity instanceof Enemy : !(livingEntity instanceof Monster));
                 for (LivingEntity livingEntity : livingEntityList) {
-                    SoulUtils.attack(target, livingEntity, DamageTypes.MAGIC, target.getMaxHealth());
+                    SoulUtils.attack(this.getClass(), target, target, livingEntity, DamageTypes.MAGIC, target.getMaxHealth());
                 }
             }
         }

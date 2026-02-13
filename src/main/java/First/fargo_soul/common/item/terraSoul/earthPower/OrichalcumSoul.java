@@ -38,7 +38,7 @@ public class OrichalcumSoul extends SoulItem {
                     soulInfo.setCooldown(soulInfo.getMaxCooldown());
                     float amount = 1 + (event.getAmount() * 0.05f);
                     int amplifier = CurioUtils.isEquipped(attacker, EarthPower.class) ? 1 : 0;
-                    SoulUtils.attack(attacker, target, DamageTypes.MAGIC, amount);
+                    SoulUtils.attack(this.getClass(), attacker, attacker, target, DamageTypes.MAGIC, amount);
                     target.addEffect(new MobEffectInstance(EffectRegister.OrichalcumPoisoning, 99, amplifier));
                     double size = target.getBoundingBox().getSize() * 3;
                     Vec3 start = new Vec3(target.getRandomX(size), target.getRandomY() + size, target.getRandomZ(size));

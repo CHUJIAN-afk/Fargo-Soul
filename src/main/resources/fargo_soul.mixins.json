@@ -5,8 +5,9 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "fargo_soul.refmap.json",
   "mixins": [
-    "minecraft.AbstractContainerScreenMixin",
     "minecraft.AbstractArrowMixin",
+    "minecraft.AbstractContainerScreenMixin",
+    "minecraft.AttributeSupplierAccessor",
     "minecraft.CombatRulesMixin",
     "minecraft.EntityMixin",
     "minecraft.ExtraCodecsMixin",

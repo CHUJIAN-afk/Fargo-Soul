@@ -65,7 +65,7 @@ public class CosmicCrucibleBlockEntity extends BlockEntity {
     }
 
     private void animate() {
-        Random random = SoulUtils.random;
+        Random random = SoulUtils.getRandom();
         if (level != null && level.isClientSide() && random.nextFloat() < 0.2) {
             BlockPos pos = getBlockPos();
             Vec3 targetCenter = pos.above().getCenter();

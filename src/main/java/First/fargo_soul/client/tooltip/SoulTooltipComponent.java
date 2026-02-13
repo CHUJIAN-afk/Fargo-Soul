@@ -21,7 +21,7 @@ public class SoulTooltipComponent implements ClientTooltipComponent, TooltipComp
 
 	public SoulTooltipComponent(@NotNull SoulItem soulItem) {
 		this.soulItem = soulItem;
-		this.renderList = new ArrayList<>(soulItem.getSoulItemList());
+		this.renderList = new ArrayList<>(soulItem.getSoulItemList(soulItem));
 		this.width = (renderList.size() + 1) * 16;
 	}
 

@@ -4,6 +4,7 @@ import First.fargo_soul.FargoSoul;
 import First.fargo_soul.common.attachment.SoulAbilityEnabledData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.register.AttachmentRegister;
+import First.fargo_soul.utils.CurioUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -39,6 +40,7 @@ public record SoulContainerButtonPacket(ResourceLocation resourceLocation, boole
             SoulAbilityEnabledData enabledData = player.getData(AttachmentRegister.AbilityEnabledData);
             enabledData.setEnabled(soulItem, is);
             player.syncData(AttachmentRegister.AbilityEnabledData);
+            CurioUtils.updateLivingSoul(player);
         });
     }
 

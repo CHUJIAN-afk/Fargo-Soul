@@ -71,6 +71,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
@@ -233,6 +234,7 @@ public class ClientEvent {
     public static void RegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(EntityRegister.NeedleEntity.get(), NeedleRenderer::new);
         event.registerEntityRenderer(EntityRegister.BoneEntity.get(), BoneRenderer::new);
+        //event.registerEntityRenderer(EntityRegister.Mutant.get(), MutantRenderer::new);
     }
 
     @SubscribeEvent
@@ -328,17 +330,22 @@ public class ClientEvent {
                     .append(Component.literal("Shift").withStyle(shiftDown ? ChatFormatting.WHITE : ChatFormatting.GRAY))
                     .append(Component.translatable("key.shift.tooltip.2").withStyle(ChatFormatting.DARK_GRAY)));
             if (shiftDown) {
-                List<SoulItem> soulFromSoul = CurioUtils.getSoulFromSoul(soulItem);
-                List<Component> keyList = new ArrayList<>();
-                for (SoulItem item : soulFromSoul) {
-                    if (!soulFromSoul.getFirst().equals(item)) {
-                        keyList.add(Component.empty());
+                toolTip.addAll(CurioUtils.getSoulItemAttributesComponent(soulItem));
+                List<SoulItem> soulItems = CurioUtils.getSoulFromList(soulItem.getSoulItemList(soulItem));
+                if (!soulItems.isEmpty()) {
+                    toolTip.add(Component.empty());
+                    if (!ModList.get().isLoaded("modernui")) {
+                        for (SoulItem item : soulItems) {
+                            toolTip.addAll(CurioUtils.getSoulItemAttributesComponent(item));
+                        }
+                    } else if (event.getContext().level() instanceof Level level) {
+                        RandomSource random = level.getRandom();
+                        random.setSeed(level.getGameTime() / (long) Math.max(2, 40f / soulItems.size()));
+                        toolTip.addAll(CurioUtils.getSoulItemAttributesComponent(soulItems.get(random.nextInt(soulItems.size()))));
                     }
-                    keyList.addAll(CurioUtils.getSoulItemAttributesComponent(item));
                 }
-                toolTip.addAll(keyList);
             } else {
-                toolTip.addAll(CurioUtils.getSoulItemTooltipComponent(soulItem));
+                toolTip.addAll(CurioUtils.getSoulItemTooltipComponent(soulItem).stream().map(component -> component.copy().withColor(SoulRarity.GRAY.color())).toList());
             }
         }
     }

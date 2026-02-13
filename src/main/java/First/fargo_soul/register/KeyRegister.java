@@ -38,7 +38,9 @@ public class KeyRegister {
 
     @SubscribeEvent
     public static void registerKeyMappingsEvent(RegisterKeyMappingsEvent event) {
-        keyList.forEach(event::register);
+        for (KeyMapping key : keyList) {
+            event.register(key);
+        }
     }
 
 }

@@ -84,7 +84,7 @@ public class GladiatorSoul extends SoulItem {
                                 attacker,
                                 target,
                                 1,
-                                SoulUtils.random.nextFloat(0.8f, 1.6f)
+                                SoulUtils.getRandom().nextFloat(0.8f, 1.6f)
                         );
                         SoulUtils.setAbilityInvulnerable(arrow);
                     }

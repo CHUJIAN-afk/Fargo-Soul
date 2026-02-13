@@ -153,9 +153,9 @@ public class SoulContainerScreen extends AbstractContainerScreen<SoulContainer> 
             this.addRenderableWidget(btn);
             buttonInfoMap.put(item, new ButtonInfo(x, y, btn.getWidth(), btn.getHeight(), parent));
             columnY[depth].addAndGet(btn.getHeight());
-            if (!item.getSoulItemList().isEmpty()) {
+            if (!item.getSoulItemList(item).isEmpty()) {
                 columnY[depth + 1].set(Math.max(columnY[depth + 1].get(), currentY));
-                addRecursive(item.getSoulItemList(), depth + 1, columnY, item);
+                addRecursive(item.getSoulItemList(item), depth + 1, columnY, item);
                 columnY[depth].set(Math.max(columnY[depth].get(), columnY[depth + 1].get()));
             }
         }

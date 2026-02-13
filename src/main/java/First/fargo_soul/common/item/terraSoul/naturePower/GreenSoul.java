@@ -80,7 +80,7 @@ public class GreenSoul extends SoulItem {
                 if (soulInfo.isReady() && SoulUtils.getSoulTarget(ticker, 10) instanceof LivingEntity target) {
                     soulInfo.setCooldown(soulInfo.getMaxCooldown());
                     Level level = ticker.level();
-                    SoulUtils.attack(ticker, target, DamageTypes.MAGIC, 4);
+                    SoulUtils.attack(this.getClass(), ticker, ticker, target, DamageTypes.MAGIC, 4);
                     target.addEffect(new MobEffectInstance(MobEffects.GLOWING, 59));
                     if (equipped) {
                         target.addEffect(new MobEffectInstance(MobEffects.POISON, 39));

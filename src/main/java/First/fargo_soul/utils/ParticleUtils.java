@@ -4,11 +4,12 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static First.fargo_soul.utils.SoulUtils.random;
+import static First.fargo_soul.utils.SoulUtils.getRandom;
 
 public class ParticleUtils {
 
@@ -58,6 +59,7 @@ public class ParticleUtils {
             double ratio = i / (double) particles;
             Vec3 pos = start.lerp(end, ratio);
             if (jitter > 0) {
+                Random random = getRandom();
                 pos = pos.add(
                         (random.nextDouble() - 0.5) * jitter,
                         (random.nextDouble() - 0.5) * jitter,
@@ -129,6 +131,7 @@ public class ParticleUtils {
 
         // 圆形环绕粒子（80%）
         int surfaceParticles = (int) (totalParticles * (1 - innerRatio));
+        Random random = getRandom();
         for (int i = 0; i < surfaceParticles; i++) {
             // 随机圆形坐标（均匀分布）
             double theta = random.nextDouble() * 2 * Math.PI; // 水平角
@@ -190,6 +193,7 @@ public class ParticleUtils {
 
         // 球面环绕粒子（80%）
         int surfaceParticles = (int) (totalParticles * (1 - innerRatio));
+        Random random = getRandom();
         for (int i = 0; i < surfaceParticles; i++) {
             // 随机球面坐标（均匀分布）
             double theta = random.nextDouble() * 2 * Math.PI; // 水平角

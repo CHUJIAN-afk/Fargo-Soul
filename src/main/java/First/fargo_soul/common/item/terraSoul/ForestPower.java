@@ -70,7 +70,7 @@ public class ForestPower extends SoulItem {
                     if (soulInfo.isReady()) {
                         soulInfo.setCooldown(soulInfo.getMaxCooldown());
                         if (source instanceof LivingEntity attacker) {
-                            SoulUtils.attack(target, attacker, DamageTypes.CACTUS, 2 * event.getAmount());
+                            SoulUtils.attack(this.getClass(), target, target, attacker, DamageTypes.CACTUS, 2 * event.getAmount());
                         }
                         event.setAmount(event.getAmount() * 0.7f);
                     }

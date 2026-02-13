@@ -3,6 +3,7 @@ package First.fargo_soul.common.item.base;
 import First.fargo_soul.client.gui.SoulGuiRenderManager;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.event.modEvent.PlayerFlyEvent;
+import First.fargo_soul.common.event.modEvent.SoulBranchEvent;
 import First.fargo_soul.common.event.modEvent.SprintEvent;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
@@ -46,11 +48,9 @@ public interface ISoulItem {
     }
 
     default void getSoulRenderInfo(SoulGuiRenderManager.SoulRenderManager soulRenderManager) {
-
     }
 
     default void drop(LivingDropsEvent event) {
-
     }
 
     default void shieldBlock(LivingShieldBlockEvent event) {
@@ -79,6 +79,12 @@ public interface ISoulItem {
     }
 
     default void effectApplicable(MobEffectEvent.Applicable event) {
+    }
+
+    default List<SoulItem> getSoulItemList(SoulItem soulItem) {
+        SoulBranchEvent event = new SoulBranchEvent(soulItem, getSoulItemList());
+        NeoForge.EVENT_BUS.post(event);
+        return event.getList();
     }
 
     default List<SoulItem> getSoulItemList() {

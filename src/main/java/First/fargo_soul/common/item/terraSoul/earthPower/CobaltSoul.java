@@ -20,8 +20,6 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 
-import java.util.List;
-
 
 public class CobaltSoul extends SoulItem {
 
@@ -33,9 +31,7 @@ public class CobaltSoul extends SoulItem {
     public void tick(LivingEntity ticker) {
         Level level = ticker.level();
         if (CurioUtils.isEquipped(ticker, CobaltSoul.class) && !level.isClientSide()) {
-            List<LivingEntity> targetList = level.getEntitiesOfClass(LivingEntity.class, ticker.getBoundingBox().inflate(2));
-            targetList.remove(ticker);
-            for (LivingEntity target : targetList) {
+            for (LivingEntity target : SoulUtils.getTargetList(ticker, 2)) {
                 target.addEffect(new MobEffectInstance(EffectRegister.Oil, 219));
             }
         }
@@ -51,9 +47,8 @@ public class CobaltSoul extends SoulItem {
                 soulInfo.setCooldown(soulInfo.getMaxCooldown());
                 Level level = target.level();
                 int value = equipped ? 3 : 2;
-                List<LivingEntity> targetList = SoulUtils.getTargetList(target, value);
-                for (LivingEntity living : targetList) {
-                    SoulUtils.attack(target, living, DamageTypes.MOB_ATTACK, equipped ? 6 : 4);
+                for (LivingEntity living : SoulUtils.getTargetList(target, value)) {
+                    SoulUtils.attack(this.getClass(), target, target, living, DamageTypes.MOB_ATTACK, equipped ? 6 : 4);
                     living.addEffect(new MobEffectInstance(EffectRegister.Oil, equipped ? 900 : 600, 0));
                 }
                 ParticleUtils.spawnParticleSphere(

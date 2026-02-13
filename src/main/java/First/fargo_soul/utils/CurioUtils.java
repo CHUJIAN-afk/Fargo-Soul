@@ -5,16 +5,12 @@ import First.fargo_soul.common.attachment.SoulListData;
 import First.fargo_soul.common.dataComponents.SoulRarity;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.register.AttachmentRegister;
-import net.minecraft.ChatFormatting;
-import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.*;
@@ -34,39 +30,12 @@ public class CurioUtils {
         return false;
     }
 
-    /**
-     * 获取实体身上所有的魂石，包括未启用的
-     *
-     * @return 实体身上所有的魂石，包括未启用的
-     */
-    public static List<SoulItem> getEntitySoulItem(LivingEntity livingEntity) {
-        return getSoulFromList(getSoulFromSlots(livingEntity));
-    }
-
-    public static void updateSoulList(LivingEntity livingEntity) {
-        SoulListData soulListData = livingEntity.getData(AttachmentRegister.SoulListData);
-        List<SoulItem> list = getSoulFromList(getSoulFromSlots(livingEntity));
-        soulListData.setSoulItemList(list);
-        if (!livingEntity.level().isClientSide()) {
-            livingEntity.syncData(AttachmentRegister.SoulListData);
-        }
-        for (SoulItem soulItem : SoulUtils.AttributeSoulList) {
-            Map<Holder<Attribute>, AttributeModifier> modifiers = soulItem.getAttributeModifiers();
-            for (Map.Entry<Holder<Attribute>, AttributeModifier> entry : modifiers.entrySet()) {
-                AttributeUtils.condition(
-                        livingEntity,
-                        entry.getKey(),
-                        entry.getValue().id(),
-                        entry.getValue().amount(),
-                        entry.getValue().operation(),
-                        CurioUtils.isEquipped(livingEntity, soulItem.getClass())
-                );
-            }
-        }
+    public static void updateLivingSoul(LivingEntity livingEntity) {
+        livingEntity.getData(AttachmentRegister.SoulContainerData).setChange(true);
     }
 
     public static List<SoulItem> getSoulFromSoul(SoulItem soulItem) {
-        List<SoulItem> soulFromList = getSoulFromList(soulItem.getSoulItemList());
+        List<SoulItem> soulFromList = getSoulFromList(soulItem.getSoulItemList(soulItem));
         soulFromList.addFirst(soulItem);
         return soulFromList;
     }
@@ -77,7 +46,7 @@ public class CurioUtils {
             if (!result.contains(item)) {
                 result.add(item);
             }
-            List<SoulItem> soulItems = item.getSoulItemList();
+            List<SoulItem> soulItems = item.getSoulItemList(item);
             if (!soulItems.isEmpty()) {
                 result.addAll(getSoulFromList(soulItems));
             }
@@ -143,7 +112,6 @@ public class CurioUtils {
                     .filter(key -> key.contains("." + BuiltInRegistries.ITEM.getKey(soulItem).getPath() + "." + "tooltip"))
                     .sorted(Comparator.comparingInt(CurioUtils::extractLastNumber))
                     .map(Component::translatable)
-                    .map(component -> component.withStyle(ChatFormatting.DARK_GRAY))
                     .toList();
             return new ArrayList<>(mutableComponents);
         });

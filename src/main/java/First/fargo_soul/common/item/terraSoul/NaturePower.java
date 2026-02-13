@@ -101,13 +101,13 @@ public class NaturePower extends SoulItem {
                 soulInfo.setMaxCooldown(15);
                 if (soulInfo.isReady() && SoulUtils.getSoulTarget(ticker, 10) instanceof LivingEntity target) {
                     soulInfo.setCooldown(soulInfo.getMaxCooldown());
-                    SoulUtils.attack(ticker, target, DamageTypes.MAGIC, 20);
+                    SoulUtils.attack(this.getClass(), ticker, ticker, target, DamageTypes.MAGIC, 20);
                     RandomSource random = ticker.getRandom();
                     ItemStack itemStack = random.nextBoolean() ? Items.RED_MUSHROOM.getDefaultInstance() : Items.BROWN_MUSHROOM.getDefaultInstance();
                     itemStack.setCount(5);
                     SoulUtils.addItemEetity(level, itemStack, target.getBoundingBox().getCenter());
                     for (int i = 0; i < 5; i++) {
-                        SoulUtils.attack(ticker, target, DamageTypes.MAGIC, 4);
+                        SoulUtils.attack(this.getClass(), ticker,ticker, target, DamageTypes.MAGIC, 4);
                     }
                     target.addEffect(new MobEffectInstance(MobEffects.GLOWING, 59));
                     target.addEffect(new MobEffectInstance(MobEffects.POISON, 39));
@@ -142,7 +142,7 @@ public class NaturePower extends SoulItem {
                     int range = ticker.hasEffect(EffectRegister.FungalEmpowerment) ? 15 : 10;
                     for (LivingEntity living : SoulUtils.getTargetList(ticker, range)) {
                         float amount = 2 * (soulInfo.getStacks() + 1);
-                        SoulUtils.attack(ticker, living, DamageTypes.MOB_ATTACK, amount);
+                        SoulUtils.attack(this.getClass(), ticker, ticker, living, DamageTypes.MOB_ATTACK, amount);
                         heal += amount;
                     }
                     if (ticker.getHealth() < ticker.getMaxHealth()) {

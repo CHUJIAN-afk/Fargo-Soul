@@ -1,5 +1,6 @@
 package First.fargo_soul.utils;
 
+import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.register.AttachmentRegister;
 import net.minecraft.core.Holder;
@@ -23,9 +24,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,33 +40,45 @@ import java.util.concurrent.TimeUnit;
 public class SoulUtils {
 
 	public static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-	public static final Random random = ThreadLocalRandom.current();
+	//static final Random random = ThreadLocalRandom.current();
 	public static final List<SoulItem> RegisterSoulList = BuiltInRegistries.ITEM.stream().filter(item -> item instanceof SoulItem).map(item -> (SoulItem) item).toList();
 	public static final List<SoulItem> AttributeSoulList = RegisterSoulList.stream().filter(soulItem -> !soulItem.getAttributeModifiers().isEmpty()).toList();
-	public static final List<EntityType<?>> ProjectileList = BuiltInRegistries.ENTITY_TYPE.stream().toList();
 
 	public static void addItemEetity(Level level, ItemStack itemStack, Vec3 center) {
 		ItemEntity itemEntity = new ItemEntity(level, center.x, center.y, center.z, itemStack);
-		itemEntity.setDeltaMovement(new Vec3(random.nextFloat(-0.5F, 0.5F), random.nextFloat(-0.5F, 0.5F), random.nextFloat(0.5F)));
+		itemEntity.setDeltaMovement(new Vec3(getRandom().nextFloat(-0.5F, 0.5F), getRandom().nextFloat(-0.5F, 0.5F), getRandom().nextFloat(0.5F)));
 		if (itemEntity != null) {
 			addEntity(level, itemEntity);
 		}
 	}
 
+	public static boolean isTarget(LivingEntity attacker, LivingEntity target) {
+		if (attacker != target) {
+			boolean isActive0 = attacker instanceof Player && target instanceof Enemy;
+			boolean isActive1 = attacker instanceof Targeting mob && mob.getTarget() == target;
+			boolean isActive2 = attacker instanceof Enemy && !(target instanceof Enemy);
+			boolean isActive4 = SoulAbilityData.getSoulInfo(target, attacker.getStringUUID() + "damaged").isActive();
+			boolean isActive3 = target instanceof Targeting targeting && targeting.getTarget() == attacker;
+			return (isActive0 || isActive1 || isActive2 || isActive3 || isActive4);
+		}
+		return false;
+	}
+
+	public static List<LivingEntity> getTargetList(LivingEntity attacker, AABB area) {
+		return attacker.level().getEntitiesOfClass(LivingEntity.class, area, target -> isTarget(attacker, target));
+	}
+
 	public static List<LivingEntity> getTargetList(LivingEntity attacker, double range) {
-		return attacker.level().getEntitiesOfClass(LivingEntity.class, attacker.getBoundingBox().inflate(range), living -> {
-			boolean isActive0 = attacker instanceof Player && living instanceof Enemy;
-			boolean isActive1 = attacker instanceof Mob mob && living.equals(mob.getTarget());
-			boolean isActive2 = attacker instanceof Enemy && !(living instanceof Enemy);
-			return (isActive0 || isActive1 || isActive2) && living.distanceTo(attacker) <= range;
-		});
+		List<LivingEntity> targetList = getTargetList(attacker, attacker.getBoundingBox().inflate(range));
+		targetList.removeIf(living -> living.distanceTo(attacker) > range);
+		return targetList;
 	}
 
 	public static void randomShoot(LivingEntity attacker, Projectile projectile, LivingEntity owner) {
 		Level level = attacker.level();
-		double theta = random.nextDouble() * Math.PI * 2;
-		double phi = Math.acos(2 * random.nextDouble() - 1);
-		double r = 0.5 + random.nextDouble() * 0.3;
+		double theta = getRandom().nextDouble() * Math.PI * 2;
+		double phi = Math.acos(2 * getRandom().nextDouble() - 1);
+		double r = 0.5 + getRandom().nextDouble() * 0.3;
 		Vec3 offset = new Vec3(r * Math.sin(phi) * Math.cos(theta), r * Math.sin(phi) * Math.sin(theta), r * Math.cos(phi));
 		Vec3 spawnPos = attacker.position().add(offset);
 		Vec3 velocity = offset.normalize().scale(0.8);
@@ -109,7 +122,7 @@ public class SoulUtils {
 	}
 
 	public static double getRandomWithError(double baseValue, double errorRange) {
-		return baseValue + (random.nextFloat(-1, 1) * errorRange);
+		return baseValue + (getRandom().nextFloat(-1, 1) * errorRange);
 	}
 
 	/**
@@ -149,7 +162,7 @@ public class SoulUtils {
 				soundEvent,
 				soundSource,
 				1.0f,
-				random.nextFloat(0.4f, 0.8f)
+				getRandom().nextFloat(0.4f, 0.8f)
 		);
 	}
 
@@ -163,19 +176,9 @@ public class SoulUtils {
 
 	public static LivingEntity getSoulTarget(LivingEntity attacker, float distance) {
 		LivingEntity target = null;
-		if (attacker instanceof Player player) {
-			List<LivingEntity> livingEntityList = player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(distance), livingEntity -> {
-				boolean a = livingEntity instanceof OwnableEntity ownableEntity && player.equals(ownableEntity.getOwner());
-				boolean b = livingEntity instanceof Enemy && player.distanceTo(livingEntity) < distance;
-				return !a && b;
-			});
-			if (!livingEntityList.isEmpty()) {
-				target = livingEntityList.get(player.getRandom().nextInt(livingEntityList.size()));
-			}
-		} else if (attacker instanceof Mob mob && mob.getTarget() instanceof LivingEntity target1) {
-			if (mob.distanceTo(target1) < distance) {
-				target = target1;
-			}
+		List<LivingEntity> targetList = getTargetList(attacker, distance);
+		if (!targetList.isEmpty()) {
+			target = targetList.get(attacker.getRandom().nextInt(targetList.size()));
 		}
 		return target;
 	}
@@ -190,32 +193,43 @@ public class SoulUtils {
 		}
 	}
 
-	public static <T extends SoulItem> boolean canAttack(Class<T> type, LivingEntity by, LivingEntity target) {
-		long gameTime = target.level().getGameTime();
-		Map<Long, List<String>> damageData = target.getData(AttachmentRegister.SoulDamageData).getDamageData();
-		String key = type.getName() + by.getScoreboardName() + target.getScoreboardName();
-		List<String> stringList = damageData.computeIfAbsent(gameTime, k -> new ArrayList<>());
-        return !stringList.contains(key);
-    }
+	public static boolean attack(Class<?> type, LivingEntity by, LivingEntity attacker, LivingEntity target, ResourceKey<DamageType> damageTypeResourceKey, float amount) {
+		return attack(type.getSimpleName(), by, attacker, target, damageTypeResourceKey, amount);
+	}
 
-	public static <T extends SoulItem> void attack(Class<T> type, LivingEntity by, LivingEntity attacker, LivingEntity target, ResourceKey<DamageType> damageTypeResourceKey, float amount) {
+	/**
+	 * 在伤害事件使用的伤害处理，可防止递归，此伤害无视无敌帧
+	 *
+	 * @param type                  标识符
+	 * @param by                    伤害引起者，一般为攻击者
+	 * @param attacker              攻击者
+	 * @param target                目标
+	 * @param damageTypeResourceKey 伤害类型
+	 * @param amount                数值
+	 * @return
+	 */
+	public static boolean attack(String type, LivingEntity by, LivingEntity attacker, LivingEntity target, ResourceKey<DamageType> damageTypeResourceKey, float amount) {
 		long gameTime = target.level().getGameTime();
 		Map<Long, List<String>> damageData = target.getData(AttachmentRegister.SoulDamageData).getDamageData();
-		String key = type.getName() + by.getScoreboardName() + target.getScoreboardName();
+		String key = type + by.getStringUUID() + target.getStringUUID();
+		damageData.keySet().removeIf(time -> time != gameTime);
 		List<String> stringList = damageData.computeIfAbsent(gameTime, k -> new ArrayList<>());
 		if (!stringList.contains(key)) {
 			stringList.add(key);
-			attack(attacker, target, damageTypeResourceKey, amount);
+			int invulnerableTime = target.invulnerableTime;
+			target.invulnerableTime = 0;
+			DamageSources damageSources = target.level().damageSources();
+			DamageSource damageSource = damageSources.source(damageTypeResourceKey, attacker != null ? attacker : null);
+			target.hurt(damageSource, amount);
+			target.invulnerableTime = invulnerableTime;
+			return true;
 		} else {
-			stringList.add(key);
+			return false;
 		}
 	}
 
-	public static void attack(LivingEntity attacker, LivingEntity target, ResourceKey<DamageType> damageTypeResourceKey, float amount) {
-		target.invulnerableTime = 0;
-		DamageSources damageSources = target.level().damageSources();
-		DamageSource damageSource = damageSources.source(damageTypeResourceKey, attacker != null ? attacker : target);
-		target.hurt(damageSource, amount);
+	public static Random getRandom() {
+		return ThreadLocalRandom.current();
 	}
 
 }

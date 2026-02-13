@@ -32,7 +32,7 @@ public class NebulaSoul extends SoulItem {
             if (soulInfo.isReady() && SoulUtils.getSoulTarget(ticker, 20) instanceof LivingEntity target) {
                 soulInfo.setCooldown(soulInfo.getMaxCooldown());
                 float amount = (8 + target.getMaxHealth() * 0.02f) * (CurioUtils.isEquipped(ticker, CosmicPower.class) ? 1.5f : 1f);
-                SoulUtils.attack(ticker, target, DamageTypes.MAGIC, amount);
+                SoulUtils.attack(this.getClass(), ticker, ticker, target, DamageTypes.MAGIC, amount);
                 ticker.heal(amount);
                 ParticleUtils.spawnMovingParticleLine((ServerLevel) level, new Vec3(target.getRandomX(256), level.getMaxBuildHeight(), target.getRandomZ(256)), target.getBoundingBox().getCenter(), ParticleTypes.DRAGON_BREATH, 100, 0.25f, 0, 5, 50);
                 SoulUtils.playSound(level, target.position(), SoundEvents.EVOKER_CAST_SPELL, ticker.getSoundSource());

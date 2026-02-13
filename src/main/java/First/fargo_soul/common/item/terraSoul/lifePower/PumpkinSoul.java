@@ -18,8 +18,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FarmBlock;
 import net.minecraft.world.level.block.PumpkinBlock;
 
-import java.util.List;
-
 public class PumpkinSoul extends SoulItem {
 
     public PumpkinSoul(Properties properties) {
@@ -37,13 +35,11 @@ public class PumpkinSoul extends SoulItem {
                     level.setBlockAndUpdate(position, Blocks.PUMPKIN_STEM.defaultBlockState());
                 }
                 if (level.getBlockState(below).getBlock() instanceof PumpkinBlock) {
-                    level.destroyBlock(below,false);
-                    List<LivingEntity> targetList = ticker.level().getEntitiesOfClass(LivingEntity.class, ticker.getBoundingBox().inflate(2));
-                    targetList.remove(ticker);
-                    for (LivingEntity target : targetList) {
-                        SoulUtils.attack(ticker, target, DamageTypes.EXPLOSION, CurioUtils.isEquipped(ticker, LifePower.class) ? 6 : 3);
+                    level.destroyBlock(below, false);
+                    for (LivingEntity target : SoulUtils.getTargetList(ticker, 2)) {
+                        SoulUtils.attack(this.getClass(), ticker, ticker, target, DamageTypes.EXPLOSION, CurioUtils.isEquipped(ticker, LifePower.class) ? 6 : 3);
                         if (CurioUtils.isEquipped(ticker, LifePower.class)) {
-                            target.spawnAtLocation(Items.PUMPKIN_SEEDS);
+                            SoulUtils.addItemEetity(level, Items.PUMPKIN_SEEDS.getDefaultInstance(), target.getBoundingBox().getCenter());
                         }
                     }
                     ParticleUtils.spawnParticleSphere(

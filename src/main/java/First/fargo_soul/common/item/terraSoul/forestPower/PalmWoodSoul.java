@@ -39,10 +39,8 @@ public class PalmWoodSoul extends SoulItem {
                 target.setRemainingFireTicks(remainingFireTicks);
                 if (target.getRemainingFireTicks() > 0 && CurioUtils.isEquipped(attacker, ForestPower.class) && attacker.getRandom().nextDouble() < 0.05) {
                     Level level = attacker.level();
-                    List<LivingEntity> livingEntityList = level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(1));
-                    livingEntityList.remove(attacker);
-                    for (LivingEntity livingEntity : livingEntityList) {
-                        SoulUtils.attack(attacker, livingEntity, DamageTypes.PLAYER_EXPLOSION, 4);
+                    for (LivingEntity livingEntity : SoulUtils.getTargetList(attacker, target.getBoundingBox().inflate(1))) {
+                        SoulUtils.attack(this.getClass(), attacker, attacker, livingEntity, DamageTypes.PLAYER_EXPLOSION, 4);
                     }
                     ParticleUtils.spawnParticleSphere(
                             (ServerLevel) level,

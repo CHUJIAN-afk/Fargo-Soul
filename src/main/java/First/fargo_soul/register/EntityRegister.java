@@ -13,7 +13,15 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class EntityRegister {
 
     private static final DeferredRegister<EntityType<?>> Register = DeferredRegister.create(Registries.ENTITY_TYPE, FargoSoul.MODID);
-
+/*
+    public static final DeferredHolder<EntityType<?>, EntityType<Mutant>> Mutant =
+            Register.register("mutant", () -> EntityType.Builder.of(Mutant::new, MobCategory.MONSTER)
+                    .sized(1, 2)
+                    .clientTrackingRange(1)
+                    .updateInterval(1)
+                    .build("mutant")
+            );
+*/
     public static final DeferredHolder<EntityType<?>, EntityType<Needle>> NeedleEntity =
             Register.register("needle", () -> EntityType.Builder.of(Needle::new, MobCategory.MISC)
                     .sized(0.5f, 0.5f)

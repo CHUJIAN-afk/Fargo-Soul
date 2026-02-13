@@ -162,7 +162,7 @@ public class GoldSoul extends SoulItem {
                         }
                     });
                     if (!livingEntityList.isEmpty()) {
-                        LivingEntity livingEntity = livingEntityList.get(SoulUtils.random.nextInt(livingEntityList.size()));
+                        LivingEntity livingEntity = livingEntityList.get(SoulUtils.getRandom().nextInt(livingEntityList.size()));
                         SoulUtils.attack(GoldSoul.class, target, target, livingEntity, DamageTypes.MAGIC, amount * scale);
                     }
                 }

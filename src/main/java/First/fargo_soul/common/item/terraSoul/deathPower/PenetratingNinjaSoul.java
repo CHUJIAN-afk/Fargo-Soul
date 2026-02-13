@@ -37,7 +37,7 @@ public class PenetratingNinjaSoul extends SoulItem {
                             amount += target.getMaxHealth() * 0.05f;
                             strength++;
                         }
-                        SoulUtils.attack(ticker, target, DamageTypes.WITHER, amount);
+                        SoulUtils.attack(this.getClass(), ticker, ticker, target, DamageTypes.WITHER, amount);
                         target.knockback(strength, ticker.getX(), ticker.getZ());
                     }
                 }

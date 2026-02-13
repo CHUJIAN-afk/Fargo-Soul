@@ -16,16 +16,14 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -40,7 +38,6 @@ import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -108,28 +105,40 @@ public class Event {
 
     @SubscribeEvent
     public static void soulDamage(LivingIncomingDamageEvent event) {
-        if (event.getEntity() != event.getSource().getEntity()) {
+        LivingEntity target = event.getEntity();
+        Entity attacker = event.getSource().getEntity();
+        if (target != attacker) {
             for (SoulItem soulItem : SoulUtils.RegisterSoulList) {
                 soulItem.hurt(event);
             }
+        }
+        if (!event.isCanceled() && attacker instanceof Player) {
+            SoulAbilityData.getSoulInfo(target, attacker.getStringUUID() + "damaged").setDuration(100);
         }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void attributeDamage(LivingIncomingDamageEvent event) {
-        if (event.getSource().getEntity() instanceof LivingEntity attacker) {
-            event.setAmount((float) (event.getAmount() * (1 + attacker.getAttributeValue(AttributeRegister.Damage))));
+        if (event.getSource().getEntity() instanceof LivingEntity attacker && attacker.getAttribute(AttributeRegister.Damage) instanceof AttributeInstance instance) {
+            event.setAmount((float) (event.getAmount() * (1 + instance.getValue())));
         }
     }
 
     @SubscribeEvent
     public static void EntityAttributeModificationEvent(EntityAttributeModificationEvent event) {
         event.getTypes().forEach(entityType -> {
-            event.add(entityType, AttributeRegister.CriticalChance);
-            event.add(entityType, AttributeRegister.CriticalDamage);
+            if (entityType == EntityType.PLAYER) {
+                event.add(entityType, AttributeRegister.CriticalChance);
+                event.add(entityType, AttributeRegister.CriticalDamage);
+            }
             event.add(entityType, AttributeRegister.ArmorPierce);
             event.add(entityType, AttributeRegister.Damage);
         });
+        /*
+        for (Map.Entry<Holder<Attribute>, AttributeInstance> entry : ((AttributeSupplierAccessor) Mutant.createAttributes().build()).getInstances().entrySet()) {
+            event.add(EntityRegister.Mutant.get(), entry.getKey(), entry.getValue().getBaseValue());
+        }
+        */
     }
 
     @SubscribeEvent
@@ -205,19 +214,10 @@ public class Event {
                 Level level = mob.level();
                 double chance = ServerSoulConfig.SoulDropChance.get();
                 RandomSource random = mob.getRandom();
-                Collection<ItemEntity> drops = event.getDrops();
-                List<SoulItem> itemList = mob.getData(AttachmentRegister.SoulListData).getSoulItemList();
-                if (!itemList.isEmpty()) {
-                    itemList.stream()
-                            .filter(soulItem -> random.nextDouble() < chance)
-                            .map(soulItem -> new ItemEntity(
-                                    level,
-                                    mob.getX(),
-                                    mob.getY(),
-                                    mob.getZ(),
-                                    soulItem.getDefaultInstance()
-                            ))
-                            .forEach(drops::add);
+                List<SoulItem> soulItemList = CurioUtils.getSoulFromList(mob.getData(AttachmentRegister.SoulListData).getSoulItemList());
+                if (!soulItemList.isEmpty() && random.nextDouble() < chance) {
+                    ItemStack itemStack = soulItemList.get(random.nextInt(soulItemList.size())).getDefaultInstance();
+                    SoulUtils.addItemEetity(level, itemStack, mob.getBoundingBox().getCenter());
                 }
             }
         }

@@ -3,7 +3,6 @@ package First.fargo_soul.common.item.terraSoul.forestPower;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.ForestPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -21,12 +20,11 @@ public class ShadowWoodSoul extends SoulItem {
     public void tick(LivingEntity ticker) {
         if (!ticker.level().isClientSide()) {
             if (CurioUtils.isEquipped(ticker, ShadowWoodSoul.class)) {
-                SoulAbilityData.SoulInfo soulInfo = ticker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(PineWoodSoul.class);
+                SoulAbilityData.SoulInfo soulInfo = getInfo(ticker, ShadowWoodSoul.class);
                 soulInfo.setMaxCooldown(100);
-                if (soulInfo.getCooldown() == 0 && SoulUtils.getSoulTarget(ticker, 10) instanceof LivingEntity target) {
+                if (soulInfo.isReady() && SoulUtils.getSoulTarget(ticker, 10) instanceof LivingEntity target) {
                     soulInfo.setCooldown(soulInfo.getMaxCooldown());
-                    SoulAbilityData.SoulInfo info = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(ticker.getScoreboardName());
-                    info.setEnabled(true);
+                    getInfo(target, ticker.getStringUUID() + "ShadowWoodSoul").setEnabled(true);
                 }
             }
         }
@@ -35,9 +33,10 @@ public class ShadowWoodSoul extends SoulItem {
     @Override
     public void hurt(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
-            if (!attacker.equals(target) && CurioUtils.isEquipped(target, ShadowWoodSoul.class) && SoulUtils.canAttack(ShadowWoodSoul.class, attacker, attacker)) {
-                SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(target.getScoreboardName());
+            if (CurioUtils.isEquipped(target, ShadowWoodSoul.class)) {
+                SoulAbilityData.SoulInfo soulInfo = getInfo(attacker, target.getStringUUID() + "ShadowWoodSoul");
                 if (soulInfo.isEnabled()) {
+                    soulInfo.setEnabled(false);
                     int amount = CurioUtils.isEquipped(target, ForestPower.class) ? 3 : 2;
                     SoulUtils.attack(ShadowWoodSoul.class, attacker, target, attacker, DamageTypes.MAGIC, amount);
                     target.heal(amount);

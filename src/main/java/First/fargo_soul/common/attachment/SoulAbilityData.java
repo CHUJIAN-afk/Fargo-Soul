@@ -241,6 +241,10 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 			}
 		}
 
+		public boolean isActive() {
+			return getDuration() > 0;
+		}
+
 		public int getDuration() {
 			return duration;
 		}

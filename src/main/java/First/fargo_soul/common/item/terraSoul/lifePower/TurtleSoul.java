@@ -55,7 +55,7 @@ public class TurtleSoul extends SoulItem {
 			}
 		}
 		if (event.getSource().getDirectEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
-			if (!attacker.equals(target) && CurioUtils.isEquipped(target, TurtleSoul.class) && SoulUtils.canAttack(TurtleSoul.class, attacker, attacker)) {
+			if (CurioUtils.isEquipped(target, TurtleSoul.class)) {
 				float newDamage = event.getAmount();
 				float scale = (1 - (float) (attacker.getBoundingBox().getCenter().distanceTo(target.getBoundingBox().getCenter()) * 0.1)) * 0.6f;
 				boolean lowHealth = target.getHealth() / target.getMaxHealth() < 0.5;
@@ -64,7 +64,7 @@ public class TurtleSoul extends SoulItem {
 					Vec3 knockback = target.getBoundingBox().getCenter().subtract(target.getBoundingBox().getCenter()).normalize().scale(scale);
 					attacker.knockback(1, knockback.x(), knockback.y());
 				}
-				SoulUtils.attack(TurtleSoul.class, attacker, target, attacker, DamageTypes.CACTUS, newDamage);
+				SoulUtils.attack(TurtleSoul.class, target, target, attacker, DamageTypes.CACTUS, newDamage);
 				double chance = CurioUtils.isEquipped(target, LifePower.class) ? 0.2 : 0.1;
 				if (!event.isCanceled() && event.getAmount() > 0 && target.getRandom().nextDouble() < chance) {
 					Level level = target.level();

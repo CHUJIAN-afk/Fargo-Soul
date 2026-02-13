@@ -71,32 +71,38 @@ public class BlazeSoul extends SoulItem {
         if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
             if (CurioUtils.isEquipped(attacker, BlazeSoul.class)) {
                 SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(BlazeSoul.class);
-                if (!attacker.equals(target) && soulInfo.isEnabled() && SoulUtils.canAttack(BlazeSoul.class, target, target)) {
-                    soulInfo.shrinkStacks(100);
+                if (soulInfo.isEnabled()) {
                     Level level = attacker.level();
-                    List<LivingEntity> livingEntityList = level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(2));
-                    livingEntityList.remove(attacker);
-                    for (LivingEntity entity : livingEntityList) {
-                        float amount = event.getAmount() * 2.75f + target.getMaxHealth() * 0.025f;
-                        SoulUtils.attack(BlazeSoul.class, target, attacker, entity, DamageTypes.ON_FIRE, amount);
+                    List<LivingEntity> livingEntityList = SoulUtils.getTargetList(attacker, target.getBoundingBox().inflate(2));
+                    boolean attacked = false;
+                    if (!livingEntityList.isEmpty()) {
+                        for (LivingEntity entity : livingEntityList) {
+                            float amount = event.getAmount() * 2.75f + target.getMaxHealth() * 0.025f;
+                            if (SoulUtils.attack(this.getClass(), entity, attacker, entity, DamageTypes.ON_FIRE, amount)) {
+                                attacked = true;
+                            }
+                        }
+                        if (attacked) {
+                            soulInfo.shrinkStacks(100);
+                        }
+                        ParticleUtils.spawnParticleSphere(
+                                (ServerLevel) level,
+                                target.getX(),
+                                target.getBoundingBox().getCenter().y(),
+                                target.getZ(),
+                                ParticleTypes.LAVA,
+                                1f,
+                                60,
+                                0.5f
+                        );
+                        SoulUtils.playSound(
+                                level,
+                                target.position(),
+                                SoundEvents.GENERIC_EXPLODE.value(),
+                                SoundSource.PLAYERS
+                        );
                     }
-                    ParticleUtils.spawnParticleSphere(
-                            (ServerLevel) level,
-                            target.getX(),
-                            target.getBoundingBox().getCenter().y(),
-                            target.getZ(),
-                            ParticleTypes.LAVA,
-                            1f,
-                            60,
-                            0.5f
-                    );
-                    SoulUtils.playSound(
-                            level,
-                            target.position(),
-                            SoundEvents.GENERIC_EXPLODE.value(),
-                            SoundSource.PLAYERS
-                    );
-                } else if (!soulInfo.isEnabled()) {
+                } else {
                     soulInfo.addStacks((int) (event.getAmount() * (CurioUtils.isEquipped(attacker, CosmicPower.class) ? 0.4f : 0.25f)));
                 }
             }
