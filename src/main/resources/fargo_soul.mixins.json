@@ -13,6 +13,7 @@
     "minecraft.ExtraCodecsMixin",
     "minecraft.InventoryMenuAccessor",
     "minecraft.ItemEntityMixin",
+    "minecraft.LanguageProviderAccessor",
     "minecraft.LivingEntityMixin",
     "minecraft.PlayerMixin",
     "minecraft.ProjectileUtilMixin",

@@ -17,7 +17,7 @@
       "color": "dark_red",
       "extra": [
         {
-          "color": "#00BE00",
+          "color": "#FFFFFE",
           "translate": "item.fargo_soul.terra_soul"
         }
       ],

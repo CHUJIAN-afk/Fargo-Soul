@@ -3,6 +3,7 @@ package First.fargo_soul.dadageneeator;
 import First.fargo_soul.FargoSoul;
 import First.fargo_soul.dadageneeator.provider.BaseItemModelProvider;
 import First.fargo_soul.dadageneeator.provider.SoulAdvancementProvider;
+import First.fargo_soul.dadageneeator.provider.SoulLangProvider;
 import First.fargo_soul.dadageneeator.provider.SoulRecipeProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
@@ -31,6 +32,9 @@ public class DataGeneratorEvent {
         generator.addProvider(event.includeServer(), new SoulRecipeProvider(packOutput, lookupProvider));
         //成就
         generator.addProvider(event.includeServer(), new AdvancementProvider(packOutput, lookupProvider, existingFileHelper, List.of(new SoulAdvancementProvider())));
+        //语言
+        generator.addProvider(event.includeServer(), new SoulLangProvider(packOutput, FargoSoul.MODID, "en_us"));
+        generator.addProvider(event.includeServer(), new SoulLangProvider(packOutput, FargoSoul.MODID, "zh_cn"));
     }
 
 }

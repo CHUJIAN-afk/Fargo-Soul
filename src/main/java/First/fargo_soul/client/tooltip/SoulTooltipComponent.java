@@ -32,14 +32,14 @@ public class SoulTooltipComponent implements ClientTooltipComponent, TooltipComp
 
 	@Override
 	public int getHeight() {
-		return -2;
+		return 0;
 	}
 
 	@Override
 	public void renderImage(@NotNull Font font, int tooltipX, int tooltipY, @NotNull GuiGraphics guiGraphics) {
 		PoseStack pose = guiGraphics.pose();
 		pose.pushPose();
-		tooltipY -= 25;
+		tooltipY -= 37;
 		TooltipRenderUtil.renderTooltipBackground(
 				guiGraphics,
 				tooltipX,

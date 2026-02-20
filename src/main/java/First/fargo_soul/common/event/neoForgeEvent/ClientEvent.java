@@ -333,14 +333,15 @@ public class ClientEvent {
                 toolTip.addAll(CurioUtils.getSoulItemAttributesComponent(soulItem));
                 List<SoulItem> soulItems = CurioUtils.getSoulFromList(soulItem.getSoulItemList(soulItem));
                 if (!soulItems.isEmpty()) {
-                    toolTip.add(Component.empty());
                     if (ModList.get().isLoaded("modernui")) {
                         for (SoulItem item : soulItems) {
+                            toolTip.add(Component.empty());
                             toolTip.addAll(CurioUtils.getSoulItemAttributesComponent(item));
                         }
                     } else if (event.getContext().level() instanceof Level level) {
                         RandomSource random = level.getRandom();
                         random.setSeed(level.getGameTime() / (long) Math.max(2, 40f / soulItems.size()));
+                        toolTip.add(Component.empty());
                         toolTip.addAll(CurioUtils.getSoulItemAttributesComponent(soulItems.get(random.nextInt(soulItems.size()))));
                     }
                 }
@@ -360,7 +361,7 @@ public class ClientEvent {
     public static void renderSoulItemTooltipHandler(RenderTooltipEvent.GatherComponents event) {
         if (event.getItemStack().getItem() instanceof SoulItem soulItem && ClientConfig.EmbedAChildSoulInTheItemTooltip.get()) {
             List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
-            tooltipElements.addFirst(Either.right(new SoulTooltipComponent(soulItem)));
+            tooltipElements.add(1, Either.right(new SoulTooltipComponent(soulItem)));
         }
     }
 
@@ -417,14 +418,21 @@ public class ClientEvent {
                 soulItem.fly(flyEvent);
             }
             soulInfo.setMaxStacks(flyEvent.getMaxFlyTime());
-            if (soulInfo.getStacks() > 0 && event.getInput().jumping && flyEvent.isAllowingFly()) {
-                soulInfo.shrinkStacks();
-                Vec3 deltaMovement = player.getDeltaMovement();
+            if (event.getInput().jumping && flyEvent.isAllowingFly()) {
+                player.fallDistance = 0;
                 double addedX = 0;
                 double addedY = 0;
                 double addedZ = 0;
-                if (deltaMovement.y() < 0.5) {
-                    addedY = Math.min(0.25, 0.5 - deltaMovement.y());
+                Vec3 deltaMovement = player.getDeltaMovement();
+                if (soulInfo.getStacks() > 0) {
+                    soulInfo.shrinkStacks();
+                    if (deltaMovement.y() < 0.5) {
+                        addedY = Math.min(0.25, 0.5 - deltaMovement.y());
+                    }
+                } else {
+                    if (deltaMovement.y() < -0.05) {
+                        addedY = Math.min(0.05, -0.05 - deltaMovement.y());
+                    }
                 }
                 if (!player.onGround() && event.getInput().up) {
                     Vec3 lookAngle = player.getLookAngle().normalize();

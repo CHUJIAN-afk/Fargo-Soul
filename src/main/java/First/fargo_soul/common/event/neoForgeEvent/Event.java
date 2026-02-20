@@ -4,6 +4,7 @@ package First.fargo_soul.common.event.neoForgeEvent;
 import First.fargo_soul.FargoSoul;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.blcokEntity.CosmicCrucibleBlockEntity;
+import First.fargo_soul.common.event.modEvent.PlayerFlyEvent;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.config.ServerSoulConfig;
 import First.fargo_soul.register.AttachmentRegister;
@@ -15,6 +16,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -106,6 +108,16 @@ public class Event {
     public static void soulDamage(LivingIncomingDamageEvent event) {
         LivingEntity target = event.getEntity();
         Entity attacker = event.getSource().getEntity();
+        if (target instanceof Player player) {
+            PlayerFlyEvent playerFlyEvent = new PlayerFlyEvent(player);
+            for (SoulItem soulItem : SoulUtils.RegisterSoulList) {
+                soulItem.fly(playerFlyEvent);
+            }
+            if (playerFlyEvent.isAllowingFly() && event.getSource().is(DamageTypes.FALL)) {
+                event.setCanceled(true);
+                return;
+            }
+        }
         if (target != attacker) {
             for (SoulItem soulItem : SoulUtils.RegisterSoulList) {
                 if (!event.isCanceled()) {

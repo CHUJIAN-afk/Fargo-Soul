@@ -1,4 +1,4 @@
-// 1.21.1	2025-12-31T22:37:14.4296981	Advancements
+// 1.21.1	2026-02-20T19:02:23.7239996	Advancements
 14fc0e9ceaee650e9226128baab44ebad50dcdc2 data/fargo_soul/advancement/adamantite_soul.json
 ba19d1444a6746884e87d871149696b9ba396613 data/fargo_soul/advancement/ancient_holy_soul.json
 ca4f64fe9fba8e329d92c9954c5c0eacb9569e4b data/fargo_soul/advancement/ancient_shadow_soul.json
@@ -17,7 +17,7 @@ e8365433136442d8537e2f71da76925fe41f8fe8 data/fargo_soul/advancement/crystal_ass
 c4ce8a96acb171304e328b655d4564a6a7e5dc43 data/fargo_soul/advancement/ebony_wood_soul.json
 b777bb105adf8c1b238b2f66e3d3bf20d85bc33a data/fargo_soul/advancement/forbidden_soul.json
 60c4bb16111ef00b4d615739b2ac651f9e6a07ae data/fargo_soul/advancement/forest_power.json
-5ef5a2d039b611f2dcc556735ba7179350143d94 data/fargo_soul/advancement/frost_soul.json
+c3197c49b561fb62cdcfc5f0bec966531a6fb5c3 data/fargo_soul/advancement/frost_soul.json
 371db97db7983da13e64aa01dd6067e173c41861 data/fargo_soul/advancement/ghost_soul.json
 03c36daedac6e67e1251952b1b542353f0299aef data/fargo_soul/advancement/gladiator_soul.json
 3e1e9d1a1c7085506f6facc8fa4783f00d6c044a data/fargo_soul/advancement/gloomy_soul.json
@@ -54,7 +54,7 @@ c4353782af8ae2aa6266a92f08b32986fcd20f0c data/fargo_soul/advancement/shadow_wood
 9c608a8b2da43e9a11f2fb2b7ef0a6b1ecc22e68 data/fargo_soul/advancement/stardust_soul.json
 aeaf4c9cb9f0f60b59ab12011e9d8754c2e7ba4f data/fargo_soul/advancement/teke_soul.json
 4079164afef4fdf4639b0743db51b9eb40209922 data/fargo_soul/advancement/terra_power.json
-bf4580597890e096d6863e6c1feededdbf2e4f48 data/fargo_soul/advancement/terra_soul.json
+bc81b1654b9feda8a6cb0bf89df099c4df948200 data/fargo_soul/advancement/terra_soul.json
 e2f99c30a6896d1faa92940268d3567ef155d058 data/fargo_soul/advancement/tin_soul.json
 a17c9a10a0be49e8beee5e3291ea4279c2cf16c8 data/fargo_soul/advancement/titanium_soul.json
 b7fc5f2f76ebe2d717f3243fff14af850dac8303 data/fargo_soul/advancement/tungsten_soul.json
