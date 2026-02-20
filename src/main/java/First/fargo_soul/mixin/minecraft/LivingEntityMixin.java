@@ -6,6 +6,7 @@ import First.fargo_soul.common.item.terraSoul.cosmicPower.WizardSoul;
 import First.fargo_soul.common.item.terraSoul.willPower.PlatinumSoul;
 import First.fargo_soul.common.item.terraSoul.willPower.RedRidingSoul;
 import First.fargo_soul.utils.CurioUtils;
+import First.fargo_soul.utils.SoulUtils;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -43,7 +44,7 @@ public class LivingEntityMixin {
         return itemStack -> {
             if (damageSource.getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide() && CurioUtils.isEquipped(attacker, PlatinumSoul.class) && attacker.getRandom().nextDouble() < 0.2) {
                 int scale = CurioUtils.isEquipped(attacker, WillPower.class) ? 8 : 5;
-                SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(attacker, RedRidingSoul.class);
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(attacker, RedRidingSoul.class);
                 if (scale == 8 && soulInfo.getStacks() == soulInfo.getMaxStacks()) {
                     scale = 16;
                 }

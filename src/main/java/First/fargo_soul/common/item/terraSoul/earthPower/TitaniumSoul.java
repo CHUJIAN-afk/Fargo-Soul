@@ -5,7 +5,6 @@ import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.EarthPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.ItemRegister;
 import First.fargo_soul.utils.AttributeUtils;
 import First.fargo_soul.utils.CurioUtils;
@@ -30,10 +29,8 @@ public class TitaniumSoul extends SoulItem {
     @Override
     public void tick(LivingEntity ticker) {
         if (!ticker.level().isClientSide()) {
-            SoulAbilityData.getSoulInfo(ticker, TitaniumSoul.class).setMaxCooldown(400);
-        }
-        if (!ticker.level().isClientSide()) {
-            SoulAbilityData.SoulInfo soulInfo = ticker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(TitaniumSoul.class);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, TitaniumSoul.class);
+            soulInfo.setMaxCooldown(400);
             AttributeUtils.condition(
                     ticker,
                     Attributes.MOVEMENT_SPEED,
@@ -50,7 +47,7 @@ public class TitaniumSoul extends SoulItem {
         if (event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
             if (CurioUtils.isEquipped(target, TitaniumSoul.class)) {
                 Level level = target.level();
-                SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(TitaniumSoul.class);
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(target, TitaniumSoul.class);
                 soulInfo.setMaxCooldown(400);
                 if (!event.isCanceled() && soulInfo.isReady()) {
                     soulInfo.setCooldown(soulInfo.getMaxCooldown());

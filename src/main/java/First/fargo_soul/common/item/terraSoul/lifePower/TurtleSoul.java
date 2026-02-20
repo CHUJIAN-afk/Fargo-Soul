@@ -6,7 +6,6 @@ import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.entity.projectile.Needle;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.LifePower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.EntityRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.SoulUtils;
@@ -27,7 +26,7 @@ public class TurtleSoul extends SoulItem {
 	public void tick(LivingEntity ticker) {
 		if (!ticker.level().isClientSide()) {
 			if (CurioUtils.isEquipped(ticker, TurtleSoul.class)) {
-				SoulAbilityData.SoulInfo soulInfo = ticker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(TurtleSoul.class);
+				SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, TurtleSoul.class);
 				soulInfo.setMaxCooldown(2400);
 				boolean superLowHealth = ticker.getHealth() / ticker.getMaxHealth() < 0.25;
 				soulInfo.setEnabled(superLowHealth && soulInfo.isReady());
@@ -44,7 +43,7 @@ public class TurtleSoul extends SoulItem {
 		}
 		if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
 			if (!attacker.equals(target) && CurioUtils.isEquipped(target, TurtleSoul.class)) {
-				SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(TurtleSoul.class);
+				SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(target, TurtleSoul.class);
 				if (soulInfo.isEnabled()) {
 					event.setAmount(Math.max(event.getAmount() - target.getMaxHealth() * 0.04f, 0));
 					if (event.getAmount() > target.getHealth()) {

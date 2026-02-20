@@ -334,7 +334,7 @@ public class ClientEvent {
                 List<SoulItem> soulItems = CurioUtils.getSoulFromList(soulItem.getSoulItemList(soulItem));
                 if (!soulItems.isEmpty()) {
                     toolTip.add(Component.empty());
-                    if (!ModList.get().isLoaded("modernui")) {
+                    if (ModList.get().isLoaded("modernui")) {
                         for (SoulItem item : soulItems) {
                             toolTip.addAll(CurioUtils.getSoulItemAttributesComponent(item));
                         }
@@ -391,8 +391,7 @@ public class ClientEvent {
     @SubscribeEvent
     public static void soulSprint(MovementInputUpdateEvent event) {
         if (event.getEntity() instanceof LocalPlayer player) {
-            SoulAbilityData soulAbilityData = SoulAbilityData.getSoulAbilityData(player);
-            SoulAbilityData.SoulInfo soulInfo = soulAbilityData.getSoulInfo("Sprint", true);
+            SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(FargoSoul.rl("Sprint"), true);
             soulInfo.setMaxCooldown(40);
             Vec3 vec3 = player.getLookAngle().scale(1.5);
             SprintEvent.Client sprintEvent = new SprintEvent.Client(player, vec3);
@@ -411,7 +410,7 @@ public class ClientEvent {
     @SubscribeEvent
     public static void fly(MovementInputUpdateEvent event) {
         if (event.getEntity() instanceof LocalPlayer player) {
-            SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("Fly", true);
+            SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(FargoSoul.rl("Fly"), true);
             PlayerFlyEvent flyEvent = new PlayerFlyEvent(player);
             NeoForge.EVENT_BUS.post(flyEvent);
             for (SoulItem soulItem : SoulUtils.RegisterSoulList) {
@@ -421,9 +420,20 @@ public class ClientEvent {
             if (soulInfo.getStacks() > 0 && event.getInput().jumping && flyEvent.isAllowingFly()) {
                 soulInfo.shrinkStacks();
                 Vec3 deltaMovement = player.getDeltaMovement();
-                Vec3 newDeltaMovement = new Vec3(deltaMovement.x(), Math.min(deltaMovement.y() + 0.25, 0.5), deltaMovement.z());
-                player.setDeltaMovement(newDeltaMovement);
-            } else if (player.onGround()) {
+                double addedX = 0;
+                double addedY = 0;
+                double addedZ = 0;
+                if (deltaMovement.y() < 0.5) {
+                    addedY = Math.min(0.25, 0.5 - deltaMovement.y());
+                }
+                if (!player.onGround() && event.getInput().up) {
+                    Vec3 lookAngle = player.getLookAngle().normalize();
+                    addedX = lookAngle.x() * 0.1;
+                    addedZ = lookAngle.z() * 0.1;
+                }
+                player.addDeltaMovement(new Vec3(addedX, addedY, addedZ));
+            }
+            if (player.onGround()) {
                 soulInfo.setStacks(soulInfo.getMaxStacks());
             }
         }

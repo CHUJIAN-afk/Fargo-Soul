@@ -5,7 +5,6 @@ import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.TerraPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.ItemRegister;
 import First.fargo_soul.utils.AttributeUtils;
 import First.fargo_soul.utils.CurioUtils;
@@ -54,10 +53,10 @@ public class ObsidianSoul extends SoulItem {
                     CurioUtils.isEquipped(ticker, ObsidianSoul.class) && amount > 0
             );
             if (CurioUtils.isEquipped(ticker, ObsidianSoul.class)) {
-                SoulAbilityData.SoulInfo SoulInfo = ticker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(ObsidianSoul.class);
-                SoulInfo.setMaxCooldown(CurioUtils.isEquipped(ticker, TerraPower.class) ? 30 : 60);
-                if (SoulInfo.getCooldown() == 0 && SoulUtils.getSoulTarget(ticker, 10) instanceof LivingEntity target) {
-                    SoulInfo.setCooldown(SoulInfo.getMaxCooldown());
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, ObsidianSoul.class);
+                soulInfo.setMaxCooldown(CurioUtils.isEquipped(ticker, TerraPower.class) ? 30 : 60);
+                if (soulInfo.isReady() && SoulUtils.getSoulTarget(ticker, 10) instanceof LivingEntity target) {
+                    soulInfo.setCooldown(soulInfo.getMaxCooldown());
                     Level level = ticker.level();
                     SmallFireball fireball = new SmallFireball(EntityType.SMALL_FIREBALL, level);
                     SoulUtils.shootTargetFromAttaker(fireball, ticker, target, 1, CurioUtils.isEquipped(ticker, TerraPower.class) ? 1.3 : 1.0);

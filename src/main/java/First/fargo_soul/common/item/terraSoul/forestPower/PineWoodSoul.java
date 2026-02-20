@@ -5,7 +5,6 @@ import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.ForestPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.ParticleUtils;
 import First.fargo_soul.utils.SoulUtils;
@@ -29,7 +28,7 @@ public class PineWoodSoul extends SoulItem {
         if (!ticker.level().isClientSide()) {
             if (CurioUtils.isEquipped(ticker, PineWoodSoul.class)) {
                 Level level = ticker.level();
-                SoulAbilityData.SoulInfo soulInfo = ticker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(PineWoodSoul.class);
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, PineWoodSoul.class);
                 soulInfo.setMaxCooldown(CurioUtils.isEquipped(ticker, ForestPower.class) ? 20 : 40);
                 if (soulInfo.isReady() && SoulUtils.getSoulTarget(ticker, 10) instanceof LivingEntity target) {
                     soulInfo.setCooldown(soulInfo.getMaxCooldown());

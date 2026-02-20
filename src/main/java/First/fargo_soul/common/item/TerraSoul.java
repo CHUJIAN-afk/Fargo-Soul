@@ -63,7 +63,7 @@ public class TerraSoul extends SoulItem {
     public void tick(LivingEntity ticker) {
         Level level = ticker.level();
         if (!level.isClientSide() && CurioUtils.isEquipped(ticker, TerraSoul.class)) {
-            SoulAbilityData.SoulInfo soulInfo = getInfo(ticker, TerraSoul.class);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, TerraSoul.class);
             soulInfo.setMaxCooldown(1);
             if (soulInfo.isReady() && SoulUtils.getSoulTarget(ticker, 20) instanceof LivingEntity target) {
                 RandomSource random = ticker.getRandom();

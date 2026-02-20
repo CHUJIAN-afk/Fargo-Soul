@@ -6,7 +6,6 @@ import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.TerraSoul;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.CosmicPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.KeyRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.SoulUtils;
@@ -37,7 +36,8 @@ public class StardustSoul extends SoulItem {
     @Override
     public void tick(LivingEntity ticker) {
         if (!ticker.level().isClientSide() && CurioUtils.isEquipped(ticker, StardustSoul.class)) {
-            SoulAbilityData.getSoulInfo(ticker, StardustSoul.class).setMaxCooldown(CurioUtils.isEquipped(ticker, TerraSoul.class) ? 1800 : 3600);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, StardustSoul.class);
+            soulInfo.setMaxCooldown(CurioUtils.isEquipped(ticker, TerraSoul.class) ? 1800 : 3600);
         }
     }
 
@@ -52,7 +52,7 @@ public class StardustSoul extends SoulItem {
     @Override
     public void keyHandle(Player player, String key) {
         if (key.equals(StardustSoul.class.getSimpleName())) {
-            SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(StardustSoul.class);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(player, StardustSoul.class);
             if (soulInfo.isReady() && player.getServer() instanceof MinecraftServer server && !server.tickRateManager().isFrozen()) {
                 soulInfo.setCooldown(soulInfo.getMaxCooldown());
                 server.tickRateManager().setFrozen(true);

@@ -5,7 +5,6 @@ import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.EarthPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.EffectRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.ParticleUtils;
@@ -41,7 +40,7 @@ public class CobaltSoul extends SoulItem {
     public void hurt(LivingIncomingDamageEvent event) {
         if (event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
             boolean equipped = CurioUtils.isEquipped(target, EarthPower.class);
-            SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(CobaltSoul.class);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(target, CobaltSoul.class);
             soulInfo.setMaxCooldown(equipped ? 40 : 60);
             if (CurioUtils.isEquipped(target, CobaltSoul.class) && soulInfo.isReady()) {
                 soulInfo.setCooldown(soulInfo.getMaxCooldown());

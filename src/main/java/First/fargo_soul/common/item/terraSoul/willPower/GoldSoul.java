@@ -5,7 +5,6 @@ import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.WillPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.EffectRegister;
 import First.fargo_soul.register.KeyRegister;
 import First.fargo_soul.utils.CurioUtils;
@@ -49,7 +48,7 @@ public class GoldSoul extends SoulItem {
     public void render(RenderLivingEvent.Post<?, ?> event) {
         LivingEntity attacker = event.getEntity();
         if (CurioUtils.isEquipped(attacker, GoldSoul.class)) {
-            SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GoldSoul.class);
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(attacker, GoldSoul.class);
             if (soulInfo.getDuration() > 0) {
                 MultiBufferSource multiBufferSource = event.getMultiBufferSource();
                 PoseStack poseStack = event.getPoseStack();
@@ -128,7 +127,8 @@ public class GoldSoul extends SoulItem {
     @Override
     public void tick(LivingEntity ticker) {
         if (!ticker.level().isClientSide()) {
-            SoulAbilityData.getSoulInfo(ticker, GoldSoul.class).setMaxCooldown(2400);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, GoldSoul.class);
+            soulInfo.setMaxCooldown(2400);
         }
     }
 
@@ -136,7 +136,7 @@ public class GoldSoul extends SoulItem {
     public void hurt(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
             if (!attacker.equals(target) && CurioUtils.isEquipped(target, GoldSoul.class)) {
-                SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GoldSoul.class);
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(target, GoldSoul.class);
                 if (soulInfo.getDuration() > 0) {
                     float amount = event.getAmount();
                     float scale = 0.4f;
@@ -198,7 +198,7 @@ public class GoldSoul extends SoulItem {
     @Override
     public void keyHandle(Player player, String key) {
         if (key.equals(GoldSoul.class.getSimpleName())) {
-            SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GoldSoul.class);
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(player, GoldSoul.class);
             soulInfo.setMaxCooldown(2400);
             if (soulInfo.getCooldown() == 0) {
                 soulInfo.setCooldown(soulInfo.getMaxCooldown());

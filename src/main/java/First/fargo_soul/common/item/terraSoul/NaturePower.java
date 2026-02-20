@@ -97,7 +97,7 @@ public class NaturePower extends SoulItem {
         Level level = ticker.level();
         if (!level.isClientSide() && CurioUtils.isEquipped(ticker, NaturePower.class)) {
             {
-                SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(ticker, "NaturePowerGreenCrystal");
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, "NaturePowerGreenCrystal");
                 soulInfo.setMaxCooldown(15);
                 if (soulInfo.isReady() && SoulUtils.getSoulTarget(ticker, 10) instanceof LivingEntity target) {
                     soulInfo.setCooldown(soulInfo.getMaxCooldown());
@@ -130,7 +130,7 @@ public class NaturePower extends SoulItem {
                 }
             }
             {
-                SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(ticker, "NaturePowerBlood");
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, "NaturePowerBlood");
                 soulInfo.setMaxCooldown(80);
                 soulInfo.setMaxStacks(4);
                 if (soulInfo.isReady() && soulInfo.getStacks() < soulInfo.getMaxStacks()) {
@@ -171,7 +171,7 @@ public class NaturePower extends SoulItem {
                     event.setCanceled(true);
                 }
             }
-            SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(target, "NaturePowerBlood");
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(target, "NaturePowerBlood");
             soulInfo.setCooldown(soulInfo.getMaxCooldown());
             soulInfo.removeStacks();
         }

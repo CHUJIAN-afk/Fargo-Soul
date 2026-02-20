@@ -94,13 +94,17 @@ public class SoulGuiRenderManager {
             this.SoulTooltipManager = SoulTooltipManager;
         }
 
-        public <T extends SoulItem> void add(SoulItem soulItem, Class<T> tClass, SoulRenderType type) {
-            add(soulItem, tClass.getName(), type);
+        public void add(SoulItem soulItem, Class<?> clazz, SoulRenderType type) {
+            add(soulItem, FargoSoul.rl(clazz.getSimpleName()), type);
         }
 
         public void add(SoulItem soulItem, String id, SoulRenderType type) {
-            SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(player, id);
-            Object key = List.of(soulItem, id, type);
+            add(soulItem, FargoSoul.rl(id), type);
+        }
+
+        public void add(SoulItem soulItem, ResourceLocation location, SoulRenderType type) {
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(player, location);
+            Object key = List.of(soulItem, location, type);
             SoulRenderInfo soulRenderInfo = SoulTooltipManager.computeIfAbsent(key, k -> new SoulRenderInfo(soulItem, startTime - 40, 0, soulItem.getSoulRarity().color(), type));
             soulRenderInfo.setPercentage(switch (type) {
                 case Duration -> (float) soulInfo.getDuration() / soulInfo.getMaxDuration();

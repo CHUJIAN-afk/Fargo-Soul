@@ -50,8 +50,8 @@ public class ForestPower extends SoulItem {
     public void tick(LivingEntity ticker) {
         Level level = ticker.level();
         if (!level.isClientSide() && CurioUtils.isEquipped(ticker, ForestPower.class)) {
-            SoulAbilityData.getSoulInfo(ticker, ForestPower.class).setMaxCooldown(160);
-            SoulAbilityData.getSoulInfo(ticker, "ForestPowerSnowball").setMaxCooldown(5);
+            SoulUtils.getSoulInfo(ticker, ForestPower.class).setMaxCooldown(160);
+            SoulUtils.getSoulInfo(ticker, "ForestPowerSnowball").setMaxCooldown(5);
             for (LivingEntity living : SoulUtils.getTargetList(ticker, 5)) {
                 if (!CurioUtils.isEquipped(living, ForestPower.class)) {
                     living.addEffect(new MobEffectInstance(MobEffects.WITHER, 100, 1));
@@ -66,7 +66,7 @@ public class ForestPower extends SoulItem {
         if (event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
             if (CurioUtils.isEquipped(target, ForestPower.class)) {
                 if (target.onGround()) {
-                    SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(target, ForestPower.class);
+                    SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(target, ForestPower.class);
                     if (soulInfo.isReady()) {
                         soulInfo.setCooldown(soulInfo.getMaxCooldown());
                         if (source instanceof LivingEntity attacker) {
@@ -89,7 +89,7 @@ public class ForestPower extends SoulItem {
                     if (target.hasEffect(MobEffects.WITHER)) {
                         event.setAmount(event.getAmount() + 15);
                     }
-                    SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(attacker, "ForestPowerSnowball");
+                    SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(attacker, "ForestPowerSnowball");
                     if (soulInfo.isReady() && target.distanceTo(attacker) < 5) {
                         soulInfo.setCooldown(soulInfo.getMaxCooldown());
                         Snowball snowball = new Snowball(EntityType.SNOWBALL, level);

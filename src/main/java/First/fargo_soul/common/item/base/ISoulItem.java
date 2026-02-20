@@ -1,7 +1,6 @@
 package First.fargo_soul.common.item.base;
 
 import First.fargo_soul.client.gui.SoulGuiRenderManager;
-import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.event.modEvent.PlayerFlyEvent;
 import First.fargo_soul.common.event.modEvent.SoulBranchEvent;
 import First.fargo_soul.common.event.modEvent.SprintEvent;
@@ -28,14 +27,6 @@ import java.util.Map;
 public interface ISoulItem {
 
     default void renderSlot(Slot slot, GuiGraphics guiGraphics, float partialTick) {
-    }
-
-    default <T extends SoulItem> SoulAbilityData.SoulInfo getInfo(LivingEntity livingEntity, Class<T> tClass) {
-        return SoulAbilityData.getSoulInfo(livingEntity, tClass);
-    }
-
-    default SoulAbilityData.SoulInfo getInfo(LivingEntity livingEntity, String id) {
-        return SoulAbilityData.getSoulInfo(livingEntity, id);
     }
 
     default void fly(PlayerFlyEvent event) {

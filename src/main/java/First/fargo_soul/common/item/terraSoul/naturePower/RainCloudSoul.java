@@ -3,7 +3,6 @@ package First.fargo_soul.common.item.terraSoul.naturePower;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.NaturePower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.tags.DamageTypeTags;
@@ -29,7 +28,7 @@ public class RainCloudSoul extends SoulItem {
         if (!event.isCanceled() && event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
             Level level = target.level();
             double chance = CurioUtils.isEquipped(target, NaturePower.class) && level.isRaining() ? 0.4 : 0.1;
-            SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(RainCloudSoul.class);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(target, RainCloudSoul.class);
             soulInfo.setMaxCooldown(20);
             if (soulInfo.isReady() && !attacker.equals(target) && CurioUtils.isEquipped(target, RainCloudSoul.class) && target.getRandom().nextDouble() < chance) {
                 soulInfo.setCooldown(soulInfo.getMaxCooldown());

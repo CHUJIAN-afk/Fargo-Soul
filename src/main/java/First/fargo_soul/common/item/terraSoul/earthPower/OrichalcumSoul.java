@@ -3,7 +3,6 @@ package First.fargo_soul.common.item.terraSoul.earthPower;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.EarthPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.EffectRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.ParticleUtils;
@@ -32,7 +31,7 @@ public class OrichalcumSoul extends SoulItem {
             double chance = CurioUtils.isEquipped(attacker, EarthPower.class) ? 0.4 : 0.2;
             if (!attacker.equals(target) && CurioUtils.isEquipped(attacker, OrichalcumSoul.class) && target.getRandom().nextDouble() < chance) {
                 Level level = attacker.level();
-                SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(OrichalcumSoul.class);
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(attacker, OrichalcumSoul.class);
                 soulInfo.setMaxCooldown(2);
                 if (soulInfo.isReady()) {
                     soulInfo.setCooldown(soulInfo.getMaxCooldown());

@@ -6,7 +6,6 @@ import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.event.modEvent.SprintEvent;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.DeathPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -24,7 +23,7 @@ public class PenetratingNinjaSoul extends SoulItem {
     @Override
     public void tick(LivingEntity ticker) {
         if (!ticker.level().isClientSide() && CurioUtils.isEquipped(ticker, PenetratingNinjaSoul.class)) {
-            SoulAbilityData.SoulInfo soulInfo = ticker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(PenetratingNinjaSoul.class);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, PenetratingNinjaSoul.class);
             soulInfo.setMaxCooldown(400);
             ticker.setNoGravity(false);
             if (soulInfo.getDuration() > 0) {
@@ -49,7 +48,7 @@ public class PenetratingNinjaSoul extends SoulItem {
     public void hurt(LivingIncomingDamageEvent event) {
         if (event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
             if (CurioUtils.isEquipped(target, PenetratingNinjaSoul.class)) {
-                SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(PenetratingNinjaSoul.class);
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(target, PenetratingNinjaSoul.class);
                 if (soulInfo.getDuration() > 0) {
                     event.setCanceled(true);
                 }
@@ -69,7 +68,7 @@ public class PenetratingNinjaSoul extends SoulItem {
     public void sprintServer(SprintEvent.Server event) {
         LivingEntity livingEntity = event.getEntity();
         if (CurioUtils.isEquipped(livingEntity, PenetratingNinjaSoul.class)) {
-            SoulAbilityData.SoulInfo soulInfo = livingEntity.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(PenetratingNinjaSoul.class);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(livingEntity, PenetratingNinjaSoul.class);
             if (soulInfo.isReady()) {
                 soulInfo.setCooldown(soulInfo.getMaxCooldown());
                 soulInfo.setDuration(20);

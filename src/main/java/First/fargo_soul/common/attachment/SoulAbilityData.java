@@ -1,13 +1,13 @@
 package First.fargo_soul.common.attachment;
 
 import First.fargo_soul.FargoSoul;
-import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.register.AttachmentRegister;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -28,48 +28,32 @@ import java.util.Map;
 @EventBusSubscriber(modid = FargoSoul.MODID)
 public class SoulAbilityData implements INBTSerializable<CompoundTag>, AttachmentSyncHandler<SoulAbilityData> {
 
-	private final Map<String, SoulInfo> SoulInfoList;
+	private final Map<ResourceLocation, SoulInfo> SoulInfoList;
 
-	public SoulAbilityData() {
-		this.SoulInfoList = new HashMap<>();
-	}
-
-	public SoulAbilityData(Map<String, SoulInfo> SoulInfoList) {
+	public SoulAbilityData(Map<ResourceLocation, SoulInfo> SoulInfoList) {
 		this.SoulInfoList = SoulInfoList;
 	}
 
-	public static SoulAbilityData getSoulAbilityData(LivingEntity livingEntity) {
-		return livingEntity.getData(AttachmentRegister.SoulAbilityData);
+	public SoulAbilityData() {
+		this(new HashMap<>());
 	}
 
-	public static SoulInfo getSoulInfo(LivingEntity livingEntity, String id) {
-		return getSoulAbilityData(livingEntity).getSoulInfo(id);
-	}
-
-	public static <T extends SoulItem> SoulInfo getSoulInfo(LivingEntity livingEntity, Class<T> type) {
-		return getSoulAbilityData(livingEntity).getSoulInfo(type.getName());
-	}
-
-	public Map<String, SoulInfo> getSoulInfoList() {
+	public Map<ResourceLocation, SoulInfo> getSoulInfoList() {
 		return SoulInfoList;
 	}
 
-	public <T extends SoulItem> SoulInfo getSoulInfo(Class<T> type) {
-		return getSoulInfo(type.getName(), false);
+	public @NotNull SoulInfo getSoulInfo(ResourceLocation location) {
+		return getSoulInfo(location, false);
 	}
 
-	public @NotNull SoulInfo getSoulInfo(String id) {
-		return getSoulInfo(id, false);
-	}
-
-	public @NotNull SoulInfo getSoulInfo(String id, boolean client) {
-		return SoulInfoList.computeIfAbsent(id, map -> new SoulInfo(client));
+	public @NotNull SoulInfo getSoulInfo(ResourceLocation location, boolean client) {
+		return SoulInfoList.computeIfAbsent(location, map -> new SoulInfo(client));
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void update(EntityTickEvent.Post event) {
 		if (event.getEntity() instanceof LivingEntity ticker && ticker.hasData(AttachmentRegister.SoulAbilityData)) {
-			Map<String, SoulInfo> soulInfoList = ticker.getData(AttachmentRegister.SoulAbilityData).getSoulInfoList();
+			Map<ResourceLocation, SoulInfo> soulInfoList = ticker.getData(AttachmentRegister.SoulAbilityData).getSoulInfoList();
 			Level level = ticker.level();
 			boolean syncData = false;
 			for (SoulInfo soulInfo : soulInfoList.values()) {
@@ -90,7 +74,9 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 	public CompoundTag serializeNBT(HolderLookup.@NotNull Provider provider) {
 		CompoundTag SoulAbilityData = new CompoundTag();
 		ListTag instTag = new ListTag();
-		SoulInfoList.forEach((key, info) -> {
+		for (Map.Entry<ResourceLocation, SoulInfo> entry : SoulInfoList.entrySet()) {
+			ResourceLocation key = entry.getKey();
+			SoulInfo info = entry.getValue();
 			CompoundTag listTag = new CompoundTag();
 			listTag.putInt("cooldown", info.cooldown);
 			listTag.putInt("maxCooldown", info.maxCooldown);
@@ -101,9 +87,9 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 			listTag.putInt("maxStacks", info.maxStacks);
 			listTag.putBoolean("enabled", info.enabled);
 			CompoundTag infoTag = new CompoundTag();
-			infoTag.put(key, listTag);
+			infoTag.put(key.toString(), listTag);
 			instTag.add(infoTag);
-		});
+		}
 		SoulAbilityData.put("SoulAbilityData", instTag);
 		return SoulAbilityData;
 	}
@@ -125,7 +111,7 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 					info.stacks = listTag.getInt("stacks");
 					info.maxStacks = listTag.getInt("maxStacks");
 					info.enabled = listTag.getBoolean("enabled");
-					SoulInfoList.put(key, info);
+					SoulInfoList.put(ResourceLocation.parse(key), info);
 				}
 			}
 		}
@@ -133,13 +119,12 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 
 	@Override
 	public void write(@NotNull RegistryFriendlyByteBuf buf, @NotNull SoulAbilityData data, boolean clientPacket) {
-		List<Map.Entry<String, SoulInfo>> entryList = data.SoulInfoList.entrySet().stream().filter(entry -> entry.getValue().isChange()).toList();
+		List<Map.Entry<ResourceLocation, SoulInfo>> entryList = data.SoulInfoList.entrySet().stream().filter(entry -> entry.getValue().isChange()).toList();
 		buf.writeVarInt(entryList.size());
-		for (Map.Entry<String, SoulInfo> entry : entryList) {
-			String key = entry.getKey();
+		for (Map.Entry<ResourceLocation, SoulInfo> entry : entryList) {
 			SoulInfo info = entry.getValue();
 			info.setChange(false);
-			buf.writeUtf(key);
+			buf.writeResourceLocation(entry.getKey());
 			buf.writeVarInt(info.cooldown);
 			buf.writeVarInt(info.maxCooldown);
 			buf.writeVarInt(info.duration);
@@ -153,10 +138,10 @@ public class SoulAbilityData implements INBTSerializable<CompoundTag>, Attachmen
 
 	@Override
 	public @Nullable SoulAbilityData read(@NotNull IAttachmentHolder holder, @NotNull RegistryFriendlyByteBuf buf, @Nullable SoulAbilityData data) {
-		Map<String, SoulInfo> soulInfo = new HashMap<>();
+		Map<ResourceLocation, SoulInfo> soulInfo = new HashMap<>();
 		int size = buf.readVarInt();
 		for (int i = 0; i < size; i++) {
-			String key = buf.readUtf();
+			ResourceLocation key = buf.readResourceLocation();
 			SoulInfo info = new SoulInfo();
 			info.cooldown = buf.readVarInt();
 			info.maxCooldown = buf.readVarInt();

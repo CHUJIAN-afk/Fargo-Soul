@@ -7,7 +7,6 @@ import First.fargo_soul.common.event.modEvent.PlayerFlyEvent;
 import First.fargo_soul.common.event.modEvent.SprintEvent;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.NaturePower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.ItemRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.ParticleUtils;
@@ -75,7 +74,7 @@ public class GreenSoul extends SoulItem {
         if (!ticker.level().isClientSide()) {
             if (CurioUtils.isEquipped(ticker, GreenSoul.class)) {
                 boolean equipped = CurioUtils.isEquipped(ticker, NaturePower.class);
-                SoulAbilityData.SoulInfo soulInfo = ticker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GreenSoul.class);
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, GreenSoul.class);
                 soulInfo.setMaxCooldown(equipped ? 30 : 60);
                 if (soulInfo.isReady() && SoulUtils.getSoulTarget(ticker, 10) instanceof LivingEntity target) {
                     soulInfo.setCooldown(soulInfo.getMaxCooldown());

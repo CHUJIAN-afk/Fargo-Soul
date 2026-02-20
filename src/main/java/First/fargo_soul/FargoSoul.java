@@ -41,7 +41,7 @@ public class FargoSoul {
     }
 
     public static ResourceLocation rl(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MODID, path);
+        return ResourceLocation.fromNamespaceAndPath(MODID, path.toLowerCase());
     }
 
 }

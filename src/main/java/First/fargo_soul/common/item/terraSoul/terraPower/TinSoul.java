@@ -4,11 +4,11 @@ import First.fargo_soul.FargoSoul;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.TerraPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.AttributeRegister;
 import First.fargo_soul.register.ItemRegister;
 import First.fargo_soul.utils.AttributeUtils;
 import First.fargo_soul.utils.CurioUtils;
+import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -44,19 +44,19 @@ public class TinSoul extends SoulItem {
                     AttributeModifier.Operation.ADD_VALUE,
                     CurioUtils.isEquipped(player, TinSoul.class) && CriticalDamageAmount > 0
             );
-            SoulAbilityData.SoulInfo SoulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(TinSoul.class);
-            SoulInfo.setMaxStacks((CurioUtils.isEquipped(player, TerraPower.class) ? 100 : 60));
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(player, TinSoul.class);
+            soulInfo.setMaxStacks((CurioUtils.isEquipped(player, TerraPower.class) ? 100 : 60));
             AttributeUtils.condition(
                     player,
                     AttributeRegister.CriticalChance,
                     ResourceLocation.fromNamespaceAndPath(FargoSoul.MODID, "tin_soul_addition"),
-                    SoulInfo.getStacks() * 0.01,
+                    soulInfo.getStacks() * 0.01,
                     AttributeModifier.Operation.ADD_VALUE,
-                    CurioUtils.isEquipped(player, TinSoul.class) && SoulInfo.getStacks() > 0
+                    CurioUtils.isEquipped(player, TinSoul.class) && soulInfo.getStacks() > 0
             );
             if (CurioUtils.isEquipped(player, TinSoul.class)) {
                 if (player.getRandom().nextDouble() < CriticalChance.getValue()) {
-                    SoulInfo.addStacks(10);
+                    soulInfo.addStacks(10);
                     event.setCriticalHit(true);
                     event.setDamageMultiplier((float) CriticalDamage.getValue());
                 }
@@ -68,8 +68,8 @@ public class TinSoul extends SoulItem {
     public void hurt(LivingIncomingDamageEvent event) {
         if (event.getEntity() instanceof Player player && !player.level().isClientSide()) {
             if (CurioUtils.isEquipped(player, TinSoul.class)) {
-                SoulAbilityData.SoulInfo SoulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(TinSoul.class);
-                SoulInfo.shrinkStacks(SoulInfo.getStacks() / 2);
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(player, TinSoul.class);
+                soulInfo.shrinkStacks(soulInfo.getStacks() / 2);
             }
         }
     }

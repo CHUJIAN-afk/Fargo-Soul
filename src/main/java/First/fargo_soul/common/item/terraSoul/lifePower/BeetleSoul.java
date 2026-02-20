@@ -6,11 +6,11 @@ import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.event.modEvent.PlayerFlyEvent;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.LifePower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.AttributeRegister;
 import First.fargo_soul.register.ItemRegister;
 import First.fargo_soul.utils.AttributeUtils;
 import First.fargo_soul.utils.CurioUtils;
+import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -26,7 +26,7 @@ public class BeetleSoul extends SoulItem {
     @Override
     public void tick(LivingEntity ticker) {
         if (!ticker.level().isClientSide()) {
-            SoulAbilityData.SoulInfo info = ticker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("BeetleMight");
+            SoulAbilityData.SoulInfo info = SoulUtils.getSoulInfo(ticker, "BeetleMight");
             AttributeUtils.condition(
                     ticker,
                     AttributeRegister.ArmorPierce,
@@ -36,7 +36,7 @@ public class BeetleSoul extends SoulItem {
                     CurioUtils.isEquipped(ticker, BeetleSoul.class) && info.getStacks() > 0
             );
             if (CurioUtils.isEquipped(ticker, BeetleSoul.class)) {
-                if (ticker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("BeetleEndurance") instanceof SoulAbilityData.SoulInfo soulInfo) {
+                if (SoulUtils.getSoulInfo(ticker, "BeetleEndurance") instanceof SoulAbilityData.SoulInfo soulInfo) {
                     soulInfo.setMaxStacks(CurioUtils.isEquipped(ticker, LifePower.class) ? 3 : 2);
                     soulInfo.setMaxCooldown(140);
                     if (ticker.tickCount % 140 == 0) {
@@ -44,7 +44,7 @@ public class BeetleSoul extends SoulItem {
                         soulInfo.addStacks();
                     }
                 }
-                if (ticker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("BeetleMight") instanceof SoulAbilityData.SoulInfo soulInfo) {
+                if (SoulUtils.getSoulInfo(ticker, "BeetleMight") instanceof SoulAbilityData.SoulInfo soulInfo) {
                     soulInfo.setMaxStacks(CurioUtils.isEquipped(ticker, LifePower.class) ? 6 : 4);
                     soulInfo.setMaxCooldown(20);
                     if (ticker.tickCount % 20 == 0) {
@@ -59,8 +59,7 @@ public class BeetleSoul extends SoulItem {
     @Override
     public void targetChange(LivingChangeTargetEvent event) {
         if (event.getEntity() instanceof LivingEntity attacker && attacker.getType().is(EntityTypeTags.ARTHROPOD) && event.getNewAboutToBeSetTarget() instanceof LivingEntity target && !target.level().isClientSide()) {
-            SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(target.getScoreboardName());
-            if (CurioUtils.isEquipped(target, BeetleSoul.class) && !soulInfo.isEnabled()) {
+            if (!SoulUtils.recentlyAttacked(target, attacker) && CurioUtils.isEquipped(target, BeetleSoul.class)) {
                 event.setCanceled(true);
             }
         }
@@ -70,16 +69,15 @@ public class BeetleSoul extends SoulItem {
     public void hurt(LivingIncomingDamageEvent event) {
         if (event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
             if (CurioUtils.isEquipped(target, BeetleSoul.class)) {
-                SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("BeetleEndurance");
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(target, "BeetleEndurance");
                 event.setAmount(event.getAmount() * (1 - (soulInfo.getStacks() * 0.15f)));
                 soulInfo.shrinkStacks();
             }
         }
         if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
             if (!attacker.equals(target) && CurioUtils.isEquipped(attacker, BeetleSoul.class)) {
-                SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("BeetleMight");
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(target, "BeetleMight");
                 soulInfo.addStacks(2);
-                target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(attacker.getScoreboardName()).setEnabled(true);
             }
         }
     }

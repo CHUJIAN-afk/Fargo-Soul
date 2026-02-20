@@ -5,6 +5,7 @@ import First.fargo_soul.common.event.modEvent.PlayerFlyEvent;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.spiritPower.GhostSoul;
 import First.fargo_soul.utils.CurioUtils;
+import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.event.entity.living.LivingHealEvent;
 
@@ -33,7 +34,7 @@ public class SpiritPower extends SoulItem {
     public void tick(LivingEntity ticker) {
         if (!ticker.level().isClientSide()) {
             if (ticker.tickCount % 20 == 0 && CurioUtils.isEquipped(ticker, SpiritPower.class)) {
-                SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(ticker, GhostSoul.class);
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, GhostSoul.class);
                 if (soulInfo.getStacks() < soulInfo.getMaxStacks()) {
                     soulInfo.addStacks(5);
                 } else if (ticker.getHealth() < ticker.getMaxHealth()) {

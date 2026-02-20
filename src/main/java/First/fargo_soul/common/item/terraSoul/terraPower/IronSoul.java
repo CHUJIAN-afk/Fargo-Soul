@@ -5,8 +5,8 @@ import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.TerraPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.utils.CurioUtils;
+import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -47,8 +47,8 @@ public class IronSoul extends SoulItem {
     public void pickup(ItemEntityPickupEvent.Post event) {
         if (event.getPlayer() instanceof Player player && !player.level().isClientSide()) {
             if (CurioUtils.isEquipped(player, IronSoul.class)) {
-                SoulAbilityData.SoulInfo SoulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(IronSoul.class);
-                SoulInfo.setDuration(100);
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(player, IronSoul.class);
+                soulInfo.setDuration(100);
             }
         }
     }
@@ -56,9 +56,11 @@ public class IronSoul extends SoulItem {
     @Override
     public void hurt(LivingIncomingDamageEvent event) {
         if (event.getEntity() instanceof Player player && !player.level().isClientSide()) {
-            SoulAbilityData.SoulInfo SoulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(IronSoul.class);
-            if (CurioUtils.isEquipped(player, IronSoul.class) && SoulInfo.getDuration() > 0) {
-                event.setAmount(event.getAmount() * 0.8f);
+            if (CurioUtils.isEquipped(player, IronSoul.class)) {
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(player, IronSoul.class);
+                if (soulInfo.isActive()) {
+                    event.setAmount(event.getAmount() * 0.8f);
+                }
             }
         }
     }

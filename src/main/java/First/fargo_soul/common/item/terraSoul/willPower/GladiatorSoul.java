@@ -5,11 +5,9 @@ import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.WillPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -61,39 +59,22 @@ public class GladiatorSoul extends SoulItem {
         }
         if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
             if (CurioUtils.isEquipped(attacker, GladiatorSoul.class)) {
-                SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GladiatorSoul.class);
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(target, GladiatorSoul.class);
                 soulInfo.setMaxStacks(CurioUtils.isEquipped(attacker, WillPower.class) ? 12 : 24);
                 soulInfo.addStacks();
                 soulInfo.setMaxCooldown(20);
-                if (soulInfo.getCooldown() == 0 && soulInfo.getStacks() == soulInfo.getMaxStacks()) {
+                if (soulInfo.isReady() && soulInfo.getStacks() == soulInfo.getMaxStacks()) {
                     soulInfo.setCooldown(soulInfo.getMaxCooldown());
                     soulInfo.removeStacks();
                     Level level = attacker.level();
-                    List<LivingEntity> livingEntityList = level.getEntitiesOfClass(LivingEntity.class, attacker.getBoundingBox().inflate(4), livingEntity -> {
-                        if (attacker instanceof Player) {
-                            return livingEntity instanceof Enemy;
-                        } else {
-                            return livingEntity instanceof Mob mob && attacker.equals(mob.getTarget());
-                        }
-                    });
+                    List<LivingEntity> livingEntityList = SoulUtils.getTargetList(attacker, 4);
                     for (int i = 0; i < 16; i++) {
                         Arrow arrow = new Arrow(EntityType.ARROW, level);
                         arrow.setBaseDamage(arrow.getBaseDamage() * (livingEntityList.size() < 3 ? 1.8 : 1.0));
-                        SoulUtils.shootTargetFromAttaker(
-                                arrow,
-                                attacker,
-                                target,
-                                1,
-                                SoulUtils.getRandom().nextFloat(0.8f, 1.6f)
-                        );
+                        SoulUtils.shootTargetFromAttaker(arrow, attacker, target, 1, SoulUtils.getRandom().nextFloat(0.8f, 1.6f) * attacker.distanceTo(target) * 0.03);
                         SoulUtils.setAbilityInvulnerable(arrow);
                     }
-                    SoulUtils.playSound(
-                            level,
-                            target.position(),
-                            SoundEvents.ARROW_SHOOT,
-                            SoundSource.PLAYERS
-                    );
+                    SoulUtils.playSound(level, target.position(), SoundEvents.ARROW_SHOOT, attacker.getSoundSource());
                 }
             }
         }

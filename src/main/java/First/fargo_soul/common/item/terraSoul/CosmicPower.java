@@ -2,11 +2,11 @@ package First.fargo_soul.common.item.terraSoul;
 
 import First.fargo_soul.client.gui.SoulGuiRenderManager;
 import First.fargo_soul.client.gui.SoulRenderType;
-import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.register.AttributeRegister;
 import First.fargo_soul.utils.AttributeUtils;
 import First.fargo_soul.utils.CurioUtils;
+import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
@@ -37,7 +37,7 @@ public class CosmicPower extends SoulItem {
     public void hurt(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
             if (CurioUtils.isEquipped(attacker, CosmicPower.class)) {
-                SoulAbilityData.getSoulInfo(attacker, switch (attacker.getRandom().nextInt(5)) {
+                SoulUtils.getSoulInfo(attacker, switch (attacker.getRandom().nextInt(5)) {
                     case 0 -> "CosmicPowerBlazeSoul";
                     case 1 -> "CosmicPowerNebulaSoul";
                     case 2 -> "CosmicPowerStardustSoul";
@@ -45,13 +45,13 @@ public class CosmicPower extends SoulItem {
                     default -> "CosmicPowerVortexSoul";
                 }).setDuration(60);
             }
-            if (SoulAbilityData.getSoulInfo(attacker, "CosmicPowerStardustSoul").getDuration() > 0) {
+            if (SoulUtils.getSoulInfo(attacker, "CosmicPowerStardustSoul").isActive()) {
                 event.setAmount(event.getAmount() * 1.25f);
             }
         }
         if (event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
             if (CurioUtils.isEquipped(target, CosmicPower.class)) {
-                if (SoulAbilityData.getSoulInfo(target, "CosmicPowerBlazeSoul").getDuration() > 0) {
+                if (SoulUtils.getSoulInfo(target, "CosmicPowerBlazeSoul").isActive()) {
                     event.setAmount(event.getAmount() * 0.85f);
                 }
             }
@@ -66,15 +66,15 @@ public class CosmicPower extends SoulItem {
                     ticker,
                     AttributeRegister.CriticalChance,
                     AttributeUtils.base(CosmicPowerItem.getId(), 0.25),
-                    equipped && SoulAbilityData.getSoulInfo(ticker, "CosmicPowerVortexSoul").getDuration() > 0
+                    equipped && SoulUtils.getSoulInfo(ticker, "CosmicPowerVortexSoul").isActive()
             );
             AttributeUtils.condition(
                     ticker,
                     Attributes.MAX_HEALTH,
                     AttributeUtils.value(CosmicPowerItem.getId(), 60),
-                    equipped && SoulAbilityData.getSoulInfo(ticker, "CosmicPowerMeteorSoul").getDuration() > 0
+                    equipped && SoulUtils.getSoulInfo(ticker, "CosmicPowerMeteorSoul").isActive()
             );
-            if (equipped && ticker.tickCount % 20 == 0 && (SoulAbilityData.getSoulInfo(ticker, "CosmicPowerNebulaSoul").getDuration() > 0) && ticker.getHealth() < ticker.getMaxHealth()) {
+            if (equipped && ticker.tickCount % 20 == 0 && (SoulUtils.getSoulInfo(ticker, "CosmicPowerNebulaSoul").isActive()) && ticker.getHealth() < ticker.getMaxHealth()) {
                 ticker.heal(5);
             }
         }

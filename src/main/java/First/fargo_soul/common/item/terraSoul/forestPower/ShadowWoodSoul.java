@@ -20,11 +20,12 @@ public class ShadowWoodSoul extends SoulItem {
     public void tick(LivingEntity ticker) {
         if (!ticker.level().isClientSide()) {
             if (CurioUtils.isEquipped(ticker, ShadowWoodSoul.class)) {
-                SoulAbilityData.SoulInfo soulInfo = getInfo(ticker, ShadowWoodSoul.class);
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, ShadowWoodSoul.class);
                 soulInfo.setMaxCooldown(100);
                 if (soulInfo.isReady() && SoulUtils.getSoulTarget(ticker, 10) instanceof LivingEntity target) {
                     soulInfo.setCooldown(soulInfo.getMaxCooldown());
-                    getInfo(target, ticker.getStringUUID() + "ShadowWoodSoul").setEnabled(true);
+                    SoulAbilityData.SoulInfo info = SoulUtils.getSoulInfo(target, this.getClass().getSimpleName() + ticker.getStringUUID());
+                    info.setEnabled(true);
                 }
             }
         }
@@ -34,7 +35,7 @@ public class ShadowWoodSoul extends SoulItem {
     public void hurt(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
             if (CurioUtils.isEquipped(target, ShadowWoodSoul.class)) {
-                SoulAbilityData.SoulInfo soulInfo = getInfo(attacker, target.getStringUUID() + "ShadowWoodSoul");
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(attacker, this.getClass().getSimpleName() + target.getStringUUID());
                 if (soulInfo.isEnabled()) {
                     soulInfo.setEnabled(false);
                     int amount = CurioUtils.isEquipped(target, ForestPower.class) ? 3 : 2;

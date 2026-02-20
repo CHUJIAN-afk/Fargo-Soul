@@ -5,7 +5,6 @@ import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.CosmicPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.ItemRegister;
 import First.fargo_soul.utils.AttributeUtils;
 import First.fargo_soul.utils.CurioUtils;
@@ -46,7 +45,7 @@ public class MeteorSoul extends SoulItem {
         if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
             if (!attacker.equals(target) && CurioUtils.isEquipped(attacker, MeteorSoul.class)) {
                 double chance = CurioUtils.isEquipped(attacker, CosmicPower.class) ? 0.8 : 0.2;
-                SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(MeteorSoul.class);
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(attacker, MeteorSoul.class);
                 soulInfo.setMaxCooldown(20);
                 if (soulInfo.isReady()) {
                     Level level = attacker.level();

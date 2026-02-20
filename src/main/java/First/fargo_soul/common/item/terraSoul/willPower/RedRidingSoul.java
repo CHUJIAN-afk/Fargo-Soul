@@ -6,11 +6,11 @@ import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.event.modEvent.SprintEvent;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.WillPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.AttributeRegister;
 import First.fargo_soul.register.ItemRegister;
 import First.fargo_soul.utils.AttributeUtils;
 import First.fargo_soul.utils.CurioUtils;
+import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -26,7 +26,7 @@ public class RedRidingSoul extends SoulItem {
     @Override
     public void tick(LivingEntity ticker) {
         if (!ticker.level().isClientSide()) {
-            SoulAbilityData.SoulInfo soulInfo = ticker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(RedRidingSoul.class);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, RedRidingSoul.class);
             AttributeUtils.condition(
                     ticker,
                     Attributes.MOVEMENT_SPEED,
@@ -50,7 +50,7 @@ public class RedRidingSoul extends SoulItem {
     public void hurt(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
             if (!attacker.equals(target) && CurioUtils.isEquipped(attacker, RedRidingSoul.class)) {
-                SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(RedRidingSoul.class);
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(attacker, RedRidingSoul.class);
                 soulInfo.setMaxStacks(CurioUtils.isEquipped(attacker, WillPower.class) ? 15 : 10);
                 soulInfo.addStacks();
                 if (target.getArmorValue() > 0) {
@@ -60,7 +60,7 @@ public class RedRidingSoul extends SoulItem {
         }
         if (!event.isCanceled() && event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
             if (CurioUtils.isEquipped(target, RedRidingSoul.class)) {
-                SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(RedRidingSoul.class);
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(target, RedRidingSoul.class);
                 soulInfo.removeStacks();
             }
         }
@@ -70,7 +70,7 @@ public class RedRidingSoul extends SoulItem {
     public void sprintClient(SprintEvent.Client event) {
         Player player = event.getEntity();
         if (CurioUtils.isEquipped(player, RedRidingSoul.class)) {
-            SoulAbilityData.SoulInfo info = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(RedRidingSoul.class);
+            SoulAbilityData.SoulInfo info = SoulUtils.getSoulInfo(player, RedRidingSoul.class);
             if (info.getStacks() == info.getMaxStacks()) {
                 event.setVec3(event.getVec3().scale(1.5));
             }

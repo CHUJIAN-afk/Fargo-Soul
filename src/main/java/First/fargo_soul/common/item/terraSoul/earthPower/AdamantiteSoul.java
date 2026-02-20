@@ -5,10 +5,10 @@ import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.EarthPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.ItemRegister;
 import First.fargo_soul.utils.AttributeUtils;
 import First.fargo_soul.utils.CurioUtils;
+import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -26,7 +26,7 @@ public class AdamantiteSoul extends SoulItem {
     public void tick(LivingEntity ticker) {
         if (!ticker.level().isClientSide()) {
             ResourceLocation resourceLocation = ItemRegister.AdamantiteSoulItem.getId();
-            SoulAbilityData.SoulInfo soulInfo = ticker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(AdamantiteSoul.class);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, AdamantiteSoul.class);
             if (soulInfo.getDuration() == 0) {
                 soulInfo.removeStacks();
             }
@@ -39,7 +39,7 @@ public class AdamantiteSoul extends SoulItem {
     public void hurt(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
             if (CurioUtils.isEquipped(attacker, AdamantiteSoul.class)) {
-                SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(AdamantiteSoul.class);
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(attacker, AdamantiteSoul.class);
                 soulInfo.setMaxStacks(8);
                 soulInfo.addStacks();
                 soulInfo.setDuration(100);

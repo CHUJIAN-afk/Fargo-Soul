@@ -1,18 +1,17 @@
 package First.fargo_soul.common.attachment;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class SoulDamageData {
 
-    private final Map<Long, List<String>> damageData;
+    private final ConcurrentHashMap<Long, CopyOnWriteArrayList<String>> damageData;
 
     public SoulDamageData() {
-        this.damageData = new HashMap<>();
+        this.damageData = new ConcurrentHashMap<>();
     }
 
-    public Map<Long, List<String>> getDamageData() {
+    public ConcurrentHashMap<Long, CopyOnWriteArrayList<String>> getDamageData() {
         return damageData;
     }
 

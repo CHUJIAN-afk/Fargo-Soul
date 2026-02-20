@@ -51,7 +51,7 @@ public class LifePower extends SoulItem {
         Level level = ticker.level();
         if (!level.isClientSide()) {
             if (CurioUtils.isEquipped(ticker, LifePower.class)) {
-                SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(ticker, LifePower.class);
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, LifePower.class);
                 if (ticker.tickCount % 20 == 0 && soulInfo.getDuration() > 0) {
                     if (ticker.getHealth() < ticker.getMaxHealth()) {
                         ticker.heal(5);
@@ -78,14 +78,14 @@ public class LifePower extends SoulItem {
             if (event.getSource().getDirectEntity() instanceof LivingEntity attacker && target != attacker && !CurioUtils.isEquipped(attacker, LifePower.class)) {
                 SoulUtils.attack(LifePower.class, attacker, attacker, target, DamageTypes.CACTUS, event.getAmount() * 5);
             }
-            SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(target, LifePower.class);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(target, LifePower.class);
             if (soulInfo.getDuration() > 0) {
                 event.setAmount(event.getAmount() * 0.8F);
             }
         }
         if (event.getSource().getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
             if (CurioUtils.isEquipped(attacker, LifePower.class)) {
-                SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(attacker, LifePower.class);
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(attacker, LifePower.class);
                 if (soulInfo.getDuration() > 0) {
                     event.setAmount(event.getAmount() * 1.3F);
                 }

@@ -44,29 +44,6 @@ public class LavaSoul extends SoulItem {
                     attacker.getRandom(),
                     attacker.getId()
             );
-
-            /*
-            for (int i = 0; i < blockCount; i++) {
-                poseStack.pushPose();
-                float angle = ageInTicks * 0.05f + (float) (Math.PI * 2 / blockCount * i);
-                float x = (float) (Math.cos(angle) * radius);
-                float z = (float) (Math.sin(angle) * radius);
-                poseStack.translate(x, attacker.getBoundingBox().getYsize() * 0.5, z);
-                poseStack.mulPose(Axis.YP.rotationDegrees(angle * 180 / (float) Math.PI));
-                poseStack.scale(0.1f, 0.1f, 0.1f);
-                itemRenderer.renderStatic(
-                        magmaBlock,
-                        ItemDisplayContext.FIXED,
-                        LightTexture.FULL_BRIGHT,
-                        OverlayTexture.NO_OVERLAY,
-                        poseStack,
-                        buffer,
-                        attacker.level(),
-                        0
-                );
-                poseStack.popPose();
-            }
-            */
         }
     }
 

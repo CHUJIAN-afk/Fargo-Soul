@@ -5,7 +5,6 @@ import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.DeathPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.ParticleUtils;
 import First.fargo_soul.utils.SoulUtils;
@@ -31,7 +30,7 @@ public class DarkArtistSoul extends SoulItem {
     @Override
     public void tick(LivingEntity ticker) {
         if (!ticker.level().isClientSide()) {
-            SoulAbilityData.getSoulInfo(ticker, DarkArtistSoul.class).setMaxCooldown(200);
+            SoulUtils.getSoulInfo(ticker, DarkArtistSoul.class).setMaxCooldown(200);
         }
     }
 
@@ -45,7 +44,7 @@ public class DarkArtistSoul extends SoulItem {
             if (CurioUtils.isEquipped(attacker, DarkArtistSoul.class)) {
                 Level level = attacker.level();
                 //箭矢
-                SoulAbilityData.SoulInfo DarkArtistArrow = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("DarkArtistArrow");
+                SoulAbilityData.SoulInfo DarkArtistArrow = SoulUtils.getSoulInfo(attacker, "DarkArtistArrow");
                 DarkArtistArrow.setMaxCooldown(200);
                 if (DarkArtistArrow.isReady()) {
                     DarkArtistArrow.setCooldown(DarkArtistArrow.getMaxCooldown());
@@ -63,7 +62,7 @@ public class DarkArtistSoul extends SoulItem {
                     }
                 }
                 //火球
-                SoulAbilityData.SoulInfo DarkArtistFireball = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("DarkArtistFireball");
+                SoulAbilityData.SoulInfo DarkArtistFireball = SoulUtils.getSoulInfo(attacker, "DarkArtistFireball");
                 DarkArtistFireball.setMaxCooldown(20);
                 double chance = CurioUtils.isEquipped(attacker, DeathPower.class) ? 0.2 : 0.1;
                 if (DarkArtistFireball.isReady() && attacker.getRandom().nextDouble() < chance) {

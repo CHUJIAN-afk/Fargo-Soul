@@ -5,7 +5,6 @@ import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.EarthPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -35,7 +34,7 @@ public class PalladiumSoul extends SoulItem {
     public void heal(LivingHealEvent event) {
         if (event.getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
             if (CurioUtils.isEquipped(attacker, PalladiumSoul.class)) {
-                SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(PalladiumSoul.class);
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(attacker, PalladiumSoul.class);
                 soulInfo.setMaxStacks(10);
                 soulInfo.addStacks((int) Math.ceil(event.getAmount()));
                 if (soulInfo.getStacks() == soulInfo.getMaxStacks()) {

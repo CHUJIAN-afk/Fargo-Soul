@@ -5,7 +5,6 @@ import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.SpiritPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.KeyRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.ParticleUtils;
@@ -32,7 +31,8 @@ public class ForbiddenSoul extends SoulItem {
     @Override
     public void tick(LivingEntity ticker) {
         if (!ticker.level().isClientSide()) {
-            SoulAbilityData.getSoulInfo(ticker, ForbiddenSoul.class).setMaxCooldown(600);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, ForbiddenSoul.class);
+            soulInfo.setMaxCooldown(600);
         }
     }
 
@@ -47,7 +47,7 @@ public class ForbiddenSoul extends SoulItem {
     @Override
     public void keyHandle(Player player, String key) {
         if (key.equals(ForbiddenSoul.class.getSimpleName())) {
-            SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(ForbiddenSoul.class);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(player, ForbiddenSoul.class);
             HitResult hitResult = player.pick(20.0, 0, false);
             if (soulInfo.isReady() && hitResult instanceof BlockHitResult blockHitResult) {
                 soulInfo.setCooldown(soulInfo.getMaxCooldown());

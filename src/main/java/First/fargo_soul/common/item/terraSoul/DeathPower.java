@@ -43,12 +43,12 @@ public class DeathPower extends SoulItem {
     @Override
     public void tick(LivingEntity ticker) {
         if (!ticker.level().isClientSide() && CurioUtils.isEquipped(ticker, DeathPower.class)) {
-            SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(ticker, DeathPower.class);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, DeathPower.class);
             soulInfo.setMaxCooldown(80);
-            if (soulInfo.getDuration() > 0) {
-                List<LivingEntity> list = ticker.level().getEntitiesOfClass(LivingEntity.class, ticker.getBoundingBox().inflate(0.5), living -> living != ticker);
-                for (LivingEntity living : list) {
-                    SoulAbilityData.getSoulInfo(living, "deathMark" + ticker.getStringUUID()).setDuration(100);
+            if (soulInfo.isActive()) {
+                for (LivingEntity living : SoulUtils.getTargetList(ticker, ticker.getBoundingBox().inflate(0.5))) {
+                    SoulAbilityData.SoulInfo info = SoulUtils.getSoulInfo(living, this.getClass().getSimpleName() + ticker.getStringUUID());
+                    info.setDuration(100);
                 }
             }
         }
@@ -58,14 +58,15 @@ public class DeathPower extends SoulItem {
     public void hurt(LivingIncomingDamageEvent event) {
         if (event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
             if (CurioUtils.isEquipped(target, DeathPower.class)) {
-                if (SoulAbilityData.getSoulInfo(target, DeathPower.class).getDuration() > 0) {
+                if (SoulUtils.getSoulInfo(target, DeathPower.class).isActive()) {
                     event.setCanceled(true);
                 }
             }
         }
         if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
             if (CurioUtils.isEquipped(attacker, DeathPower.class)) {
-                if (SoulAbilityData.getSoulInfo(target, "deathMark" + attacker.getStringUUID()).getDuration() > 0) {
+                SoulAbilityData.SoulInfo info = SoulUtils.getSoulInfo(target, this.getClass().getSimpleName() + attacker.getStringUUID());
+                if (info.isActive()) {
                     event.setAmount(event.getAmount() * 1.5f);
                 }
                 target.addEffect(new MobEffectInstance(EffectRegister.ShadowFire, 100));
@@ -77,7 +78,7 @@ public class DeathPower extends SoulItem {
     public void sprintServer(SprintEvent.Server event) {
         Player player = event.getEntity();
         if (CurioUtils.isEquipped(player, DeathPower.class)) {
-            SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(player, DeathPower.class);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(player, DeathPower.class);
             if (soulInfo.isReady()) {
                 soulInfo.setCooldown(soulInfo.getMaxCooldown());
                 soulInfo.setDuration(10);

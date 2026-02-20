@@ -5,8 +5,8 @@ import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.SpiritPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.utils.CurioUtils;
+import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
@@ -20,7 +20,8 @@ public class TekeSoul extends SoulItem {
     @Override
     public void tick(LivingEntity ticker) {
         if (!ticker.level().isClientSide()) {
-            SoulAbilityData.getSoulInfo(ticker, TekeSoul.class).setMaxCooldown(CurioUtils.isEquipped(ticker, SpiritPower.class) ? 3600 : 6000);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, TekeSoul.class);
+            soulInfo.setMaxCooldown(CurioUtils.isEquipped(ticker, SpiritPower.class) ? 3600 : 6000);
         }
     }
 
@@ -28,7 +29,7 @@ public class TekeSoul extends SoulItem {
     public void death(LivingDeathEvent event) {
         LivingEntity living = event.getEntity();
         if (!event.isCanceled() && living instanceof OwnableEntity ownableEntity && ownableEntity.getOwner() instanceof LivingEntity owner && !owner.level().isClientSide()) {
-            SoulAbilityData.SoulInfo soulInfo = owner.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(TekeSoul.class);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(owner, TekeSoul.class);
             if (soulInfo.isReady() && CurioUtils.isEquipped(owner, TekeSoul.class)) {
                 living.heal(owner.getHealth() * 0.25f);
                 event.setCanceled(true);

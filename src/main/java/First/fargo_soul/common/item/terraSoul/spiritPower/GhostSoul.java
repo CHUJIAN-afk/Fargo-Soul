@@ -5,7 +5,6 @@ import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.SpiritPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.ItemRegister;
 import First.fargo_soul.utils.AttributeUtils;
 import First.fargo_soul.utils.CurioUtils;
@@ -32,8 +31,8 @@ public class GhostSoul extends SoulItem {
     @Override
     public void tick(LivingEntity ticker) {
         if (!ticker.level().isClientSide()) {
-            SoulAbilityData.getSoulInfo(ticker, GhostSoul.class).setMaxCooldown(12000);
-            SoulAbilityData.SoulInfo soulInfo = ticker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GhostSoul.class);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, GhostSoul.class);
+            soulInfo.setMaxCooldown(12000);
             soulInfo.setMinStacks(-20);
             soulInfo.setMaxStacks(CurioUtils.isEquipped(ticker, SpiritPower.class) ? 200 : 100);
             AttributeUtils.condition(ticker, Attributes.MAX_HEALTH, ItemRegister.GhostSoulItem.getId(), soulInfo.getStacks() * 0.01f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE, (CurioUtils.isEquipped(ticker, GhostSoul.class) && soulInfo.getStacks() > 0) || soulInfo.getStacks() < 0);
@@ -43,9 +42,11 @@ public class GhostSoul extends SoulItem {
     @Override
     public void hurt(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
-            if (!attacker.equals(target) && CurioUtils.isEquipped(attacker, GhostSoul.class)) {
-                attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GhostSoul.class).addStacks();
-                target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GhostSoul.class).shrinkStacks();
+            if (CurioUtils.isEquipped(attacker, GhostSoul.class)) {
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(attacker, GhostSoul.class);
+                soulInfo.addStacks();
+                SoulAbilityData.SoulInfo soulInfo1 = SoulUtils.getSoulInfo(target, GhostSoul.class);
+                soulInfo1.shrinkStacks();
             }
         }
     }
@@ -53,7 +54,7 @@ public class GhostSoul extends SoulItem {
     @Override
     public void death(LivingDeathEvent event) {
         if (event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
-            SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(GhostSoul.class);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(target, GhostSoul.class);
             if (CurioUtils.isEquipped(target, GhostSoul.class) && soulInfo.isReady()) {
                 soulInfo.setCooldown(soulInfo.getMaxCooldown());
                 target.heal(target.getMaxHealth() * 0.25f);

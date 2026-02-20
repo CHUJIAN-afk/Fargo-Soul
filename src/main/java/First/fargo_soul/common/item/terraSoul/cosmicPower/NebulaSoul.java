@@ -5,7 +5,6 @@ import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.CosmicPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.ParticleUtils;
 import First.fargo_soul.utils.SoulUtils;
@@ -27,7 +26,7 @@ public class NebulaSoul extends SoulItem {
     public void tick(LivingEntity ticker) {
         Level level = ticker.level();
         if (!level.isClientSide() && CurioUtils.isEquipped(ticker, NebulaSoul.class)) {
-            SoulAbilityData.SoulInfo soulInfo = ticker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(NebulaSoul.class);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, NebulaSoul.class);
             soulInfo.setMaxCooldown(CurioUtils.isEquipped(ticker, CosmicPower.class) ? 40 : 60);
             if (soulInfo.isReady() && SoulUtils.getSoulTarget(ticker, 20) instanceof LivingEntity target) {
                 soulInfo.setCooldown(soulInfo.getMaxCooldown());

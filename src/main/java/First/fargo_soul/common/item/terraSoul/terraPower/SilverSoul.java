@@ -5,7 +5,6 @@ import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.TerraPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.ItemRegister;
 import First.fargo_soul.utils.AttributeUtils;
 import First.fargo_soul.utils.CurioUtils;
@@ -41,14 +40,14 @@ public class SilverSoul extends SoulItem {
                     AttributeModifier.Operation.ADD_VALUE,
                     CurioUtils.isEquipped(ticker, SilverSoul.class) && (ticker instanceof Player && ticker.isBlocking() || (ticker instanceof Mob mob && mob.getTarget() != null))
             );
-            SoulAbilityData.SoulInfo SoulInfo = ticker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SilverSoul.class);
-            SoulInfo.setMaxCooldown(20);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, SilverSoul.class);
+            soulInfo.setMaxCooldown(20);
             if (CurioUtils.isEquipped(ticker, SilverSoul.class)) {
                 if (ticker.isBlocking()) {
-                    SoulInfo.setMaxStacks(100);
-                    SoulInfo.addStacks();
+                    soulInfo.setMaxStacks(100);
+                    soulInfo.addStacks();
                 } else {
-                    SoulInfo.removeStacks();
+                    soulInfo.removeStacks();
                 }
             }
         }
@@ -59,10 +58,10 @@ public class SilverSoul extends SoulItem {
         if (event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
             LivingEntity attacker = event.getDamageSource().getEntity() instanceof LivingEntity ? (LivingEntity) event.getDamageSource().getEntity() : null;
             if (CurioUtils.isEquipped(target, SilverSoul.class)) {
-                SoulAbilityData.SoulInfo SoulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SilverSoul.class);
-                if (event.getBlocked() && SoulInfo.getCooldown() == 0 && SoulInfo.getStacks() > 0 && SoulInfo.getStacks() < (CurioUtils.isEquipped(target, TerraPower.class) ? 6 : 4)) {
-                    SoulInfo.setDuration(20);
-                    SoulInfo.setCooldown(SoulInfo.getMaxCooldown());
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(target, SilverSoul.class);
+                if (event.getBlocked() && soulInfo.isReady() && soulInfo.getStacks() > 0 && soulInfo.getStacks() < (CurioUtils.isEquipped(target, TerraPower.class) ? 6 : 4)) {
+                    soulInfo.setDuration(20);
+                    soulInfo.setCooldown(soulInfo.getMaxCooldown());
                     if (attacker != null) {
                         attacker.hurt(target.damageSources().mobAttack(target), event.getBlockedDamage() * 2.0f);
                     }
@@ -102,8 +101,8 @@ public class SilverSoul extends SoulItem {
     public void hurt(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
             if (CurioUtils.isEquipped(attacker, SilverSoul.class)) {
-                SoulAbilityData.SoulInfo SoulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(SilverSoul.class);
-                if (SoulInfo.getDuration() > 0) {
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(attacker, SilverSoul.class);
+                if (soulInfo.getDuration() > 0) {
                     event.setAmount(event.getAmount() * 1.5f);
                 }
             }

@@ -4,8 +4,8 @@ import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.event.modEvent.SprintEvent;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.DeathPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.utils.CurioUtils;
+import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,7 +21,7 @@ public class CrystalAssassinSoul extends SoulItem {
     public void hurt(LivingIncomingDamageEvent event) {
         if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
             if (CurioUtils.isEquipped(attacker, CrystalAssassinSoul.class)) {
-                SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(this.getClass().getName() + attacker.getScoreboardName());
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(target, this.getClass().getSimpleName() + attacker.getStringUUID());
                 if (!soulInfo.isEnabled()) {
                     soulInfo.setEnabled(true);
                     event.setAmount(event.getAmount() * 2.2f);

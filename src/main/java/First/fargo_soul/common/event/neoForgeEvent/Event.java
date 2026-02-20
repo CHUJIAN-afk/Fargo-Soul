@@ -4,7 +4,6 @@ package First.fargo_soul.common.event.neoForgeEvent;
 import First.fargo_soul.FargoSoul;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.blcokEntity.CosmicCrucibleBlockEntity;
-import First.fargo_soul.common.item.TerraSoul;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.config.ServerSoulConfig;
 import First.fargo_soul.register.AttachmentRegister;
@@ -103,17 +102,23 @@ public class Event {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void soulDamage(LivingIncomingDamageEvent event) {
         LivingEntity target = event.getEntity();
         Entity attacker = event.getSource().getEntity();
         if (target != attacker) {
             for (SoulItem soulItem : SoulUtils.RegisterSoulList) {
-                soulItem.hurt(event);
+                if (!event.isCanceled()) {
+                    soulItem.hurt(event);
+                } else {
+                    break;
+                }
             }
+        } else {
+            event.setCanceled(true);
         }
         if (!event.isCanceled() && attacker instanceof Player) {
-            SoulAbilityData.getSoulInfo(target, attacker.getStringUUID() + "damaged").setDuration(100);
+            SoulUtils.getSoulInfo(target, attacker.getStringUUID() + "damaged").setDuration(100);
         }
     }
 
@@ -158,7 +163,7 @@ public class Event {
             boolean condition1 = (mob instanceof Enemy || !mob.getType().getCategory().isFriendly()) && ServerSoulConfig.AllowHostileMobSoul.get();
             boolean condition2 = mob.getType().getCategory().isFriendly() && ServerSoulConfig.AllowFriendlyMobSoul.get();
             RandomSource random = mob.getRandom();
-            SoulAbilityData.SoulInfo soulInfo = mob.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("mob_soul");
+            SoulAbilityData.SoulInfo soulInfo = mob.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(FargoSoul.rl("mob_soul"));
             if ((condition1 || condition2) && random.nextDouble() < ServerSoulConfig.SoulChance.get() && !soulInfo.isEnabled()) {
                 Set<SoulItem> soulItems = new HashSet<>();
                 for (int i = 0; i < 4; i++) {
@@ -209,7 +214,7 @@ public class Event {
     public static void drop(LivingDropsEvent event) {
         Entity entity = event.getEntity();
         if (entity instanceof Mob mob && !mob.level().isClientSide()) {
-            SoulAbilityData.SoulInfo soulInfo = mob.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("mob_soul");
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(mob, "mob_soul");
             if (soulInfo.isEnabled() || ServerSoulConfig.AllowCreaturesThatSpawnThroughUnnaturalPathsToDropSouls.get()) {
                 Level level = mob.level();
                 double chance = ServerSoulConfig.SoulDropChance.get();
@@ -225,12 +230,9 @@ public class Event {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void hurt(LivingIncomingDamageEvent event) {
-        if (event.getSource().getEntity() == event.getEntity() && CurioUtils.isEquipped(event.getEntity(), TerraSoul.class)) {
-            event.setCanceled(true);
-            return;
-        }
         if (event.getSource().getDirectEntity() instanceof Projectile projectile && !projectile.level().isClientSide()) {
-            if (projectile.getData(AttachmentRegister.SoulAbilityData).getSoulInfo("noInvulnerable").isEnabled()) {
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(projectile, "noInvulnerable");
+            if (soulInfo.isEnabled()) {
                 if (event.getEntity() == projectile.getOwner()) {
                     event.setCanceled(true);
                     return;

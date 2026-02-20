@@ -53,7 +53,7 @@ public class TerraPower extends SoulItem {
         Entity target = event.getTarget();
         Level level = player.level();
         if (!level.isClientSide() && CurioUtils.isEquipped(player, TerraPower.class)) {
-            SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(player, TerraPower.class);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(player, TerraPower.class);
             if (soulInfo.isReady() && player.getRandom().nextDouble() < 0.2) {
                 soulInfo.addStacks();
                 LightningBolt lightning = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
@@ -87,8 +87,8 @@ public class TerraPower extends SoulItem {
 
     @Override
     public void hurt(LivingIncomingDamageEvent event) {
-        if (event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()){
-            SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(target, TerraPower.class);
+        if (event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(target, TerraPower.class);
             soulInfo.removeStacks();
         }
     }
@@ -96,7 +96,7 @@ public class TerraPower extends SoulItem {
     @Override
     public void tick(LivingEntity ticker) {
         if (!ticker.level().isClientSide()) {
-            SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(ticker, TerraPower.class);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, TerraPower.class);
             soulInfo.setMaxStacks(4);
             soulInfo.setMaxCooldown(soulInfo.getStacks() == soulInfo.getMaxStacks() ? 60 : 100);
             AttributeUtils.condition(

@@ -5,7 +5,6 @@ import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.CosmicPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.KeyRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.ParticleUtils;
@@ -38,7 +37,8 @@ public class VortexSoul extends SoulItem {
     @Override
     public void tick(LivingEntity ticker) {
         if (!ticker.level().isClientSide() && CurioUtils.isEquipped(ticker, VortexSoul.class)) {
-            SoulAbilityData.getSoulInfo(ticker, VortexSoul.class).setMaxCooldown(400);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, VortexSoul.class);
+            soulInfo.setMaxCooldown(400);
         }
     }
 
@@ -54,7 +54,7 @@ public class VortexSoul extends SoulItem {
     public void keyHandle(Player player, String key) {
         if (key.equals(VortexSoul.class.getSimpleName())) {
             Level level = player.level();
-            SoulAbilityData.SoulInfo soulInfo = player.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(VortexSoul.class);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(player, VortexSoul.class);
             int maxDistance = CurioUtils.isEquipped(player, CosmicPower.class) ? 1024 : 512;
             HitResult hitResult = SoulUtils.getTargetedBlock(player, maxDistance);
             if (soulInfo.isReady() && hitResult instanceof BlockHitResult blockHitResult) {

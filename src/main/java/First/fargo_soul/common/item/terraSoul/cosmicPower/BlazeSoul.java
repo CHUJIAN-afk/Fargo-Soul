@@ -5,7 +5,6 @@ import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.CosmicPower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.register.ItemRegister;
 import First.fargo_soul.utils.AttributeUtils;
 import First.fargo_soul.utils.CurioUtils;
@@ -32,7 +31,7 @@ public class BlazeSoul extends SoulItem {
     @Override
     public void tick(LivingEntity ticker) {
         if (!ticker.level().isClientSide()) {
-            SoulAbilityData.SoulInfo soulInfo = SoulAbilityData.getSoulInfo(ticker, BlazeSoul.class);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, BlazeSoul.class);
             AttributeUtils.condition(
                     ticker,
                     Attributes.KNOCKBACK_RESISTANCE,
@@ -60,7 +59,7 @@ public class BlazeSoul extends SoulItem {
     public void hurt(LivingIncomingDamageEvent event) {
         if (event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
             if (CurioUtils.isEquipped(target, BlazeSoul.class)) {
-                SoulAbilityData.SoulInfo soulInfo = target.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(BlazeSoul.class);
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(target, BlazeSoul.class);
                 float scale = soulInfo.isEnabled() ? 0.5f : (1 - (soulInfo.getStackPercentage() * 0.4f));
                 event.setAmount(event.getAmount() * scale);
                 if (soulInfo.isEnabled()) {
@@ -70,7 +69,7 @@ public class BlazeSoul extends SoulItem {
         }
         if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !attacker.level().isClientSide()) {
             if (CurioUtils.isEquipped(attacker, BlazeSoul.class)) {
-                SoulAbilityData.SoulInfo soulInfo = attacker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(BlazeSoul.class);
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(attacker, BlazeSoul.class);
                 if (soulInfo.isEnabled()) {
                     Level level = attacker.level();
                     List<LivingEntity> livingEntityList = SoulUtils.getTargetList(attacker, target.getBoundingBox().inflate(2));

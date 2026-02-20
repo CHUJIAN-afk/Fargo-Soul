@@ -5,7 +5,6 @@ import First.fargo_soul.client.gui.SoulRenderType;
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
 import First.fargo_soul.common.item.terraSoul.NaturePower;
-import First.fargo_soul.register.AttachmentRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.ParticleUtils;
 import First.fargo_soul.utils.RenderUtils;
@@ -36,7 +35,7 @@ public class FrostSoul extends SoulItem {
     public void render(RenderLivingEvent.Post<?, ?> event) {
         LivingEntity attacker = event.getEntity();
         if (CurioUtils.isEquipped(attacker, FrostSoul.class)) {
-            SoulAbilityData.SoulInfo soulInfo = getInfo(attacker, FrostSoul.class);
+            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(attacker, FrostSoul.class);
             int stacks = soulInfo.getStacks();
             if (stacks > 0) {
                 List<ItemStack> renderList = new ArrayList<>();
@@ -66,7 +65,7 @@ public class FrostSoul extends SoulItem {
     public void tick(LivingEntity ticker) {
         if (!ticker.level().isClientSide()) {
             if (CurioUtils.isEquipped(ticker, FrostSoul.class)) {
-                SoulAbilityData.SoulInfo soulInfo = ticker.getData(AttachmentRegister.SoulAbilityData).getSoulInfo(FrostSoul.class);
+                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, FrostSoul.class);
                 Level level = ticker.level();
                 BlockPos onPos = ticker.getOnPos();
                 boolean cold = level.getBiome(onPos).value().coldEnoughToSnow(onPos);
