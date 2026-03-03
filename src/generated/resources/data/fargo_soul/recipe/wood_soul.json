@@ -6,44 +6,20 @@
       "id": "fargo_soul:soul"
     },
     {
-      "count": 12,
-      "id": "minecraft:nether_star"
-    },
-    {
-      "count": 768,
+      "count": 64,
       "id": "minecraft:oak_log"
     },
     {
-      "count": 64,
+      "count": 4,
       "id": "minecraft:emerald_block"
     },
     {
       "count": 1,
-      "id": "minecraft:villager_spawn_egg"
-    },
-    {
-      "count": 8,
       "id": "minecraft:totem_of_undying"
     },
     {
-      "count": 12,
+      "count": 1,
       "id": "minecraft:sentry_armor_trim_smithing_template"
-    },
-    {
-      "count": 16,
-      "id": "minecraft:friend_pottery_sherd"
-    },
-    {
-      "count": 16,
-      "id": "minecraft:shelter_pottery_sherd"
-    },
-    {
-      "count": 384,
-      "id": "minecraft:brown_candle"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:book"
     }
   ],
   "result": {

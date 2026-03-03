@@ -6,44 +6,24 @@
       "id": "fargo_soul:soul"
     },
     {
-      "count": 12,
-      "id": "minecraft:nether_star"
-    },
-    {
-      "count": 12,
+      "count": 2,
       "id": "minecraft:netherite_upgrade_smithing_template"
     },
     {
-      "count": 32,
+      "count": 8,
       "id": "minecraft:shield"
     },
     {
-      "count": 384,
-      "id": "minecraft:gilded_blackstone"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:polished_blackstone_bricks"
-    },
-    {
-      "count": 32,
+      "count": 4,
       "id": "minecraft:respawn_anchor"
     },
     {
-      "count": 12,
+      "count": 64,
+      "id": "minecraft:gilded_blackstone"
+    },
+    {
+      "count": 1,
       "id": "minecraft:ward_armor_trim_smithing_template"
-    },
-    {
-      "count": 16,
-      "id": "minecraft:shelter_pottery_sherd"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:gray_candle"
-    },
-    {
-      "count": 16,
-      "id": "minecraft:scrape_pottery_sherd"
     }
   ],
   "result": {

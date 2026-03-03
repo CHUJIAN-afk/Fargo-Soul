@@ -6,40 +6,24 @@
       "id": "fargo_soul:soul"
     },
     {
-      "count": 12,
-      "id": "minecraft:nether_star"
-    },
-    {
-      "count": 128,
-      "id": "minecraft:mushroom_stew"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:red_mushroom"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:brown_mushroom"
-    },
-    {
-      "count": 128,
+      "count": 32,
       "id": "minecraft:mycelium"
     },
     {
       "count": 16,
-      "id": "minecraft:friend_pottery_sherd"
-    },
-    {
-      "count": 12,
-      "id": "minecraft:shaper_armor_trim_smithing_template"
-    },
-    {
-      "count": 384,
-      "id": "minecraft:brown_candle"
+      "id": "minecraft:mushroom_stew"
     },
     {
       "count": 64,
-      "id": "minecraft:fermented_spider_eye"
+      "id": "minecraft:red_mushroom"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:brown_mushroom"
+    },
+    {
+      "count": 1,
+      "id": "minecraft:shaper_armor_trim_smithing_template"
     }
   ],
   "result": {

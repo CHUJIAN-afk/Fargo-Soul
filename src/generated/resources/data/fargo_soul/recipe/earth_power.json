@@ -3,10 +3,6 @@
   "ingredients": [
     {
       "count": 1,
-      "id": "fargo_soul:soul"
-    },
-    {
-      "count": 1,
       "id": "fargo_soul:adamantite_soul"
     },
     {
@@ -28,62 +24,6 @@
     {
       "count": 1,
       "id": "fargo_soul:titanium_soul"
-    },
-    {
-      "count": 64,
-      "id": "minecraft:nether_star"
-    },
-    {
-      "count": 16,
-      "id": "minecraft:netherite_block"
-    },
-    {
-      "count": 8,
-      "id": "minecraft:beacon"
-    },
-    {
-      "count": 16,
-      "id": "minecraft:heart_of_the_sea"
-    },
-    {
-      "count": 12,
-      "id": "minecraft:shaper_armor_trim_smithing_template"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:dripstone_block"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:pointed_dripstone"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:calcite"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:tuff"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:deepslate"
-    },
-    {
-      "count": 32,
-      "id": "minecraft:recovery_compass"
-    },
-    {
-      "count": 16,
-      "id": "minecraft:totem_of_undying"
-    },
-    {
-      "count": 8,
-      "id": "minecraft:enchanted_golden_apple"
-    },
-    {
-      "count": 1,
-      "id": "minecraft:music_disc_otherside"
     }
   ],
   "result": {

@@ -1,33 +1,33 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "misc",
+  "type": "fargo_soul:integration",
   "ingredients": [
     {
-      "item": "minecraft:rabbit_foot"
+      "count": 1,
+      "id": "minecraft:rabbit_foot"
     },
     {
-      "item": "minecraft:turtle_scute"
+      "count": 1,
+      "id": "minecraft:turtle_scute"
     },
     {
-      "item": "minecraft:disc_fragment_5"
+      "count": 1,
+      "id": "minecraft:disc_fragment_5"
     },
     {
-      "item": "minecraft:hanging_roots"
+      "count": 1,
+      "id": "minecraft:armadillo_scute"
     },
     {
-      "item": "minecraft:armadillo_scute"
+      "count": 1,
+      "id": "minecraft:amethyst_shard"
     },
     {
-      "item": "minecraft:frogspawn"
+      "count": 1,
+      "id": "minecraft:pitcher_plant"
     },
     {
-      "item": "minecraft:amethyst_shard"
-    },
-    {
-      "item": "minecraft:pitcher_plant"
-    },
-    {
-      "item": "minecraft:mangrove_propagule"
+      "count": 1,
+      "id": "minecraft:mangrove_propagule"
     }
   ],
   "result": {

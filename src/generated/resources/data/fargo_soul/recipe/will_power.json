@@ -3,10 +3,6 @@
   "ingredients": [
     {
       "count": 1,
-      "id": "fargo_soul:soul"
-    },
-    {
-      "count": 1,
       "id": "fargo_soul:gladiator_soul"
     },
     {
@@ -24,50 +20,6 @@
     {
       "count": 1,
       "id": "fargo_soul:valhalla_knight_soul"
-    },
-    {
-      "count": 64,
-      "id": "minecraft:nether_star"
-    },
-    {
-      "count": 12,
-      "id": "minecraft:netherite_block"
-    },
-    {
-      "count": 8,
-      "id": "minecraft:beacon"
-    },
-    {
-      "count": 32,
-      "id": "minecraft:recovery_compass"
-    },
-    {
-      "count": 8,
-      "id": "minecraft:silence_armor_trim_smithing_template"
-    },
-    {
-      "count": 16,
-      "id": "minecraft:totem_of_undying"
-    },
-    {
-      "count": 32,
-      "id": "minecraft:explorer_pottery_sherd"
-    },
-    {
-      "count": 12,
-      "id": "minecraft:bolt_armor_trim_smithing_template"
-    },
-    {
-      "count": 1,
-      "id": "minecraft:music_disc_5"
-    },
-    {
-      "count": 16,
-      "id": "minecraft:ominous_trial_key"
-    },
-    {
-      "count": 1,
-      "id": "minecraft:trial_spawner"
     }
   ],
   "result": {

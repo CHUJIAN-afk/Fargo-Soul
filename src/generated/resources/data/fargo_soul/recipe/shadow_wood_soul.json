@@ -6,44 +6,20 @@
       "id": "fargo_soul:soul"
     },
     {
-      "count": 12,
-      "id": "minecraft:nether_star"
-    },
-    {
-      "count": 768,
+      "count": 64,
       "id": "minecraft:cherry_log"
     },
     {
-      "count": 64,
-      "id": "minecraft:ghast_tear"
-    },
-    {
-      "count": 128,
+      "count": 16,
       "id": "minecraft:soul_lantern"
     },
     {
-      "count": 4,
-      "id": "minecraft:silence_armor_trim_smithing_template"
-    },
-    {
-      "count": 12,
-      "id": "minecraft:raiser_armor_trim_smithing_template"
-    },
-    {
-      "count": 16,
-      "id": "minecraft:heartbreak_pottery_sherd"
-    },
-    {
-      "count": 384,
-      "id": "minecraft:purple_candle"
-    },
-    {
-      "count": 12,
+      "count": 3,
       "id": "minecraft:wither_skeleton_skull"
     },
     {
-      "count": 32,
-      "id": "minecraft:skeleton_skull"
+      "count": 1,
+      "id": "minecraft:silence_armor_trim_smithing_template"
     }
   ],
   "result": {

@@ -6,44 +6,24 @@
       "id": "fargo_soul:soul"
     },
     {
-      "count": 12,
-      "id": "minecraft:nether_star"
-    },
-    {
-      "count": 384,
-      "id": "minecraft:prismarine_bricks"
-    },
-    {
-      "count": 32,
+      "count": 8,
       "id": "minecraft:diamond_block"
     },
     {
-      "count": 32,
-      "id": "minecraft:grindstone"
-    },
-    {
-      "count": 768,
+      "count": 64,
       "id": "minecraft:experience_bottle"
     },
     {
-      "count": 128,
-      "id": "minecraft:bookshelf"
+      "count": 64,
+      "id": "minecraft:prismarine_bricks"
     },
     {
-      "count": 4,
+      "count": 8,
+      "id": "minecraft:grindstone"
+    },
+    {
+      "count": 1,
       "id": "minecraft:silence_armor_trim_smithing_template"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:raw_gold"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:light_blue_candle"
-    },
-    {
-      "count": 16,
-      "id": "minecraft:flow_pottery_sherd"
     }
   ],
   "result": {

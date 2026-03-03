@@ -3,10 +3,6 @@
   "ingredients": [
     {
       "count": 1,
-      "id": "fargo_soul:soul"
-    },
-    {
-      "count": 1,
       "id": "fargo_soul:ancient_holy_soul"
     },
     {
@@ -24,50 +20,6 @@
     {
       "count": 1,
       "id": "fargo_soul:teke_soul"
-    },
-    {
-      "count": 64,
-      "id": "minecraft:nether_star"
-    },
-    {
-      "count": 12,
-      "id": "minecraft:netherite_block"
-    },
-    {
-      "count": 32,
-      "id": "minecraft:recovery_compass"
-    },
-    {
-      "count": 12,
-      "id": "minecraft:eye_armor_trim_smithing_template"
-    },
-    {
-      "count": 16,
-      "id": "minecraft:heart_of_the_sea"
-    },
-    {
-      "count": 12,
-      "id": "minecraft:enchanted_golden_apple"
-    },
-    {
-      "count": 16,
-      "id": "minecraft:ominous_bottle"
-    },
-    {
-      "count": 384,
-      "id": "minecraft:echo_shard"
-    },
-    {
-      "count": 64,
-      "id": "minecraft:respawn_anchor"
-    },
-    {
-      "count": 8,
-      "id": "minecraft:beacon"
-    },
-    {
-      "count": 1,
-      "id": "minecraft:music_disc_5"
     }
   ],
   "result": {

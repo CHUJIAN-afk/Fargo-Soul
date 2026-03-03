@@ -6,44 +6,20 @@
       "id": "fargo_soul:soul"
     },
     {
-      "count": 12,
-      "id": "minecraft:nether_star"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:fire_charge"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:arrow"
-    },
-    {
-      "count": 384,
-      "id": "minecraft:spectral_arrow"
-    },
-    {
-      "count": 12,
-      "id": "minecraft:tide_armor_trim_smithing_template"
-    },
-    {
-      "count": 16,
-      "id": "minecraft:brewer_pottery_sherd"
-    },
-    {
-      "count": 128,
-      "id": "minecraft:blaze_rod"
-    },
-    {
-      "count": 384,
-      "id": "minecraft:magenta_candle"
-    },
-    {
-      "count": 16,
+      "count": 1,
       "id": "minecraft:enchanting_table"
     },
     {
-      "count": 768,
-      "id": "minecraft:glowstone"
+      "count": 64,
+      "id": "minecraft:spectral_arrow"
+    },
+    {
+      "count": 32,
+      "id": "minecraft:blaze_rod"
+    },
+    {
+      "count": 1,
+      "id": "minecraft:tide_armor_trim_smithing_template"
     }
   ],
   "result": {

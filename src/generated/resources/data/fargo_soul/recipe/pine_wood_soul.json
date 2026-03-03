@@ -6,44 +6,20 @@
       "id": "fargo_soul:soul"
     },
     {
-      "count": 12,
-      "id": "minecraft:nether_star"
-    },
-    {
-      "count": 768,
+      "count": 64,
       "id": "minecraft:spruce_log"
     },
     {
-      "count": 768,
-      "id": "minecraft:snow_block"
-    },
-    {
-      "count": 256,
+      "count": 32,
       "id": "minecraft:blue_ice"
     },
     {
-      "count": 768,
-      "id": "minecraft:snowball"
-    },
-    {
-      "count": 12,
-      "id": "minecraft:wayfinder_armor_trim_smithing_template"
-    },
-    {
-      "count": 16,
-      "id": "minecraft:guster_pottery_sherd"
-    },
-    {
-      "count": 384,
-      "id": "minecraft:light_blue_candle"
-    },
-    {
-      "count": 64,
+      "count": 4,
       "id": "minecraft:powder_snow_bucket"
     },
     {
-      "count": 384,
-      "id": "minecraft:packed_ice"
+      "count": 1,
+      "id": "minecraft:wayfinder_armor_trim_smithing_template"
     }
   ],
   "result": {

@@ -6,40 +6,20 @@
       "id": "fargo_soul:soul"
     },
     {
-      "count": 12,
-      "id": "minecraft:nether_star"
-    },
-    {
-      "count": 256,
+      "count": 32,
       "id": "minecraft:amethyst_cluster"
     },
     {
-      "count": 128,
-      "id": "minecraft:large_amethyst_bud"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:sugar"
-    },
-    {
-      "count": 64,
+      "count": 16,
       "id": "minecraft:rabbit_foot"
     },
     {
-      "count": 384,
-      "id": "minecraft:pointed_dripstone"
-    },
-    {
-      "count": 12,
-      "id": "minecraft:coast_armor_trim_smithing_template"
-    },
-    {
-      "count": 128,
+      "count": 32,
       "id": "minecraft:blue_ice"
     },
     {
-      "count": 384,
-      "id": "minecraft:quartz_block"
+      "count": 1,
+      "id": "minecraft:coast_armor_trim_smithing_template"
     }
   ],
   "result": {

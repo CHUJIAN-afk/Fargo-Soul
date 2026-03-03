@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_soul": {
+    "has_dragon_egg": {
       "conditions": {
         "items": [
           {
-            "items": "fargo_soul:soul"
+            "items": "minecraft:dragon_egg"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_soul"
+      "has_dragon_egg"
     ]
   ],
   "rewards": {

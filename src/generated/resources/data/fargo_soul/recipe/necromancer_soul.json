@@ -6,44 +6,20 @@
       "id": "fargo_soul:soul"
     },
     {
-      "count": 12,
-      "id": "minecraft:nether_star"
+      "count": 1,
+      "id": "minecraft:totem_of_undying"
     },
     {
-      "count": 768,
-      "id": "minecraft:bone"
+      "count": 4,
+      "id": "minecraft:respawn_anchor"
     },
     {
-      "count": 128,
-      "id": "minecraft:bone_block"
-    },
-    {
-      "count": 64,
+      "count": 3,
       "id": "minecraft:wither_skeleton_skull"
     },
     {
       "count": 64,
-      "id": "minecraft:skeleton_skull"
-    },
-    {
-      "count": 64,
-      "id": "minecraft:zombie_head"
-    },
-    {
-      "count": 32,
-      "id": "minecraft:skull_pottery_sherd"
-    },
-    {
-      "count": 12,
-      "id": "minecraft:rib_armor_trim_smithing_template"
-    },
-    {
-      "count": 32,
-      "id": "minecraft:respawn_anchor"
-    },
-    {
-      "count": 12,
-      "id": "minecraft:totem_of_undying"
+      "id": "minecraft:bone_block"
     }
   ],
   "result": {

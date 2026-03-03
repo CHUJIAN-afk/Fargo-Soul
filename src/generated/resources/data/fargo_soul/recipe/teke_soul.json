@@ -6,43 +6,19 @@
       "id": "fargo_soul:soul"
     },
     {
-      "count": 12,
-      "id": "minecraft:nether_star"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:jungle_log"
-    },
-    {
-      "count": 128,
+      "count": 16,
       "id": "minecraft:carved_pumpkin"
     },
     {
-      "count": 12,
-      "id": "minecraft:wild_armor_trim_smithing_template"
-    },
-    {
-      "count": 16,
-      "id": "minecraft:friend_pottery_sherd"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:melon"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:feather"
-    },
-    {
-      "count": 768,
+      "count": 64,
       "id": "minecraft:bamboo"
     },
     {
-      "count": 4,
-      "id": "minecraft:totem_of_undying"
+      "count": 1,
+      "id": "minecraft:wild_armor_trim_smithing_template"
     },
     {
-      "count": 12,
+      "count": 1,
       "id": "minecraft:sentry_armor_trim_smithing_template"
     }
   ],

@@ -6,44 +6,20 @@
       "id": "fargo_soul:soul"
     },
     {
-      "count": 12,
-      "id": "minecraft:nether_star"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:soul_soil"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:soul_sand"
-    },
-    {
-      "count": 12,
-      "id": "minecraft:wild_armor_trim_smithing_template"
-    },
-    {
       "count": 16,
-      "id": "minecraft:mourner_pottery_sherd"
-    },
-    {
-      "count": 64,
-      "id": "minecraft:ghast_tear"
-    },
-    {
-      "count": 64,
       "id": "minecraft:wither_rose"
     },
     {
-      "count": 384,
-      "id": "minecraft:jack_o_lantern"
+      "count": 16,
+      "id": "minecraft:ghast_tear"
     },
     {
-      "count": 48,
+      "count": 8,
       "id": "minecraft:skeleton_skull"
     },
     {
-      "count": 768,
-      "id": "minecraft:nether_bricks"
+      "count": 1,
+      "id": "minecraft:wild_armor_trim_smithing_template"
     }
   ],
   "result": {

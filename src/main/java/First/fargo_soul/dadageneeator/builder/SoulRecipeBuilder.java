@@ -2,6 +2,7 @@ package First.fargo_soul.dadageneeator.builder;
 
 import First.fargo_soul.common.recipe.SoulRecipe;
 import net.minecraft.advancements.Criterion;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -17,10 +18,31 @@ public class SoulRecipeBuilder implements RecipeBuilder {
 
     private final List<ItemStack> ingredients;
     private final ItemStack result;
+    private RecipeOutput output = null;
 
     public SoulRecipeBuilder(List<ItemStack> ingredients, ItemStack result) {
         this.ingredients = ingredients;
         this.result = result;
+    }
+
+    public SoulRecipeBuilder requires(Item item, int count) {
+        this.ingredients.add(item.getDefaultInstance().copyWithCount(count));
+        return this;
+    }
+
+    public SoulRecipeBuilder requires(ItemStack itemStack, int count) {
+        this.ingredients.add(itemStack.copyWithCount(count));
+        return this;
+    }
+
+    public void setOutput(RecipeOutput output) {
+        this.output = output;
+    }
+
+    public void build() {
+        if (output != null) {
+            save(output, BuiltInRegistries.ITEM.getKey(result.getItem()));
+        }
     }
 
     public static SoulRecipeBuilder soulRecipe(ItemStack result) {

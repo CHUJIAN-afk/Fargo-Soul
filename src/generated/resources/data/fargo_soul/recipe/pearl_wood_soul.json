@@ -6,44 +6,20 @@
       "id": "fargo_soul:soul"
     },
     {
-      "count": 12,
-      "id": "minecraft:nether_star"
-    },
-    {
-      "count": 768,
+      "count": 64,
       "id": "minecraft:birch_log"
     },
     {
-      "count": 128,
-      "id": "minecraft:pearlescent_froglight"
-    },
-    {
-      "count": 256,
+      "count": 16,
       "id": "minecraft:end_rod"
     },
     {
-      "count": 12,
-      "id": "minecraft:shaper_armor_trim_smithing_template"
-    },
-    {
-      "count": 128,
-      "id": "minecraft:amethyst_cluster"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:white_candle"
-    },
-    {
       "count": 16,
-      "id": "minecraft:prize_pottery_sherd"
+      "id": "minecraft:pearlescent_froglight"
     },
     {
-      "count": 384,
-      "id": "minecraft:quartz_block"
-    },
-    {
-      "count": 384,
-      "id": "minecraft:experience_bottle"
+      "count": 1,
+      "id": "minecraft:shaper_armor_trim_smithing_template"
     }
   ],
   "result": {

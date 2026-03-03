@@ -6,40 +6,20 @@
       "id": "fargo_soul:soul"
     },
     {
-      "count": 12,
-      "id": "minecraft:nether_star"
-    },
-    {
-      "count": 128,
-      "id": "minecraft:iron_block"
-    },
-    {
-      "count": 12,
+      "count": 4,
       "id": "minecraft:netherite_ingot"
     },
     {
-      "count": 128,
+      "count": 32,
       "id": "minecraft:diamond"
     },
     {
-      "count": 32,
-      "id": "minecraft:plenty_pottery_sherd"
-    },
-    {
-      "count": 8,
-      "id": "minecraft:map"
-    },
-    {
-      "count": 12,
-      "id": "minecraft:sentry_armor_trim_smithing_template"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:white_candle"
-    },
-    {
-      "count": 768,
+      "count": 64,
       "id": "minecraft:emerald"
+    },
+    {
+      "count": 1,
+      "id": "minecraft:sentry_armor_trim_smithing_template"
     }
   ],
   "result": {

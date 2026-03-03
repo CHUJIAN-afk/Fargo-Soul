@@ -5,10 +5,12 @@ import First.fargo_soul.register.RecipeTypeRegister;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -18,6 +20,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public record SoulRecipe(List<ItemStack> inputs, ItemStack output) implements Recipe<SoulRecipeInput> {
+
+    @Override
+    public @NotNull NonNullList<Ingredient> getIngredients() {
+        return inputs.stream()
+                .map(Ingredient::of)
+                .collect(NonNullList::create, NonNullList::add, NonNullList::addAll);
+    }
 
     @Override
     public boolean matches(@NotNull SoulRecipeInput soulRecipeInput, @NotNull Level level) {

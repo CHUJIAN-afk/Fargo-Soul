@@ -3,10 +3,6 @@
   "ingredients": [
     {
       "count": 1,
-      "id": "fargo_soul:soul"
-    },
-    {
-      "count": 1,
       "id": "fargo_soul:ancient_shadow_soul"
     },
     {
@@ -32,62 +28,6 @@
     {
       "count": 1,
       "id": "fargo_soul:penetrating_ninja_soul"
-    },
-    {
-      "count": 64,
-      "id": "minecraft:nether_star"
-    },
-    {
-      "count": 12,
-      "id": "minecraft:silence_armor_trim_smithing_template"
-    },
-    {
-      "count": 384,
-      "id": "minecraft:echo_shard"
-    },
-    {
-      "count": 16,
-      "id": "minecraft:netherite_block"
-    },
-    {
-      "count": 128,
-      "id": "minecraft:dragon_breath"
-    },
-    {
-      "count": 384,
-      "id": "minecraft:soul_lantern"
-    },
-    {
-      "count": 128,
-      "id": "minecraft:wither_rose"
-    },
-    {
-      "count": 16,
-      "id": "minecraft:heartbreak_pottery_sherd"
-    },
-    {
-      "count": 12,
-      "id": "minecraft:snout_armor_trim_smithing_template"
-    },
-    {
-      "count": 12,
-      "id": "minecraft:ominous_bottle"
-    },
-    {
-      "count": 12,
-      "id": "minecraft:trial_key"
-    },
-    {
-      "count": 384,
-      "id": "minecraft:gilded_blackstone"
-    },
-    {
-      "count": 384,
-      "id": "minecraft:cracked_polished_blackstone_bricks"
-    },
-    {
-      "count": 1,
-      "id": "minecraft:music_disc_5"
     }
   ],
   "result": {

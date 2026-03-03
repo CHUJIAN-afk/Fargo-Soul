@@ -6,44 +6,24 @@
       "id": "fargo_soul:soul"
     },
     {
-      "count": 12,
-      "id": "minecraft:nether_star"
-    },
-    {
-      "count": 128,
+      "count": 16,
       "id": "minecraft:golden_apple"
     },
     {
-      "count": 768,
-      "id": "minecraft:glistering_melon_slice"
-    },
-    {
-      "count": 64,
-      "id": "minecraft:ghast_tear"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:orange_candle"
-    },
-    {
-      "count": 128,
+      "count": 32,
       "id": "minecraft:copper_block"
     },
     {
-      "count": 768,
-      "id": "minecraft:raw_copper"
-    },
-    {
-      "count": 32,
-      "id": "minecraft:heart_pottery_sherd"
-    },
-    {
-      "count": 12,
-      "id": "minecraft:wayfinder_armor_trim_smithing_template"
-    },
-    {
       "count": 64,
+      "id": "minecraft:glistering_melon_slice"
+    },
+    {
+      "count": 16,
       "id": "minecraft:pearlescent_froglight"
+    },
+    {
+      "count": 1,
+      "id": "minecraft:wayfinder_armor_trim_smithing_template"
     }
   ],
   "result": {

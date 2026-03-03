@@ -6,43 +6,19 @@
       "id": "fargo_soul:soul"
     },
     {
-      "count": 12,
-      "id": "minecraft:nether_star"
-    },
-    {
-      "count": 384,
+      "count": 64,
       "id": "minecraft:cobweb"
     },
     {
-      "count": 768,
-      "id": "minecraft:string"
-    },
-    {
-      "count": 768,
+      "count": 64,
       "id": "minecraft:spider_eye"
     },
     {
-      "count": 128,
-      "id": "minecraft:fermented_spider_eye"
-    },
-    {
-      "count": 4,
+      "count": 1,
       "id": "minecraft:silence_armor_trim_smithing_template"
     },
     {
-      "count": 16,
-      "id": "minecraft:archer_pottery_sherd"
-    },
-    {
-      "count": 16,
-      "id": "minecraft:skull_pottery_sherd"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:gray_candle"
-    },
-    {
-      "count": 12,
+      "count": 1,
       "id": "minecraft:recovery_compass"
     }
   ],

@@ -6,44 +6,20 @@
       "id": "fargo_soul:soul"
     },
     {
-      "count": 12,
-      "id": "minecraft:nether_star"
-    },
-    {
-      "count": 32,
+      "count": 8,
       "id": "minecraft:shield"
     },
     {
-      "count": 768,
-      "id": "minecraft:iron_ingot"
-    },
-    {
-      "count": 128,
+      "count": 16,
       "id": "minecraft:amethyst_cluster"
     },
     {
-      "count": 12,
-      "id": "minecraft:tide_armor_trim_smithing_template"
-    },
-    {
-      "count": 16,
-      "id": "minecraft:scrape_pottery_sherd"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:white_candle"
-    },
-    {
-      "count": 16,
-      "id": "minecraft:guster_pottery_sherd"
-    },
-    {
-      "count": 64,
-      "id": "minecraft:iron_door"
-    },
-    {
-      "count": 384,
+      "count": 32,
       "id": "minecraft:experience_bottle"
+    },
+    {
+      "count": 1,
+      "id": "minecraft:tide_armor_trim_smithing_template"
     }
   ],
   "result": {

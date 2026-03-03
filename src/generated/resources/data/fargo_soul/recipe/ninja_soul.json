@@ -6,44 +6,20 @@
       "id": "fargo_soul:soul"
     },
     {
-      "count": 12,
-      "id": "minecraft:nether_star"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:gray_candle"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:feather"
-    },
-    {
-      "count": 32,
-      "id": "minecraft:leather_boots"
-    },
-    {
-      "count": 64,
-      "id": "minecraft:sculk_sensor"
-    },
-    {
-      "count": 16,
-      "id": "minecraft:blade_pottery_sherd"
-    },
-    {
-      "count": 64,
-      "id": "minecraft:iron_sword"
-    },
-    {
-      "count": 4,
+      "count": 1,
       "id": "minecraft:silence_armor_trim_smithing_template"
     },
     {
-      "count": 128,
-      "id": "minecraft:cobweb"
+      "count": 8,
+      "id": "minecraft:sculk_sensor"
     },
     {
-      "count": 384,
-      "id": "minecraft:obsidian"
+      "count": 1,
+      "id": "minecraft:iron_sword"
+    },
+    {
+      "count": 16,
+      "id": "minecraft:cobweb"
     }
   ],
   "result": {

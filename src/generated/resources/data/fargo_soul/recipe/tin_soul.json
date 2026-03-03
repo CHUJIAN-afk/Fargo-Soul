@@ -6,44 +6,20 @@
       "id": "fargo_soul:soul"
     },
     {
-      "count": 12,
-      "id": "minecraft:nether_star"
-    },
-    {
-      "count": 384,
-      "id": "minecraft:raw_gold"
-    },
-    {
       "count": 64,
-      "id": "minecraft:target"
-    },
-    {
-      "count": 16,
-      "id": "minecraft:archer_pottery_sherd"
-    },
-    {
-      "count": 16,
-      "id": "minecraft:plenty_pottery_sherd"
-    },
-    {
-      "count": 12,
-      "id": "minecraft:bolt_armor_trim_smithing_template"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:glowstone"
-    },
-    {
-      "count": 768,
-      "id": "minecraft:lime_candle"
-    },
-    {
-      "count": 384,
       "id": "minecraft:gold_ingot"
     },
     {
-      "count": 384,
-      "id": "minecraft:nether_brick_slab"
+      "count": 16,
+      "id": "minecraft:target"
+    },
+    {
+      "count": 64,
+      "id": "minecraft:glowstone"
+    },
+    {
+      "count": 1,
+      "id": "minecraft:bolt_armor_trim_smithing_template"
     }
   ],
   "result": {
