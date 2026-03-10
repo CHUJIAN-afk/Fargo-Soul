@@ -2,20 +2,15 @@ package First.fargo_soul.common.item;
 
 import First.fargo_soul.common.attachment.SoulAbilityData;
 import First.fargo_soul.common.item.base.SoulItem;
-import First.fargo_soul.common.menu.SoulContainer;
-import First.fargo_soul.register.KeyRegister;
 import First.fargo_soul.utils.CurioUtils;
 import First.fargo_soul.utils.ParticleUtils;
 import First.fargo_soul.utils.SoulUtils;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 
@@ -42,21 +37,6 @@ public class TerraSoul extends SoulItem {
                 TerraPowerItem.get(),
                 WillPowerItem.get()
         );
-    }
-
-    @Override
-    public String keyPressed(Player player, int key) {
-        if (key == KeyRegister.SoulMenuKey.getKey().getValue()) {
-            return "SoulMenu";
-        }
-        return null;
-    }
-
-    @Override
-    public void keyHandle(Player player, String key) {
-        if (key.equals("SoulMenu") && !(player.containerMenu instanceof SoulContainer)) {
-            player.openMenu(new SimpleMenuProvider(SoulContainer::new, Component.literal("魂")));
-        }
     }
 
     @Override

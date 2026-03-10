@@ -240,7 +240,7 @@ public class ClientEvent {
     @SubscribeEvent
     public static void openScreen(InputEvent.Key event) {
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.player instanceof LocalPlayer && event.getKey() == KeyRegister.SoulMenuKey.getKey().getValue()) {
+        if (minecraft.screen == null && minecraft.player instanceof LocalPlayer && event.getKey() == KeyRegister.SoulMenuKey.getKey().getValue()) {
             NetworkPacketRegister.playToServer(new OpenSoulContainerPacket());
         }
     }
@@ -359,9 +359,11 @@ public class ClientEvent {
 
     @SubscribeEvent
     public static void renderSoulItemTooltipHandler(RenderTooltipEvent.GatherComponents event) {
-        if (event.getItemStack().getItem() instanceof SoulItem soulItem && ClientConfig.EmbedAChildSoulInTheItemTooltip.get()) {
+        if (event.getItemStack().getItem() instanceof SoulItem soulItem) {
             List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
-            tooltipElements.add(1, Either.right(new SoulTooltipComponent(soulItem)));
+            if (ClientConfig.EmbedAChildSoulInTheItemTooltip.get()) {
+                tooltipElements.add(1, Either.right(new SoulTooltipComponent(soulItem)));
+            }
         }
     }
 
