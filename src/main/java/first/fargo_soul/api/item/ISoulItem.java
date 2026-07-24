@@ -3,10 +3,12 @@ package first.fargo_soul.api.item;
 import first.fargo_soul.common.event.modEvent.PlayerFlyEvent;
 import first.fargo_soul.common.event.modEvent.SprintEvent;
 import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
 import net.neoforged.neoforge.common.damagesource.DamageContainer;
@@ -33,6 +35,22 @@ public interface ISoulItem extends ICurioItem {
     default void movementInput(MovementInputUpdateEvent event) {
 
     }
+
+    default @Nullable ResourceLocation keyPressed(Player player, int key) {
+        return null;
+    }
+
+    default void keyHandle(Player player, ResourceLocation location) {
+
+    }
+
+
+
+
+
+
+
+
 
     default void fly(PlayerFlyEvent event) {
     }

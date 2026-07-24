@@ -34,6 +34,15 @@ public class TargetHelper {
         return list;
     }
 
+    public List<LivingEntity> geLivingEntityList() {
+        TargetCache cache = living.getData(AttachmentRegister.TARGET_CACHE);
+        return cache.getEntities();
+    }
+
+    public TargetCache getTargetCache() {
+        return living.getData(AttachmentRegister.TARGET_CACHE);
+    }
+
     /**
      * 判断生物是否为有效攻击目标
      */

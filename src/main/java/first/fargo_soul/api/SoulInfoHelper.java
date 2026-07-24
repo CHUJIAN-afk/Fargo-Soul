@@ -22,14 +22,14 @@ public class SoulInfoHelper {
         return new SoulInfoHelper(living);
     }
 
-    @Nullable
-    public <T extends AbstractSoulInfo> T getInfo(ResourceLocation location, Supplier<SoulInfoType<T>> supplier) {
+
+    public <T extends AbstractSoulInfo> @Nullable T getInfo(ResourceLocation location, Supplier<SoulInfoType<T>> supplier) {
         return getInfo(location, supplier.get());
     }
 
     @SuppressWarnings("unchecked")
-    @Nullable
-    public <T extends AbstractSoulInfo> T getInfo(ResourceLocation location, SoulInfoType<T> type) {
+
+    public <T extends AbstractSoulInfo> @Nullable T getInfo(ResourceLocation location, SoulInfoType<T> type) {
         return (T) living.getData(AttachmentRegister.SOUL_INFO_DATA)
                 .getData()
                 .get(type)

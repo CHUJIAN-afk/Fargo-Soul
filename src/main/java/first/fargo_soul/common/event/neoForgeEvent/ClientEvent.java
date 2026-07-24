@@ -207,19 +207,6 @@ public class ClientEvent {
     }
 
     @SubscribeEvent
-    public static void soulKeyPressed(InputEvent.Key event) {
-        Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.getConnection() != null && minecraft.player instanceof Player player) {
-            for (SoulItem soulItem : SoulUtils.RegisterSoulList) {
-                String key = soulItem.keyPressed(player, event.getKey());
-                if (key != null) {
-                    PacketDistributor.sendToServer(new KeyHandlePacket(key));
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent
     public static void RegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(EntityRegister.NeedleEntity.get(), NeedleRenderer::new);
         event.registerEntityRenderer(EntityRegister.BoneEntity.get(), BoneRenderer::new);
