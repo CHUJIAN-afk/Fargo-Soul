@@ -1,0 +1,39 @@
+package first.fargo_soul.dadageneeator;
+
+import first.fargo_soul.FargoSoul;
+import first.fargo_soul.dadageneeator.provider.FargoSoulItemModelProvider;
+import first.fargo_soul.dadageneeator.provider.FargoSoulLangProvider;
+import first.fargo_soul.dadageneeator.provider.FargoSoulRecipeProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.data.AdvancementProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
+
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
+@EventBusSubscriber(modid = FargoSoul.MODID)
+public class DataGeneratorEvent {
+
+    @SubscribeEvent
+    public static void gatherData(GatherDataEvent event) {
+        DataGenerator generator = event.getGenerator();
+        PackOutput packOutput = generator.getPackOutput();
+        ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
+        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
+        //物品模型模型
+        generator.addProvider(event.includeClient(), new FargoSoulItemModelProvider(packOutput, FargoSoul.MODID, existingFileHelper));
+        //配方
+        generator.addProvider(event.includeServer(), new FargoSoulRecipeProvider(packOutput, lookupProvider));
+        //成就
+        generator.addProvider(event.includeServer(), new AdvancementProvider(packOutput, lookupProvider, existingFileHelper, List.of(new SoulAdvancementProvider())));
+        //语言
+        generator.addProvider(event.includeServer(), new FargoSoulLangProvider(packOutput, FargoSoul.MODID, "en_us"));
+        generator.addProvider(event.includeServer(), new FargoSoulLangProvider(packOutput, FargoSoul.MODID, "zh_cn"));
+    }
+
+}
