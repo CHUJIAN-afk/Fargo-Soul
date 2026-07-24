@@ -2,8 +2,6 @@ package first.fargo_soul.api.item;
 
 import first.fargo_soul.FargoSoul;
 import first.fargo_soul.common.attachment.ISoulItemCache;
-import first.fargo_soul.common.item.base.SoulItem;
-import first.fargo_soul.utils.SoulUtils;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,7 +11,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import net.neoforged.neoforge.event.tick.EntityTickEvent;
 
 import java.util.List;
 
@@ -39,18 +36,6 @@ public class ISoulItemEventHandler {
             iSoulItem.target(target, entity, container, isClient);
         }
     }
-
-    @SubscribeEvent
-    public static void soulTick(EntityTickEvent.Post event) {
-        if (event.getEntity() instanceof LivingEntity livingEntity) {
-            Level level = livingEntity.level();
-            boolean isClient = level.isClientSide();
-            for (SoulItem soulItem : SoulUtils.RegisterSoulList) {
-                soulItem.tick(livingEntity, isClient);
-            }
-        }
-    }
-
 
 
 

@@ -21,6 +21,9 @@ public class FargoSoul {
     public static final Logger logger = LoggerFactory.getLogger(MODID);
 
     public FargoSoul(IEventBus eventBus, ModContainer modContainer) {
+        FargoSoulSoulItemRegister.register();
+        FargoSoulItemRegisterBuilder.register(eventBus);
+
         DataComponentsRegister.register(eventBus);
         FargoSoulItemRegister.register(eventBus);
         BlockRegister.register(eventBus);

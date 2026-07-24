@@ -2,13 +2,12 @@ package first.fargo_soul.api.item;
 
 import first.fargo_soul.common.event.modEvent.PlayerFlyEvent;
 import first.fargo_soul.common.event.modEvent.SprintEvent;
-import net.minecraft.client.player.Input;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
 import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import net.neoforged.neoforge.event.entity.living.*;
@@ -28,6 +27,10 @@ public interface ISoulItem extends ICurioItem {
     }
 
     default void target(@NotNull LivingEntity target, @Nullable Entity attacker, @NotNull DamageContainer container, boolean isClient) {
+
+    }
+
+    default void movementInput(MovementInputUpdateEvent event) {
 
     }
 
@@ -73,8 +76,5 @@ public interface ISoulItem extends ICurioItem {
 
     default Map<Holder<Attribute>, AttributeModifier> getAttributeModifiers() {
         return new HashMap<>();
-    }
-
-    default void movementInput(Player player, Input input) {
     }
 }

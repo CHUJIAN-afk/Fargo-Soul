@@ -207,13 +207,6 @@ public class ClientEvent {
     }
 
     @SubscribeEvent
-    public static void soulMovementInputUpdate(MovementInputUpdateEvent event) {
-        if (event.getEntity() instanceof LocalPlayer player) {
-            SoulUtils.RegisterSoulList.forEach(soulItem -> soulItem.movementInput(player, event.getInput()));
-        }
-    }
-
-    @SubscribeEvent
     public static void soulKeyPressed(InputEvent.Key event) {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.getConnection() != null && minecraft.player instanceof Player player) {
