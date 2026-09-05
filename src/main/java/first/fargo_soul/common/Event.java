@@ -20,6 +20,7 @@ import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
+import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
@@ -63,9 +64,27 @@ public class Event {
     }
 
     @SubscribeEvent
+    public static void criticalHit(CriticalHitEvent event) {
+        Player player = event.getEntity();
+        Entity target = event.getTarget();
+        if (!player.level().isClientSide() && target instanceof LivingEntity living) {
+            List<ValueModifier> modifiers = new ArrayList<>();
+            SoulItemData.forEach(player, soulItem -> soulItem.criticalHit(player, living, modifiers));
+            event.setDamageMultiplier(ValueModifier.getModifierAfter(event.getDamageMultiplier(), modifiers));
+        }
+    }
+
+    @SubscribeEvent
     public static void death(LivingDeathEvent event) {
         if (event.getEntity() instanceof Player player && !player.level().isClientSide()) {
-            SoulItemData.forEach(player, soulItem -> soulItem.death(player, event.getSource()));
+            SoulItemData.forEach(player, soulItem -> {
+                if (!soulItem.death(player, event.getSource(), event.isCanceled())) {
+                    event.setCanceled(true);
+                }
+            });
+        }
+        if (event.getSource().getEntity() instanceof Player player && !player.level().isClientSide()) {
+            SoulItemData.forEach(player, soulItem -> soulItem.kill(player, event.getEntity(), event.getSource()));
         }
     }
 

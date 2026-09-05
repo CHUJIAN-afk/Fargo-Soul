@@ -6,7 +6,11 @@ import first.fargo_soul.common.item.terraSoul.cosmicPower.BlazeSoul;
 import first.fargo_soul.common.item.terraSoul.cosmicPower.NebulaSoul;
 import first.fargo_soul.common.item.terraSoul.cosmicPower.StardustSoul;
 import first.fargo_soul.common.item.terraSoul.cosmicPower.VortexSoul;
+import first.fargo_soul.common.item.terraSoul.deathPower.DarkArtistSoul;
+import first.fargo_soul.common.item.terraSoul.deathPower.NecromancerSoul;
+import first.fargo_soul.common.item.terraSoul.deathPower.NinjaSoul;
 import first.fargo_soul.common.soulInfo.FlySoulInfo;
+import first.fargo_soul.common.soulInfo.PenetratingSoulInfo;
 import first.fargo_soul.common.soulInfo.SoulInfo;
 import first.fargo_soul.common.soulInfo.SoulInfoType;
 import first.fargo_soul.common.soulInfo.SprintSoulInfo;
@@ -35,6 +39,18 @@ public class FargoSoulSoulInfoRegister {
             register("stardust_soul_info", StardustSoul.Info::new);
     public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<VortexSoul.Info>> VORTEX_SOUL_INFO =
             register("vortex_soul_info", VortexSoul.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<DarkArtistSoul.Info>> DARK_ARTIST_SOUL_INFO =
+            register("dark_artist_soul_info", DarkArtistSoul.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<NecromancerSoul.Info>> NECROMANCER_SOUL_INFO =
+            register("necromancer_soul_info", NecromancerSoul.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<PenetratingSoulInfo>> PENETRATING_SOUL_INFO =
+            register("penetrating_soul_info", PenetratingSoulInfo::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<NinjaSoul.Info>> NINJA_SOUL_INFO =
+            register("ninja_soul_info", NinjaSoul.Info::new);
 
     private static <T extends SoulInfo> DeferredHolder<SoulInfoType<?>, SoulInfoType<T>> register(String name, Supplier<T> factory) {
         return register(name, factory, false);

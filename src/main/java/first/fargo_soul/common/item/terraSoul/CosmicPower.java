@@ -74,7 +74,7 @@ public class CosmicPower extends SoulItem {
     }
 
     @Override
-    public void death(Player player, DamageSource source) {
+    public boolean death(Player player, DamageSource source, boolean canceled) {
         SoulTargetCache targetCache = SoulTargetCache.get(player);
         List<LivingEntity> list = targetCache.getEntitiesInRadius(player.getBoundingBox().getCenter(), 6, null);
         for (LivingEntity living : list) {
@@ -83,7 +83,7 @@ public class CosmicPower extends SoulItem {
                     .damageAmount(player.getMaxHealth() * 3.6f)
                     .apply();
         }
-        super.death(player, source);
+        return super.death(player, source, canceled);
     }
 
     public static final class Info extends SoulInfo {

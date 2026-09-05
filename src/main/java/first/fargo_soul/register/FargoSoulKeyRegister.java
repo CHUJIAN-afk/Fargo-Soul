@@ -23,6 +23,7 @@ public class FargoSoulKeyRegister {
     public static final KeyMapping StardustSoulKey = register("冻结");
     public static final KeyMapping VortexSoulKey = register("传送");
     public static final KeyMapping ForbiddenKey = register("风暴");
+    public static final KeyMapping PenetratingNinjaKey = register("渗透");
     public static final KeyMapping SoulMenuKey = register("打开魂石空间");
 
     private static KeyMapping register(String name) {

@@ -36,6 +36,7 @@ public class SummonerAttachmentEntityRenderRegister {
         register(SummonerAttachmentEntityRegister.METEOR, () -> simpleRenderer(FargoSoul.rl("textures/item/entity/meteor.png"), 1, 8));
         register(SummonerAttachmentEntityRegister.VORTEX, null);
         register(SummonerAttachmentEntityRegister.SPRINT, null);
+        register(SummonerAttachmentEntityRegister.SHADOW_ORB, () -> simpleRenderer(FargoSoul.rl("textures/item/entity/meteor.png"), 1, 12));
     }
 
     private static <T extends AttachmentEntity> void register(DeferredHolder<AttachmentEntityType<?>, AttachmentEntityType<T>> type, @Nullable Supplier<IAttachmentEntityRenderer<T>> renderer) {

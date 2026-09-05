@@ -45,6 +45,9 @@ public abstract class SoulItem extends Item implements ICurioItem {
         return name;
     }
 
+    public void criticalHit(Player player, LivingEntity target, List<ValueModifier> modifiers) {
+    }
+
     public void getMaxFlyTime(Player player, List<ValueModifier> modifiers) {
     }
 
@@ -94,7 +97,11 @@ public abstract class SoulItem extends Item implements ICurioItem {
     public void hurt(@Nullable Entity attacker, @NotNull Player target, @NotNull DamageContainer container, List<ValueModifier> modifiers) {
     }
 
-    public void death(Player player, DamageSource source) {
+    public boolean death(Player player, DamageSource source, boolean canceled) {
+        return true;
+    }
+
+    public void kill(Player attacker, LivingEntity target, DamageSource source) {
     }
 
     public void movement(Player player, Input input) {

@@ -46,6 +46,10 @@ public class FargoSoulLangProvider extends LyraLanguageProvider {
         add("effect.fargo_soul.orichalcum_poisoning", "Orichalcum Poisoning", "山铜中毒");
         add("effect.fargo_soul.shadow_fire", "Shadowflame", "暗影焰");
         add("effect.fargo_soul.midas", "Midas", "迈达斯");
+        add("effect.fargo_soul.death_mark", "Death Mark", "死亡标记");
+        add("effect.fargo_soul.crystal_armor_break", "Crystal Armor Break", "水晶碎甲");
+        add("effect.fargo_soul.preemptive_strike", "Preemptive Strike", "先发至人");
+        add("effect.fargo_soul.shadow_gift", "Shadow Gift", "暗影之赐");
         // ===================== 方块 =====================
         add("tooltip.fargo_soul.cosmic_crucible", "Used for fusion. Contains massive storage (default 64 slots, stack limit 2,147,483,647)\nInsert items via the top; right-click empty-handed to take last item\nRetains contents when broken", "可用于融合，内含的空间可储存巨量物品(默认64格，单格堆叠上限2,147,483,647)\n通过投入或交互顶部放入物品，空手右键拿出最近放入的物品\n破坏后保留内容物");
         // ===================== 界面 =====================

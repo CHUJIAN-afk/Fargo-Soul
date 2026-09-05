@@ -2,6 +2,7 @@ package first.fargo_soul.register;
 
 import first.fargo_soul.FargoSoul;
 import first.fargo_soul.common.entity.Meteor;
+import first.fargo_soul.common.entity.ShadowOrb;
 import first.fargo_soul.common.entity.Sprint;
 import first.fargo_soul.common.entity.Vortex;
 import first.lyra.common.entity.AttachmentEntity;
@@ -25,6 +26,9 @@ public class SummonerAttachmentEntityRegister {
 
     public static final DeferredHolder<AttachmentEntityType<?>, AttachmentEntityType<Sprint>> SPRINT =
             register("sprint", Sprint::new);
+
+    public static final DeferredHolder<AttachmentEntityType<?>, AttachmentEntityType<ShadowOrb>> SHADOW_ORB =
+            register("shadow_orb", ShadowOrb::new);
 
     private static <T extends AttachmentEntity> DeferredHolder<AttachmentEntityType<?>, AttachmentEntityType<T>> register(String name, Supplier<T> supplier) {
         return Register.register(name, ResourceLocation -> new AttachmentEntityType<>(ResourceLocation, supplier));

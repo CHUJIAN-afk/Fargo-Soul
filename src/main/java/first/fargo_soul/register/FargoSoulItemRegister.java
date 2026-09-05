@@ -150,8 +150,7 @@ public class FargoSoulItemRegister {
             register("ancient_shadow_soul", AncientShadowSoul::new, 0x5E55DC)
                     .itemLanguage("Ancient Shadow Enchantment", "远古暗影魔石")
                     .itemLanguageTooltip(1, " ", "攻击时，有20%概率为目标施加5秒黑暗效果")
-                    .itemLanguageTooltip(2, " ", "周围被黑暗效果影响的敌人偶尔会向其他敌人发射暗影球，造成4点伤害和暗影焰效果")
-                    .itemLanguageTooltip(3, " ", "召唤三颗魔法暗影球围绕你旋转，提供照明效果")
+                    .itemLanguageTooltip(2, " ", "召唤三颗魔法暗影球围绕你旋转，提供照明效果")
                     .itemLanguageTooltip(3, " ", "免疫黑暗")
                     .itemLanguageTooltip(-1, " ", "“十分古老，却非常实用”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
@@ -162,8 +161,8 @@ public class FargoSoulItemRegister {
     public static final DeferredItem<NinjaSoul> NinjaSoulItem =
             register("ninja_soul", NinjaSoul::new, 0x48494D)
                     .itemLanguage("Ninja Enchantment", "忍者魔石")
-                    .itemLanguageTooltip(1, " ", "移动速度越低，造成的伤害越高，最多将造成的伤害提升至140%")
-                    .itemLanguageTooltip(2, " ", "静止时，造成的伤害提升至180%")
+                    .itemLanguageTooltip(1, " ", "不攻击时，每秒积累20点伏击能量，最多积累600点伏击能量")
+                    .itemLanguageTooltip(2, " ", "每点伏击能量使伤害提升1%，攻击后清空伏击能量")
                     .itemLanguageTooltip(-1, " ", "“等待正确的时机......”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
                     .itemModel(LyraItemRegisterBuilder::basicModel)
@@ -173,8 +172,8 @@ public class FargoSoulItemRegister {
     public static final DeferredItem<CrystalAssassinSoul> CrystalAssassinSoulItem =
             register("crystal_assassin_soul", CrystalAssassinSoul::new, 0xCF249D)
                     .itemLanguage("Crystal Assassin Enchantment", "水晶刺客魔石")
-                    .itemLanguageTooltip(1, " ", "赋予冲刺能力")
-                    .itemLanguageTooltip(2, " ", "冲刺后，赋予你1秒先发至人效果，使下次攻击造成的伤害提升至300%，并施加水晶碎甲效果，降低目标10点防御力")
+                    .itemLanguageTooltip(1, " ", "赋予水晶冲刺")
+                    .itemLanguageTooltip(2, " ", "冲刺后，赋予你1秒先发至人效果，使下次攻击造成的伤害提升60%并施加水晶碎甲效果，降低目标20点防御力")
                     .itemLanguageTooltip(-1, " ", "“登顶”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
                     .itemModel(LyraItemRegisterBuilder::basicModel)
@@ -184,7 +183,9 @@ public class FargoSoulItemRegister {
     public static final DeferredItem<DarkArtistSoul> DarkArtistSoulItem =
             register("dark_artist_soul", DarkArtistSoul::new, 0x9C59B2)
                     .itemLanguage("Dark Artist Enchantment", "暗黑艺术家魔石")
-                    .itemLanguageTooltip(1, " ", "攻击时召唤爆炸烈焰球攻击敌人，该效果有0.5秒冷却时间")
+                    .itemLanguageTooltip(1, " ", "对被暗影焰影响的敌人，造成的伤害提升40%，并吸收相当于20%伤害值的暗黑能量，最多吸收400点暗黑能量")
+                    .itemLanguageTooltip(2, " ", "暗黑能量达到最大值时，消耗全部暗黑能量，使你获得20秒暗影之赐效果，最大生命值提升40%，移动速度提升15%，攻击力提升40%")
+                    .itemLanguageTooltip(3, " ", "在暗影之赐效果下，有20%概率闪避负面效果，闪避后恢复你12%最大生命值")
                     .itemLanguageTooltip(-1, " ", "“阴影蕴含之物远超其表象”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
                     .itemModel(LyraItemRegisterBuilder::basicModel)
@@ -194,7 +195,8 @@ public class FargoSoulItemRegister {
     public static final DeferredItem<GloomySoul> GloomySoulItem =
             register("gloomy_soul", GloomySoul::new, 0x644D75)
                     .itemLanguage("Gloomy Enchantment", "阴森魔石")
-                    .itemLanguageTooltip(1, " ", "使你的攻击附加暗影焰")
+                    .itemLanguageTooltip(1, " ", "攻击施加10秒暗影焰效果")
+                    .itemLanguageTooltip(2, " ", "对被暗影焰影响的敌人，攻击有5%概率施加2秒死亡标记效果")
                     .itemLanguageTooltip(-1, " ", "“自1902年以来融化的灵魂”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
                     .itemModel(LyraItemRegisterBuilder::basicModel)
@@ -204,8 +206,9 @@ public class FargoSoulItemRegister {
     public static final DeferredItem<NecromancerSoul> NecromancerSoulItem =
             register("necromancer_soul", NecromancerSoul::new, 0x565642)
                     .itemLanguage("Necromancer Enchantment", "死灵魔石")
-                    .itemLanguageTooltip(1, " ", "攻击敌人时有几率爆出一堆骨头，对附近敌人造成伤害")
-                    .itemLanguageTooltip(2, " ", "击杀骷髅或凋零骷髅额外掉落其头颅")
+                    .itemLanguageTooltip(1, " ", "击杀亡灵生物掠夺1点死灵能量，死灵能量最大值为100点")
+                    .itemLanguageTooltip(2, " ", "死亡时，如果死灵能量达到最大值，则消耗全部死灵能量使你复活，并恢复20%最大生命值")
+                    .itemLanguageTooltip(3, " ", "击杀骷髅或凋零骷髅额外掉落其头颅，并额外掠夺2点死灵能量")
                     .itemLanguageTooltip(-1, "\"Welcome to the Bone Zone\"", "“欢迎来到骸骨领域”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
                     .itemModel(LyraItemRegisterBuilder::basicModel)
@@ -215,14 +218,100 @@ public class FargoSoulItemRegister {
     public static final DeferredItem<PenetratingNinjaSoul> PenetratingNinjaSoulItem =
             register("penetrating_ninja_soul", PenetratingNinjaSoul::new, 0x945B0A)
                     .itemLanguage("Penetrating Ninja Enchantment", "渗透忍者魔石")
-                    .itemLanguageTooltip(1, " ", "赋予渗透冲刺能力")
-                    .itemLanguageTooltip(2, " ", "渗透冲刺时能够撞击敌人，造成10%持有者最大生命值的凋零伤害与大量击退")
-                    .itemLanguageTooltip(3, " ", "冲刺后的0.5秒内免疫一切伤害并可以穿过墙壁")
+                    .itemLanguageTooltip(1, " ", "赋予渗透冲刺，冲刺初速度提升25%")
+                    .itemLanguageTooltip(2, " ", "按下“渗透”键，可以使下一次冲刺后的1秒内免疫一切伤害并可以穿过墙壁，该效果有30秒冷却时间")
                     .itemLanguageTooltip(-1, " ", "“藏匿于墙中的村庄”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
                     .itemModel(LyraItemRegisterBuilder::basicModel)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
+
+    // ============================================================
+    // 泰拉之力 · 魔石分段
+    // ============================================================
+    public static final DeferredItem<TerraPower> TerraPowerItem = register("terra_power", TerraPower::new)
+            .itemLanguage("Terra Power", "泰拉之力")
+            .itemLanguageTooltip(1, " ", "暴击时有20%概率释放3~6颗雷电球，雷电球会电击附近的敌人并施加铅中毒，该效果有1秒冷却时间")
+            .itemLanguageTooltip(2, " ", "在场的雷电球越多，释放雷电球的概率越高，冷却越短，概率最多提升40%，冷却时间最多降低60%")
+            .itemLanguageTooltip(3, " ", "造成伤害时有5%概率使伤害提升100%，并获得5秒泰拉共鸣效果，使释放雷电球的概率提升20%，雷电球造成的伤害提升80%")
+            .itemLanguageTooltip(4, " ", "受到的伤害减少，减少值相当于[4+你2%最大生命值]")
+            .itemLanguageTooltip(-1, " ", "“大地赐予它力量”")
+            .itemTag(FargoSoulItemTagsRegister.SectionPower)
+            .itemModel(LyraItemRegisterBuilder::basicModel)
+            .itemTag(FargoSoulItemTagsRegister.Curio)
+            .build();
+
+    public static final DeferredItem<CopperSoul> CopperSoulItem = register("copper_soul", CopperSoul::new)
+            .itemLanguage("Copper Enchantment", "铜魔石")
+            .itemLanguageTooltip(1, " ", "攻击时有10%概率释放雷电球，雷电球会电击附近的敌人，该效果有5秒冷却时间")
+            .itemLanguageTooltip(2, " ", "攻击雨中或水中的目标时释放闪电的概率增加20%")
+            .itemLanguageTooltip(-1, " ", "“它的音乐还是电音”")
+            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+            .itemModel(LyraItemRegisterBuilder::basicModel)
+            .itemTag(FargoSoulItemTagsRegister.Curio)
+            .build();
+
+    public static final DeferredItem<TinSoul> TinSoulItem = register("tin_soul", TinSoul::new)
+            .itemLanguage("Tin Enchantment", "锡魔石")
+            .itemLanguageTooltip(1, " ", "暴击伤害提升20%")
+            .itemLanguageTooltip(2, " ", "每次暴击时都会增加10%额外暴击伤害，额外暴击伤害的最大值为80%")
+            .itemLanguageTooltip(3, " ", "受到伤害会使额外暴击伤害减半")
+            .itemLanguageTooltip(-1, "\"Crits are back\"", "“暴击回归”")
+            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+            .itemModel(LyraItemRegisterBuilder::basicModel)
+            .itemTag(FargoSoulItemTagsRegister.Curio)
+            .build();
+
+    public static final DeferredItem<IronSoul> IronSoulItem = register("iron_soul", IronSoul::new)
+            .itemLanguage("Iron Enchantment", "铁魔石")
+            .itemLanguageTooltip(1, " ", "吸引周围的物品")
+            .itemLanguageTooltip(2, " ", "拾取物品后的5秒内受到的伤害减少20%")
+            .itemLanguageTooltip(-1, " ", "“趁热打铁”")
+            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+            .itemModel(LyraItemRegisterBuilder::basicModel)
+            .itemTag(FargoSoulItemTagsRegister.Curio)
+            .build();
+
+    public static final DeferredItem<LeadSoul> LeadSoulItem = register("lead_soul", LeadSoul::new)
+            .itemLanguage("Lead Enchantment", "铅魔石")
+            .itemLanguageTooltip(1, " ", "攻击施加5秒铅中毒")
+            .itemLanguageTooltip(2, " ", "免疫铅中毒")
+            .itemLanguageTooltip(-1, " ", "“不建议食用”")
+            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+            .itemModel(LyraItemRegisterBuilder::basicModel)
+            .itemTag(FargoSoulItemTagsRegister.Curio)
+            .build();
+
+    public static final DeferredItem<SilverSoul> SilverSoulItem = register("silver_soul", SilverSoul::new)
+            .itemLanguage("Silver Enchantment", "银魔石")
+            .itemLanguageTooltip(1, " ", "举盾后0.2~0.4秒抵挡攻击会反弹敌人200%伤害，并赋予你1.5秒惊人一刻，攻击力提升150%，该效果有3秒冷却时间")
+            .itemLanguageTooltip(2, " ", "反弹伤害后的0.4秒内无敌")
+            .itemLanguageTooltip(-1, " ", "“反射”")
+            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+            .itemModel(LyraItemRegisterBuilder::basicModel)
+            .itemTag(FargoSoulItemTagsRegister.Curio)
+            .build();
+
+    public static final DeferredItem<TungstenSoul> TungstenSoulItem = register("tungsten_soul", TungstenSoul::new)
+            .itemLanguage("Tungsten Enchantment", "钨魔石")
+            .itemLanguageTooltip(1, " ", "攻击距离提升50%")
+            .itemLanguageTooltip(-1, " ", "“大就是好”")
+            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+            .itemModel(LyraItemRegisterBuilder::basicModel)
+            .itemTag(FargoSoulItemTagsRegister.Curio)
+            .build();
+
+    public static final DeferredItem<ObsidianSoul> ObsidianSoulItem = register("obsidian_soul", ObsidianSoul::new)
+            .itemLanguage("Obsidian Enchantment", "黑曜石魔石")
+            .itemLanguageTooltip(1, " ", "在火焰或熔岩中时获得更好的视野")
+            .itemLanguageTooltip(2, " ", "受到的伤害减少1")
+            .itemLanguageTooltip(3, " ", "免疫火焰伤害")
+            .itemLanguageTooltip(4, " ", "免疫熔岩伤害")
+            .itemLanguageTooltip(-1, " ", "“大地在呼唤”")
+            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+            .itemModel(LyraItemRegisterBuilder::basicModel)
+            .itemTag(FargoSoulItemTagsRegister.Curio)
+            .build();
 
     // ============================================================
     // 森林之力 · 魔石分段
@@ -292,84 +381,6 @@ public class FargoSoulItemRegister {
             .itemLanguageTooltip(1, "Crit damage multiplier increased to 130%", "持有者攻击暴击时，暴击伤害系数提升至130%")
             .itemLanguageTooltip(2, "Non-crits have a 25% chance to be re-rolled as a crit", "持有者攻击没有暴击时，额外进行25%概率的暴击判定")
             .itemLanguageTooltip(-1, "\"Too little, too late...\"", "“太少了，太晚了……”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
-
-    // ============================================================
-    // 泰拉之力 · 魔石分段
-    // ============================================================
-    public static final DeferredItem<CopperSoul> CopperSoulItem = register("copper_soul", CopperSoul::new)
-            .itemLanguage("Copper Enchantment", "铜魔石")
-            .itemLanguageTooltip(1, "Chance to summon lightning on attack; 2s cooldown", "持有者攻击时有概率召唤闪电攻击目标，该效果有2秒冷却时间")
-            .itemLanguageTooltip(2, "Lightning pulls nearby enemies into the strike", "如果目标周围有其他目标，会被吸引到闪电位置一同被攻击")
-            .itemLanguageTooltip(3, "Increased chance against targets in rain or water", "命中雨中或水中的目标时释放闪电的概率增加")
-            .itemLanguageTooltip(-1, "\"Its music is electric\"", "“它的音乐还是电音”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
-
-    public static final DeferredItem<TinSoul> TinSoulItem = register("tin_soul", TinSoul::new)
-            .itemLanguage("Tin Enchantment", "锡魔石")
-            .itemLanguageTooltip(1, "Min crit chance to 10%, min crit damage to 200%", "将持有者的暴击率下限设为10%，暴击伤害下限设为200%")
-            .itemLanguageTooltip(2, "Each crit adds +10% extra crit chance, max 60%", "每次持有者暴击时都会增加10%额外暴击率，额外暴击率的最大值为60%")
-            .itemLanguageTooltip(3, "Extra crit chance halved when damaged", "持有者受伤会使额外暴击率减半")
-            .itemLanguageTooltip(-1, "\"Crits are back\"", "“暴击回归”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
-
-    public static final DeferredItem<IronSoul> IronSoulItem = register("iron_soul", IronSoul::new)
-            .itemLanguage("Iron Enchantment", "铁魔石")
-            .itemLanguageTooltip(1, "Attracts nearby items", "持有者会吸引周围的物品")
-            .itemLanguageTooltip(2, "Damage taken reduced by 20% for 5s after picking up an item", "拾取物品后的5秒内受到的伤害减少20%")
-            .itemLanguageTooltip(-1, "\"Strike while the iron is hot\"", "“趁热打铁”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
-
-    public static final DeferredItem<LeadSoul> LeadSoulItem = register("lead_soul", LeadSoul::new)
-            .itemLanguage("Lead Enchantment", "铅魔石")
-            .itemLanguageTooltip(1, "Attacks have a chance to inflict Lead Poisoning", "持有者攻击有几率造成铅中毒")
-            .itemLanguageTooltip(2, "Immunity to Lead Poisoning", "免疫铅中毒")
-            .itemLanguageTooltip(-1, "\"Not recommended for consumption\"", "“不建议食用”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
-
-    public static final DeferredItem<SilverSoul> SilverSoulItem = register("silver_soul", SilverSoul::new)
-            .itemLanguage("Silver Enchantment", "银魔石")
-            .itemLanguageTooltip(1, "+10 defense while blocking", "持有者举盾状态会增加10点防御力")
-            .itemLanguageTooltip(2, "Blocking within 0.2s reflects 200% damage", "持有者举盾后0.2秒抵挡攻击会反弹目标200%伤害")
-            .itemLanguageTooltip(3, "Damage increased to 150% for 1s after reflecting", "持有者反弹后1秒内造成的伤害提高至150%")
-            .itemLanguageTooltip(-1, "\"Reflection\"", "“反射”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
-
-    public static final DeferredItem<TungstenSoul> TungstenSoulItem = register("tungsten_soul", TungstenSoul::new)
-            .itemLanguage("Tungsten Enchantment", "钨魔石")
-            .itemLanguageTooltip(1, "+50% attack reach", "持有者增加50%攻击距离")
-            .itemLanguageTooltip(2, "+100% size of held items", "持有者手持物品大小提升100%")
-            .itemLanguageTooltip(-1, "\"Bigger is better\"", "“大就是好”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
-
-    public static final DeferredItem<ObsidianSoul> ObsidianSoulItem = register("obsidian_soul", ObsidianSoul::new)
-            .itemLanguage("Obsidian Enchantment", "黑曜石魔石")
-            .itemLanguageTooltip(1, "Generates fireballs to attack nearby enemies", "持有者周围会产生火球攻击附近敌人")
-            .itemLanguageTooltip(2, "Better vision in lava", "持有者在熔岩中时获得更好的视野")
-            .itemLanguageTooltip(3, "Sets minimum armor to 8", "将持有者的护甲值下限提升至8点")
-            .itemLanguageTooltip(4, "Immunity to fire and lava damage", "免疫火焰与熔岩伤害")
-            .itemLanguageTooltip(-1, "\"The Earth is calling\"", "“大地在呼唤”")
             .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
             .itemModel(LyraItemRegisterBuilder::basicModel)
             .itemTag(FargoSoulItemTagsRegister.Curio)
@@ -783,24 +794,6 @@ public class FargoSoulItemRegister {
             .itemLanguageTooltip(7, "Gain 5 Soul Energy per second; excess energy heals you", "每秒获得5层灵魂能量，溢出的灵魂能量会改为治疗持有者")
             .itemLanguageTooltip(8, "Greatly extends flight time", "大幅延长持有者的飞行时间")
             .itemLanguageTooltip(-1, "\"Drifting away like a transcended immortal\"", "“飘飘乎如遗世独立，羽化而登仙”")
-            .itemTag(FargoSoulItemTagsRegister.SectionPower)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
-
-    public static final DeferredItem<TerraPower> TerraPowerItem = register("terra_power", TerraPower::new)
-            .itemLanguage("Terra Power", "泰拉之力")
-            .itemLanguageTooltip(1, "Enhanced Copper - Summons two lightning bolts with 200% damage", "强化-铜-召唤两道闪电，并且伤害提升至200%")
-            .itemLanguageTooltip(2, "Enhanced Iron - Increased attraction strength and range", "强化-铁-吸引强度提升，吸引范围提升")
-            .itemLanguageTooltip(3, "Enhanced Lead - Lead Poisoning level +1", "强化-铅-铅中毒减益等级+1")
-            .itemLanguageTooltip(4, "Enhanced Obsidian - Reduced fireball interval, increased speed", "强化-黑曜石-产生火球的间隔降低，火球的飞行速度提升")
-            .itemLanguageTooltip(5, "Enhanced Silver - Parrying window +0.1s", "强化-银-额外增加0.1秒格挡判定时间")
-            .itemLanguageTooltip(6, "Enhanced Tin - Min crit 20%, max extra crit 100%", "强化-锡-暴击率下限提升至20%，额外暴击率上限提升至100%")
-            .itemLanguageTooltip(7, "Enhanced Tungsten - Additional +50% item size", "强化-钨-额外提升50%物品大小")
-            .itemLanguageTooltip(8, "Crits may fire 40 damage lightning causing Lead Poisoning; 5s cooldown", "持有者暴击有概率发射一道闪电，闪电基础伤害为40，造成爆炸并附加铅中毒，此效果有5秒冷却")
-            .itemLanguageTooltip(9, "Lightning increases crit by 10% (max 40%); max crit reduces bolt CD by 40%", "每发射一道闪电，持有者暴击率提升10%，最高提升40%暴击率，暴击率满时减少40%闪电发射冷却")
-            .itemLanguageTooltip(10, "Taking damage resets crit bonus", "受到伤害时重置暴击率")
-            .itemLanguageTooltip(-1, "\"The Earth grants it strength\"", "“大地赐予它力量”")
             .itemTag(FargoSoulItemTagsRegister.SectionPower)
             .itemModel(LyraItemRegisterBuilder::basicModel)
             .itemTag(FargoSoulItemTagsRegister.Curio)
