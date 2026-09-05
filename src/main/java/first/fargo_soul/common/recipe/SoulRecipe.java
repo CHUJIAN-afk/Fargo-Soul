@@ -1,7 +1,7 @@
 package first.fargo_soul.common.recipe;
 
-import first.fargo_soul.register.RecipeSerializerRegister;
-import first.fargo_soul.register.RecipeTypeRegister;
+import first.fargo_soul.register.FargoSoulRecipeSerializerRegister;
+import first.fargo_soul.register.FargoSoulRecipeTypeRegister;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
@@ -71,12 +71,12 @@ public record SoulRecipe(List<ItemStack> inputs, ItemStack output) implements Re
 
     @Override
     public @NotNull RecipeSerializer<?> getSerializer() {
-        return RecipeSerializerRegister.Integration.get();
+        return FargoSoulRecipeSerializerRegister.Integration.get();
     }
 
     @Override
     public @NotNull RecipeType<?> getType() {
-        return RecipeTypeRegister.Integration.get();
+        return FargoSoulRecipeTypeRegister.Integration.get();
     }
 
     public static class Serializer implements RecipeSerializer<SoulRecipe> {

@@ -1,8 +1,7 @@
 package first.fargo_soul.network;
 
 import first.fargo_soul.FargoSoul;
-import first.fargo_soul.api.item.ISoulItem;
-import first.fargo_soul.common.attachment.ISoulItemCache;
+import first.fargo_soul.common.attachment.SoulItemData;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -10,8 +9,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public record KeyHandlePacket(ResourceLocation key) implements CustomPacketPayload {
 
@@ -26,10 +23,7 @@ public record KeyHandlePacket(ResourceLocation key) implements CustomPacketPaylo
     public void handle(IPayloadContext context) {
         context.enqueueWork(() -> {
             Player player = context.player();
-            List<ISoulItem> list = ISoulItemCache.getList(player);
-            for (ISoulItem soulItem : list) {
-                soulItem.keyHandle(player, key);
-            }
+            SoulItemData.forEach(player, soulItem -> soulItem.keyHandle(player, key));
         });
     }
 }

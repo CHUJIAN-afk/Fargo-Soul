@@ -4,9 +4,7 @@ import net.minecraft.client.player.Input;
 
 
 public class KeyUtils {
-
-    public static boolean shiftDown = false;
-
+    
     private static Movement zza = Movement.NONE;
     private static int sprintingTime = 0;
     private static boolean zzKeyDown = false;

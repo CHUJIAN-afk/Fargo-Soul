@@ -1,25 +1,36 @@
 package first.fargo_soul.common.item.terraSoul.cosmicPower;
 
 import first.fargo_soul.FargoSoul;
-import first.fargo_soul.api.SoulInfoHelper;
-import first.fargo_soul.api.TargetHelper;
-import first.fargo_soul.common.attachment.InvincibleData;
-import first.fargo_soul.common.attachment.soulInfoData.soulInfo.StackSoulInfo;
+import first.fargo_soul.common.attachment.SoulInfoData;
+import first.fargo_soul.common.attachment.SoulItemData;
+import first.fargo_soul.common.attachment.SoulTargetCache;
 import first.fargo_soul.common.item.base.SoulItem;
-import first.fargo_soul.register.SoulInfoRegister;
-import net.minecraft.world.damagesource.DamageSources;
+import first.fargo_soul.common.item.base.ValueModifier;
+import first.fargo_soul.common.item.base.ValueOperation;
+import first.fargo_soul.common.soulInfo.SoulInfo;
+import first.fargo_soul.common.soulInfo.SoulInfoType;
+import first.fargo_soul.register.FargoSoulItemRegister;
+import first.fargo_soul.register.FargoSoulKeyRegister;
+import first.fargo_soul.register.FargoSoulSoulInfoRegister;
+import first.lyra.common.attachment.InvincibleData;
+import first.lyra.common.entity.IEntityCollision;
+import first.lyra.common.particle.genericParticle.GenericParticleBuilder;
+import first.lyra.utils.ParticleHelper;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import top.theillusivec4.curios.api.SlotContext;
 
 import java.util.List;
+import java.util.Set;
 
 public class BlazeSoul extends SoulItem {
 
@@ -28,51 +39,194 @@ public class BlazeSoul extends SoulItem {
     }
 
     @Override
-    public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        LivingEntity living = slotContext.entity();
-        SoulInfoHelper helper = SoulInfoHelper.get(living);
-        helper.removeInfo(FargoSoul.rl("blaze_soul_armor"), SoulInfoRegister.STACK);
+    public boolean canSprint(Player player) {
+        Info soulInfo = SoulInfoData.getSoulInfo(player, FargoSoulSoulInfoRegister.BLAZE_SOUL_INFO);
+        if (soulInfo != null && soulInfo.blazePower > 300) {
+            return true;
+        }
+        return super.canSprint(player);
     }
 
     @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        LivingEntity ticker = slotContext.entity();
-        Level level = ticker.level();
-        boolean isClientSide = level.isClientSide();
-        if (!isClientSide && ticker.tickCount % 100 == 0) {
-            SoulInfoHelper helper = SoulInfoHelper.get(ticker);
-            StackSoulInfo stackSoulInfo = helper.getInfo(FargoSoul.rl("blaze_soul_armor"), SoulInfoRegister.STACK);
-            if (stackSoulInfo == null) {
-                stackSoulInfo = new StackSoulInfo();
-                helper.putInfo(FargoSoul.rl("blaze_soul_armor"), stackSoulInfo);
-            }
-            stackSoulInfo.setStack(Math.min(3, stackSoulInfo.getStack() + 1));
+    public void sprintClient(Player player, List<ValueModifier> modifiers) {
+        Info soulInfo = SoulInfoData.getSoulInfo(player, FargoSoulSoulInfoRegister.BLAZE_SOUL_INFO);
+        if (soulInfo != null && soulInfo.blazePower > 600) {
+            modifiers.add(new ValueModifier(1f, ValueOperation.ADD_MULTIPLIED_BASE));
         }
     }
 
     @Override
-    public void target(@NotNull LivingEntity target, @Nullable Entity attacker, @NotNull DamageContainer container, boolean isClient) {
-        if (!isClient) {
-            SoulInfoHelper helper = SoulInfoHelper.get(target);
-            StackSoulInfo stackSoulInfo = helper.getInfo(FargoSoul.rl("blaze_soul_armor"), SoulInfoRegister.STACK);
-            if (stackSoulInfo != null) {
-                int infoStack = stackSoulInfo.getStack();
-                container.setNewDamage(container.getNewDamage() * (1 - infoStack * 0.15f));
-                AttributeInstance instance = target.getAttribute(Attributes.ATTACK_DAMAGE);
-                if (instance != null) {
-                    double damage = instance.getValue() * 4;
-                    TargetHelper targetHelper = TargetHelper.get(target);
-                    List<LivingEntity> targetList = targetHelper.getTargetList(3);
-                    for (LivingEntity living : targetList) {
-                        DamageSources damageSources = target.damageSources();
-                        InvincibleData.attack(living)
-                                .attacker(target.getUUID())
-                                .damageSource(damageSources.inFire())
-                                .damageAmount((float) damage)
+    public void sprintCollision(Player player, List<IEntityCollision.HitContext> list, Set<LivingEntity> hits) {
+        for (IEntityCollision.HitContext context : list) {
+            LivingEntity living = context.entity();
+            if (hits.add(living)) {
+                float damageAmount = player.getMaxHealth() * 0.12f;
+                Info soulInfo = SoulInfoData.getSoulInfo(player, FargoSoulSoulInfoRegister.BLAZE_SOUL_INFO);
+                if (soulInfo != null && soulInfo.blazePower > 600) {
+                    damageAmount *= 1.2f;
+                }
+                living.igniteForTicks(200);
+                InvincibleData.attack(living)
+                        .attacker(player.getUUID())
+                        .damageSource(player.damageSources().inFire())
+                        .damageAmount(damageAmount)
+                        .apply();
+                Vec3 point = context.hitPoint();
+                fireParticle(player.level(), point, living.getRandom(), 40);
+            }
+        }
+    }
+
+    @Override
+    public void tick(Player living) {
+        Info soulInfo = SoulInfoData.getSoulInfo(living, FargoSoulSoulInfoRegister.BLAZE_SOUL_INFO);
+        if (soulInfo != null) {
+            if (living.tickCount % 20 == 0) {
+                soulInfo.blazePower = soulInfo.maxBlazePower;
+                if (soulInfo.blazePower >= 0) {
+                    living.heal(living.getMaxHealth() * 0.01f);
+                }
+                if (soulInfo.blazePower > 900) {
+                    List<LivingEntity> list = SoulTargetCache.get(living).getEntitiesInRadius(living.getBoundingBox().getCenter(), 4, null);
+                    for (LivingEntity livingEntity : list) {
+                        livingEntity.igniteForTicks(100);
+                        InvincibleData.attack(livingEntity)
+                                .attacker(living.getUUID())
+                                .damageSource(living.damageSources().inFire())
+                                .damageAmount(living.getMaxHealth() * 0.04f)
                                 .apply();
                     }
                 }
+                if (soulInfo.power) {
+                    soulInfo.blazePower -= 20;
+                }
             }
+            if (soulInfo.blazePower > 300) {
+                ParticleHelper.create(living.level())
+                        .generic(GenericParticleBuilder.create()
+                                         .centerColor(0xFF691F)
+                                         .edgeColor(0xFE4A00)
+                                         .lifetime(5)
+                                         .lifetimeRandom(10)
+                                         .spin(0.3f)
+                                         .spinRandom(0.05F)
+                                         .friction(0.75F)
+                                         .scale(0.015f)
+                                         .scaleRandom(0.005f)
+                        )
+                        .pos(living.position())
+                        .offset(0.15)
+                        .count(20)
+                        .spread(Math.TAU)
+                        .emit();
+            }
+            if (soulInfo.blazePower <= 0) {
+                soulInfo.setRemove(true);
+            }
+        }
+    }
+
+    @Override
+    public void attack(@NotNull Player attacker, @NotNull LivingEntity target, @NotNull DamageContainer container, List<ValueModifier> modifiers) {
+        Info soulInfo = SoulInfoData.getSoulInfo(attacker, FargoSoulSoulInfoRegister.BLAZE_SOUL_INFO);
+        if (soulInfo == null) {
+            soulInfo = new Info();
+            SoulInfoData.putSoulInfo(attacker, soulInfo);
+        }
+        float originalDamage = container.getOriginalDamage();
+        if (!soulInfo.power) {
+            soulInfo.blazePower = Math.min(soulInfo.blazePower + originalDamage * 0.15f, soulInfo.maxBlazePower);
+        } else {
+            if (soulInfo.blazePower > 0) {
+                soulInfo.blazePower -= 50;
+                modifiers.add(new ValueModifier(3.75f, ValueOperation.ADD_MULTIPLIED_BASE));
+                fireParticle(attacker.level(), target.getBoundingBox().getCenter(), target.getRandom(), 80);
+            }
+        }
+    }
+
+    @Override
+    public void hurt(@Nullable Entity attacker, @NotNull Player target, @NotNull DamageContainer container, List<ValueModifier> modifiers) {
+        Info soulInfo = SoulInfoData.getSoulInfo(target, FargoSoulSoulInfoRegister.BLAZE_SOUL_INFO);
+        if (soulInfo != null) {
+            float scale = -((soulInfo.blazePower / soulInfo.maxBlazePower) * (soulInfo.power ? 0.8f : 0.4f));
+            modifiers.add(new ValueModifier(scale, ValueOperation.ADD_MULTIPLIED_TOTAL));
+            modifiers.add(new ValueModifier(-target.getMaxHealth() * 0.15f, ValueOperation.ADD_VALUE));
+        }
+    }
+
+    @Override
+    public @Nullable ResourceLocation keyPressed(Player player, int key) {
+        if (FargoSoulKeyRegister.BlazeSoulKey.getKey().getValue() == key) {
+            return FargoSoul.rl("blaze_soul_info_power");
+        }
+        return super.keyPressed(player, key);
+    }
+
+    @Override
+    public void keyHandle(Player player, ResourceLocation location) {
+        if (location.equals(FargoSoul.rl("blaze_soul_info_power"))) {
+            Info soulInfo = SoulInfoData.getSoulInfo(player, FargoSoulSoulInfoRegister.BLAZE_SOUL_INFO);
+            if (soulInfo != null && soulInfo.blazePower > 900) {
+                soulInfo.power = true;
+            }
+        }
+    }
+
+    private static void fireParticle(Level level, Vec3 point, RandomSource randomSource,int count) {
+        ParticleHelper.create(level)
+                .generic(GenericParticleBuilder.create()
+                                 .centerColor(0xFF691F)
+                                 .edgeColor(0xFE4A00)
+                                 .lifetime(5)
+                                 .lifetimeRandom(10)
+                                 .spin(0.3f)
+                                 .spinRandom(0.05F)
+                                 .friction(0.75F)
+                                 .scale(0.025f)
+                                 .scaleRandom(0.005f)
+                )
+                .pos(point)
+                .offset(0.15)
+                .velocity(point.offsetRandom(randomSource, 1).subtract(point).normalize())
+                .count(count)
+                .speed(0.35)
+                .spread(Math.TAU)
+                .emit();
+    }
+
+    public static final class Info extends SoulInfo {
+
+        public boolean power = false;
+        public float blazePower = 0;
+        public float maxBlazePower = 1000;
+
+        @Override
+        public SoulInfoType<? extends SoulInfo> getType() {
+            return FargoSoulSoulInfoRegister.BLAZE_SOUL_INFO.get();
+        }
+
+        @Override
+        public void tick(LivingEntity living) {
+            if (!SoulItemData.isEquipped(living, FargoSoulItemRegister.BlazeSoulItem.get())) {
+                setRemove(true);
+            }
+        }
+
+        @Override
+        public CompoundTag serializeNBT(HolderLookup.@NotNull Provider provider) {
+            CompoundTag tag = super.serializeNBT(provider);
+            tag.putBoolean("power", power);
+            tag.putFloat("blazePower", blazePower);
+            tag.putFloat("maxBlazePower", maxBlazePower);
+            return tag;
+        }
+
+        @Override
+        public void deserializeNBT(HolderLookup.@NotNull Provider provider, @NotNull CompoundTag tag) {
+            power = tag.getBoolean("power");
+            blazePower = tag.getFloat("blazePower");
+            maxBlazePower = tag.getFloat("maxBlazePower");
         }
     }
 }

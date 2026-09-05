@@ -5,30 +5,15 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "fargo_soul.refmap.json",
   "mixins": [
-    "minecraft.AbstractArrowMixin",
-    "minecraft.AbstractContainerScreenMixin",
-    "minecraft.AttributeSupplierAccessor",
+    "lyra.TooltipHandlerMixin",
     "minecraft.CombatRulesMixin",
-    "minecraft.EntityMixin",
-    "minecraft.ExtraCodecsMixin",
-    "minecraft.InventoryMenuAccessor",
-    "minecraft.ItemEntityMixin",
-    "minecraft.LanguageProviderAccessor",
     "minecraft.LivingEntityMixin",
     "minecraft.PlayerMixin",
-    "minecraft.ProjectileUtilMixin",
     "minecraft.ServerBlockStateBaseMixin",
-    "minecraft.SnowballMixin",
-    "minecraft.StemBlockMixin",
-    "minecraft.TagLoaderMixin",
     "minecraft.VillagerMixin"
   ],
   "client": [
     "minecraft.ClientBlockStateBaseMixin",
-    "minecraft.CreativeModeInventoryScreenMixin",
-    "minecraft.EntityRenderDispatcherMixin",
-    "minecraft.ItemInHandRendererMixin",
-    "minecraft.ScreenAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

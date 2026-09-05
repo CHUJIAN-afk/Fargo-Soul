@@ -1,7 +1,7 @@
 package first.fargo_soul.common.block;
 
 import first.fargo_soul.common.blcokEntity.CosmicCrucibleBlockEntity;
-import first.fargo_soul.register.BlockEntityRegister;
+import first.fargo_soul.register.FargoSoulBlockEntityRegister;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -127,7 +127,7 @@ public class CosmicCrucibleBlock extends BaseEntityBlock {
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
-        return createTickerHelper(blockEntityType, BlockEntityRegister.CosmicCrucible.get(), (lvl, blockPos, blockState, cosmicCrucibleBlock) -> cosmicCrucibleBlock.tick());
+        return createTickerHelper(blockEntityType, FargoSoulBlockEntityRegister.CosmicCrucible.get(), (lvl, blockPos, blockState, cosmicCrucibleBlock) -> cosmicCrucibleBlock.tick());
     }
 
     @Override

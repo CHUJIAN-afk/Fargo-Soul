@@ -4,8 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import first.fargo_soul.common.blcokEntity.CosmicCrucibleBlockEntity;
-import first.fargo_soul.config.ClientConfig;
-import first.fargo_soul.utils.RenderUtils;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -39,16 +37,12 @@ public class CosmicCrucibleBlockEntityRenderer implements BlockEntityRenderer<Co
     public void render(@NotNull CosmicCrucibleBlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int packedLight, int packedOverlay) {
         Level level = blockEntity.getLevel();
         if (level != null) {
-            if (ClientConfig.CosmicCrucibleBlackHoleEventHorizonRendering.get()) {
-                renderBlackHoleEventHorizon(blockEntity, level, partialTick, poseStack, multiBufferSource);
-            }
-            if (ClientConfig.CosmicCrucibleItemRendering.get()) {
-                renderItem(blockEntity, partialTick, poseStack, multiBufferSource, packedLight, level);
-            }
+            renderBlackHoleEventHorizon(blockEntity, level, partialTick, poseStack, multiBufferSource);
+            renderItem(blockEntity, partialTick, poseStack, multiBufferSource, level);
         }
     }
 
-    private void renderItem(@NotNull CosmicCrucibleBlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int packedLight, Level level) {
+    private void renderItem(@NotNull CosmicCrucibleBlockEntity blockEntity, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, Level level) {
         IItemHandler itemHandler = blockEntity.getItemHandler();
         List<ItemStack> renderList = new ArrayList<>();
 
@@ -68,9 +62,9 @@ public class CosmicCrucibleBlockEntityRenderer implements BlockEntityRenderer<Co
         if (renderList.isEmpty()) return;
 
         random.setSeed(blockEntity.getBlockPos().hashCode());
-        float ageInTicks = RenderUtils.getAgeInTicks(level, partialTick, random.nextFloat() * 0.4f + 0.6f);
-        int rings = Math.min(8, (int) Math.ceil(renderList.size() / 8.0f));
+        float ageInTicks = Mth.lerp(partialTick, level.getGameTime() - 1, level.getGameTime());
 
+        int rings = Math.min(8, (int) Math.ceil(renderList.size() / 8.0f));
         for (int ringIndex = 0; ringIndex < rings; ringIndex++) {
             List<ItemStack> ringItems = new ArrayList<>();
             for (int i = ringIndex; i < renderList.size(); i += rings) {
@@ -78,7 +72,7 @@ public class CosmicCrucibleBlockEntityRenderer implements BlockEntityRenderer<Co
             }
             if (ringItems.isEmpty()) continue;
 
-            float ringSpeed = 1.0f - ringIndex * 0.1f;
+            float ringSpeed = random.nextFloat() * 0.4f + 0.6f - ringIndex * 0.1f;
             float ringOffset = ringIndex * 0.2f;
             float ringRadius = 0.375f * (float) (Math.cos(ageInTicks * 0.1f + ringOffset) * 0.3f + 1.7f);
 
@@ -115,7 +109,7 @@ public class CosmicCrucibleBlockEntityRenderer implements BlockEntityRenderer<Co
         poseStack.pushPose();
         poseStack.translate(0.5, 1.5, 0.5);
         random.setSeed(blockEntity.getBlockPos().hashCode());
-        float ageInTicks = RenderUtils.getAgeInTicks(level, partialTick, random.nextFloat() * 0.4f + 0.6f);
+        float ageInTicks = Mth.lerp(partialTick, level.getGameTime() - 1, level.getGameTime());
         float radius = (float) (Math.sin(ageInTicks * 0.025) * 0.01 + 0.19);
         int segments = 64;
         VertexConsumer builder = buffer.getBuffer(RenderType.SOLID);
@@ -138,5 +132,4 @@ public class CosmicCrucibleBlockEntityRenderer implements BlockEntityRenderer<Co
         }
         poseStack.popPose();
     }
-
 }

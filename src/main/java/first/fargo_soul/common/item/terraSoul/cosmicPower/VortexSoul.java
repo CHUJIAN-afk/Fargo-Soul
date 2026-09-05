@@ -2,22 +2,29 @@ package first.fargo_soul.common.item.terraSoul.cosmicPower;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import first.fargo_soul.FargoSoul;
-import first.fargo_soul.api.SoulInfoHelper;
-import first.fargo_soul.common.attachment.soulInfoData.soulInfo.CoolDownSoulInfo;
+import first.fargo_soul.common.attachment.SoulInfoData;
+import first.fargo_soul.common.entity.Vortex;
 import first.fargo_soul.common.item.base.SoulItem;
-import first.fargo_soul.register.KeyRegister;
-import first.fargo_soul.register.SoulInfoRegister;
-import first.fargo_soul.utils.SoulUtils;
+import first.fargo_soul.common.soulInfo.SoulInfo;
+import first.fargo_soul.common.soulInfo.SoulInfoType;
+import first.fargo_soul.register.FargoSoulKeyRegister;
+import first.fargo_soul.register.FargoSoulSoulInfoRegister;
+import first.lyra.common.sound.Playable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 public class VortexSoul extends SoulItem {
 
@@ -27,7 +34,7 @@ public class VortexSoul extends SoulItem {
 
     @Override
     public ResourceLocation keyPressed(Player player, int key) {
-        InputConstants.Key keyKey = KeyRegister.VortexSoulKey.getKey();
+        InputConstants.Key keyKey = FargoSoulKeyRegister.VortexSoulKey.getKey();
         if (key == keyKey.getValue()) {
             return FargoSoul.rl("vortex_soul");
         }
@@ -37,15 +44,15 @@ public class VortexSoul extends SoulItem {
     @Override
     public void keyHandle(Player player, ResourceLocation key) {
         if (key.equals(FargoSoul.rl("vortex_soul"))) {
-            SoulInfoHelper helper = SoulInfoHelper.get(player);
-            CoolDownSoulInfo coolDownSoulInfo = helper.getInfo(FargoSoul.rl("stardust_soul"), SoulInfoRegister.COOLDOWN);
-            if (coolDownSoulInfo == null) {
-                coolDownSoulInfo = new CoolDownSoulInfo();
-                coolDownSoulInfo.setCooldown(120 * 20);
-                helper.putInfo(FargoSoul.rl("stardust_soul"), coolDownSoulInfo);
+            Info info = SoulInfoData.getSoulInfo(player, FargoSoulSoulInfoRegister.VORTEX_SOUL_INFO);
+            if (info == null) {
+                info = new Info();
+                info.cooldown = 20;
+                SoulInfoData.putSoulInfo(player, info);
                 Level level = player.level();
-                HitResult hitResult = SoulUtils.getTargetedBlock(player, 512);
-                if (hitResult instanceof BlockHitResult blockHitResult){
+                ClipContext clipContext = new ClipContext(player.getEyePosition(), player.getEyePosition().add(player.getLookAngle().scale(256)), ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player);
+                HitResult hitResult = player.level().clip(clipContext);
+                if (hitResult instanceof BlockHitResult blockHitResult) {
                     BlockPos pos = blockHitResult.getBlockPos();
                     if (!level.getBlockState(pos).is(Blocks.AIR) && pos.getY() > level.getMinBuildHeight()) {
                         Direction hitFace = blockHitResult.getDirection();
@@ -53,15 +60,42 @@ public class VortexSoul extends SoulItem {
                         double adjustY = pos.getY() + hitFace.getStepY();
                         double adjustZ = pos.getZ() + hitFace.getStepZ();
                         player.teleportTo(adjustX, adjustY, adjustZ);
-                        SoulUtils.playSound(
-                                level,
-                                player.position(),
-                                SoundEvents.ENDERMAN_TELEPORT,
-                                SoundSource.PLAYERS
-                        );
+                        Playable.play(SoundEvents.ENDERMAN_TELEPORT, level, player.position(), player.getSoundSource());
+                        Vortex vortex = new Vortex(player.damageSources().playerAttack(player), new Vec3(adjustX, adjustY, adjustZ));
+                        vortex.setDamage(0.5f);
+                        vortex.join(player);
                     }
                 }
             }
+        }
+    }
+
+    public static final class Info extends SoulInfo {
+
+        public int cooldown = 0;
+
+        @Override
+        public SoulInfoType<? extends SoulInfo> getType() {
+            return FargoSoulSoulInfoRegister.VORTEX_SOUL_INFO.get();
+        }
+
+        @Override
+        public void tick(LivingEntity living) {
+            if (--cooldown <= 0) {
+                setRemove(true);
+            }
+        }
+
+        @Override
+        public CompoundTag serializeNBT(HolderLookup.@NotNull Provider provider) {
+            CompoundTag tag = super.serializeNBT(provider);
+            tag.putInt("cooldown", cooldown);
+            return tag;
+        }
+
+        @Override
+        public void deserializeNBT(HolderLookup.@NotNull Provider provider, @NotNull CompoundTag tag) {
+            cooldown = tag.getInt("cooldown");
         }
     }
 }

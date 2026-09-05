@@ -1,102 +1,60 @@
 package first.fargo_soul.common.item.terraSoul;
 
-import first.fargo_soul.client.gui.SoulGuiRenderManager;
-import first.fargo_soul.client.gui.SoulRenderType;
-import first.fargo_soul.common.entity.projectile.Bone;
-import first.fargo_soul.common.event.modEvent.SprintEvent;
 import first.fargo_soul.common.item.base.SoulItem;
-import first.fargo_soul.register.EffectRegister;
-import first.fargo_soul.register.EntityRegister;
-import first.fargo_soul.utils.CurioUtils;
-import first.fargo_soul.utils.SoulUtils;
-import net.minecraft.sounds.SoundEvents;
+import first.fargo_soul.common.item.base.ValueModifier;
+import first.fargo_soul.common.item.base.ValueOperation;
+import first.fargo_soul.register.FargoSoulMobEffectRegister;
+import first.lyra.common.entity.IEntityCollision;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.common.damagesource.DamageContainer;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Set;
 
 import static first.fargo_soul.register.FargoSoulItemRegister.*;
 
 public class DeathPower extends SoulItem {
 
     public DeathPower(Properties properties) {
-        super();
+        super(properties);
     }
 
     @Override
-    public List<SoulItem> getSoulItemList() {
-        return List.of(
-                AncientShadowSoulItem.get(),
-                CrystalAssassinSoulItem.get(),
-                DarkArtistSoulItem.get(),
-                GloomySoulItem.get(),
-                NecromancerSoulItem.get(),
-                NinjaSoulItem.get(),
-                PenetratingNinjaSoulItem.get()
-        );
+    public Set<SoulItem> getSoulItemList() {
+        return Set.of(AncientShadowSoulItem.get(), CrystalAssassinSoulItem.get(), DarkArtistSoulItem.get(), GloomySoulItem.get(), NecromancerSoulItem.get(), NinjaSoulItem.get(), PenetratingNinjaSoulItem.get());
     }
 
     @Override
-    public void tick(LivingEntity ticker, boolean isClient) {
-        if (!ticker.level().isClientSide() && CurioUtils.isEquipped(ticker, DeathPower.class)) {
-            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(ticker, DeathPower.class);
-            soulInfo.setMaxCooldown(80);
-            if (soulInfo.isActive()) {
-                for (LivingEntity living : SoulUtils.getTargetList(ticker, ticker.getBoundingBox().inflate(0.5))) {
-                    SoulAbilityData.SoulInfo info = SoulUtils.getSoulInfo(living, this.getClass().getSimpleName() + ticker.getStringUUID());
-                    info.setDuration(100);
-                }
-            }
+    public void sprintClient(Player player, List<ValueModifier> modifiers) {
+        modifiers.add(new ValueModifier(0.5f, ValueOperation.ADD_MULTIPLIED_BASE));
+    }
+
+    @Override
+    public void sprintCollision(Player player, List<IEntityCollision.HitContext> list, Set<LivingEntity> hits) {
+        for (IEntityCollision.HitContext context : list) {
+            LivingEntity living = context.entity();
+            living.addEffect(new MobEffectInstance(FargoSoulMobEffectRegister.DeathMark, 200));
         }
     }
 
     @Override
-    public void livingIncomingDamageEvent(LivingIncomingDamageEvent event) {
-        if (event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
-            if (CurioUtils.isEquipped(target, DeathPower.class)) {
-                if (SoulUtils.getSoulInfo(target, DeathPower.class).isActive()) {
-                    event.setCanceled(true);
-                }
-            }
+    public void attack(@NotNull Player attacker, @NotNull LivingEntity target, @NotNull DamageContainer container, List<ValueModifier> modifiers) {
+        if (target.hasEffect(FargoSoulMobEffectRegister.DeathMark)) {
+            modifiers.add(new ValueModifier(2, ValueOperation.ADD_MULTIPLIED_BASE));
         }
-        if (event.getSource().getEntity() instanceof LivingEntity attacker && event.getEntity() instanceof LivingEntity target && !target.level().isClientSide()) {
-            if (CurioUtils.isEquipped(attacker, DeathPower.class)) {
-                SoulAbilityData.SoulInfo info = SoulUtils.getSoulInfo(target, this.getClass().getSimpleName() + attacker.getStringUUID());
-                if (info.isActive()) {
-                    event.setAmount(event.getAmount() * 1.5f);
-                }
-                target.addEffect(new MobEffectInstance(EffectRegister.ShadowFire, 100));
-            }
+        if (target.getHealth() < target.getMaxHealth() * 0.12f) {
+            modifiers.add(new ValueModifier(target.getMaxHealth() * 0.25f, ValueOperation.ADD_VALUE));
         }
     }
 
     @Override
-    public void sprintServer(SprintEvent.Server event) {
-        Player player = event.getEntity();
-        if (CurioUtils.isEquipped(player, DeathPower.class)) {
-            SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(player, DeathPower.class);
-            if (soulInfo.isReady()) {
-                soulInfo.setCooldown(soulInfo.getMaxCooldown());
-                soulInfo.setDuration(10);
-                Level level = player.level();
-                for (int i = 0; i < 20; i++) {
-                    Bone bone = new Bone(EntityRegister.BoneEntity.get(), level);
-                    SoulUtils.randomShoot(player, bone, player);
-                    SoulUtils.setAbilityInvulnerable(bone);
-                    bone.addDeltaMovement(player.getLookAngle());
-                }
-                SoulUtils.playSound(level, player.position(), SoundEvents.SKELETON_DEATH, player.getSoundSource());
-            }
+    public boolean effectApplicable(Player player, MobEffectInstance effectInstance) {
+        if (effectInstance.is(FargoSoulMobEffectRegister.DeathMark)) {
+            return false;
         }
+        return super.effectApplicable(player, effectInstance);
     }
-
-    @Override
-    public void getSoulRenderInfo(SoulGuiRenderManager.SoulRenderManager soulRenderManager) {
-        soulRenderManager.add(this, DeathPower.class, SoulRenderType.Cooldown);
-        soulRenderManager.add(this, DeathPower.class, SoulRenderType.Duration);
-    }
-
 }

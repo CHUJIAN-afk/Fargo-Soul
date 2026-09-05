@@ -1,0 +1,102 @@
+package first.fargo_soul.common.entity;
+
+import first.fargo_soul.common.attachment.SoulTargetCache;
+import first.fargo_soul.register.SummonerAttachmentEntityRegister;
+import first.lyra.common.attachment.InvincibleData;
+import first.lyra.common.entity.AttachmentEntity;
+import first.lyra.common.entity.AttachmentEntityType;
+import first.lyra.common.particle.genericParticle.GenericParticleBuilder;
+import first.lyra.common.projectile.Projectile;
+import first.lyra.utils.ParticleHelper;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
+
+import java.util.List;
+
+/**
+ * 漩涡（星旋）：传送后于落点生成的静止区域实体，持续 5 秒。
+ * 将半径 4 格内的敌人持续向中心拉扯（受拉拽保护系数衰减），
+ * 并对半径 3 格内的敌人每 10 tick 结算一次伤害。
+ * 无渲染，通过多层同心圆切向 + 径向向内粒子模拟漩涡旋转效果。
+ */
+public class Vortex extends Projectile {
+
+    public Vortex() {
+        super();
+    }
+
+    public Vortex(DamageSource damageSource, Vec3 pos) {
+        super(pos, null);
+        setDamageSource(damageSource);
+        setMaxLife(100);
+        setMaxSpeed(0);
+        setDrag(1);
+    }
+
+    @Override
+    public AttachmentEntityType<? extends AttachmentEntity> getType() {
+        return SummonerAttachmentEntityRegister.VORTEX.get();
+    }
+
+    /**
+     * 静止区域：不执行射弹飞行物理，仅保留生命周期判定。
+     */
+    @Override
+    public void tick() {
+        Vec3 center = getPos();
+        if (!owner.level().isClientSide()) {
+            List<LivingEntity> targets = SoulTargetCache.get(owner).getEntitiesInRadius(center, 6, null);
+            for (LivingEntity target : targets) {
+                Vec3 normalize = center.subtract(target.getBoundingBox().getCenter()).normalize();
+                target.addDeltaMovement(normalize);
+                target.hurtMarked = true;
+                InvincibleData.attack(target)
+                        .attacker(getUuid())
+                        .damageSource(damageSource)
+                        .damageAmount(getDamage())
+                        .invincibleTime(4)
+                        .apply();
+            }
+        } else {
+            for (int ring = 0; ring < 6; ring++) {
+                double radius = 0.5 + ring;
+                double angularSpeed = 0.45 - ring * 0.07;
+                double height = ring * 0.35;
+                spawnRingParticles(center, radius, height, angularSpeed, 48 - ring * 2);
+            }
+        }
+        super.tick();
+    }
+
+    private void spawnRingParticles(Vec3 visualCenter, double radius, double height, double angularSpeed, int count) {
+        double now = owner.level().getGameTime() * angularSpeed;
+        for (int i = 0; i < count; i++) {
+            double angle = now + (Math.PI * 2 * i) / count;
+            double nextRadius = radius * (0.95 + 0.1 * Math.sin(angle * 3 + i));
+            double radialIn = -nextRadius * 0.05;
+            Vec3 base = visualCenter.add(nextRadius * Math.cos(angle), height * (0.7 + 0.3 * Math.sin(i * 2.7)), nextRadius * Math.sin(angle));
+            double tanX = -Math.sin(angle);
+            double tanZ = Math.cos(angle);
+            Vec3 dir = new Vec3(tanX * angularSpeed * 0.55 + radialIn * Math.cos(angle), 0.02, tanZ * angularSpeed * 0.55 + radialIn * Math.sin(angle));
+            if (dir.lengthSqr() < 1e-6) {
+                continue;
+            }
+            ParticleHelper.create(owner.level())
+                    .generic(GenericParticleBuilder.create()
+                            .centerColor(0x00F4A8)
+                            .edgeColor(0x0DC790)
+                            .lifetime(5)
+                            .lifetimeRandom(10)
+                            .spin(0.4f)
+                            .spinRandom(0.2f)
+                            .friction(0.7F)
+                            .scale(0.02f)
+                            .scaleRandom(0.01f))
+                    .pos(base)
+                    .velocity(dir)
+                    .speed(0.5)
+                    .emit();
+        }
+    }
+}

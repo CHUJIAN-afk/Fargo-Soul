@@ -1,7 +1,5 @@
 package first.fargo_soul.mixin.minecraft;
 
-import first.fargo_soul.common.item.terraSoul.deathPower.PenetratingNinjaSoul;
-import first.fargo_soul.utils.SoulUtils;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -9,7 +7,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,11 +23,8 @@ public class ClientBlockStateBaseMixin {
     )
     private void getCollisionShape(BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (context instanceof EntityCollisionContext entityCollisionContext && entityCollisionContext.getEntity() instanceof LocalPlayer localPlayer) {
-            if (localPlayer.connection instanceof ClientPacketListener && pos.getCenter().y() >= localPlayer.position().y()) {
-                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(localPlayer, PenetratingNinjaSoul.class);
-                if (soulInfo.getDuration() > 0) {
-                    cir.setReturnValue(Shapes.empty());
-                }
+            if (localPlayer.connection instanceof ClientPacketListener && !context.isDescending()) {
+
             }
         }
     }

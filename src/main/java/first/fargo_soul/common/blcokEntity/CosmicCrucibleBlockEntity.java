@@ -2,21 +2,17 @@ package first.fargo_soul.common.blcokEntity;
 
 import first.fargo_soul.common.recipe.SoulRecipe;
 import first.fargo_soul.common.recipe.SoulRecipeInput;
-import first.fargo_soul.config.ServerSoulConfig;
-import first.fargo_soul.register.BlockEntityRegister;
-import first.fargo_soul.register.RecipeTypeRegister;
-import first.fargo_soul.utils.ParticleUtils;
-import first.fargo_soul.utils.SoulUtils;
+import first.fargo_soul.register.FargoSoulBlockEntityRegister;
+import first.fargo_soul.register.FargoSoulRecipeTypeRegister;
+import first.lyra.utils.ParticleHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -34,21 +30,20 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 public class CosmicCrucibleBlockEntity extends BlockEntity {
 
     private final CosmicCrucibleItemHandler inventory;
 
     public CosmicCrucibleBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntityRegister.CosmicCrucible.get(), pos, state);
+        super(FargoSoulBlockEntityRegister.CosmicCrucible.get(), pos, state);
         this.inventory = new CosmicCrucibleItemHandler(this);
     }
 
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(
                 Capabilities.ItemHandler.BLOCK,
-                BlockEntityRegister.CosmicCrucible.get(),
+                FargoSoulBlockEntityRegister.CosmicCrucible.get(),
                 (be, context) -> be.getItemHandler()
         );
     }
@@ -65,22 +60,20 @@ public class CosmicCrucibleBlockEntity extends BlockEntity {
     }
 
     private void animate() {
-        Random random = SoulUtils.getRandom();
-        if (level != null && level.isClientSide() && random.nextFloat() < 0.2) {
-            BlockPos pos = getBlockPos();
-            Vec3 targetCenter = pos.above().getCenter();
-            double targetX = targetCenter.x();
-            double targetY = targetCenter.y();
-            double targetZ = targetCenter.z();
-            for (int i = 0; i < random.nextInt(1, 5); i++) {
-                Vec3 center = pos.getCenter();
-                double startX = center.x() + random.nextDouble(-0.5, 0.5);
-                double startY = center.y() + random.nextDouble() * 2;
-                double startZ = center.z() + random.nextDouble(-0.5, 0.5);
-                double vx = (startX - targetX) * random.nextDouble(0.5, 10);
-                double vy = (startY - targetY) * random.nextDouble(0.5, 10);
-                double vz = (startZ - targetZ) * random.nextDouble(0.5, 10);
-                level.addParticle(ParticleTypes.PORTAL, startX, startY, startZ, vx, vy, vz);
+        if (level != null && level.isClientSide()) {
+            RandomSource random = level.getRandom();
+            if (random.nextFloat() < 0.2) {
+                BlockPos pos = getBlockPos();
+                Vec3 center = pos.above().getCenter();
+                ParticleHelper.create(level)
+                        .type(ParticleTypes.PORTAL)
+                        .pos(center)
+                        .offset(4)
+                        .velocity(Vec3.ZERO.offsetRandom(random, 1).subtract(Vec3.ZERO))
+                        .count(5)
+                        .speed(0.35)
+                        .spread(Math.TAU)
+                        .emit();
             }
         }
     }
@@ -119,7 +112,7 @@ public class CosmicCrucibleBlockEntity extends BlockEntity {
         CosmicCrucibleItemHandler itemHandler = this.getItemHandler();
         if (level != null && !level.isClientSide() && itemHandler.isChange()) {
             SoulRecipeInput soulRecipeInput = new SoulRecipeInput(itemHandler.getStackList());
-            Optional<RecipeHolder<SoulRecipe>> recipeFor = level.getRecipeManager().getRecipeFor(RecipeTypeRegister.Integration.get(), soulRecipeInput, level);
+            Optional<RecipeHolder<SoulRecipe>> recipeFor = level.getRecipeManager().getRecipeFor(FargoSoulRecipeTypeRegister.Integration.get(), soulRecipeInput, level);
             if (recipeFor.isPresent()) {
                 SoulRecipe soulRecipe = recipeFor.get().value();
                 ItemStack targetStack = soulRecipe.output().copy();
@@ -129,18 +122,6 @@ public class CosmicCrucibleBlockEntity extends BlockEntity {
                 if (!remainder.isEmpty()) {
                     Containers.dropItemStack(level, blockPos.getX(), blockPos.getY() + 2, blockPos.getZ(), remainder);
                 }
-                LightningBolt bolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
-                bolt.setVisualOnly(true);
-                bolt.moveTo(blockPos.getCenter());
-                SoulUtils.addEntity(level, bolt);
-                ParticleUtils.spawnParticleSphere(
-                        (ServerLevel) level,
-                        blockPos.above().getCenter(),
-                        ParticleTypes.EXPLOSION,
-                        0.1f,
-                        20,
-                        0.5f
-                );
             }
         }
     }
@@ -210,7 +191,7 @@ public class CosmicCrucibleBlockEntity extends BlockEntity {
         private boolean change;
 
         public CosmicCrucibleItemHandler(CosmicCrucibleBlockEntity self) {
-            super(ServerSoulConfig.CosmicCrucibleSize.get());
+            super(1024);
             this.self = self;
             this.change = false;
         }

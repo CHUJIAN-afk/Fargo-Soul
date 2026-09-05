@@ -1,64 +1,36 @@
 package first.fargo_soul.mixin.minecraft;
 
-import first.fargo_soul.common.item.terraSoul.WillPower;
-import first.fargo_soul.common.item.terraSoul.cosmicPower.WizardSoul;
-import first.fargo_soul.common.item.terraSoul.willPower.PlatinumSoul;
-import first.fargo_soul.common.item.terraSoul.willPower.RedRidingSoul;
-import first.fargo_soul.utils.CurioUtils;
-import first.fargo_soul.utils.SoulUtils;
-import com.llamalad7.mixinextras.sugar.Local;
+import first.fargo_soul.common.attachment.SoulItemData;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
 
-    @Inject(method = "doPush", at = @At("HEAD"), cancellable = true)
-    private void doPush(Entity entity, CallbackInfo ci) {
-        if (entity instanceof LivingEntity attacker && !attacker.level().isClientSide()) {
-            if (CurioUtils.isEquipped(attacker, WizardSoul.class)) {
-                ci.cancel();
+    @Inject(method = "dropFromLootTable", at = @At("TAIL"))
+    private void dropFromLootTable(DamageSource damageSource, boolean hitByPlayer, CallbackInfo ci) {
+        if (damageSource.getEntity() instanceof Player attacker) {
+            LivingEntity target = LivingEntity.class.cast(this);
+            List<ItemStack> list = new ArrayList<>();
+            SoulItemData.forEach(attacker, soulItem -> list.addAll(soulItem.dropFromLootTableAfter(attacker, target)));
+            AtomicReference<Float> scale = new AtomicReference<>(1f);
+            SoulItemData.forEach(attacker, soulItem -> scale.set(soulItem.dropFromLootTableScale(attacker, target, scale.get())));
+            for (ItemStack itemStack : list) {
+                if (!itemStack.isEmpty()) {
+                    itemStack.setCount((int) (itemStack.getCount() * scale.get()));
+                }
+                target.spawnAtLocation(itemStack);
             }
         }
     }
-
-    @ModifyArg(
-            method = "dropFromLootTable",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/world/level/storage/loot/LootTable;getRandomItems(Lnet/minecraft/world/level/storage/loot/LootParams;JLjava/util/function/Consumer;)V"
-            ),
-            index = 2
-    )
-    private Consumer<ItemStack> modifyDropConsumer(Consumer<ItemStack> originalConsumer, @Local(argsOnly = true) DamageSource damageSource) {
-        return itemStack -> {
-            if (damageSource.getEntity() instanceof LivingEntity attacker && !attacker.level().isClientSide() && CurioUtils.isEquipped(attacker, PlatinumSoul.class) && attacker.getRandom().nextDouble() < 0.2) {
-                int scale = CurioUtils.isEquipped(attacker, WillPower.class) ? 8 : 5;
-                SoulAbilityData.SoulInfo soulInfo = SoulUtils.getSoulInfo(attacker, RedRidingSoul.class);
-                if (scale == 8 && soulInfo.getStacks() == soulInfo.getMaxStacks()) {
-                    scale = 16;
-                }
-                int newCount = itemStack.getCount() * scale;
-                int maxStackSize = itemStack.getMaxStackSize();
-                while (newCount > 0) {
-                    ItemStack newStack = itemStack.copy();
-                    newStack.setCount(Math.min(newCount, maxStackSize));
-                    originalConsumer.accept(newStack);
-                    newCount -= maxStackSize;
-                }
-            } else {
-                originalConsumer.accept(itemStack);
-            }
-        };
-    }
-
 }

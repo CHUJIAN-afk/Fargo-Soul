@@ -1,7 +1,7 @@
 package first.fargo_soul.dadageneeator.provider;
 
 import first.fargo_soul.dadageneeator.builder.SoulRecipeBuilder;
-import first.fargo_soul.register.BlockRegister;
+import first.fargo_soul.register.FargoSoulBlockRegister;
 import first.fargo_soul.register.FargoSoulItemRegister;
 import net.minecraft.core.DefaultedRegistry;
 import net.minecraft.core.HolderLookup;
@@ -81,7 +81,7 @@ public class FargoSoulRecipeProvider extends RecipeProvider {
                 .requires(Items.CONDUIT, 1)                    // 潮汐核心
                 .build();
 
-        addRecipe(FargoSoulItemRegister.MeteorSoulItem.toStack())       // 流星魔石
+        addRecipe(FargoSoulItemRegister.METEOR_SOUL.toStack())       // 流星魔石
                 .requires(FargoSoulItemRegister.Soul.get(), 1)          // 空白模板
                 .requires(Items.FIRE_CHARGE, 64)               // 火球
                 .requires(Items.POINTED_DRIPSTONE, 64)         // 滴水石锥
@@ -102,7 +102,7 @@ public class FargoSoulRecipeProvider extends RecipeProvider {
                 .requires(FargoSoulItemRegister.StardustSoulItem.get(), 1)// 星尘魔石
                 .requires(FargoSoulItemRegister.NebulaSoulItem.get(), 1)// 星云魔石
                 .requires(FargoSoulItemRegister.VortexSoulItem.get(), 1)// 星旋魔石
-                .requires(FargoSoulItemRegister.MeteorSoulItem.get(), 1)// 流星魔石
+                .requires(FargoSoulItemRegister.METEOR_SOUL.get(), 1)// 流星魔石
                 .requires(FargoSoulItemRegister.WizardSoulItem.get(), 1)// 巫师魔石
                 .build();
 
@@ -590,14 +590,14 @@ public class FargoSoulRecipeProvider extends RecipeProvider {
                 .requires(Items.MANGROVE_PROPAGULE, 1)  // 红树胎生苗
                 .build();
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, BlockRegister.CosmicCrucible.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, FargoSoulBlockRegister.CosmicCrucible.get())
                 .pattern("AAA")
                 .pattern("ABA")
                 .pattern("AAA")
                 .define('A', Items.NETHERITE_INGOT)
                 .define('B', Blocks.DRAGON_EGG)
                 .unlockedBy("has_" + BuiltInRegistries.ITEM.getKey(Blocks.DRAGON_EGG.asItem()).getPath(), has(Blocks.DRAGON_EGG))
-                .save(recipeOutput, BlockRegister.CosmicCrucible.getId());
+                .save(recipeOutput, FargoSoulBlockRegister.CosmicCrucible.getId());
 
     }
 

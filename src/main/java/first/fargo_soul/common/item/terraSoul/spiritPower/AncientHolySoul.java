@@ -5,7 +5,6 @@ import first.fargo_soul.common.item.base.SoulItem;
 public class AncientHolySoul extends SoulItem {
 
     public AncientHolySoul(Properties properties) {
-        super();
+        super(properties);
     }
-
 }
