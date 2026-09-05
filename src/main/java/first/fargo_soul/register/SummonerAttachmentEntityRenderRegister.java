@@ -1,6 +1,7 @@
 package first.fargo_soul.register;
 
 import first.fargo_soul.FargoSoul;
+import first.fargo_soul.client.renderer.projectile.LightningOrbRenderer;
 import first.lyra.client.dynamicLight.DynamicLightDispatcher;
 import first.lyra.client.render.AttachmentEntityRenderDispatcher;
 import first.lyra.client.render.IAttachmentEntityRenderer;
@@ -37,6 +38,7 @@ public class SummonerAttachmentEntityRenderRegister {
         register(SummonerAttachmentEntityRegister.VORTEX, null);
         register(SummonerAttachmentEntityRegister.SPRINT, null);
         register(SummonerAttachmentEntityRegister.SHADOW_ORB, () -> simpleRenderer(FargoSoul.rl("textures/item/entity/meteor.png"), 1, 12));
+        register(SummonerAttachmentEntityRegister.LIGHTNING_ORB, LightningOrbRenderer::new);
     }
 
     private static <T extends AttachmentEntity> void register(DeferredHolder<AttachmentEntityType<?>, AttachmentEntityType<T>> type, @Nullable Supplier<IAttachmentEntityRenderer<T>> renderer) {

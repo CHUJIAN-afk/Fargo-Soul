@@ -6,6 +6,8 @@ import net.minecraft.core.DefaultedRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -18,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -65,6 +68,15 @@ public class SoulItemData implements AttachmentSyncHandler<SoulItemData> {
         maxFlyTime = 0;
         renderLavaFog = true;
         renderFireOverlay = true;
+        Collection<AttributeInstance> attributes = player.getAttributes().getSyncableAttributes();
+        for (AttributeInstance attribute : attributes) {
+            Set<AttributeModifier> modifiers = attribute.getModifiers();
+            for (AttributeModifier modifier : modifiers) {
+                if (modifier.id().getPath().contains("_volatile")) {
+                    attribute.removeModifier(modifier);
+                }
+            }
+        }
         for (SoulItem soulItem : cache) {
             if (!canSprint && soulItem.canSprint(player)) {
                 canSprint = true;
@@ -75,6 +87,16 @@ public class SoulItemData implements AttachmentSyncHandler<SoulItemData> {
             if (renderFireOverlay && !soulItem.renderFireOverlay(player)) {
                 renderFireOverlay = false;
             }
+            soulItem.getAttributeModifiers(player).forEach((soulAttribute, attributeModifier) -> {
+                AttributeInstance attribute = player.getAttribute(soulAttribute);
+                if (attribute != null) {
+                    Set<AttributeModifier> modifiers = attribute.getModifiers();
+                    for (AttributeModifier modifier : modifiers) {
+                        AttributeModifier volatileModifier = new AttributeModifier(modifier.id().withSuffix("_volatile"), modifier.amount(), modifier.operation());
+                        attribute.addPermanentModifier(volatileModifier);
+                    }
+                }
+            });
         }
         player.syncData(FargoSoulAttachmentRegister.SOUL_ITEM_DATA);
     }

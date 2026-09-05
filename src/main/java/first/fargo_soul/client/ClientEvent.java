@@ -139,7 +139,7 @@ public class ClientEvent {
             SoulItemData soulItemData = player.getData(FargoSoulAttachmentRegister.SOUL_ITEM_DATA);
             FluidState fluidState = level.getFluidState(blockPos);
             Fluid fluid = fluidState.getType();
-            if (!soulItemData.isRenderLavaFog() && fluid.equals(Fluids.FLOWING_LAVA) && (camera.getPosition().y < blockPos.getY() + fluidState.getHeight(level, blockPos))) {
+            if (!soulItemData.isRenderLavaFog() && fluid.isSame(Fluids.LAVA) && (camera.getPosition().y < blockPos.getY() + fluidState.getHeight(level, blockPos))) {
                 event.setNearPlaneDistance(-4.0f);
                 event.setFarPlaneDistance(20.0f);
                 event.setCanceled(true);

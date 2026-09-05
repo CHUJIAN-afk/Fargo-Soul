@@ -1,11 +1,14 @@
 package first.fargo_soul.common.item.base;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import first.fargo_soul.common.dataComponents.SoulRarity;
 import first.fargo_soul.register.FargoSoulDataComponentsRegister;
 import first.lyra.common.entity.IEntityCollision;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -13,6 +16,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -45,7 +50,17 @@ public abstract class SoulItem extends Item implements ICurioItem {
         return name;
     }
 
+    public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(Player player) {
+        return HashMultimap.create();
+    }
+
     public void criticalHit(Player player, LivingEntity target, List<ValueModifier> modifiers) {
+    }
+
+    public void pickup(Player player, ItemStack itemStack) {
+    }
+
+    public void shieldBlock(Player player, DamageSource source, float blockedDamage) {
     }
 
     public void getMaxFlyTime(Player player, List<ValueModifier> modifiers) {

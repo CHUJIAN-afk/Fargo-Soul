@@ -7,10 +7,14 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.List;
 
 public class FargoSoulMobEffectRegister {
 
@@ -50,6 +54,35 @@ public class FargoSoulMobEffectRegister {
                     .addAttributeModifier(Attributes.MAX_HEALTH, location, 0.4f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
                     .addAttributeModifier(Attributes.MOVEMENT_SPEED, location, 0.15f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
                     .addAttributeModifier(Attributes.ATTACK_DAMAGE, location, 0.4f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+                    .build()
+            );
+
+    /** 铅中毒：每秒受到毒伤，并传染给周围目标 */
+    public static final Holder<MobEffect> LeadPoisoning =
+            Register.register("lead_poisoning", location -> new SimpleMobEffectBuilder(MobEffectCategory.HARMFUL, 0x5A5A5A)
+                    .addAttributeModifier(LyraAttributeRegister.HealthRegen, location, amplifier -> -(amplifier + 1) * 1.0, AttributeModifier.Operation.ADD_VALUE)
+                    .shouldApplyEffectTickThisTick((duration, amplifier) -> true)
+                    .applyEffectTick((entity, amplifier) -> {
+                        MobEffectInstance effect = entity.getEffect(FargoSoulMobEffectRegister.LeadPoisoning);
+                        if (effect != null && effect.getDuration() > 20 && !entity.level().isClientSide()) {
+                            List<LivingEntity> list = entity.level().getEntitiesOfClass(LivingEntity.class, entity.getBoundingBox().inflate(4), living -> living != entity && !living.hasEffect(effect.getEffect()));
+                            for (LivingEntity living : list) {
+                                living.addEffect(new MobEffectInstance(effect.getEffect(), effect.getDuration() / 2, amplifier));
+                            }
+                        }
+                    })
+                    .build()
+            );
+
+    /** 惊人一刻：攻击力 +150% */
+    public static final Holder<MobEffect> AmazingMoment =
+            Register.register("amazing_moment", location -> new SimpleMobEffectBuilder(MobEffectCategory.BENEFICIAL, 0xFFD700)
+                    .build()
+            );
+
+    /** 泰拉共鸣：释放雷电球概率提升，雷电球伤害提升 */
+    public static final Holder<MobEffect> TerraResonance =
+            Register.register("terra_resonance", location -> new SimpleMobEffectBuilder(MobEffectCategory.BENEFICIAL, 0x38ffec)
                     .build()
             );
 

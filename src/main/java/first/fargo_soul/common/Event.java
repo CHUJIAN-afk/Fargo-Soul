@@ -19,8 +19,10 @@ import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
+import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
@@ -59,7 +61,11 @@ public class Event {
             if (target instanceof Player player) {
                 SoulItemData.forEach(player, soulItem -> soulItem.hurt(attacker, player, container, modifiers));
             }
-            event.setAmount(ValueModifier.getModifierAfter(event.getAmount(), modifiers));
+            float damage = ValueModifier.getModifierAfter(event.getAmount(), modifiers);
+            event.setAmount(damage);
+            if (damage <= 0) {
+                event.setCanceled(true);
+            }
         }
     }
 
@@ -67,10 +73,25 @@ public class Event {
     public static void criticalHit(CriticalHitEvent event) {
         Player player = event.getEntity();
         Entity target = event.getTarget();
-        if (!player.level().isClientSide() && target instanceof LivingEntity living) {
+        if (!player.level().isClientSide() && event.isCriticalHit() && target instanceof LivingEntity living) {
             List<ValueModifier> modifiers = new ArrayList<>();
             SoulItemData.forEach(player, soulItem -> soulItem.criticalHit(player, living, modifiers));
             event.setDamageMultiplier(ValueModifier.getModifierAfter(event.getDamageMultiplier(), modifiers));
+        }
+    }
+
+    @SubscribeEvent
+    public static void pickup(ItemEntityPickupEvent.Post event) {
+        Player player = event.getPlayer();
+        if (!player.level().isClientSide()) {
+            SoulItemData.forEach(player, soulItem -> soulItem.pickup(player, event.getCurrentStack()));
+        }
+    }
+
+    @SubscribeEvent
+    public static void shieldBlock(LivingShieldBlockEvent event) {
+        if (event.getEntity() instanceof Player player && !player.level().isClientSide() && event.getBlocked()) {
+            SoulItemData.forEach(player, soulItem -> soulItem.shieldBlock(player, event.getDamageSource(), event.getBlockedDamage()));
         }
     }
 
