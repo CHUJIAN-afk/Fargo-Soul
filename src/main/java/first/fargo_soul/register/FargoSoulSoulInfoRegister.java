@@ -2,9 +2,27 @@ package first.fargo_soul.register;
 
 import first.fargo_soul.FargoSoul;
 import first.fargo_soul.common.item.terraSoul.CosmicPower;
+import first.fargo_soul.common.item.terraSoul.EarthPower;
 import first.fargo_soul.common.item.terraSoul.ForestPower;
+import first.fargo_soul.common.item.terraSoul.LifePower;
+import first.fargo_soul.common.item.terraSoul.WillPower;
 import first.fargo_soul.common.item.terraSoul.TerraPower;
 import first.fargo_soul.common.item.terraSoul.forestPower.*;
+import first.fargo_soul.common.item.terraSoul.earthPower.CobaltSoul;
+import first.fargo_soul.common.item.terraSoul.earthPower.MithrilSoul;
+import first.fargo_soul.common.item.terraSoul.earthPower.OrichalcumSoul;
+import first.fargo_soul.common.item.terraSoul.earthPower.PalladiumSoul;
+import first.fargo_soul.common.item.terraSoul.earthPower.TitaniumSoul;
+import first.fargo_soul.common.item.terraSoul.willPower.RedRidingSoul;
+import first.fargo_soul.common.item.terraSoul.lifePower.BeetleSoul;
+import first.fargo_soul.common.item.terraSoul.naturePower.CrimsonSoul;
+import first.fargo_soul.common.item.terraSoul.naturePower.FrostSoul;
+import first.fargo_soul.common.item.terraSoul.naturePower.RainCloudSoul;
+import first.fargo_soul.common.item.terraSoul.spiritPower.HolySoul;
+import first.fargo_soul.common.item.terraSoul.spiritPower.ForbiddenSoul;
+import first.fargo_soul.common.item.terraSoul.spiritPower.GhostSoul;
+import first.fargo_soul.common.item.terraSoul.willPower.PlatinumSoul;
+import first.fargo_soul.common.item.terraSoul.willPower.GoldSoul;
 import first.fargo_soul.common.item.terraSoul.cosmicPower.BlazeSoul;
 import first.fargo_soul.common.item.terraSoul.cosmicPower.NebulaSoul;
 import first.fargo_soul.common.item.terraSoul.cosmicPower.StardustSoul;
@@ -91,6 +109,60 @@ public class FargoSoulSoulInfoRegister {
 
     public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<ForestPower.Info>> FOREST_POWER_INFO =
             register("forest_power_info", ForestPower.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<EarthPower.Info>> EARTH_POWER_INFO =
+            register("earth_power_info", EarthPower.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<LifePower.Info>> LIFE_POWER_INFO =
+            register("life_power_info", LifePower.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<WillPower.Info>> WILL_POWER_INFO =
+            register("will_power_info", WillPower.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<CobaltSoul.Info>> COBALT_SOUL_INFO =
+            register("cobalt_soul_info", CobaltSoul.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<FrostSoul.Info>> FROST_SOUL_INFO =
+            register("frost_soul_info", FrostSoul.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<CrimsonSoul.Info>> CRIMSON_SOUL_INFO =
+            register("crimson_soul_info", CrimsonSoul.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<PlatinumSoul.Info>> PLATINUM_SOUL_INFO =
+            register("platinum_soul_info", PlatinumSoul.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<GoldSoul.Info>> GOLD_SOUL_INFO =
+            register("gold_soul_info", GoldSoul.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<RainCloudSoul.Info>> RAIN_CLOUD_SOUL_INFO =
+            register("rain_cloud_soul_info", RainCloudSoul.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<HolySoul.Info>> HOLY_SOUL_INFO =
+            register("holy_soul_info", HolySoul.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<GhostSoul.Info>> GHOST_SOUL_INFO =
+            register("ghost_soul_info", GhostSoul.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<ForbiddenSoul.Info>> FORBIDDEN_SOUL_INFO =
+            register("forbidden_soul_info", ForbiddenSoul.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<MithrilSoul.Info>> MITHRIL_SOUL_INFO =
+            register("mithril_soul_info", MithrilSoul.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<OrichalcumSoul.Info>> ORICHALCUM_SOUL_INFO =
+            register("orichalcum_soul_info", OrichalcumSoul.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<PalladiumSoul.Info>> PALLADIUM_SOUL_INFO =
+            register("palladium_soul_info", PalladiumSoul.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<TitaniumSoul.Info>> TITANIUM_SOUL_INFO =
+            register("titanium_soul_info", TitaniumSoul.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<RedRidingSoul.Info>> RED_RIDING_SOUL_INFO =
+            register("red_riding_soul_info", RedRidingSoul.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<BeetleSoul.Info>> BEETLE_SOUL_INFO =
+            register("beetle_soul_info", BeetleSoul.Info::new);
 
     private static <T extends SoulInfo> DeferredHolder<SoulInfoType<?>, SoulInfoType<T>> register(String name, Supplier<T> factory) {
         return register(name, factory, false);

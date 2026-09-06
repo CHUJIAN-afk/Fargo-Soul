@@ -63,6 +63,15 @@ public abstract class SoulItem extends Item implements ICurioItem {
     public void shieldBlock(Player player, DamageSource source, float blockedDamage) {
     }
 
+    /** 收到治疗时修正治疗量：向 modifiers 添加治疗修正（乘区用 ADD_MULTIPLIED_BASE）。 */
+    public void healAmount(Player player, float amount, List<ValueModifier> modifiers) {
+    }
+
+    /** 是否赋予飞行能力（决定飞行时长聚合是否启用）。 */
+    public boolean canFly(Player player) {
+        return false;
+    }
+
     public void getMaxFlyTime(Player player, List<ValueModifier> modifiers) {
     }
 
@@ -80,26 +89,24 @@ public abstract class SoulItem extends Item implements ICurioItem {
     public void eat(Player player, ItemStack food) {
     }
 
-    public List<Component> getTooltip(ItemStack itemStack, TooltipFlag flags) {
+    public List<Component> getTooltip(ItemStack itemStack, TooltipFlag flags, boolean master) {
         List<Component> list = new ArrayList<>();
-        list.add(Component.translatable("fargo_soul.key.tooltip", Component.literal("Shift").withStyle(flags.hasShiftDown() ? ChatFormatting.WHITE : ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+        if (master) {
+            list.add(Component.translatable("fargo_soul.key.tooltip", Component.literal("Shift").withStyle(flags.hasShiftDown() ? ChatFormatting.WHITE : ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+        }
         ResourceLocation location = BuiltInRegistries.ITEM.getKey(this);
         String key = "item." + location.getNamespace() + "." + location.getPath() + ".tooltip.";
         if (flags.hasShiftDown()) {
-            list.add(Component.empty());
-            int color = getSoulRarity(itemStack).getColor();
+            if (master) {
+                list.add(Component.empty());
+            }
+            int color = getSoulRarity(master ? itemStack : this.getDefaultInstance()).getColor();
             for (int i = 1; I18n.exists(key + i); i++) {
                 list.add(Component.translatable(key + i).withColor(color));
             }
             Set<SoulItem> soulItemList = getSoulItemList();
             for (SoulItem soulItem : soulItemList) {
-                list.add(Component.empty());
-                ResourceLocation location1 = BuiltInRegistries.ITEM.getKey(soulItem);
-                String key1 = "item." + location1.getNamespace() + "." + location1.getPath() + ".tooltip.";
-                int color1 = getSoulRarity(soulItem.getDefaultInstance()).getColor();
-                for (int i = 1; I18n.exists(key1 + i); i++) {
-                    list.add(Component.translatable(key1 + i).withColor(color1));
-                }
+                list.addAll(soulItem.getTooltip(itemStack, flags, false));
             }
         } else {
             for (int i = -1; I18n.exists(key + i); i--) {

@@ -39,28 +39,29 @@ public class FargoSoulItemRegister {
             .itemModel(LyraItemRegisterBuilder::basicModel)
             .build();
 
-    public static final DeferredItem<TerraSoul> TerraSoulItem = register("terra_soul", TerraSoul::new)
-            .itemLanguage("Terra Soul", "泰拉之魂")
-            .itemLanguageTooltip(1, " ", "获得一个可以发射各种弹幕的光环")
-            .itemLanguageTooltip(2, " ", "拾取物品时获得额外暴击率，村民可提供更多折扣")
-            .itemLanguageTooltip(3, " ", "暴击和格挡会发射强大的闪电，减少受到的减益伤害，武器变大")
-            .itemLanguageTooltip(4, " ", "攻击时增加暴击率，增加物品吸取范围")
-            .itemLanguageTooltip(5, " ", "不攻击时获得防御增益，攻击时获得攻击增益")
-            .itemLanguageTooltip(6, " ", "持有者拥有吸取生命的光环，增加受到的伤害，向附近的敌人发射叶绿水晶")
-            .itemLanguageTooltip(7, " ", "蘑菇治疗得到强化并提供增益，持有者的攻击造成多种减益")
-            .itemLanguageTooltip(8, " ", "持有者反射接触伤害，持有者的随从可以暴击")
-            .itemLanguageTooltip(9, " ", "根据持有者移速增加射弹各种属性")
-            .itemLanguageTooltip(10, " ", "持有者可召唤禁戒风暴，治疗会恢复更多，生命值降低至0时复活并净化减益")
-            .itemLanguageTooltip(11, " ", "持有者每4秒获得一次无敌的暗影冲刺，根据移速增加射弹各种属性，屠戮敌人可能会掉落骨块")
-            .itemLanguageTooltip(12, " ", "允许吸取灵魂，增加持有者的治疗和坐骑属性，连续攻击会获得额外伤害")
-            .itemLanguageTooltip(13, " ", "持有者击败的敌人可能会掉落额外的战利品")
-            .itemLanguageTooltip(14, " ", "持有者攻击偶尔会向敌人发射月亮并爆炸产生月亮强化焰")
-            .itemLanguageTooltip(15, " ", "增加持有者的移动速度 and 加速度并降低持有者的动量，星尘静滞冷却时间降低至60秒")
-            .itemLanguageTooltip(-1, " ", "“泰拉之主，天地共证”")
-            .itemTag(FargoSoulItemTagsRegister.SectionTerraSoul)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
+    public static final DeferredItem<TerraSoul> TerraSoulItem =
+            register("terra_soul", TerraSoul::new, SoulRarity.Rainbow.getColor())
+                    .itemLanguage("Terra Soul", "泰拉之魂")
+                    .itemLanguageTooltip(1, " ", "获得一个可以发射各种弹幕的光环")
+                    .itemLanguageTooltip(2, " ", "拾取物品时获得额外暴击率，村民可提供更多折扣")
+                    .itemLanguageTooltip(3, " ", "暴击和格挡会发射强大的闪电，减少受到的减益伤害，武器变大")
+                    .itemLanguageTooltip(4, " ", "攻击时增加暴击率，增加物品吸取范围")
+                    .itemLanguageTooltip(5, " ", "不攻击时获得防御增益，攻击时获得攻击增益")
+                    .itemLanguageTooltip(6, " ", "持有者拥有吸取生命的光环，增加受到的伤害，向附近的敌人发射叶绿水晶")
+                    .itemLanguageTooltip(7, " ", "蘑菇治疗得到强化并提供增益，持有者的攻击造成多种减益")
+                    .itemLanguageTooltip(8, " ", "持有者反射接触伤害，持有者的随从可以暴击")
+                    .itemLanguageTooltip(9, " ", "根据持有者移速增加射弹各种属性")
+                    .itemLanguageTooltip(10, " ", "持有者可召唤禁戒风暴，治疗会恢复更多，生命值降低至0时复活并净化减益")
+                    .itemLanguageTooltip(11, " ", "持有者每4秒获得一次无敌的暗影冲刺，根据移速增加射弹各种属性，屠戮敌人可能会掉落骨块")
+                    .itemLanguageTooltip(12, " ", "允许吸取灵魂，增加持有者的治疗和坐骑属性，连续攻击会获得额外伤害")
+                    .itemLanguageTooltip(13, " ", "持有者击败的敌人可能会掉落额外的战利品")
+                    .itemLanguageTooltip(14, " ", "持有者攻击偶尔会向敌人发射月亮并爆炸产生月亮强化焰")
+                    .itemLanguageTooltip(15, " ", "增加持有者的移动速度 and 加速度并降低持有者的动量，星尘静滞冷却时间降低至60秒")
+                    .itemLanguageTooltip(-1, " ", "“泰拉之主，天地共证”")
+                    .itemTag(FargoSoulItemTagsRegister.SectionTerraSoul)
+                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.Curio)
+                    .build();
 
     // ============================================================
     // 宇宙之力 · 魔石分段
@@ -444,120 +445,129 @@ public class FargoSoulItemRegister {
     // ============================================================
     // 大地之力 · 魔石分段
     // ============================================================
-    public static final DeferredItem<EarthPower> EarthPowerItem = register("earth_power", EarthPower::new)
-            .itemLanguage("Earth Power", "大地之力")
-            .itemLanguageTooltip(1, " ", "不攻击3秒后，每秒积聚20点大地能量，最多积聚1000点大地能量，攻击时消耗10点大地能量")
-            .itemLanguageTooltip(2, " ", "根据大地能量积累比例，最多提升100%造成伤害，100%攻击速度，5每秒生命恢复，100%护甲")
-            .itemLanguageTooltip(-1, "\"Gaia's blessing shines upon you\"", "“盖亚的祝福照耀着你”")
-            .itemTag(FargoSoulItemTagsRegister.SectionPower)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
+    public static final DeferredItem<EarthPower> EarthPowerItem =
+            register("earth_power", EarthPower::new, SoulRarity.Purple.getColor())
+                    .itemLanguage("Earth Power", "大地之力")
+                    .itemLanguageTooltip(1, " ", "不攻击3秒后，每秒积聚20点大地能量，最多积聚1000点大地能量，攻击时消耗10点大地能量")
+                    .itemLanguageTooltip(2, " ", "根据大地能量积累比例，最多提升100%造成伤害，100%攻击速度，5每秒生命恢复，100%护甲")
+                    .itemLanguageTooltip(-1, "\"Gaia's blessing shines upon you\"", "“盖亚的祝福照耀着你”")
+                    .itemTag(FargoSoulItemTagsRegister.SectionPower)
+                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.Curio)
+                    .build();
 
-    public static final DeferredItem<CobaltSoul> CobaltSoulItem = register("cobalt_soul", CobaltSoul::new)
-            .itemLanguage("Cobalt Enchantment", "钴蓝魔石")
-            .itemLanguageTooltip(1, " ", "受到伤害时，对附近的敌人施加2.5秒涂油效果，使敌人受到的火焰伤害提升200%，该效果有3秒冷却时间")
-            .itemLanguageTooltip(2, " ", "免疫浸油")
-            .itemLanguageTooltip(-1, " ", "“真不敢相信这竟然不是钯金”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
+    public static final DeferredItem<CobaltSoul> CobaltSoulItem =
+            register("cobalt_soul", CobaltSoul::new, 0x3DA4C4)
+                    .itemLanguage("Cobalt Enchantment", "钴蓝魔石")
+                    .itemLanguageTooltip(1, " ", "受到伤害时，对附近的敌人施加2.5秒涂油效果，使敌人受到的火焰伤害提升200%，该效果有3秒冷却时间")
+                    .itemLanguageTooltip(2, " ", "免疫浸油")
+                    .itemLanguageTooltip(-1, " ", "“真不敢相信这竟然不是钯金”")
+                    .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.Curio)
+                    .build();
 
-    public static final DeferredItem<PalladiumSoul> PalladiumSoulItem = register("palladium_soul", PalladiumSoul::new)
-            .itemLanguage("Palladium Enchantment", "钯金魔石")
-            .itemLanguageTooltip(1, " ", "攻击有20%概率使敌人爆出3~5个追踪鲜血球，每个鲜血球恢复你3点生命值，该效果有2秒冷却时间")
-            .itemLanguageTooltip(2, " ", "恢复生命值时积累25%生命能量，最多积累200点")
-            .itemLanguageTooltip(3, " ", "生命能量达到最大值时，消耗所有能量，为你恢复100%最大生命值，并使你获得10秒生命流涌效果")
-            .itemLanguageTooltip(4, " ", "在生命流涌效果下，超过最大生命值的恢复会产生伤害性血液，伤害值等同溢出的恢复值，追踪周围其他敌人")
-            .itemLanguageTooltip(-1, " ", "“你感到你的伤口在慢慢愈合”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
+    public static final DeferredItem<PalladiumSoul> PalladiumSoulItem =
+            register("palladium_soul", PalladiumSoul::new, 0xF5AC28)
+                    .itemLanguage("Palladium Enchantment", "钯金魔石")
+                    .itemLanguageTooltip(1, " ", "攻击有20%概率使敌人爆出3~5个追踪鲜血球，每个鲜血球恢复你3点生命值，该效果有2秒冷却时间")
+                    .itemLanguageTooltip(2, " ", "恢复生命值时积累25%生命能量，最多积累200点")
+                    .itemLanguageTooltip(3, " ", "生命能量达到最大值时，消耗所有能量，为你恢复100%最大生命值，并使你获得10秒生命流涌效果")
+                    .itemLanguageTooltip(4, " ", "在生命流涌效果下，超过最大生命值的恢复会产生伤害性血液，伤害值等同溢出的恢复值，追踪周围其他敌人")
+                    .itemLanguageTooltip(-1, " ", "“你感到你的伤口在慢慢愈合”")
+                    .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.Curio)
+                    .build();
 
-    public static final DeferredItem<MithrilSoul> MithrilSoulItem = register("mithril_soul", MithrilSoul::new)
-            .itemLanguage("Mithril Enchantment", "秘银魔石")
-            .itemLanguageTooltip(1, " ", "攻击速度提升30%")
-            .itemLanguageTooltip(2, " ", "攻击使攻击速度额外提升5%，最多额外提升70%，5秒不攻击使额外攻击速度清空")
-            .itemLanguageTooltip(-1, " ", "“你感觉武器的知识渗透进你的脑海中”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
+    public static final DeferredItem<MithrilSoul> MithrilSoulItem =
+            register("mithril_soul", MithrilSoul::new, 0x9DD290)
+                    .itemLanguage("Mithril Enchantment", "秘银魔石")
+                    .itemLanguageTooltip(1, " ", "攻击速度提升30%")
+                    .itemLanguageTooltip(2, " ", "攻击使攻击速度额外提升5%，最多额外提升70%，5秒不攻击使额外攻击速度清空")
+                    .itemLanguageTooltip(-1, " ", "“你感觉武器的知识渗透进你的脑海中”")
+                    .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.Curio)
+                    .build();
 
-    public static final DeferredItem<OrichalcumSoul> OrichalcumSoulItem = register("orichalcum_soul", OrichalcumSoul::new)
-            .itemLanguage("Orichalcum Enchantment", "山铜魔石")
-            .itemLanguageTooltip(1, " ", "攻击时时召唤3~6枚追踪花瓣，花瓣造成5%魔法伤害并施加5秒山铜中毒效果，该效果有0.25秒冷却时间")
-            .itemLanguageTooltip(3, " ", "免疫山铜中毒")
-            .itemLanguageTooltip(-1, "\"Nature blesses you\"", "“自然祝福着你”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
+    public static final DeferredItem<OrichalcumSoul> OrichalcumSoulItem =
+            register("orichalcum_soul", OrichalcumSoul::new, 0xEB3291)
+                    .itemLanguage("Orichalcum Enchantment", "山铜魔石")
+                    .itemLanguageTooltip(1, " ", "攻击时召唤3~6枚追踪花瓣，花瓣造成50%魔法伤害并施加5秒山铜中毒效果，该效果有0.25秒冷却时间")
+                    .itemLanguageTooltip(2, " ", "免疫山铜中毒")
+                    .itemLanguageTooltip(-1, "\"Nature blesses you\"", "“自然祝福着你”")
+                    .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.Curio).build();
 
-    public static final DeferredItem<AdamantiteSoul> AdamantiteSoulItem = register("adamantite_soul", AdamantiteSoul::new)
-            .itemLanguage("Adamantite Enchantment", "精金魔石")
-            .itemLanguageTooltip(1, " ", "移动速度提升15%")
-            .itemLanguageTooltip(2, " ", "攻击造成5秒盔甲破损效果，减少40%护甲值")
-            .itemLanguageTooltip(3, " ", "攻击护甲低于20的敌人时，造成的伤害提升40%，暴击伤害提升80%")
-            .itemLanguageTooltip(-1, "\"Chaos\"", "“混乱”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
+    public static final DeferredItem<AdamantiteSoul> AdamantiteSoulItem =
+            register("adamantite_soul", AdamantiteSoul::new, 0xDD557D)
+                    .itemLanguage("Adamantite Enchantment", "精金魔石")
+                    .itemLanguageTooltip(1, " ", "移动速度提升15%")
+                    .itemLanguageTooltip(2, " ", "攻击造成5秒盔甲破损效果，减少40%护甲值")
+                    .itemLanguageTooltip(3, " ", "攻击护甲低于20的敌人时，造成的伤害提升40%，暴击伤害提升80%")
+                    .itemLanguageTooltip(-1, "\"Chaos\"", "“混乱”")
+                    .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.Curio)
+                    .build();
 
-    public static final DeferredItem<TitaniumSoul> TitaniumSoulItem = register("titanium_soul", TitaniumSoul::new)
-            .itemLanguage("Titanium Enchantment", "钛金魔石")
-            .itemLanguageTooltip(1, " ", "减少15%受到伤害")
-            .itemLanguageTooltip(2, " ", "受到伤害会积累20%守护能量，最多积累600点守护能量，每秒流失5点")
-            .itemLanguageTooltip(3, " ", "根据守护能量的比例，减少你受到的伤害，最多减少35%")
-            .itemLanguageTooltip(4, " ", "守护能量超过300点时，提升25%最大生命值，提升50%护甲值")
-            .itemLanguageTooltip(5, " ", "低于50%最大生命值时，守护能量的减伤效果翻倍")
-            .itemLanguageTooltip(-1, " ", "“有了绝对防御后，谁还需要躲避呢？”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
+    public static final DeferredItem<TitaniumSoul> TitaniumSoulItem =
+            register("titanium_soul", TitaniumSoul::new, 0x828C88)
+                    .itemLanguage("Titanium Enchantment", "钛金魔石")
+                    .itemLanguageTooltip(1, " ", "减少15%受到伤害")
+                    .itemLanguageTooltip(2, " ", "受到伤害会积累20%守护能量，最多积累600点守护能量，每秒流失5点")
+                    .itemLanguageTooltip(3, " ", "根据守护能量的比例，减少你受到的伤害，最多减少35%")
+                    .itemLanguageTooltip(4, " ", "守护能量超过300点时，提升25%最大生命值，提升50%护甲值")
+                    .itemLanguageTooltip(5, " ", "低于50%最大生命值时，守护能量的减伤效果翻倍")
+                    .itemLanguageTooltip(-1, " ", "“有了绝对防御后，谁还需要躲避呢？”")
+                    .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.Curio)
+                    .build();
 
     // ============================================================
     // 自然之力 · 魔石分段
     // ============================================================
-    public static final DeferredItem<NaturePower> NaturePowerItem = register("nature_power", NaturePower::new)
-            .itemLanguage("Nature Power", "自然之力")
-            .itemLanguageTooltip(1, " ", "召唤5个围绕持有者旋转的叶绿水晶，叶绿水晶会向敌怪发射激光")
-            .itemLanguageTooltip(2, " ", "叶绿水晶造成的伤害提升300%")
-            .itemLanguageTooltip(3, " ", "受到的伤害降低15点")
-            .itemLanguageTooltip(-1, "\"Travel through every secret corner of the wilderness\"", "“走遍荒野的每一个秘密角落”")
-            .itemTag(FargoSoulItemTagsRegister.SectionPower)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
+    public static final DeferredItem<NaturePower> NaturePowerItem =
+            register("nature_power", NaturePower::new, SoulRarity.Purple.getColor())
+                    .itemLanguage("Nature Power", "自然之力")
+                    .itemLanguageTooltip(1, " ", "召唤5个围绕持有者旋转的叶绿水晶，叶绿水晶会向敌怪发射激光")
+                    .itemLanguageTooltip(2, " ", "叶绿水晶造成的伤害提升300%")
+                    .itemLanguageTooltip(3, " ", "受到的伤害降低15点")
+                    .itemLanguageTooltip(-1, "\"Travel through every secret corner of the wilderness\"", "“走遍荒野的每一个秘密角落”")
+                    .itemTag(FargoSoulItemTagsRegister.SectionPower)
+                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.Curio)
+                    .build();
 
-    public static final DeferredItem<CrimsonSoul> CrimsonSoulItem = register("crimson_soul", CrimsonSoul::new)
-            .itemLanguage("Crimson Enchantment", "猩红魔石")
-            .itemLanguageTooltip(1, " ", "攻击使敌人爆出2~4个追踪鲜血球，为你恢复3点生命值，每个敌人有0.25秒冷却时间")
-            .itemLanguageTooltip(2, " ", "每秒恢复1%最大生命值，周围4格没有敌人时，每秒额外恢复2最大生命值")
-            .itemLanguageTooltip(3, " ", "击杀敌人使你恢复敌人20%最大生命值的生命值")
-            .itemLanguageTooltip(-1, " ", "“你从敌人的鲜血中重生”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
+    public static final DeferredItem<CrimsonSoul> CrimsonSoulItem =
+            register("crimson_soul", CrimsonSoul::new, 0xCA3448)
+                    .itemLanguage("Crimson Enchantment", "猩红魔石")
+                    .itemLanguageTooltip(1, " ", "攻击使敌人爆出2~4个追踪鲜血球，为你恢复3点生命值，每个敌人有0.25秒冷却时间")
+                    .itemLanguageTooltip(2, " ", "每秒恢复1%最大生命值，周围4格没有敌人时，每秒额外恢复2最大生命值")
+                    .itemLanguageTooltip(3, " ", "击杀敌人使你恢复敌人20%最大生命值的生命值")
+                    .itemLanguageTooltip(-1, " ", "“你从敌人的鲜血中重生”")
+                    .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.Curio)
+                    .build();
 
-    public static final DeferredItem<LavaSoul> LavaSoulItem = register("lava_soul", LavaSoul::new)
-            .itemLanguage("Lava Enchantment", "熔岩魔石")
-            .itemLanguageTooltip(1, " ", "点燃附近的目标")
-            .itemLanguageTooltip(2, " ", "对燃烧的敌人，造成的伤害提升至120%")
-            .itemLanguageTooltip(3, " ", "免疫熔岩伤害")
-            .itemLanguageTooltip(-1, "\"They will feel the wrath of Hell\"", "“他们将感受到地狱的愤怒”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
+    public static final DeferredItem<LavaSoul> LavaSoulItem =
+            register("lava_soul", LavaSoul::new, 0xC32925)
+                    .itemLanguage("Lava Enchantment", "熔岩魔石")
+                    .itemLanguageTooltip(1, " ", "点燃附近的目标")
+                    .itemLanguageTooltip(2, " ", "对燃烧的敌人，造成的伤害提升至120%")
+                    .itemLanguageTooltip(3, " ", "免疫熔岩伤害")
+                    .itemLanguageTooltip(-1, "\"They will feel the wrath of Hell\"", "“他们将感受到地狱的愤怒”")
+                    .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.Curio)
+                    .build();
 
     public static final DeferredItem<RainCloudSoul> RainCloudSoulItem =
-            register("rain_cloud_soul", RainCloudSoul::new)
+            register("rain_cloud_soul", RainCloudSoul::new, 0xFFFF33)
                     .itemLanguage("Rain Cloud Enchantment", "雨云魔石")
                     .itemLanguageTooltip(1, " ", "受到伤害时有概率召唤雷电劈向目标，该效果有2秒冷却时间")
                     .itemLanguageTooltip(2, " ", "免疫雷电伤害")
@@ -567,102 +577,110 @@ public class FargoSoulItemRegister {
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
-    public static final DeferredItem<FrostSoul> FrostSoulItem = register("frost_soul", FrostSoul::new)
-            .itemLanguage("Frost Enchantment", "冰霜魔石")
-            .itemLanguageTooltip(1, " ", "攻击时召唤2枚雪球攻击敌人，该效果有1秒冷却时间")
-            .itemLanguageTooltip(4, " ", "在寒冷群系时，雪球的冷却时间减少60%")
-            .itemLanguageTooltip(-1, " ", "“让我们给这个世界披上一层厚厚的冰衣”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
+    public static final DeferredItem<FrostSoul> FrostSoulItem =
+            register("frost_soul", FrostSoul::new, 0x78BDB9)
+                    .itemLanguage("Frost Enchantment", "冰霜魔石")
+                    .itemLanguageTooltip(1, " ", "攻击时召唤2枚雪球攻击敌人，该效果有1秒冷却时间")
+                    .itemLanguageTooltip(2, " ", "在寒冷群系时，雪球的冷却时间减少60%")
+                    .itemLanguageTooltip(-1, " ", "“让我们给这个世界披上一层厚厚的冰衣”")
+                    .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.Curio)
+                    .build();
 
-    public static final DeferredItem<GreenSoul> GreenSoulItem = register("green_soul", GreenSoul::new)
-            .itemLanguage("Green Enchantment", "叶绿魔石")
-            .itemLanguageTooltip(1, " ", "赋予叶绿冲刺。冲刺会对敌人造成10秒中毒效果")
-            .itemLanguageTooltip(2, " ", "赋予飞行")
-            .itemLanguageTooltip(3, " ", "产生一个跟随持有者的叶绿水晶攻击周围敌人，叶绿水晶会向敌怪发射激光")
-            .itemLanguageTooltip(-1, " ", "“丛林的精华在你周围凝结成晶体”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
+    public static final DeferredItem<GreenSoul> GreenSoulItem =
+            register("green_soul", GreenSoul::new, 0x1D8A00)
+                    .itemLanguage("Green Enchantment", "叶绿魔石")
+                    .itemLanguageTooltip(1, " ", "赋予叶绿冲刺。冲刺会对敌人造成10秒中毒效果")
+                    .itemLanguageTooltip(2, " ", "赋予飞行")
+                    .itemLanguageTooltip(3, " ", "产生一个跟随持有者的叶绿水晶攻击周围敌人，叶绿水晶会向敌怪发射激光")
+                    .itemLanguageTooltip(-1, " ", "“丛林的精华在你周围凝结成晶体”")
+                    .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.Curio)
+                    .build();
 
-    public static final DeferredItem<MushroomSoul> MushroomSoulItem = register("mushroom_soul", MushroomSoul::new)
-            .itemLanguage("Mushroom Enchantment", "蘑菇魔石")
-            .itemLanguageTooltip(1, " ", "食用蘑菇煲额外恢复50点生命值")
-            .itemLanguageTooltip(2, " ", "击杀敌人后掉落2~4格蘑菇")
-            .itemLanguageTooltip(-1, " ", "“是用真的蘑菇做的！”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
+    public static final DeferredItem<MushroomSoul> MushroomSoulItem =
+            register("mushroom_soul", MushroomSoul::new, 0x0089F7)
+                    .itemLanguage("Mushroom Enchantment", "蘑菇魔石")
+                    .itemLanguageTooltip(1, " ", "食用蘑菇煲额外恢复50点生命值")
+                    .itemLanguageTooltip(2, " ", "击杀敌人后掉落2~4格蘑菇")
+                    .itemLanguageTooltip(-1, " ", "“是用真的蘑菇做的！”")
+                    .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.Curio)
+                    .build();
 
     // ============================================================
     // 生命之力 · 魔石分段
     // ============================================================
-    public static final DeferredItem<LifePower> LifePowerItem = register("life_power", LifePower::new)
-            .itemLanguage("Life Power", "生命之力")
-            .itemLanguageTooltip(1, " ", "赋予飞行")
-            .itemLanguageTooltip(2, " ", "飞行时间提升150%")
-            .itemLanguageTooltip(3, " ", "饮用蜂蜜使你获得10秒仙馔密酒效果")
-            .itemLanguageTooltip(4, " ", "处于仙馔密酒效果下时，造成的伤害提升30%伤害，提升5每秒生命恢复，召唤伤害提升200%")
-            .itemLanguageTooltip(5, " ", "反弹500%的接触伤害")
-            .itemLanguageTooltip(-1, " ", "“罕有生灵敢违背你的意愿”")
-            .itemTag(FargoSoulItemTagsRegister.SectionPower)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
+    public static final DeferredItem<LifePower> LifePowerItem =
+            register("life_power", LifePower::new, SoulRarity.Purple.getColor())
+                    .itemLanguage("Life Power", "生命之力")
+                    .itemLanguageTooltip(1, " ", "赋予飞行")
+                    .itemLanguageTooltip(2, " ", "飞行时间提升150%")
+                    .itemLanguageTooltip(3, " ", "饮用蜂蜜使你获得10秒仙馔密酒效果")
+                    .itemLanguageTooltip(4, " ", "处于仙馔密酒效果下时，造成的伤害提升30%伤害，提升5每秒生命恢复，召唤伤害提升200%")
+                    .itemLanguageTooltip(5, " ", "反弹500%的接触伤害")
+                    .itemLanguageTooltip(-1, " ", "“罕有生灵敢违背你的意愿”")
+                    .itemTag(FargoSoulItemTagsRegister.SectionPower)
+                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.Curio)
+                    .build();
 
-    public static final DeferredItem<BeeSoul> BeeSoulItem = register("bee_soul", BeeSoul::new)
-            .itemLanguage("Bee Enchantment", "蜜蜂魔石")
-            .itemLanguageTooltip(1, " ", "赋予飞行")
-            .itemLanguageTooltip(2, " ", "飞行时间提升40%")
-            .itemLanguageTooltip(3, " ", "接触花朵时提升2每秒生命恢复")
-            .itemLanguageTooltip(-1, " ", "“根据目前所知的所有航空原理，蜜蜂应该根本不可能会飞”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
+    public static final DeferredItem<BeeSoul> BeeSoulItem =
+            register("bee_soul", BeeSoul::new, 0xFFC300)
+                    .itemLanguage("Bee Enchantment", "蜜蜂魔石")
+                    .itemLanguageTooltip(1, " ", "赋予飞行")
+                    .itemLanguageTooltip(2, " ", "飞行时间提升40%")
+                    .itemLanguageTooltip(3, " ", "接触花朵时提升2每秒生命恢复")
+                    .itemLanguageTooltip(-1, " ", "“根据目前所知的所有航空原理，蜜蜂应该根本不可能会飞”")
+                    .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.Curio)
+                    .build();
 
-    public static final DeferredItem<BeetleSoul> BeetleSoulItem = register("beetle_soul", BeetleSoul::new)
-            .itemLanguage("Beetle Enchantment", "甲虫魔石")
-            .itemLanguageTooltip(1, " ", "赋予飞行")
-            .itemLanguageTooltip(2, " ", "每7秒获得1层甲虫耐力，最多叠加3层，每层甲虫耐力减少15%受到伤害，")
-            .itemLanguageTooltip(3, " ", "受到伤害时减少一层甲虫耐力，每2秒最多减少一层甲虫耐力")
-            .itemLanguageTooltip(4, " ", "攻击时获得1层甲虫力量，最多叠加3层，每层甲虫力量提升30%造成伤害，每秒失去1层甲虫力量")
-            .itemLanguageTooltip(-1, " ", "“你的血管里流淌着看不见的粪便生命”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
+    public static final DeferredItem<BeetleSoul> BeetleSoulItem =
+            register("beetle_soul", BeetleSoul::new, 0x6D5B86)
+                    .itemLanguage("Beetle Enchantment", "甲虫魔石")
+                    .itemLanguageTooltip(1, " ", "赋予飞行")
+                    .itemLanguageTooltip(2, " ", "每7秒获得1层甲虫耐力，最多叠加3层，每层甲虫耐力减少15%受到伤害，")
+                    .itemLanguageTooltip(3, " ", "受到伤害时减少一层甲虫耐力，每2秒最多减少一层甲虫耐力")
+                    .itemLanguageTooltip(4, " ", "攻击时获得1层甲虫力量，最多叠加3层，每层甲虫力量提升30%造成伤害，每秒失去1层甲虫力量")
+                    .itemLanguageTooltip(-1, " ", "“你的血管里流淌着看不见的粪便生命”")
+                    .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.Curio)
+                    .build();
 
-    public static final DeferredItem<PumpkinSoul> PumpkinSoulItem = register("pumpkin_soul", PumpkinSoul::new)
-            .itemLanguage("Pumpkin Enchantment", "南瓜魔石")
-            .itemLanguageTooltip(1, " ", "携带南瓜头时减少15%受到伤害")
-            .itemLanguageTooltip(2, " ", "踩在成熟的南瓜上时会使南瓜产生爆炸并恢复你5%最大生命值")
-            .itemLanguageTooltip(-1, " ", "“你对南瓜的突发渴望永远不会得到满足”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
+    public static final DeferredItem<PumpkinSoul> PumpkinSoulItem =
+            register("pumpkin_soul", PumpkinSoul::new, 0xE56500)
+                    .itemLanguage("Pumpkin Enchantment", "南瓜魔石")
+                    .itemLanguageTooltip(1, " ", "携带南瓜头时减少15%受到伤害")
+                    .itemLanguageTooltip(2, " ", "踩在成熟的南瓜上时会使南瓜产生爆炸并恢复你5%最大生命值")
+                    .itemLanguageTooltip(-1, " ", "“你对南瓜的突发渴望永远不会得到满足”")
+                    .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.Curio)
+                    .build();
 
-    public static final DeferredItem<SpiderSoul> SpiderSoulItem = register("spider_soul", SpiderSoul::new)
-            .itemLanguage("Spider Enchantment", "蜘蛛魔石")
-            .itemLanguageTooltip(1, " ", "提升15%召唤伤害，24点召唤穿透")
-            .itemLanguageTooltip(-1, " ", "“蜘蛛恐惧者？作为惩罚，让他被蜘蛛干掉吧！”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
+    public static final DeferredItem<SpiderSoul> SpiderSoulItem =
+            register("spider_soul", SpiderSoul::new, 0x65483F)
+                    .itemLanguage("Spider Enchantment", "蜘蛛魔石")
+                    .itemLanguageTooltip(1, " ", "提升15%召唤伤害，24点召唤穿透")
+                    .itemLanguageTooltip(-1, " ", "“蜘蛛恐惧者？作为惩罚，让他被蜘蛛干掉吧！”")
+                    .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.Curio)
+                    .build();
 
     public static final DeferredItem<TurtleSoul> TurtleSoulItem =
-            register("turtle_soul", TurtleSoul::new)
+            register("turtle_soul", TurtleSoul::new, 0xE86024)
                     .itemLanguage("Turtle Enchantment", "乌龟魔石")
-                    .itemLanguageTooltip(1, " ", "反弹60%伤害")
+                    .itemLanguageTooltip(1, " ", "反弹40%伤害")
                     .itemLanguageTooltip(2, " ", "生命值低于50%时，反弹的伤害提升至80%伤害")
-                    .itemLanguageTooltip(3, " ", "生命值低于25%时获得龟壳，龟壳存在时，受到的伤害减少，减少值相当于你4%最大生命值")
-                    .itemLanguageTooltip(6, " ", "免疫仙人掌伤害")
+                    .itemLanguageTooltip(3, " ", "生命值低于25%时，受到的伤害减少，减少值相当于你4%最大生命值")
+                    .itemLanguageTooltip(4, " ", "免疫仙人掌伤害")
                     .itemLanguageTooltip(-1, " ", "“你突然有一种想躲进壳里的冲动”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
                     .itemModel(LyraItemRegisterBuilder::basicModel)
@@ -673,7 +691,7 @@ public class FargoSoulItemRegister {
     // 心灵之力 · 魔石分段
     // ============================================================
     public static final DeferredItem<SpiritPower> SpiritPowerItem =
-            register("spirit_power", SpiritPower::new)
+            register("spirit_power", SpiritPower::new, SoulRarity.Purple.getColor())
                     .itemLanguage("Spirit Power", "心灵之力")
                     .itemLanguageTooltip(1, " ", "受到的治疗效果提升70%")
                     .itemLanguageTooltip(2, " ", "飞行时间提升100%")
@@ -685,7 +703,7 @@ public class FargoSoulItemRegister {
                     .build();
 
     public static final DeferredItem<ForbiddenSoul> ForbiddenSoulItem =
-            register("forbidden_soul", ForbiddenSoul::new)
+            register("forbidden_soul", ForbiddenSoul::new, 0xE8B300)
                     .itemLanguage("Forbidden Enchantment", "禁戒魔石")
                     .itemLanguageTooltip(1, " ", "按下“风暴”键召唤禁戒风暴，吸引附近的目标，持续5秒，该效果有30秒冷却时间")
                     .itemLanguageTooltip(-1, " ", "“走路像个埃及人”")
@@ -695,7 +713,7 @@ public class FargoSoulItemRegister {
                     .build();
 
     public static final DeferredItem<HolySoul> HolySoulItem =
-            register("holy_soul", HolySoul::new)
+            register("holy_soul", HolySoul::new, 0x968562)
                     .itemLanguage("Holy Enchantment", "神圣魔石")
                     .itemLanguageTooltip(1, " ", "提升80%受到治疗")
                     .itemLanguageTooltip(2, " ", "受到治疗时会产生冲击波，击退附近的目标，该效果有1秒冷却时间")
@@ -705,75 +723,80 @@ public class FargoSoulItemRegister {
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
-    public static final DeferredItem<AncientHolySoul> AncientHolySoulItem = register("ancient_holy_soul", AncientHolySoul::new)
-            .itemLanguage("Ancient Holy Enchantment", "远古神圣魔石")
-            .itemLanguageTooltip(1, " ", "召唤胜利与誓约之刃为你而战")
-            .itemLanguageTooltip(-1, " ", "“你有足够的力量驾驭我吗？”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
+    public static final DeferredItem<AncientHolySoul> AncientHolySoulItem =
+            register("ancient_holy_soul", AncientHolySoul::new, 0x968564)
+                    .itemLanguage("Ancient Holy Enchantment", "远古神圣魔石")
+                    .itemLanguageTooltip(1, " ", "召唤胜利与誓约之刃为你而战")
+                    .itemLanguageTooltip(-1, " ", "“你有足够的力量驾驭我吗？”")
+                    .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.Curio)
+                    .build();
 
-    public static final DeferredItem<TekeSoul> TekeSoulItem = register("teke_soul", TekeSoul::new)
-            .itemLanguage("Teke Enchantment", "提基魔石")
-            .itemLanguageTooltip(1, " ", "提升35%召唤伤害")
-            .itemLanguageTooltip(2, " ", "造成召唤伤害时，施加12秒灵雾迷障效果，减少20%移动速度，10%护甲值")
-            .itemLanguageTooltip(-1, " ", "“Aku Aku!”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
+    public static final DeferredItem<TekeSoul> TekeSoulItem =
+            register("teke_soul", TekeSoul::new, 0x53A71E)
+                    .itemLanguage("Teke Enchantment", "提基魔石")
+                    .itemLanguageTooltip(1, " ", "提升35%召唤伤害")
+                    .itemLanguageTooltip(2, " ", "造成召唤伤害时，施加12秒灵雾迷障效果，减少20%移动速度，10%护甲值")
+                    .itemLanguageTooltip(-1, " ", "“Aku Aku!”")
+                    .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.Curio)
+                    .build();
 
-    public static final DeferredItem<GhostSoul> GhostSoulItem = register("ghost_soul", GhostSoul::new)
-            .itemLanguage("Ghost Enchantment", "幽魂魔石")
-            .itemLanguageTooltip(1, " ", "攻击时夺取1点灵魂能量，最多夺取100点灵魂能量，每点灵魂能量提升2%最大生命值")
-            .itemLanguageTooltip(2, " ", "灵魂能量达到最大值时，死亡会消耗所有灵魂能量使你复活，恢复你25%最大生命值并清除减益效果，该效果有600秒冷却时间")
-            .itemLanguageTooltip(3, " ", "灵魂能量溢出时，每秒消耗所有溢出灵魂能量，召唤一枚追踪灵魂球，灵魂球伤害为溢出灵魂能量*4%最大生命值")
-            .itemLanguageTooltip(-1, " ", "“他们的生命力将毁灭他们自己”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
+    public static final DeferredItem<GhostSoul> GhostSoulItem =
+            register("ghost_soul", GhostSoul::new, 0xABCCFE)
+                    .itemLanguage("Ghost Enchantment", "幽魂魔石")
+                    .itemLanguageTooltip(1, " ", "攻击时夺取1点灵魂能量，最多夺取100点灵魂能量，每点灵魂能量提升2%最大生命值")
+                    .itemLanguageTooltip(2, " ", "灵魂能量达到最大值时，死亡会消耗所有灵魂能量使你复活，恢复你25%最大生命值并清除减益效果，该效果有600秒冷却时间")
+                    .itemLanguageTooltip(3, " ", "灵魂能量溢出时，每秒消耗所有溢出灵魂能量，召唤一枚追踪灵魂球，灵魂球伤害为溢出灵魂能量*4%最大生命值")
+                    .itemLanguageTooltip(-1, " ", "“他们的生命力将毁灭他们自己”")
+                    .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.Curio)
+                    .build();
 
     // ============================================================
     // 意志之力 · 魔石分段
     // ============================================================
-    public static final DeferredItem<WillPower> WillPowerItem = register("will_power", WillPower::new)
-            .itemLanguage("Will Power", "意志之力")
-            .itemLanguageTooltip(6, " ", "受到的治疗效果提升25%")
-            .itemLanguageTooltip(7, " ", "击杀敌人有40%概率提升1600%战利品数量")
-            .itemLanguageTooltip(8, " ", "攻击被迈达斯影响的敌人时，造成的伤害提升80%")
-            .itemLanguageTooltip(-1, "\"Indomitable determination\"", "“坚不可摧的决心”")
-            .itemTag(FargoSoulItemTagsRegister.SectionPower)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
+    public static final DeferredItem<WillPower> WillPowerItem =
+            register("will_power", WillPower::new, SoulRarity.Purple.getColor())
+                    .itemLanguage("Will Power", "意志之力")
+                    .itemLanguageTooltip(1, " ", "受到的治疗效果提升25%")
+                    .itemLanguageTooltip(2, " ", "击杀敌人有40%概率提升1600%战利品数量")
+                    .itemLanguageTooltip(3, " ", "攻击被迈达斯影响的敌人时，造成的伤害提升80%")
+                    .itemLanguageTooltip(-1, "\"Indomitable determination\"", "“坚不可摧的决心”")
+                    .itemTag(FargoSoulItemTagsRegister.SectionPower)
+                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.Curio)
+                    .build();
 
     public static final DeferredItem<GoldSoul> GoldSoulItem =
-            register("gold_soul", GoldSoul::new)
+            register("gold_soul", GoldSoul::new, 0xE7B21C)
                     .itemLanguage("Gold Enchantment", "金魔石")
                     .itemLanguageTooltip(1, " ", "攻击造成10秒迈达斯减益")
                     .itemLanguageTooltip(2, " ", "击杀被迈达斯影响的目标时额外会掉落1~4个金锭")
                     .itemLanguageTooltip(3, " ", "按下“金身”键，使你在6秒内无敌，该效果有120秒冷却")
-                    .itemLanguageTooltip(5, " ", "无敌时间结束时，尝试消耗物品栏中的金锭延长无敌时间")
-                    .itemLanguageTooltip(6, " ", "免疫迈达斯")
+                    .itemLanguageTooltip(4, " ", "无敌时间结束时，尝试消耗物品栏中的金锭延长无敌时间")
+                    .itemLanguageTooltip(5, " ", "免疫迈达斯")
                     .itemLanguageTooltip(-1, " ", "“有钱能使鬼推磨”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
                     .itemModel(LyraItemRegisterBuilder::basicModel)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
-    public static final DeferredItem<PlatinumSoul> PlatinumSoulItem = register("platinum_soul", PlatinumSoul::new)
-            .itemLanguage("Platinum Enchantment", "铂金魔石")
-            .itemLanguageTooltip(1, " ", "击杀敌人有20%概率提升500%战利品数量")
-            .itemLanguageTooltip(-1, " ", "“无价之宝”")
-            .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .itemTag(FargoSoulItemTagsRegister.Curio)
-            .build();
+    public static final DeferredItem<PlatinumSoul> PlatinumSoulItem =
+            register("platinum_soul", PlatinumSoul::new, 0x7F96B9)
+                    .itemLanguage("Platinum Enchantment", "铂金魔石")
+                    .itemLanguageTooltip(1, " ", "击杀敌人有20%概率提升500%战利品数量")
+                    .itemLanguageTooltip(-1, " ", "“无价之宝”")
+                    .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
+                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.Curio)
+                    .build();
 
     public static final DeferredItem<GladiatorSoul> GladiatorSoulItem =
-            register("gladiator_soul", GladiatorSoul::new)
+            register("gladiator_soul", GladiatorSoul::new, 0x9C924E)
                     .itemLanguage("Gladiator Enchantment", "角斗士魔石")
                     .itemLanguageTooltip(1, " ", "周围8格的目标数少于3个时，造成的伤害提升30%，否则减少20%受到伤害")
                     .itemLanguageTooltip(2, " ", "周围8格只有一个目标时，造成的伤害提升50%，受到的伤害提升50%")
@@ -784,12 +807,12 @@ public class FargoSoulItemRegister {
                     .build();
 
     public static final DeferredItem<RedRidingSoul> RedRidingSoulItem =
-            register("red_riding_soul", RedRidingSoul::new)
+            register("red_riding_soul", RedRidingSoul::new, 0xC01B3C)
                     .itemLanguage("Red Riding Enchantment", "红色骑术魔石")
                     .itemLanguageTooltip(1, " ", "对有护甲的目标，造成的伤害提升40%")
                     .itemLanguageTooltip(2, " ", "攻击时叠加1层游击效果，最多叠加10层，每层游击提升1%移动速度")
                     .itemLanguageTooltip(3, " ", "游击层数达到10层时，冲刺初速度提升50%")
-                    .itemLanguageTooltip(5, " ", "受到伤害时清空游击层数")
+                    .itemLanguageTooltip(4, " ", "受到伤害时清空游击层数")
                     .itemLanguageTooltip(-1, " ", "“小红帽，大坏蛋！”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
                     .itemModel(LyraItemRegisterBuilder::basicModel)
@@ -797,7 +820,7 @@ public class FargoSoulItemRegister {
                     .build();
 
     public static final DeferredItem<ValhallaKnightSoul> ValhallaKnightSoulItem =
-            register("valhalla_knight_soul", ValhallaKnightSoul::new)
+            register("valhalla_knight_soul", ValhallaKnightSoul::new, 0x93651E)
                     .itemLanguage("Valhalla Knight Enchantment", "英灵殿骑士魔石")
                     .itemLanguageTooltip(1, " ", "骑乘坐骑时，造成的伤害提升40%，提升50%护甲值，提升2每秒生命恢复")
                     .itemLanguageTooltip(2, " ", "受到的治疗效果提升15%")
@@ -806,10 +829,6 @@ public class FargoSoulItemRegister {
                     .itemModel(LyraItemRegisterBuilder::basicModel)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
-
-    private static <T extends Item> LyraItemRegisterBuilder<T> register(String name, Function<Item.Properties, T> function) {
-        return register(name, function, null);
-    }
 
     private static <T extends Item> LyraItemRegisterBuilder<T> register(String name, Function<Item.Properties, T> function, Integer color) {
         return LyraItemRegisterBuilder.build(Register, name, () -> {

@@ -39,7 +39,7 @@ public class LightningOrb extends Projectile {
         Level level = owner.level();
         if (!level.isClientSide()) {
             idList.clear();
-            List<LivingEntity> entities = SoulTargetCache.get(owner).getEntitiesInRadius(getPos(), 3, target -> SoulTargetCache.isTarget(owner, target));
+            List<LivingEntity> entities = SoulTargetCache.get(owner).getEntitiesInRadius(getPos(), 3, null);
             for (LivingEntity living : entities) {
                 idList.add(living.getId());
                 InvincibleData.attack(living)

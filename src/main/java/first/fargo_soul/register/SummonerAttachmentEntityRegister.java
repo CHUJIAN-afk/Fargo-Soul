@@ -2,8 +2,12 @@ package first.fargo_soul.register;
 
 import first.fargo_soul.FargoSoul;
 import first.fargo_soul.common.entity.BloodDrop;
+import first.fargo_soul.common.entity.ChlorophyteOrb;
+import first.fargo_soul.common.entity.GhostOrb;
+import first.fargo_soul.common.entity.TerraBlade;
 import first.fargo_soul.common.entity.LightningOrb;
 import first.fargo_soul.common.entity.Meteor;
+import first.fargo_soul.common.entity.Petal;
 import first.fargo_soul.common.entity.ShadowOrb;
 import first.fargo_soul.common.entity.SnowBall;
 import first.fargo_soul.common.entity.Star;
@@ -49,6 +53,18 @@ public class SummonerAttachmentEntityRegister {
 
     public static final DeferredHolder<AttachmentEntityType<?>, AttachmentEntityType<Star>> STAR =
             register("star", Star::new);
+
+    public static final DeferredHolder<AttachmentEntityType<?>, AttachmentEntityType<Petal>> PETAL =
+            register("petal", Petal::new);
+
+    public static final DeferredHolder<AttachmentEntityType<?>, AttachmentEntityType<GhostOrb>> GHOST_ORB =
+            register("ghost_orb", GhostOrb::new);
+
+    public static final DeferredHolder<AttachmentEntityType<?>, AttachmentEntityType<ChlorophyteOrb>> CHLOROPHYTE_ORB =
+            register("chlorophyte_orb", ChlorophyteOrb::new);
+
+    public static final DeferredHolder<AttachmentEntityType<?>, AttachmentEntityType<TerraBlade>> TERRA_BLADE =
+            register("terra_blade", TerraBlade::new);
 
     private static <T extends AttachmentEntity> DeferredHolder<AttachmentEntityType<?>, AttachmentEntityType<T>> register(String name, Supplier<T> supplier) {
         return Register.register(name, ResourceLocation -> new AttachmentEntityType<>(ResourceLocation, supplier));

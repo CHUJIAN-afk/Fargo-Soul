@@ -1,0 +1,174 @@
+package first.fargo_soul.common.entity;
+
+import first.fargo_soul.common.attachment.SoulItemData;
+import first.fargo_soul.common.entity.goal.terrablade.BladeAttackGoal;
+import first.fargo_soul.common.entity.goal.terrablade.BladeIdleGoal;
+import first.fargo_soul.common.entity.goal.terrablade.BladePrepGoal;
+import first.fargo_soul.register.FargoSoulItemRegister;
+import first.fargo_soul.register.SummonerAttachmentEntityRegister;
+import first.lyra.api.LyraHelper;
+import first.lyra.common.attachment.InvincibleData;
+import first.lyra.common.attachment.TargetCache;
+import first.lyra.common.entity.AttachmentEntityType;
+import first.lyra.common.entity.IEntityCollision;
+import first.lyra.common.entity.PathNode;
+import first.lyra.common.minion.Minion;
+import first.lyra.common.minion.MinionGoalSelector;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+public class TerraBlade extends Minion implements IEntityCollision<TerraBlade> {
+
+    public boolean attacking = false;
+    private boolean blend = false;
+    public int trailTimer = 0;
+    public float idleBlend = 0f;
+    public float idleBlendO = 0f;
+    public final Set<LivingEntity> hitTargets = new HashSet<>();
+    public boolean spiritPower = false;
+    public boolean ancientHolySoul = false;
+
+    public TerraBlade() {
+        super();
+        setDamage(8);
+    }
+
+    @Override
+    public void registerGoals(MinionGoalSelector goalSelector) {
+        goalSelector.addGoal(0, new BladeAttackGoal(this));
+        goalSelector.addGoal(1, new BladePrepGoal(this));
+        goalSelector.addGoal(2, new BladeIdleGoal(this));
+    }
+
+    @Override
+    public LivingEntity searchTarget() {
+        int distance = this.getSearchDistance();
+        if (distance > 0) {
+            LyraHelper helper = LyraHelper.get(this.owner);
+            TargetCache targetCache = helper.getTargetCache();
+            if (!targetCache.isEmpty()) {
+                List<LivingEntity> targets = targetCache.getEntitiesInRadius(this.getPos(), targetCache.getSummonSearchRange(this.getOwner(), (float) distance), (living) -> (attacking || targetCache.isVisibility(this.owner, living)) && this.isTarget(living));
+                if (!targets.isEmpty()) {
+                    return targetCache.getNewTarget(this, targets, 8, false);
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public int getSearchDistance() {
+        return 32;
+    }
+
+    @Override
+    public @NotNull AABB getHitbox() {
+        return new AABB(-0.15, -0.06, -0.5, 0.15, 0.06, 1.05);
+    }
+
+    @Override
+    public boolean canCollideAttack() {
+        return isTarget(getTarget());
+    }
+
+    @Override
+    public void onCollisionAttack(List<HitContext> hitContexts) {
+        float amount = getDamage();
+        if (SoulItemData.isEquipped(getOwner(), FargoSoulItemRegister.SpiritPowerItem)) {
+            amount *= 2;
+        }
+        for (HitContext hit : hitContexts) {
+            if (this.hitTargets.add(hit.entity())) {
+                InvincibleData.attack(hit.entity())
+                        .attacker(getUuid())
+                        .damageSource(getDamageSource())
+                        .damageAmount(amount)
+                        .apply();
+            }
+        }
+    }
+
+    @Override
+    public boolean isValidCollisionTarget(TerraBlade entity, LivingEntity target) {
+        return isTarget(target);
+    }
+
+    @Override
+    public void tick() {
+        if (owner.level().isClientSide()) {
+            idleBlendO = idleBlend;
+            if (blend) {
+                trailTimer = Math.min(trailTimer + 1, 12);
+                idleBlend = Math.max(0.0f, idleBlend - 0.25f);
+            } else {
+                trailTimer = Math.max(trailTimer - 1, 0);
+                idleBlend = Math.min(1.0f, idleBlend + 0.1f);
+            }
+        } else {
+            if (spiritPower && !SoulItemData.isEquipped(getOwner(), FargoSoulItemRegister.SpiritPowerItem)){
+                setRemove();
+            }
+            if (ancientHolySoul && !SoulItemData.isEquipped(getOwner(), FargoSoulItemRegister.AncientHolySoulItem)){
+                setRemove();
+            }
+        }
+        super.tick();
+    }
+
+    @Override
+    public void writeAdditional(RegistryFriendlyByteBuf buf) {
+        buf.writeBoolean(attacking);
+        buf.writeBoolean(!(getGoalSelector().getCurrentGoal() instanceof BladeIdleGoal));
+    }
+
+    @Override
+    public void readAdditional(RegistryFriendlyByteBuf buf) {
+        this.attacking = buf.readBoolean();
+        this.blend = buf.readBoolean();
+    }
+
+    public int getColor(float partialTick) {
+        int order = getOrderCache();
+        int total = Math.max(1, getSameSizeCache());
+        float hueShift = ((float) order / total + (owner.tickCount + partialTick) * 0.015f) % 1.0f;
+        float breathFactor = 0.5f + 0.5f * Mth.sin(hueShift * Mth.TWO_PI);
+        return Mth.hsvToRgb(hueShift, 0.75f - 0.35f * breathFactor, 1.0f);
+    }
+
+    @Override
+    public PathNode getRenderNode(float partialTick) {
+        PathNode renderNode = super.getRenderNode(partialTick);
+        return renderNode.lerp(getInterpolatedIdleState(partialTick), Mth.lerp(partialTick, idleBlendO, idleBlend));
+    }
+
+    public PathNode getInterpolatedIdleState(float partialTick) {
+        float bodyYaw = Mth.rotLerp(partialTick, owner.yBodyRotO, owner.yBodyRot);
+        float headYaw = Mth.rotLerp(partialTick, owner.yHeadRotO, owner.yHeadRot);
+        float playerYaw = Mth.wrapDegrees(bodyYaw + Mth.wrapDegrees(headYaw - bodyYaw) * 0.5f);
+        float rad = (float) Math.toRadians(-playerYaw + 180);
+        float backX = (float) Math.sin(rad);
+        float backZ = (float) Math.cos(rad);
+        float rightX = (float) Math.cos(rad);
+        float rightZ = (float) -Math.sin(rad);
+        int order = getOrderCache();
+        double localZ = 0.75 + order * 0.12;
+        double floatSpeed = 0.08 + order * 0.01;
+        double floatAngle = (owner.tickCount + partialTick) * floatSpeed + order * 1.33;
+        Vec3 playerPos = owner.getPosition(partialTick);
+        Vec3 targetPos = playerPos.add(localZ * backX + Math.cos(floatAngle) * 0.075 * rightX, owner.getBbHeight() * 0.6 + Math.sin(floatAngle) * 0.075, localZ * backZ + Math.cos(floatAngle) * 0.075 * rightZ);
+        return new PathNode(targetPos, playerYaw - 90, 75 - order * 5f, 100);
+    }
+
+    @Override
+    public AttachmentEntityType<? extends Minion> getType() {
+        return SummonerAttachmentEntityRegister.TERRA_BLADE.get();
+    }
+}

@@ -42,7 +42,7 @@ public class PalmWoodSoul extends SoulItem {
     @Override
     public void keyHandle(Player player, ResourceLocation location) {
         if (location.equals(FargoSoul.rl("palm_oil"))) {
-            List<LivingEntity> enemies = SoulTargetCache.get(player).getEntitiesInRadius(player.getBoundingBox().getCenter(), 6, target -> SoulTargetCache.isTarget(player, target));
+            List<LivingEntity> enemies = SoulTargetCache.get(player).getEntitiesInRadius(player.getBoundingBox().getCenter(), 6, null);
             for (LivingEntity enemy : enemies) {
                 enemy.addEffect(new MobEffectInstance(FargoSoulMobEffectRegister.Oiled, 400));
             }

@@ -2,13 +2,16 @@ package first.fargo_soul.register;
 
 import first.fargo_soul.FargoSoul;
 import first.fargo_soul.client.renderer.projectile.BloodDropRenderer;
+import first.fargo_soul.client.renderer.projectile.ChlorophyteOrbRenderer;
 import first.fargo_soul.client.renderer.projectile.LightningOrbRenderer;
+import first.fargo_soul.client.renderer.projectile.TerraBladeRenderer;
 import first.fargo_soul.client.renderer.projectile.TrackingBloodRenderer;
 import first.lyra.client.dynamicLight.DynamicLightDispatcher;
 import first.lyra.client.render.AttachmentEntityRenderDispatcher;
 import first.lyra.client.render.IAttachmentEntityRenderer;
 import first.lyra.client.render.RenderUtil;
 import first.lyra.client.render.SimpleRenderer;
+import first.lyra.client.render.rendererHelper.SphereRendererHelper;
 import first.lyra.common.entity.AttachmentEntity;
 import first.lyra.common.entity.AttachmentEntityType;
 import net.minecraft.resources.ResourceLocation;
@@ -45,6 +48,24 @@ public class SummonerAttachmentEntityRenderRegister {
         register(SummonerAttachmentEntityRegister.TRACKING_BLOOD, TrackingBloodRenderer::new);
         register(SummonerAttachmentEntityRegister.BLOOD_DROP, BloodDropRenderer::new);
         register(SummonerAttachmentEntityRegister.STAR, null);
+        register(SummonerAttachmentEntityRegister.PETAL, () -> new SimpleRenderer<>((entity, poseStack, bufferSource, visualNode, context, partialTick, alpha) -> SphereRendererHelper.builder()
+                .radius(0.06f)
+                .layers(2)
+                .sides(6)
+                .color(0xFFF2A2C4)
+                .alpha(0.85f)
+                .innerRatio(0.5f)
+                .render(poseStack, bufferSource)));
+        register(SummonerAttachmentEntityRegister.GHOST_ORB, () -> new SimpleRenderer<>((entity, poseStack, bufferSource, visualNode, context, partialTick, alpha) -> SphereRendererHelper.builder()
+                .radius(0.05f)
+                .layers(2)
+                .sides(6)
+                .color(0xFFB8D8FF)
+                .alpha(0.85f)
+                .innerRatio(0.5f)
+                .render(poseStack, bufferSource)));
+        register(SummonerAttachmentEntityRegister.CHLOROPHYTE_ORB, ChlorophyteOrbRenderer::new);
+        register(SummonerAttachmentEntityRegister.TERRA_BLADE, TerraBladeRenderer::new);
     }
 
     private static <T extends AttachmentEntity> void register(DeferredHolder<AttachmentEntityType<?>, AttachmentEntityType<T>> type, @Nullable Supplier<IAttachmentEntityRenderer<T>> renderer) {

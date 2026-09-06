@@ -32,7 +32,7 @@ public class ShadowWoodSoul extends SoulItem {
     @Override
     public void tick(Player player) {
         if (player.tickCount % 20 == 0) {
-            List<LivingEntity> enemies = SoulTargetCache.get(player).getEntitiesInRadius(player.getBoundingBox().getCenter(), 6, target -> SoulTargetCache.isTarget(player, target));
+            List<LivingEntity> enemies = SoulTargetCache.get(player).getEntitiesInRadius(player.getBoundingBox().getCenter(), 6, null);
             for (LivingEntity enemy : enemies) {
                 enemy.addEffect(new MobEffectInstance(FargoSoulMobEffectRegister.Hemorrhage, 120));
             }

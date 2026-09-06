@@ -24,7 +24,7 @@ public class TooltipHandlerMixin {
     )
     private static List<Component> addAll(List<Component> original, @Local(argsOnly = true) ItemTooltipEvent event, @Local(name = "itemStack") ItemStack itemStack) {
         if (itemStack.getItem() instanceof SoulItem soulItem) {
-            return soulItem.getTooltip(itemStack, event.getFlags());
+            return soulItem.getTooltip(itemStack, event.getFlags(), true);
         }
         return original;
     }

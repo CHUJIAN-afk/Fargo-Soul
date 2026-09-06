@@ -3,7 +3,6 @@ package first.fargo_soul.client;
 
 import com.mojang.datafixers.util.Either;
 import first.fargo_soul.FargoSoul;
-import first.fargo_soul.client.renderer.blockEntityRender.CosmicCrucibleBlockEntityRenderer;
 import first.fargo_soul.client.tooltip.CosmicCrucibleItemTooltipComponent;
 import first.fargo_soul.common.attachment.SoulInfoData;
 import first.fargo_soul.common.attachment.SoulItemData;
@@ -14,7 +13,6 @@ import first.fargo_soul.common.soulInfo.SprintSoulInfo;
 import first.fargo_soul.network.KeyHandlePacket;
 import first.fargo_soul.network.SprintPacket;
 import first.fargo_soul.register.FargoSoulAttachmentRegister;
-import first.fargo_soul.register.FargoSoulBlockEntityRegister;
 import first.fargo_soul.register.FargoSoulItemRegister;
 import first.fargo_soul.register.FargoSoulSoulInfoRegister;
 import first.fargo_soul.utils.KeyUtils;
@@ -168,7 +166,7 @@ public class ClientEvent {
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(FargoSoulBlockEntityRegister.CosmicCrucible.get(), CosmicCrucibleBlockEntityRenderer::new);
+        //event.registerBlockEntityRenderer(FargoSoulBlockEntityRegister.CosmicCrucible.get(), CosmicCrucibleBlockEntityRenderer::new);
     }
 
     @SubscribeEvent

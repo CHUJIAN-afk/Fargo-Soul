@@ -55,7 +55,7 @@ public class Star extends Projectile implements IEntityCollision<Star> {
         DamageSource source = getDamageSource();
         if (source != null) {
             Vec3 pos = getPos();
-            List<LivingEntity> entities = SoulTargetCache.get(owner).getEntitiesInRadius(pos, 3, target -> SoulTargetCache.isTarget(owner, target));
+            List<LivingEntity> entities = SoulTargetCache.get(owner).getEntitiesInRadius(pos, 3, null);
             for (LivingEntity entity : entities) {
                 InvincibleData.attack(entity)
                         .attacker(getUuid())

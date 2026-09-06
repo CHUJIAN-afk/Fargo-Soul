@@ -1,6 +1,7 @@
 package first.fargo_soul.common.attachment;
 
 import first.fargo_soul.common.item.base.SoulItem;
+import first.fargo_soul.common.item.base.ValueModifier;
 import first.fargo_soul.register.FargoSoulAttachmentRegister;
 import net.minecraft.core.DefaultedRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -20,9 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class SoulItemData implements AttachmentSyncHandler<SoulItemData> {
@@ -77,10 +76,16 @@ public class SoulItemData implements AttachmentSyncHandler<SoulItemData> {
                 }
             }
         }
+        boolean anyFly = false;
+        List<ValueModifier> flyModifiers = new ArrayList<>();
         for (SoulItem soulItem : cache) {
             if (!canSprint && soulItem.canSprint(player)) {
                 canSprint = true;
             }
+            if (soulItem.canFly(player)) {
+                anyFly = true;
+            }
+            soulItem.getMaxFlyTime(player, flyModifiers);
             if (renderLavaFog && !soulItem.renderLavaFog(player)) {
                 renderLavaFog = false;
             }
@@ -90,13 +95,17 @@ public class SoulItemData implements AttachmentSyncHandler<SoulItemData> {
             soulItem.getAttributeModifiers(player).forEach((soulAttribute, attributeModifier) -> {
                 AttributeInstance attribute = player.getAttribute(soulAttribute);
                 if (attribute != null) {
-                    Set<AttributeModifier> modifiers = attribute.getModifiers();
-                    for (AttributeModifier modifier : modifiers) {
-                        AttributeModifier volatileModifier = new AttributeModifier(modifier.id().withSuffix("_volatile"), modifier.amount(), modifier.operation());
-                        attribute.addPermanentModifier(volatileModifier);
+                    AttributeModifier volatileModifier = new AttributeModifier(attributeModifier.id().withSuffix("_volatile"), attributeModifier.amount(), attributeModifier.operation());
+                    if (attribute.hasModifier(volatileModifier.id())) {
+                        attribute.removeModifier(volatileModifier.id());
                     }
+                    attribute.addPermanentModifier(volatileModifier);
                 }
             });
+        }
+        if (anyFly) {
+            player.fallDistance = 0;
+            maxFlyTime = (int) ValueModifier.getModifierAfter(100f, flyModifiers);
         }
         player.syncData(FargoSoulAttachmentRegister.SOUL_ITEM_DATA);
     }

@@ -51,7 +51,7 @@ public class ForestPower extends SoulItem {
         }
         if (player.tickCount % 40 == 0) {
             Vec3 eye = player.getEyePosition();
-            List<LivingEntity> targets = SoulTargetCache.get(player).getEntitiesInRadius(player.getBoundingBox().getCenter(), 12, target -> SoulTargetCache.isTarget(player, target));
+            List<LivingEntity> targets = SoulTargetCache.get(player).getEntitiesInRadius(player.getBoundingBox().getCenter(), 12, null);
             if (!targets.isEmpty()) {
                 LivingEntity target = targets.get(player.getRandom().nextInt(targets.size()));
                 Vec3 dir = target.getBoundingBox().getCenter().subtract(eye).normalize();
@@ -61,7 +61,7 @@ public class ForestPower extends SoulItem {
             }
         }
         if (player.tickCount % 20 == 0) {
-            List<LivingEntity> enemies = SoulTargetCache.get(player).getEntitiesInRadius(player.getBoundingBox().getCenter(), 12, target -> SoulTargetCache.isTarget(player, target));
+            List<LivingEntity> enemies = SoulTargetCache.get(player).getEntitiesInRadius(player.getBoundingBox().getCenter(), 12, null);
             for (LivingEntity enemy : enemies) {
                 enemy.addEffect(new MobEffectInstance(MobEffects.WITHER, 200));
                 enemy.addEffect(new MobEffectInstance(FargoSoulMobEffectRegister.Bleeding, 200));
@@ -82,7 +82,7 @@ public class ForestPower extends SoulItem {
             }
             if (info.cooldown <= 0) {
                 info.cooldown = 20;
-                Vec3 from = target.getBoundingBox().getCenter().add(0, 0.5, 0);
+                Vec3 from = target.getBoundingBox().getCenter();
                 RandomSource random = attacker.getRandom();
                 int count = 3 + random.nextInt(4);
                 for (int i = 0; i < count; i++) {

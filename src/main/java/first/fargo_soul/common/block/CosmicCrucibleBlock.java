@@ -1,12 +1,11 @@
 package first.fargo_soul.common.block;
 
+import com.mojang.serialization.MapCodec;
 import first.fargo_soul.common.blcokEntity.CosmicCrucibleBlockEntity;
 import first.fargo_soul.register.FargoSoulBlockEntityRegister;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -37,7 +36,6 @@ import org.jetbrains.annotations.Nullable;
 public class CosmicCrucibleBlock extends BaseEntityBlock {
 
     public static final DirectionProperty Facing =  BlockStateProperties.HORIZONTAL_FACING;
-
     public static final MapCodec<CosmicCrucibleBlock> CODEC = simpleCodec(CosmicCrucibleBlock::new);
 
     public CosmicCrucibleBlock(Properties properties) {
@@ -58,11 +56,6 @@ public class CosmicCrucibleBlock extends BaseEntityBlock {
             return blockState.setValue(Facing, context.getHorizontalDirection().getCounterClockWise());
         }
         return super.getStateForPlacement(context);
-    }
-
-    @Override
-    public void animateTick(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
-        super.animateTick(state, level, pos, random);
     }
 
     @Override
@@ -134,5 +127,4 @@ public class CosmicCrucibleBlock extends BaseEntityBlock {
     public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
         return new CosmicCrucibleBlockEntity(blockPos, blockState);
     }
-
 }

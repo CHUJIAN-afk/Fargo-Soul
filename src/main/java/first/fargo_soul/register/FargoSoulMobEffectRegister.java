@@ -117,6 +117,40 @@ public class FargoSoulMobEffectRegister {
                     .build()
             );
 
+    /** 盔甲破损：护甲值减少 40% */
+    public static final Holder<MobEffect> ArmorBreak =
+            Register.register("armor_break", location -> new SimpleMobEffectBuilder(MobEffectCategory.HARMFUL, 0x6E6E6E)
+                    .addAttributeModifier(Attributes.ARMOR, location, -0.4f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+                    .build()
+            );
+
+    /** 灵雾迷障：移动速度减少 20%，护甲值减少 10% */
+    public static final Holder<MobEffect> TekeMist =
+            Register.register("teke_mist", location -> new SimpleMobEffectBuilder(MobEffectCategory.HARMFUL, 0x9FA8DA)
+                    .addAttributeModifier(Attributes.MOVEMENT_SPEED, location, -0.2f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+                    .addAttributeModifier(Attributes.ARMOR, location, -0.1f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+                    .build()
+            );
+
+    /** 山铜中毒：每秒受到毒伤 */
+    public static final Holder<MobEffect> OrichalcumPoisoning =
+            Register.register("orichalcum_poisoning", location -> new SimpleMobEffectBuilder(MobEffectCategory.HARMFUL, 0x9FE2BF)
+                    .addAttributeModifier(LyraAttributeRegister.HealthRegen, location, amplifier -> -(amplifier + 1) * 1.0, AttributeModifier.Operation.ADD_VALUE)
+                    .build()
+            );
+
+    /** 迈达斯：金魔石标记，被击杀时掉落金锭 */
+    public static final Holder<MobEffect> Midas =
+            Register.register("midas", location -> new SimpleMobEffectBuilder(MobEffectCategory.HARMFUL, 0xFFD700)
+                    .build()
+            );
+
+    /** 仙馔密酒：增益标记 */
+    public static final Holder<MobEffect> Ambrosia =
+            Register.register("ambrosia", location -> new SimpleMobEffectBuilder(MobEffectCategory.BENEFICIAL, 0xFFD75F)
+                    .build()
+            );
+
     public static void register(IEventBus eventBus) {
         Register.register(eventBus);
     }

@@ -4,7 +4,6 @@ package first.fargo_soul.common;
 import first.fargo_soul.FargoSoul;
 import first.fargo_soul.common.attachment.SoulItemData;
 import first.fargo_soul.common.attachment.SoulTargetCache;
-import first.fargo_soul.common.blcokEntity.CosmicCrucibleBlockEntity;
 import first.fargo_soul.common.item.base.ValueModifier;
 import first.fargo_soul.register.FargoSoulAttachmentRegister;
 import first.fargo_soul.register.FargoSoulAttributeRegister;
@@ -16,14 +15,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
-import net.neoforged.neoforge.event.entity.living.LivingHealEvent;
-import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
-import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
+import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
@@ -96,14 +90,20 @@ public class Event {
     public static void heal(LivingHealEvent event) {
         LivingEntity entity = event.getEntity();
         if (!entity.level().isClientSide()) {
-            float amount = event.getAmount();
+            float base = event.getAmount();
+            float[] amount = {base};
+            if (entity instanceof Player player) {
+                List<ValueModifier> modifiers = new ArrayList<>();
+                SoulItemData.forEach(player, soulItem -> soulItem.healAmount(player, base, modifiers));
+                amount[0] = ValueModifier.getModifierAfter(base, modifiers);
+            }
             if (entity.hasEffect(FargoSoulMobEffectRegister.Hemorrhage)) {
-                amount *= 0.3f;
+                amount[0] *= 0.3f;
             }
             if (entity.hasEffect(FargoSoulMobEffectRegister.Bleeding)) {
-                amount *= 0.5f;
+                amount[0] *= 0.5f;
             }
-            event.setAmount(amount);
+            event.setAmount(amount[0]);
         }
     }
 
@@ -151,10 +151,5 @@ public class Event {
     @SubscribeEvent
     public static void EntityAttributeModificationEvent(EntityAttributeModificationEvent event) {
         event.add(EntityType.PLAYER, FargoSoulAttributeRegister.ArmorPierce);
-    }
-
-    @SubscribeEvent
-    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        CosmicCrucibleBlockEntity.registerCapabilities(event);
     }
 }

@@ -12,11 +12,7 @@ public class FargoSoulBlockEntityRegister {
 
     private static final DeferredRegister<BlockEntityType<?>> Register = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, FargoSoul.MODID);
 
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CosmicCrucibleBlockEntity>> CosmicCrucible =
-            Register.register("cosmic_crucible", () -> BlockEntityType.Builder.of(
-                    CosmicCrucibleBlockEntity::new,
-                    FargoSoulBlockRegister.CosmicCrucible.get()
-            ).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CosmicCrucibleBlockEntity>> CosmicCrucible = Register.register("cosmic_crucible", () -> BlockEntityType.Builder.of(CosmicCrucibleBlockEntity::new, FargoSoulBlockRegister.CosmicCrucible.get()).build(null));
 
     public static void register(IEventBus eventBus) {
         Register.register(eventBus);

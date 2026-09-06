@@ -43,7 +43,7 @@ public class PearlWoodSoul extends SoulItem {
             SoulInfoData.putSoulInfo(player, info);
         }
         if (info.cooldown <= 0) {
-            List<LivingEntity> targets = SoulTargetCache.get(player).getEntitiesInRadius(player.getBoundingBox().getCenter(), 12, target -> SoulTargetCache.isTarget(player, target));
+            List<LivingEntity> targets = SoulTargetCache.get(player).getEntitiesInRadius(player.getBoundingBox().getCenter(), 12, null);
             if (!targets.isEmpty()) {
                 RandomSource random = player.getRandom();
                 LivingEntity target = targets.get(random.nextInt(targets.size()));
