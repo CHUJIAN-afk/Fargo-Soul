@@ -72,7 +72,7 @@ public class StardustSoul extends SoulItem {
         @Override
         public void tick(LivingEntity living) {
             if (--cooldown <= 0) {
-                if (!deserialize && living.getServer() instanceof MinecraftServer server) {
+                if (living.getServer() instanceof MinecraftServer server) {
                     ServerTickRateManager serverTickRateManager = server.tickRateManager();
                     if (serverTickRateManager.isFrozen()) {
                         serverTickRateManager.setFrozen(false);
@@ -92,7 +92,6 @@ public class StardustSoul extends SoulItem {
         @Override
         public void deserializeNBT(HolderLookup.@NotNull Provider provider, @NotNull CompoundTag tag) {
             cooldown = tag.getInt("cooldown");
-            deserialize = true;
         }
     }
 }

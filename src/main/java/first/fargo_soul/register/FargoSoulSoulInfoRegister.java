@@ -2,7 +2,9 @@ package first.fargo_soul.register;
 
 import first.fargo_soul.FargoSoul;
 import first.fargo_soul.common.item.terraSoul.CosmicPower;
+import first.fargo_soul.common.item.terraSoul.ForestPower;
 import first.fargo_soul.common.item.terraSoul.TerraPower;
+import first.fargo_soul.common.item.terraSoul.forestPower.*;
 import first.fargo_soul.common.item.terraSoul.cosmicPower.BlazeSoul;
 import first.fargo_soul.common.item.terraSoul.cosmicPower.NebulaSoul;
 import first.fargo_soul.common.item.terraSoul.cosmicPower.StardustSoul;
@@ -71,6 +73,24 @@ public class FargoSoulSoulInfoRegister {
 
     public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<TerraPower.Info>> TERRA_POWER_INFO =
             register("terra_power_info", TerraPower.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<WoodSoul.Info>> WOOD_SOUL_INFO =
+            register("wood_soul_info", WoodSoul.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<RoseWoodSoul.Info>> ROSE_WOOD_SOUL_INFO =
+            register("rose_wood_soul_info", RoseWoodSoul.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<EbonyWoodSoul.Info>> EBONY_WOOD_SOUL_INFO =
+            register("ebony_wood_soul_info", EbonyWoodSoul.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<ShadowWoodSoul.Info>> SHADOW_WOOD_SOUL_INFO =
+            register("shadow_wood_soul_info", ShadowWoodSoul.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<PearlWoodSoul.Info>> PEARL_WOOD_SOUL_INFO =
+            register("pearl_wood_soul_info", PearlWoodSoul.Info::new);
+
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<ForestPower.Info>> FOREST_POWER_INFO =
+            register("forest_power_info", ForestPower.Info::new);
 
     private static <T extends SoulInfo> DeferredHolder<SoulInfoType<?>, SoulInfoType<T>> register(String name, Supplier<T> factory) {
         return register(name, factory, false);

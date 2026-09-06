@@ -1,7 +1,9 @@
 package first.fargo_soul.register;
 
 import first.fargo_soul.FargoSoul;
+import first.fargo_soul.client.renderer.projectile.BloodDropRenderer;
 import first.fargo_soul.client.renderer.projectile.LightningOrbRenderer;
+import first.fargo_soul.client.renderer.projectile.TrackingBloodRenderer;
 import first.lyra.client.dynamicLight.DynamicLightDispatcher;
 import first.lyra.client.render.AttachmentEntityRenderDispatcher;
 import first.lyra.client.render.IAttachmentEntityRenderer;
@@ -39,6 +41,10 @@ public class SummonerAttachmentEntityRenderRegister {
         register(SummonerAttachmentEntityRegister.SPRINT, null);
         register(SummonerAttachmentEntityRegister.SHADOW_ORB, () -> simpleRenderer(FargoSoul.rl("textures/item/entity/meteor.png"), 1, 12));
         register(SummonerAttachmentEntityRegister.LIGHTNING_ORB, LightningOrbRenderer::new);
+        register(SummonerAttachmentEntityRegister.SNOW_BALL, () -> simpleRenderer(ResourceLocation.withDefaultNamespace("textures/item/snowball.png"), 0.35f, 0));
+        register(SummonerAttachmentEntityRegister.TRACKING_BLOOD, TrackingBloodRenderer::new);
+        register(SummonerAttachmentEntityRegister.BLOOD_DROP, BloodDropRenderer::new);
+        register(SummonerAttachmentEntityRegister.STAR, null);
     }
 
     private static <T extends AttachmentEntity> void register(DeferredHolder<AttachmentEntityType<?>, AttachmentEntityType<T>> type, @Nullable Supplier<IAttachmentEntityRenderer<T>> renderer) {

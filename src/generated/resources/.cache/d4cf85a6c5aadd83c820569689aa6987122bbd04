@@ -1,6 +1,6 @@
-// 1.21.1	2026-09-05T23:55:30.3439823	Tags for minecraft:item mod id fargo_soul
-ae088a7327da9703b15b4cf2b2a0448da4cde749 data/curios/tags/item/curio.json
+// 1.21.1	2026-09-06T08:37:22.2542636	Tags for minecraft:item mod id fargo_soul
+2d201b00270fde8a1a37ea8b85bc19808ba38cd9 data/curios/tags/item/curio.json
 f8f78cc2f69d450e8f522c2f67d2b5f76a0eb7e1 data/fargo_soul/tags/item/sections/basic.json
 6a7554a3735ec4e9d3417e776b9b08e4d8dabb82 data/fargo_soul/tags/item/sections/enchantment.json
-5f7cf1a1600b25471d5196f5bcbe33dca7929138 data/fargo_soul/tags/item/sections/power.json
+3234f70175096dc7819e55432e5f1914bdb132bc data/fargo_soul/tags/item/sections/power.json
 6fcfcaca7c287556edd5e58acc91c8119f0370b2 data/fargo_soul/tags/item/sections/terra_soul.json

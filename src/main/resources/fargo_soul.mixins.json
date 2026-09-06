@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "fargo_soul.refmap.json",
   "mixins": [
+    "minecraft.MerchantOfferAccessor",
     "lyra.TooltipHandlerMixin",
     "minecraft.CombatRulesMixin",
     "minecraft.LivingEntityMixin",
@@ -13,7 +14,7 @@
     "minecraft.VillagerMixin"
   ],
   "client": [
-    "minecraft.ClientBlockStateBaseMixin",
+    "minecraft.ClientBlockStateBaseMixin"
   ],
   "injectors": {
     "defaultRequire": 1

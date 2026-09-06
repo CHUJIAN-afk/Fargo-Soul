@@ -86,6 +86,37 @@ public class FargoSoulMobEffectRegister {
                     .build()
             );
 
+    /** 流血：恢复的生命值减少 50% */
+    public static final Holder<MobEffect> Bleeding =
+            Register.register("bleeding", location -> new SimpleMobEffectBuilder(MobEffectCategory.HARMFUL, 0xC22A2A)
+                    .build()
+            );
+
+    /** 血如泉涌：恢复的生命值减少 70% */
+    public static final Holder<MobEffect> Hemorrhage =
+            Register.register("hemorrhage", location -> new SimpleMobEffectBuilder(MobEffectCategory.HARMFUL, 0xD22A2A)
+                    .build()
+            );
+
+    /** 涂油：受到的火焰伤害提升 200% */
+    public static final Holder<MobEffect> Oiled =
+            Register.register("oil", location -> new SimpleMobEffectBuilder(MobEffectCategory.HARMFUL, 0x6B4A2B)
+                    .build()
+            );
+
+    /** 寒冷：移动速度减少 30% */
+    public static final Holder<MobEffect> Chill =
+            Register.register("chilly", location -> new SimpleMobEffectBuilder(MobEffectCategory.HARMFUL, 0x9BC9FF)
+                    .addAttributeModifier(Attributes.MOVEMENT_SPEED, location, -0.3f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+                    .build()
+            );
+
+    /** 星之光辉：暴击伤害提升 40% */
+    public static final Holder<MobEffect> Starlight =
+            Register.register("starlight", location -> new SimpleMobEffectBuilder(MobEffectCategory.BENEFICIAL, 0xFFE87A)
+                    .build()
+            );
+
     public static void register(IEventBus eventBus) {
         Register.register(eventBus);
     }

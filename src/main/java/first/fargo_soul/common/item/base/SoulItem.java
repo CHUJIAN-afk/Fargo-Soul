@@ -91,6 +91,16 @@ public abstract class SoulItem extends Item implements ICurioItem {
             for (int i = 1; I18n.exists(key + i); i++) {
                 list.add(Component.translatable(key + i).withColor(color));
             }
+            Set<SoulItem> soulItemList = getSoulItemList();
+            for (SoulItem soulItem : soulItemList) {
+                list.add(Component.empty());
+                ResourceLocation location1 = BuiltInRegistries.ITEM.getKey(soulItem);
+                String key1 = "item." + location1.getNamespace() + "." + location1.getPath() + ".tooltip.";
+                int color1 = getSoulRarity(soulItem.getDefaultInstance()).getColor();
+                for (int i = 1; I18n.exists(key1 + i); i++) {
+                    list.add(Component.translatable(key1 + i).withColor(color1));
+                }
+            }
         } else {
             for (int i = -1; I18n.exists(key + i); i--) {
                 list.add(Component.translatable(key + i).withStyle(ChatFormatting.GRAY));

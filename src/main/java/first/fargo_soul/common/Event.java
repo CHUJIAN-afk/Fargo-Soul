@@ -8,6 +8,8 @@ import first.fargo_soul.common.blcokEntity.CosmicCrucibleBlockEntity;
 import first.fargo_soul.common.item.base.ValueModifier;
 import first.fargo_soul.register.FargoSoulAttachmentRegister;
 import first.fargo_soul.register.FargoSoulAttributeRegister;
+import first.fargo_soul.register.FargoSoulMobEffectRegister;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,6 +20,7 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.living.LivingHealEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
@@ -85,6 +88,31 @@ public class Event {
         Player player = event.getPlayer();
         if (!player.level().isClientSide()) {
             SoulItemData.forEach(player, soulItem -> soulItem.pickup(player, event.getCurrentStack()));
+        }
+    }
+
+    /** 流血/血如泉涌：恢复的生命值减少 50%/70% */
+    @SubscribeEvent
+    public static void heal(LivingHealEvent event) {
+        LivingEntity entity = event.getEntity();
+        if (!entity.level().isClientSide()) {
+            float amount = event.getAmount();
+            if (entity.hasEffect(FargoSoulMobEffectRegister.Hemorrhage)) {
+                amount *= 0.3f;
+            }
+            if (entity.hasEffect(FargoSoulMobEffectRegister.Bleeding)) {
+                amount *= 0.5f;
+            }
+            event.setAmount(amount);
+        }
+    }
+
+    /** 涂油：受到的火焰伤害提升 200% */
+    @SubscribeEvent
+    public static void fireDamage(LivingIncomingDamageEvent event) {
+        LivingEntity entity = event.getEntity();
+        if (!entity.level().isClientSide() && entity.hasEffect(FargoSoulMobEffectRegister.Oiled) && event.getSource().is(DamageTypeTags.IS_FIRE)) {
+            event.setAmount(event.getAmount() * 3.0f);
         }
     }
 

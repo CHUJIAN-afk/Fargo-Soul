@@ -9,9 +9,9 @@ import first.fargo_soul.common.item.base.ValueModifier;
 import first.fargo_soul.common.item.base.ValueOperation;
 import first.fargo_soul.common.soulInfo.SoulInfo;
 import first.fargo_soul.common.soulInfo.SoulInfoType;
-import first.fargo_soul.register.FargoSoulItemRegister;
-import first.fargo_soul.register.FargoSoulKeyRegister;
-import first.fargo_soul.register.FargoSoulSoulInfoRegister;
+import first.fargo_soul.register.*;
+import first.lyra.api.LyraHelper;
+import first.lyra.common.attachment.AttachmentEntityData;
 import first.lyra.common.attachment.InvincibleData;
 import first.lyra.common.entity.IEntityCollision;
 import first.lyra.common.particle.genericParticle.GenericParticleBuilder;
@@ -82,7 +82,6 @@ public class BlazeSoul extends SoulItem {
         Info soulInfo = SoulInfoData.getSoulInfo(living, FargoSoulSoulInfoRegister.BLAZE_SOUL_INFO);
         if (soulInfo != null) {
             if (living.tickCount % 20 == 0) {
-                soulInfo.blazePower = soulInfo.maxBlazePower;
                 if (soulInfo.blazePower >= 0) {
                     living.heal(living.getMaxHealth() * 0.01f);
                 }
@@ -101,7 +100,7 @@ public class BlazeSoul extends SoulItem {
                     soulInfo.blazePower -= 20;
                 }
             }
-            if (soulInfo.blazePower > 300) {
+            if (soulInfo.blazePower > 300 && !LyraHelper.get(living).getEntityData().get(AttachmentEntityData.Type.Projectile, SummonerAttachmentEntityRegister.SPRINT.get()).isEmpty()) {
                 ParticleHelper.create(living.level())
                         .generic(GenericParticleBuilder.create()
                                          .centerColor(0xFF691F)

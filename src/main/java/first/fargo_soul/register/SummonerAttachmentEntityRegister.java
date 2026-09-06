@@ -1,9 +1,13 @@
 package first.fargo_soul.register;
 
 import first.fargo_soul.FargoSoul;
+import first.fargo_soul.common.entity.BloodDrop;
 import first.fargo_soul.common.entity.LightningOrb;
 import first.fargo_soul.common.entity.Meteor;
 import first.fargo_soul.common.entity.ShadowOrb;
+import first.fargo_soul.common.entity.SnowBall;
+import first.fargo_soul.common.entity.Star;
+import first.fargo_soul.common.entity.TrackingBlood;
 import first.fargo_soul.common.entity.Sprint;
 import first.fargo_soul.common.entity.Vortex;
 import first.lyra.common.entity.AttachmentEntity;
@@ -33,6 +37,18 @@ public class SummonerAttachmentEntityRegister {
 
     public static final DeferredHolder<AttachmentEntityType<?>, AttachmentEntityType<LightningOrb>> LIGHTNING_ORB =
             register("lightning_orb", LightningOrb::new);
+
+    public static final DeferredHolder<AttachmentEntityType<?>, AttachmentEntityType<SnowBall>> SNOW_BALL =
+            register("snow_ball", SnowBall::new);
+
+    public static final DeferredHolder<AttachmentEntityType<?>, AttachmentEntityType<TrackingBlood>> TRACKING_BLOOD =
+            register("tracking_blood", TrackingBlood::new);
+
+    public static final DeferredHolder<AttachmentEntityType<?>, AttachmentEntityType<BloodDrop>> BLOOD_DROP =
+            register("blood_drop", BloodDrop::new);
+
+    public static final DeferredHolder<AttachmentEntityType<?>, AttachmentEntityType<Star>> STAR =
+            register("star", Star::new);
 
     private static <T extends AttachmentEntity> DeferredHolder<AttachmentEntityType<?>, AttachmentEntityType<T>> register(String name, Supplier<T> supplier) {
         return Register.register(name, ResourceLocation -> new AttachmentEntityType<>(ResourceLocation, supplier));
