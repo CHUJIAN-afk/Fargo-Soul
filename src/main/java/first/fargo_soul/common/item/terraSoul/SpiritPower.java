@@ -10,11 +10,15 @@ import first.fargo_soul.common.item.base.ValueOperation;
 import first.fargo_soul.register.SummonerAttachmentEntityRegister;
 import first.lyra.api.LyraHelper;
 import first.lyra.common.attachment.AttachmentEntityData;
+import first.lyra.common.minion.MinionDamageSource;
 import first.lyra.register.LyraAttributeRegister;
 import net.minecraft.core.Holder;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.common.damagesource.DamageContainer;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Set;
@@ -45,10 +49,19 @@ public class SpiritPower extends SoulItem {
     }
 
     @Override
+    public void attack(@NotNull Player attacker, @NotNull LivingEntity target, @NotNull DamageContainer container, List<ValueModifier> modifiers) {
+        if (container.getSource() instanceof MinionDamageSource damageSource && damageSource.getMinion().getType() == SummonerAttachmentEntityRegister.TERRA_BLADE.get()) {
+            modifiers.add(new ValueModifier(2, ValueOperation.ADD_MULTIPLIED_BASE));
+        }
+    }
+
+    @Override
     public void tick(Player player) {
         List<TerraBlade> blades = LyraHelper.get(player).getEntityData().get(AttachmentEntityData.Type.ExtraMinion, SummonerAttachmentEntityRegister.TERRA_BLADE.get());
         if (blades.stream().filter(terraBlade -> terraBlade.spiritPower).count() < 8) {
             TerraBlade blade = new TerraBlade();
+            blade.setOwner(player);
+            blade.init(blade.getInterpolatedIdleState(0));
             blade.spiritPower = true;
             LyraHelper.get(player).add(AttachmentEntityData.Type.ExtraMinion, blade);
         }

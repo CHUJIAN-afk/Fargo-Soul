@@ -79,10 +79,11 @@ public class PalladiumSoul extends SoulItem {
             float overflow = player.getHealth() + amount - player.getMaxHealth();
             if (overflow > 0) {
                 Vec3 from = player.getBoundingBox().getCenter().add(0, 0.5, 0);
-                List<LivingEntity> others = SoulTargetCache.get(player).getEntitiesInRadius(from, 12, null);
+                List<LivingEntity> others = SoulTargetCache.get(player).getEntitiesInRadius(from, 16, null);
                 if (!others.isEmpty()) {
-                    LivingEntity chase = others.get(player.getRandom().nextInt(others.size()));
-                    BloodDrop drop = new BloodDrop(player.damageSources().playerAttack(player), from, chase.getBoundingBox().getCenter().subtract(from).normalize());
+                    RandomSource random = player.getRandom();
+                    LivingEntity chase = others.get(random.nextInt(others.size()));
+                    BloodDrop drop = new BloodDrop(player.damageSources().playerAttack(player), from, from.offsetRandom(random, 1).subtract(from).normalize().scale(0.5f));
                     drop.setDamage(overflow);
                     drop.setChaseTarget(chase);
                     drop.join(player);

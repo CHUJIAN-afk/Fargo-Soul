@@ -356,6 +356,6 @@
   "item.fargo_soul.wood_soul.tooltip.2": "每次击败掠夺者，价格额外降低0.25%~0.5%，最多额外降低30%",
   "itemGroup.fargo_soul": "Fargo 魂石",
   "jei.fargo_soul.category.soul": "宇宙聚合",
-  "tooltip.fargo_soul.cosmic_crucible": "可用于融合，内含的空间可储存巨量物品(默认64格，单格堆叠上限2,147,483,647)\n通过投入或交互顶部放入物品，空手右键拿出最近放入的物品\n破坏后保留内容物",
+  "tooltip.fargo_soul.cosmic_crucible": "可用于融合，内含 18 种物品空间(单格堆叠无上限)与 2,000mb 液体容量\n通过投入或交互顶部放入物品，手持流体容器右键倒入或舀出\n合成会消耗 500mb 任意液体作为催化\n破坏后保留内容物",
   "tooltip.item.soul_item": "获得所有下位魔石的效果"
 }

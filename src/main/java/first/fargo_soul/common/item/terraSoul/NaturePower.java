@@ -7,7 +7,9 @@ import first.fargo_soul.common.item.base.ValueOperation;
 import first.fargo_soul.register.SummonerAttachmentEntityRegister;
 import first.lyra.api.LyraHelper;
 import first.lyra.common.attachment.AttachmentEntityData;
+import first.lyra.common.minion.MinionDamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import org.jetbrains.annotations.NotNull;
@@ -35,6 +37,13 @@ public class NaturePower extends SoulItem {
         if (orbs.size() < 5) {
             ChlorophyteOrb orb = new ChlorophyteOrb(ChlorophyteOrb.NATURE, player.getBbWidth() * 1.2f, player.getBbHeight() * 0.25f);
             LyraHelper.get(player).add(AttachmentEntityData.Type.ExtraMinion, orb);
+        }
+    }
+
+    @Override
+    public void attack(@NotNull Player attacker, @NotNull LivingEntity target, @NotNull DamageContainer container, List<ValueModifier> modifiers) {
+        if (container.getSource() instanceof MinionDamageSource damageSource && damageSource.getMinion().getType() == SummonerAttachmentEntityRegister.CHLOROPHYTE_ORB.get()) {
+            modifiers.add(new ValueModifier(3, ValueOperation.ADD_MULTIPLIED_BASE));
         }
     }
 

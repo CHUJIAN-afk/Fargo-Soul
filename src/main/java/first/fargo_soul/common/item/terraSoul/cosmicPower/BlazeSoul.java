@@ -210,6 +210,9 @@ public class BlazeSoul extends SoulItem {
             if (!SoulItemData.isEquipped(living, FargoSoulItemRegister.BlazeSoulItem.get())) {
                 setRemove(true);
             }
+            if (blazePower <= 0) {
+                setRemove(true);
+            }
         }
 
         @Override

@@ -16,8 +16,6 @@ public class FargoSoulCuriosDataProvider extends CuriosDataProvider {
 
     @Override
     public void generate(HolderLookup.Provider registries, ExistingFileHelper fileHelper) {
-        this.createEntities("curio")
-                .addPlayer()
-                .addSlots("curio");
+        this.createEntities("curio").addPlayer().addSlots("curio");
     }
 }

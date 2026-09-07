@@ -16,8 +16,8 @@ import first.fargo_soul.register.FargoSoulSoulInfoRegister;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -61,11 +61,12 @@ public class GhostSoul extends SoulItem {
         if (info.soul > 100 && player.tickCount % 20 == 0) {
             float overflow = info.soul - 100;
             info.soul = 100;
-            Vec3 from = player.getBoundingBox().getCenter().add(0, 0.5, 0);
+            Vec3 from = player.getBoundingBox().getCenter();
             List<LivingEntity> targets = SoulTargetCache.get(player).getEntitiesInRadius(from, 16, null);
             if (!targets.isEmpty()) {
-                LivingEntity chase = targets.get(player.getRandom().nextInt(targets.size()));
-                GhostOrb orb = new GhostOrb(player.damageSources().playerAttack(player), from, Vec3.ZERO);
+                RandomSource random = player.getRandom();
+                LivingEntity chase = targets.get(random.nextInt(targets.size()));
+                GhostOrb orb = new GhostOrb(player.damageSources().playerAttack(player), from, from.offsetRandom(random, 1).subtract(from).normalize().scale(0.5f));
                 orb.setDamage(overflow * player.getMaxHealth() * 0.04f);
                 orb.setChaseTarget(chase);
                 orb.join(player);

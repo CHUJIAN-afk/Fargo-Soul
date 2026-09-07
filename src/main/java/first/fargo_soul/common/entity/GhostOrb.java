@@ -1,5 +1,6 @@
 package first.fargo_soul.common.entity;
 
+import first.fargo_soul.common.attachment.SoulTargetCache;
 import first.fargo_soul.register.SummonerAttachmentEntityRegister;
 import first.lyra.common.attachment.InvincibleData;
 import first.lyra.common.entity.AttachmentEntity;
@@ -42,21 +43,19 @@ public class GhostOrb extends Projectile implements IEntityCollision<GhostOrb> {
 
     @Override
     public boolean isValidCollisionTarget(GhostOrb entity, LivingEntity target) {
-        return target == chaseTarget;
+        return SoulTargetCache.isTarget(owner, target);
     }
 
     @Override
     public void onCollisionAttack(List<HitContext> hitContexts) {
         DamageSource source = getDamageSource();
         if (source != null) {
-            for (HitContext context : hitContexts) {
-                InvincibleData.attack(context.entity())
-                        .attacker(getUuid())
-                        .damageSource(source)
-                        .damageAmount(getDamage())
-                        .invincibleTime(5)
-                        .apply();
-            }
+            InvincibleData.attack(hitContexts.getFirst().entity())
+                    .attacker(getUuid())
+                    .damageSource(source)
+                    .damageAmount(getDamage())
+                    .invincibleTime(5)
+                    .apply();
         }
         setRemove();
     }
@@ -65,8 +64,10 @@ public class GhostOrb extends Projectile implements IEntityCollision<GhostOrb> {
     public void tick() {
         if (!owner.level().isClientSide()) {
             if (chaseTarget != null && chaseTarget.isAlive()) {
-                Vec3 targetCenter = chaseTarget.getBoundingBox().getCenter();
-                applyForce(targetCenter.subtract(getPos()).normalize().scale(0.6));
+                if (getLife() > 5) {
+                    Vec3 targetCenter = chaseTarget.getBoundingBox().getCenter();
+                    applyForce(targetCenter.subtract(getPos()).normalize().scale(0.6));
+                }
             } else {
                 setRemove();
             }

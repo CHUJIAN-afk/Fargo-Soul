@@ -12,6 +12,8 @@ import first.lyra.common.entity.AttachmentEntityType;
 import first.lyra.common.entity.IEntityCollision;
 import first.lyra.common.entity.PathNode;
 import first.lyra.common.minion.Minion;
+import first.lyra.common.particle.genericParticle.GenericParticleBuilder;
+import first.lyra.utils.ParticleHelper;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -51,26 +53,13 @@ public class ChlorophyteOrb extends Minion implements IEntityCollision<Chlorophy
 
     @Override
     public int getSearchDistance() {
-        return 14;
-    }
-
-    @Override
-    public LivingEntity searchTarget() {
-        List<LivingEntity> targets = SoulTargetCache.get(owner).getEntitiesInRadius(getPos(), 14, null);
-        return targets.isEmpty() ? null : targets.get(owner.getRandom().nextInt(targets.size()));
-    }
-
-    @Override
-    public boolean isTarget(LivingEntity target) {
-        return target != null && SoulTargetCache.isTarget(owner, target);
+        return 16;
     }
 
     @Override
     public void tick() {
         if (!owner.level().isClientSide()) {
-            boolean equipped = kind == NATURE
-                    ? SoulItemData.isEquipped(owner, FargoSoulItemRegister.NaturePowerItem.get())
-                    : SoulItemData.isEquipped(owner, FargoSoulItemRegister.GreenSoulItem.get());
+            boolean equipped = kind == NATURE ? SoulItemData.isEquipped(owner, FargoSoulItemRegister.NaturePowerItem.get()) : SoulItemData.isEquipped(owner, FargoSoulItemRegister.GreenSoulItem.get());
             if (!equipped) {
                 setRemove();
                 return;
@@ -78,10 +67,6 @@ public class ChlorophyteOrb extends Minion implements IEntityCollision<Chlorophy
             PathNode node = getOrbitNode(1f);
             Vec3 pos = node.pos();
             LivingEntity target = getTarget();
-            if (target != null && (!target.isAlive() || target.level() != owner.level())) {
-                setTarget(null);
-                targetId = -1;
-            }
             if (target != null) {
                 targetId = target.getId();
                 Vec3 targetCenter = target.getBoundingBox().getCenter();
@@ -113,7 +98,8 @@ public class ChlorophyteOrb extends Minion implements IEntityCollision<Chlorophy
             return new PathNode(pos, yaw, 0, 0);
         } else {
             float spin = (getTickCount() + partialTick) * 12f % 360f;
-            return new PathNode(pos, spin, 0, 0);
+            PathNode node = super.getRenderNode(partialTick);
+            return new PathNode(new Vec3(node.pos().x(), pos.y(), node.pos().z()), spin, 0, 0);
         }
     }
 
@@ -151,18 +137,33 @@ public class ChlorophyteOrb extends Minion implements IEntityCollision<Chlorophy
 
     @Override
     public void onCollisionAttack(List<HitContext> hitContexts) {
-        float amount = getDamage();
-        if (kind == NATURE) {
-            amount *= 4;
-        }
         for (HitContext context : hitContexts) {
-            InvincibleData.get(context.entity()).recordHit(owner.getUUID(), 100);
-            InvincibleData.attack(context.entity())
+            LivingEntity living = context.entity();
+            InvincibleData.get(living).recordHit(owner.getUUID(), 100);
+            InvincibleData.attack(living)
                     .attacker(getUuid())
-                    .damageSource(owner.damageSources().playerAttack(owner))
-                    .damageAmount(amount)
+                    .damageSource(getDamageSource())
+                    .damageAmount(getDamage())
                     .invincibleTime(6)
                     .apply();
+            ParticleHelper.create(owner.level())
+                    .generic(GenericParticleBuilder.create()
+                                     .centerColor(0x14fb08)
+                                     .edgeColor(0x0cb502)
+                                     .lifetime(5)
+                                     .lifetimeRandom(5)
+                                     .spin(0.3f)
+                                     .spinRandom(0.05F)
+                                     .friction(0.75F)
+                                     .scale(0.025f)
+                                     .scaleRandom(0.005f)
+                    )
+                    .pos(living.getBoundingBox().getCenter())
+                    .offset(0.15)
+                    .velocity(Vec3.ZERO.offsetRandom(living.getRandom(), 1))
+                    .count(10)
+                    .speed(0.5)
+                    .emit();
         }
     }
 
@@ -177,8 +178,7 @@ public class ChlorophyteOrb extends Minion implements IEntityCollision<Chlorophy
     }
 
     private List<ChlorophyteOrb> kindList() {
-        return LyraHelper.get(owner).getEntityData().get(AttachmentEntityData.Type.ExtraMinion, SummonerAttachmentEntityRegister.CHLOROPHYTE_ORB.get())
-                .stream().filter(orb -> orb.kind == this.kind).toList();
+        return LyraHelper.get(owner).getEntityData().get(AttachmentEntityData.Type.ExtraMinion, SummonerAttachmentEntityRegister.CHLOROPHYTE_ORB.get()).stream().filter(orb -> orb.kind == this.kind).toList();
     }
 
     @Override

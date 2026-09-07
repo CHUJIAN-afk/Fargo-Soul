@@ -1,7 +1,6 @@
 package first.fargo_soul.register;
 
 import first.fargo_soul.FargoSoul;
-import first.fargo_soul.common.dataComponents.SoulRarity;
 import first.fargo_soul.common.item.TerraSoul;
 import first.fargo_soul.common.item.terraSoul.*;
 import first.fargo_soul.common.item.terraSoul.cosmicPower.*;
@@ -13,8 +12,9 @@ import first.fargo_soul.common.item.terraSoul.naturePower.*;
 import first.fargo_soul.common.item.terraSoul.spiritPower.*;
 import first.fargo_soul.common.item.terraSoul.terraPower.*;
 import first.fargo_soul.common.item.terraSoul.willPower.*;
+import first.lyra.common.dataComponent.LyraRarity;
+import first.lyra.register.LyraDataComponentRegister;
 import first.lyra.register.LyraItemRegisterBuilder;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -27,20 +27,8 @@ public class FargoSoulItemRegister {
 
     private static final DeferredRegister.Items Register = DeferredRegister.createItems(FargoSoul.MODID);
 
-    public static final DeferredItem<BlockItem> CosmicCrucibleBlockItem = LyraItemRegisterBuilder.build(Register, "cosmic_crucible", () -> new BlockItem(FargoSoulBlockRegister.CosmicCrucible.get(), new Item.Properties().stacksTo(1)))
-            .blockLanguage("Cosmic Crucible", "宇宙坩埚")
-            .itemTag(FargoSoulItemTagsRegister.SectionBasic)
-            .itemModel((location, provider) -> provider.simpleBlockItem(location))
-            .build();
-
-    public static final DeferredItem<Item> Soul = LyraItemRegisterBuilder.build(Register, "soul")
-            .itemLanguage("Incorporeal Soul", "无形之魂")
-            .itemTag(FargoSoulItemTagsRegister.SectionBasic)
-            .itemModel(LyraItemRegisterBuilder::basicModel)
-            .build();
-
     public static final DeferredItem<TerraSoul> TerraSoulItem =
-            register("terra_soul", TerraSoul::new, SoulRarity.Rainbow.getColor())
+            register("terra_soul", TerraSoul::new, LyraRarity.Rainbow)
                     .itemLanguage("Terra Soul", "泰拉之魂")
                     .itemLanguageTooltip(1, " ", "获得一个可以发射各种弹幕的光环")
                     .itemLanguageTooltip(2, " ", "拾取物品时获得额外暴击率，村民可提供更多折扣")
@@ -67,7 +55,7 @@ public class FargoSoulItemRegister {
     // 宇宙之力 · 魔石分段
     // ============================================================
     public static final DeferredItem<CosmicPower> CosmicPowerItem =
-            register("cosmic_power", CosmicPower::new, SoulRarity.Purple.color())
+            register("cosmic_power", CosmicPower::new, LyraRarity.Purple)
                     .itemLanguage("Cosmic Power", "宇宙之力")
                     .itemLanguageTooltip(1, " ", "每秒从世界中汲取1点宇宙能量，最多积累100点宇宙能量")
                     .itemLanguageTooltip(2, " ", "根据积累比例，造成的伤害最多提升80%，受到的伤害最多减少20%")
@@ -144,7 +132,7 @@ public class FargoSoulItemRegister {
                     .build();
 
     public static final DeferredItem<WizardSoul> WizardSoulItem =
-            register("wizard_soul", WizardSoul::new, SoulRarity.Blue.color())
+            register("wizard_soul", WizardSoul::new, LyraRarity.Blue)
                     .itemLanguage("Wizard Enchantment", "巫师魔石")
                     .itemLanguageTooltip(1, " ", "造成的魔法伤害提升提升60%")
                     .itemLanguageTooltip(-1, " ", "“我们爱施放魔法!”")
@@ -157,7 +145,7 @@ public class FargoSoulItemRegister {
     // 死亡之力 · 魔石分段
     // ============================================================
     public static final DeferredItem<DeathPower> DeathPowerItem =
-            register("death_power", DeathPower::new, SoulRarity.Purple.color())
+            register("death_power", DeathPower::new, LyraRarity.Purple)
                     .itemLanguage("Death Power", "死亡之力")
                     .itemLanguageTooltip(1, " ", "赋予暗影冲刺，冲刺初速度提升50%")
                     .itemLanguageTooltip(2, " ", "暗影冲刺冲过敌人施加10秒死亡标记效果，死亡标记减少20%最大生命值，减少40%护甲，减少10%移动速度")
@@ -254,7 +242,7 @@ public class FargoSoulItemRegister {
     // 泰拉之力 · 魔石分段
     // ============================================================
     public static final DeferredItem<TerraPower> TerraPowerItem =
-            register("terra_power", TerraPower::new, SoulRarity.Purple.getColor())
+            register("terra_power", TerraPower::new, LyraRarity.Purple)
                     .itemLanguage("Terra Power", "泰拉之力")
                     .itemLanguageTooltip(1, " ", "攻击时有20%概率释放3~6颗雷电球，雷电球会电击附近的敌人并施加铅中毒，该效果有1秒冷却时间")
                     .itemLanguageTooltip(2, " ", "在场的雷电球越多，释放雷电球的概率越高，冷却越短，概率最多提升40%，冷却时间最多降低60%")
@@ -350,7 +338,7 @@ public class FargoSoulItemRegister {
     // 森林之力 · 魔石分段
     // ============================================================
     public static final DeferredItem<ForestPower> ForestPowerItem =
-            register("forest_power", ForestPower::new, SoulRarity.Purple.getColor())
+            register("forest_power", ForestPower::new, LyraRarity.Purple)
                     .itemLanguage("Forest Power", "森林之力")
                     .itemLanguageTooltip(1, " ", "生成一个半径12格的光环，每秒向光环的敌人施加8秒凋零和流血效果")
                     .itemLanguageTooltip(2, " ", "攻击受凋零影响的敌人时，造成的伤害提升8点")
@@ -446,7 +434,7 @@ public class FargoSoulItemRegister {
     // 大地之力 · 魔石分段
     // ============================================================
     public static final DeferredItem<EarthPower> EarthPowerItem =
-            register("earth_power", EarthPower::new, SoulRarity.Purple.getColor())
+            register("earth_power", EarthPower::new, LyraRarity.Purple)
                     .itemLanguage("Earth Power", "大地之力")
                     .itemLanguageTooltip(1, " ", "不攻击3秒后，每秒积聚20点大地能量，最多积聚1000点大地能量，攻击时消耗10点大地能量")
                     .itemLanguageTooltip(2, " ", "根据大地能量积累比例，最多提升100%造成伤害，100%攻击速度，5每秒生命恢复，100%护甲")
@@ -531,7 +519,7 @@ public class FargoSoulItemRegister {
     // 自然之力 · 魔石分段
     // ============================================================
     public static final DeferredItem<NaturePower> NaturePowerItem =
-            register("nature_power", NaturePower::new, SoulRarity.Purple.getColor())
+            register("nature_power", NaturePower::new, LyraRarity.Purple)
                     .itemLanguage("Nature Power", "自然之力")
                     .itemLanguageTooltip(1, " ", "召唤5个围绕持有者旋转的叶绿水晶，叶绿水晶会向敌怪发射激光")
                     .itemLanguageTooltip(2, " ", "叶绿水晶造成的伤害提升300%")
@@ -615,13 +603,13 @@ public class FargoSoulItemRegister {
     // 生命之力 · 魔石分段
     // ============================================================
     public static final DeferredItem<LifePower> LifePowerItem =
-            register("life_power", LifePower::new, SoulRarity.Purple.getColor())
+            register("life_power", LifePower::new, LyraRarity.Purple)
                     .itemLanguage("Life Power", "生命之力")
                     .itemLanguageTooltip(1, " ", "赋予飞行")
                     .itemLanguageTooltip(2, " ", "飞行时间提升150%")
                     .itemLanguageTooltip(3, " ", "饮用蜂蜜使你获得10秒仙馔密酒效果")
                     .itemLanguageTooltip(4, " ", "处于仙馔密酒效果下时，造成的伤害提升30%伤害，提升5每秒生命恢复，召唤伤害提升200%")
-                    .itemLanguageTooltip(5, " ", "反弹500%的接触伤害")
+                    .itemLanguageTooltip(5, " ", "反弹500%伤害，该效果有0.1秒冷却时间")
                     .itemLanguageTooltip(-1, " ", "“罕有生灵敢违背你的意愿”")
                     .itemTag(FargoSoulItemTagsRegister.SectionPower)
                     .itemModel(LyraItemRegisterBuilder::basicModel)
@@ -691,7 +679,7 @@ public class FargoSoulItemRegister {
     // 心灵之力 · 魔石分段
     // ============================================================
     public static final DeferredItem<SpiritPower> SpiritPowerItem =
-            register("spirit_power", SpiritPower::new, SoulRarity.Purple.getColor())
+            register("spirit_power", SpiritPower::new, LyraRarity.Purple)
                     .itemLanguage("Spirit Power", "心灵之力")
                     .itemLanguageTooltip(1, " ", "受到的治疗效果提升70%")
                     .itemLanguageTooltip(2, " ", "飞行时间提升100%")
@@ -760,7 +748,7 @@ public class FargoSoulItemRegister {
     // 意志之力 · 魔石分段
     // ============================================================
     public static final DeferredItem<WillPower> WillPowerItem =
-            register("will_power", WillPower::new, SoulRarity.Purple.getColor())
+            register("will_power", WillPower::new, LyraRarity.Purple)
                     .itemLanguage("Will Power", "意志之力")
                     .itemLanguageTooltip(1, " ", "受到的治疗效果提升25%")
                     .itemLanguageTooltip(2, " ", "击杀敌人有40%概率提升1600%战利品数量")
@@ -830,14 +818,12 @@ public class FargoSoulItemRegister {
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
-    private static <T extends Item> LyraItemRegisterBuilder<T> register(String name, Function<Item.Properties, T> function, Integer color) {
-        return LyraItemRegisterBuilder.build(Register, name, () -> {
-            Item.Properties properties = new Item.Properties().stacksTo(1).fireResistant();
-            if (color != null) {
-                properties = properties.component(FargoSoulDataComponentsRegister.SOUL_RARITY, new SoulRarity(color));
-            }
-            return function.apply(properties);
-        });
+    public static <T extends Item> LyraItemRegisterBuilder<T> register(String name, Function<Item.Properties, T> function, Integer color) {
+        return register(name, function, new LyraRarity(color));
+    }
+
+    public static <T extends Item> LyraItemRegisterBuilder<T> register(String name, Function<Item.Properties, T> function, LyraRarity lyraRarity) {
+        return LyraItemRegisterBuilder.build(Register, name, () -> function.apply(new Item.Properties().stacksTo(1).fireResistant().component(LyraDataComponentRegister.RARITY, lyraRarity)));
     }
 
     public static void register(IEventBus eventBus) {

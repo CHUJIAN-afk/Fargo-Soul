@@ -20,6 +20,8 @@ public class AncientHolySoul extends SoulItem {
         List<TerraBlade> blades = LyraHelper.get(player).getEntityData().get(AttachmentEntityData.Type.ExtraMinion, SummonerAttachmentEntityRegister.TERRA_BLADE.get());
         if (blades.stream().noneMatch(terraBlade -> terraBlade.ancientHolySoul)) {
             TerraBlade blade = new TerraBlade();
+            blade.setOwner(player);
+            blade.init(blade.getInterpolatedIdleState(0));
             blade.ancientHolySoul = true;
             LyraHelper.get(player).add(AttachmentEntityData.Type.ExtraMinion, blade);
         }

@@ -43,7 +43,7 @@ public class GreenSoul extends SoulItem {
     public void tick(Player player) {
         List<ChlorophyteOrb> orbs = LyraHelper.get(player).getEntityData().get(AttachmentEntityData.Type.ExtraMinion, SummonerAttachmentEntityRegister.CHLOROPHYTE_ORB.get()).stream().filter(orb -> orb.getKind() == ChlorophyteOrb.GREEN).toList();
         if (orbs.isEmpty()) {
-            ChlorophyteOrb orb = new ChlorophyteOrb(ChlorophyteOrb.GREEN, 0, player.getBbHeight());
+            ChlorophyteOrb orb = new ChlorophyteOrb(ChlorophyteOrb.GREEN, 0, player.getBbHeight() * 0.75f);
             LyraHelper.get(player).add(AttachmentEntityData.Type.ExtraMinion, orb);
         }
     }

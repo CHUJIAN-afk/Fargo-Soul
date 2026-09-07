@@ -39,7 +39,7 @@ public class ChlorophyteOrbRenderer extends AbstractAttachmentEntityRenderer<Chl
             poseStack.mulPose(rotation);
             LaserRendererHelper.builder()
                     .length(length)
-                    .radius(0.1f, 0.1f)
+                    .radius(0.2f, 0.2f)
                     .layers(3)
                     .segments(10)
                     .color(0xFF3AFF7A)

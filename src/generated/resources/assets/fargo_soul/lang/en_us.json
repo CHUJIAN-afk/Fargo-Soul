@@ -356,6 +356,6 @@
   "item.fargo_soul.wood_soul.tooltip.2": " ",
   "itemGroup.fargo_soul": "Fargo Soul",
   "jei.fargo_soul.category.soul": "Cosmic Convergence",
-  "tooltip.fargo_soul.cosmic_crucible": "Used for fusion. Contains massive storage (default 64 slots, stack limit 2,147,483,647)\nInsert items via the top; right-click empty-handed to take last item\nRetains contents when broken",
+  "tooltip.fargo_soul.cosmic_crucible": "Used for fusion. Holds 18 item varieties (unlimited per slot) and 2,000 mb of fluid\nInsert items via the top; right-click with a fluid container to pour it in\nCrafting consumes 500 mb of any fluid as catalyst\nRetains contents when broken",
   "tooltip.item.soul_item": "Obtain the effects of all lower-tier souls"
 }

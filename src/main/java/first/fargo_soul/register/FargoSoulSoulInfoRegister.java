@@ -1,28 +1,7 @@
 package first.fargo_soul.register;
 
 import first.fargo_soul.FargoSoul;
-import first.fargo_soul.common.item.terraSoul.CosmicPower;
-import first.fargo_soul.common.item.terraSoul.EarthPower;
-import first.fargo_soul.common.item.terraSoul.ForestPower;
-import first.fargo_soul.common.item.terraSoul.LifePower;
-import first.fargo_soul.common.item.terraSoul.WillPower;
-import first.fargo_soul.common.item.terraSoul.TerraPower;
-import first.fargo_soul.common.item.terraSoul.forestPower.*;
-import first.fargo_soul.common.item.terraSoul.earthPower.CobaltSoul;
-import first.fargo_soul.common.item.terraSoul.earthPower.MithrilSoul;
-import first.fargo_soul.common.item.terraSoul.earthPower.OrichalcumSoul;
-import first.fargo_soul.common.item.terraSoul.earthPower.PalladiumSoul;
-import first.fargo_soul.common.item.terraSoul.earthPower.TitaniumSoul;
-import first.fargo_soul.common.item.terraSoul.willPower.RedRidingSoul;
-import first.fargo_soul.common.item.terraSoul.lifePower.BeetleSoul;
-import first.fargo_soul.common.item.terraSoul.naturePower.CrimsonSoul;
-import first.fargo_soul.common.item.terraSoul.naturePower.FrostSoul;
-import first.fargo_soul.common.item.terraSoul.naturePower.RainCloudSoul;
-import first.fargo_soul.common.item.terraSoul.spiritPower.HolySoul;
-import first.fargo_soul.common.item.terraSoul.spiritPower.ForbiddenSoul;
-import first.fargo_soul.common.item.terraSoul.spiritPower.GhostSoul;
-import first.fargo_soul.common.item.terraSoul.willPower.PlatinumSoul;
-import first.fargo_soul.common.item.terraSoul.willPower.GoldSoul;
+import first.fargo_soul.common.item.terraSoul.*;
 import first.fargo_soul.common.item.terraSoul.cosmicPower.BlazeSoul;
 import first.fargo_soul.common.item.terraSoul.cosmicPower.NebulaSoul;
 import first.fargo_soul.common.item.terraSoul.cosmicPower.StardustSoul;
@@ -30,15 +9,23 @@ import first.fargo_soul.common.item.terraSoul.cosmicPower.VortexSoul;
 import first.fargo_soul.common.item.terraSoul.deathPower.DarkArtistSoul;
 import first.fargo_soul.common.item.terraSoul.deathPower.NecromancerSoul;
 import first.fargo_soul.common.item.terraSoul.deathPower.NinjaSoul;
+import first.fargo_soul.common.item.terraSoul.earthPower.*;
+import first.fargo_soul.common.item.terraSoul.forestPower.*;
+import first.fargo_soul.common.item.terraSoul.lifePower.BeetleSoul;
+import first.fargo_soul.common.item.terraSoul.naturePower.CrimsonSoul;
+import first.fargo_soul.common.item.terraSoul.naturePower.FrostSoul;
+import first.fargo_soul.common.item.terraSoul.naturePower.RainCloudSoul;
+import first.fargo_soul.common.item.terraSoul.spiritPower.ForbiddenSoul;
+import first.fargo_soul.common.item.terraSoul.spiritPower.GhostSoul;
+import first.fargo_soul.common.item.terraSoul.spiritPower.HolySoul;
 import first.fargo_soul.common.item.terraSoul.terraPower.CopperSoul;
 import first.fargo_soul.common.item.terraSoul.terraPower.IronSoul;
 import first.fargo_soul.common.item.terraSoul.terraPower.SilverSoul;
 import first.fargo_soul.common.item.terraSoul.terraPower.TinSoul;
-import first.fargo_soul.common.soulInfo.FlySoulInfo;
-import first.fargo_soul.common.soulInfo.PenetratingSoulInfo;
-import first.fargo_soul.common.soulInfo.SoulInfo;
-import first.fargo_soul.common.soulInfo.SoulInfoType;
-import first.fargo_soul.common.soulInfo.SprintSoulInfo;
+import first.fargo_soul.common.item.terraSoul.willPower.GoldSoul;
+import first.fargo_soul.common.item.terraSoul.willPower.PlatinumSoul;
+import first.fargo_soul.common.item.terraSoul.willPower.RedRidingSoul;
+import first.fargo_soul.common.soulInfo.*;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -53,6 +40,8 @@ public class FargoSoulSoulInfoRegister {
             register("sprint_soul_info", SprintSoulInfo::new, true);
     public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<FlySoulInfo>> FLY_SOUL_INFO =
             register("fly_soul_info", FlySoulInfo::new, true);
+    public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<ProjectileInfo>> PROJECTILE_INFO =
+            register("projectile_info", ProjectileInfo::new, true);
 
     public static final DeferredHolder<SoulInfoType<?>, SoulInfoType<CosmicPower.Info>> COSMIC_POWER_INFO =
             register("cosmic_power_info", CosmicPower.Info::new);

@@ -2,15 +2,17 @@ package first.fargo_soul.common.item.base;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import first.fargo_soul.common.dataComponents.SoulRarity;
-import first.fargo_soul.register.FargoSoulDataComponentsRegister;
+import first.fargo_soul.common.attachment.SoulItemData;
+import first.lyra.common.dataComponent.LyraRarity;
 import first.lyra.common.entity.IEntityCollision;
+import first.lyra.register.LyraDataComponentRegister;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -26,9 +28,13 @@ import net.minecraft.world.item.TooltipFlag;
 import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public abstract class SoulItem extends Item implements ICurioItem {
 
@@ -36,18 +42,14 @@ public abstract class SoulItem extends Item implements ICurioItem {
         super(properties);
     }
 
-    public SoulRarity getSoulRarity(ItemStack itemStack) {
-        return itemStack.getOrDefault(FargoSoulDataComponentsRegister.SOUL_RARITY.get(), SoulRarity.Empty);
+    @Override
+    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
+        return canEquip(slotContext, stack);
     }
 
     @Override
-    public @NotNull Component getName(@NotNull ItemStack itemStack) {
-        Component name = super.getName(itemStack);
-        SoulRarity soulRarity = getSoulRarity(itemStack);
-        if (!soulRarity.isEmpty()) {
-            return name.copy().withColor(soulRarity.getColor());
-        }
-        return name;
+    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
+        return !SoulItemData.isEquipped(slotContext.entity(), stack.getItem());
     }
 
     public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(Player player) {
@@ -100,9 +102,14 @@ public abstract class SoulItem extends Item implements ICurioItem {
             if (master) {
                 list.add(Component.empty());
             }
-            int color = getSoulRarity(master ? itemStack : this.getDefaultInstance()).getColor();
+            LyraRarity rarity = (master ? itemStack : this.getDefaultInstance()).get(LyraDataComponentRegister.RARITY);
+            int rarityColor = rarity != null ? rarity.color() : -1;
             for (int i = 1; I18n.exists(key + i); i++) {
-                list.add(Component.translatable(key + i).withColor(color));
+                MutableComponent translatable = Component.translatable(key + i);
+                if (rarityColor != -1) {
+                    translatable = translatable.withColor(rarityColor);
+                }
+                list.add(translatable);
             }
             Set<SoulItem> soulItemList = getSoulItemList();
             for (SoulItem soulItem : soulItemList) {

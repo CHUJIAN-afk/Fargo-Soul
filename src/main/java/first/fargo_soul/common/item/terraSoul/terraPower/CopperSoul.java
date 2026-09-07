@@ -12,6 +12,7 @@ import first.fargo_soul.register.FargoSoulMobEffectRegister;
 import first.fargo_soul.register.FargoSoulSoulInfoRegister;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
@@ -35,10 +36,12 @@ public class CopperSoul extends SoulItem {
         }
         if (soulInfo.cooldown <= 0) {
             float chance = target.isInWaterOrRain() ? 0.3f : 0.1f;
-            if (attacker.getRandom().nextFloat() < chance) {
+            Vec3 eye = attacker.getEyePosition();
+            RandomSource random = attacker.getRandom();
+            if (random.nextFloat() < chance) {
                 soulInfo.cooldown = 100;
-                Vec3 eye = attacker.getEyePosition();
-                LightningOrb orb = new LightningOrb(attacker.damageSources().lightningBolt(), eye, attacker.getLookAngle());
+                Vec3 dir = eye.add(target.getBoundingBox().getCenter().subtract(eye)).offsetRandom(random, 0.5f).subtract(eye).normalize();
+                LightningOrb orb = new LightningOrb(attacker.damageSources().lightningBolt(), eye, dir);
                 float bonus = attacker.hasEffect(FargoSoulMobEffectRegister.TerraResonance) ? 1.8f : 1.0f;
                 orb.setDamage(4 * bonus);
                 orb.join(attacker);

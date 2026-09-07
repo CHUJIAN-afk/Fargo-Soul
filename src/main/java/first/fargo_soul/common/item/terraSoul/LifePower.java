@@ -4,13 +4,11 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import first.fargo_soul.FargoSoul;
 import first.fargo_soul.common.attachment.SoulInfoData;
-import first.fargo_soul.common.attachment.SoulItemData;
 import first.fargo_soul.common.item.base.SoulItem;
 import first.fargo_soul.common.item.base.ValueModifier;
 import first.fargo_soul.common.item.base.ValueOperation;
 import first.fargo_soul.common.soulInfo.SoulInfo;
 import first.fargo_soul.common.soulInfo.SoulInfoType;
-import first.fargo_soul.register.FargoSoulItemRegister;
 import first.fargo_soul.register.FargoSoulMobEffectRegister;
 import first.fargo_soul.register.FargoSoulSoulInfoRegister;
 import first.lyra.register.LyraAttributeRegister;
@@ -86,9 +84,6 @@ public class LifePower extends SoulItem {
             if (info == null) {
                 info = new Info();
                 SoulInfoData.putSoulInfo(target, info);
-            }
-            if (target.tickCount - info.lastReflect >= 2) {
-                info.lastReflect = target.tickCount;
                 living.hurt(target.damageSources().playerAttack(target), container.getOriginalDamage() * 5.0f);
             }
         }
@@ -96,7 +91,7 @@ public class LifePower extends SoulItem {
 
     public static final class Info extends SoulInfo {
 
-        public int lastReflect = 0;
+        public int cooldown = 2;
 
         @Override
         public SoulInfoType<? extends SoulInfo> getType() {
@@ -105,7 +100,7 @@ public class LifePower extends SoulItem {
 
         @Override
         public void tick(LivingEntity living) {
-            if (!SoulItemData.isEquipped(living, FargoSoulItemRegister.LifePowerItem.get())) {
+            if (--cooldown < 0) {
                 setRemove(true);
             }
         }
@@ -113,13 +108,13 @@ public class LifePower extends SoulItem {
         @Override
         public CompoundTag serializeNBT(HolderLookup.@NotNull Provider provider) {
             CompoundTag tag = super.serializeNBT(provider);
-            tag.putInt("lastReflect", lastReflect);
+            tag.putInt("cooldown", cooldown);
             return tag;
         }
 
         @Override
         public void deserializeNBT(HolderLookup.@NotNull Provider provider, @NotNull CompoundTag tag) {
-            lastReflect = tag.getInt("lastReflect");
+            cooldown = tag.getInt("cooldown");
         }
     }
 }

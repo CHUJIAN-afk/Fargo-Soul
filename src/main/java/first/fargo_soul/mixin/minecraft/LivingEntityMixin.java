@@ -1,9 +1,14 @@
 package first.fargo_soul.mixin.minecraft;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.sugar.Local;
+import first.fargo_soul.common.attachment.SoulInfoData;
 import first.fargo_soul.common.attachment.SoulItemData;
+import first.fargo_soul.register.FargoSoulSoulInfoRegister;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,6 +21,23 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
+
+    @ModifyExpressionValue(
+            method = "hurt",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/damagesource/DamageSource;is(Lnet/minecraft/tags/TagKey;)Z",
+                    ordinal = 4
+            )
+    )
+    private boolean is(boolean original, @Local(argsOnly = true) DamageSource damageSource) {
+        if (damageSource.getDirectEntity() instanceof Projectile projectile) {
+            if (SoulInfoData.getSoulInfo(projectile, FargoSoulSoulInfoRegister.PROJECTILE_INFO) != null) {
+                return true;
+            }
+        }
+        return original;
+    }
 
     @Inject(method = "dropFromLootTable", at = @At("TAIL"))
     private void dropFromLootTable(DamageSource damageSource, boolean hitByPlayer, CallbackInfo ci) {

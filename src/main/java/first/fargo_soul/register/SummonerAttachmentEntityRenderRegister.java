@@ -4,6 +4,7 @@ import first.fargo_soul.FargoSoul;
 import first.fargo_soul.client.renderer.projectile.BloodDropRenderer;
 import first.fargo_soul.client.renderer.projectile.ChlorophyteOrbRenderer;
 import first.fargo_soul.client.renderer.projectile.LightningOrbRenderer;
+import first.fargo_soul.client.renderer.projectile.ShadowOrbRenderer;
 import first.fargo_soul.client.renderer.projectile.TerraBladeRenderer;
 import first.fargo_soul.client.renderer.projectile.TrackingBloodRenderer;
 import first.lyra.client.dynamicLight.DynamicLightDispatcher;
@@ -42,14 +43,14 @@ public class SummonerAttachmentEntityRenderRegister {
         register(SummonerAttachmentEntityRegister.METEOR, () -> simpleRenderer(FargoSoul.rl("textures/item/entity/meteor.png"), 1, 8));
         register(SummonerAttachmentEntityRegister.VORTEX, null);
         register(SummonerAttachmentEntityRegister.SPRINT, null);
-        register(SummonerAttachmentEntityRegister.SHADOW_ORB, () -> simpleRenderer(FargoSoul.rl("textures/item/entity/meteor.png"), 1, 12));
+        register(SummonerAttachmentEntityRegister.SHADOW_ORB, ShadowOrbRenderer::new);
         register(SummonerAttachmentEntityRegister.LIGHTNING_ORB, LightningOrbRenderer::new);
         register(SummonerAttachmentEntityRegister.SNOW_BALL, () -> simpleRenderer(ResourceLocation.withDefaultNamespace("textures/item/snowball.png"), 0.35f, 0));
         register(SummonerAttachmentEntityRegister.TRACKING_BLOOD, TrackingBloodRenderer::new);
         register(SummonerAttachmentEntityRegister.BLOOD_DROP, BloodDropRenderer::new);
         register(SummonerAttachmentEntityRegister.STAR, null);
         register(SummonerAttachmentEntityRegister.PETAL, () -> new SimpleRenderer<>((entity, poseStack, bufferSource, visualNode, context, partialTick, alpha) -> SphereRendererHelper.builder()
-                .radius(0.06f)
+                .radius(0.12f)
                 .layers(2)
                 .sides(6)
                 .color(0xFFF2A2C4)
@@ -57,7 +58,7 @@ public class SummonerAttachmentEntityRenderRegister {
                 .innerRatio(0.5f)
                 .render(poseStack, bufferSource)));
         register(SummonerAttachmentEntityRegister.GHOST_ORB, () -> new SimpleRenderer<>((entity, poseStack, bufferSource, visualNode, context, partialTick, alpha) -> SphereRendererHelper.builder()
-                .radius(0.05f)
+                .radius(0.1f)
                 .layers(2)
                 .sides(6)
                 .color(0xFFB8D8FF)

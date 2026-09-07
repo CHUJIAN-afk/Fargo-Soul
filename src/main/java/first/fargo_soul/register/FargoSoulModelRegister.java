@@ -17,6 +17,7 @@ public class FargoSoulModelRegister {
 
     public static final ModelResourceLocation TERRA_BLADE = standalone("minion/terra_blade");
     public static final ModelResourceLocation CHLOROPHYTE_CRYSTAL = standalone("minion/chlorophyte_crystal");
+    public static final ModelResourceLocation SHADOW_ORB = standalone("minion/shadow_orb");
 
     private static ModelResourceLocation standalone(String path) {
         ModelResourceLocation location = ModelResourceLocation.standalone(FargoSoul.rl(path));

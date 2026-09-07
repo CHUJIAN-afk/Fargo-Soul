@@ -21,7 +21,9 @@ public class KeyUtils {
      * @return 是否触发双击
      */
     public static boolean isDoubleTappingForward(Input input) {
-        if (sprintingTime > 0) sprintingTime--;
+        if (sprintingTime > 0) {
+            sprintingTime--;
+        }
         if (zza == Movement.NONE) {
             if (input.up) {
                 zza = Movement.UP;
@@ -30,7 +32,9 @@ public class KeyUtils {
                 return false;
             }
         } else if (zzKeyDown) {
-            if (!input.up) zzKeyDown = false;
+            if (!input.up) {
+                zzKeyDown = false;
+            }
         } else if (sprintingTime > 0) {
             if (zza == Movement.UP && input.forwardImpulse >= 0.8) {
                 zza = Movement.NONE;
@@ -41,5 +45,4 @@ public class KeyUtils {
         }
         return false;
     }
-
 }

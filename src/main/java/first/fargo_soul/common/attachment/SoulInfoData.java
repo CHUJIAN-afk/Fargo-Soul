@@ -9,6 +9,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -28,16 +29,16 @@ public record SoulInfoData(Map<SoulInfoType<?>, SoulInfo> data) implements Attac
 
     @SuppressWarnings("unchecked")
     @Nullable
-    public static <T extends SoulInfo> T getSoulInfo(LivingEntity living, Supplier<SoulInfoType<T>> type) {
-        return (T) living.getData(FargoSoulAttachmentRegister.SOUL_INFO_DATA).data().get(type.get());
+    public static <T extends SoulInfo> T getSoulInfo(Entity entity, Supplier<SoulInfoType<T>> type) {
+        return (T) entity.getData(FargoSoulAttachmentRegister.SOUL_INFO_DATA).data().get(type.get());
     }
 
-    public static void putSoulInfo(LivingEntity living, SoulInfo soulInfo) {
-        living.getData(FargoSoulAttachmentRegister.SOUL_INFO_DATA).data().put(soulInfo.getType(), soulInfo);
+    public static void putSoulInfo(Entity entity, SoulInfo soulInfo) {
+        entity.getData(FargoSoulAttachmentRegister.SOUL_INFO_DATA).data().put(soulInfo.getType(), soulInfo);
     }
 
-    public static void removeSoulInfo(LivingEntity living, Supplier<SoulInfoType<?>> type) {
-        living.getData(FargoSoulAttachmentRegister.SOUL_INFO_DATA).data().remove(type.get());
+    public static void removeSoulInfo(Entity entity, Supplier<SoulInfoType<?>> type) {
+        entity.getData(FargoSoulAttachmentRegister.SOUL_INFO_DATA).data().remove(type.get());
     }
 
     @SubscribeEvent

@@ -12,8 +12,10 @@ import first.fargo_soul.register.FargoSoulSoulInfoRegister;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
@@ -31,11 +33,35 @@ public class IronSoul extends SoulItem {
 
     @Override
     public void tick(Player player) {
-        if (!player.level().isClientSide()) {
-            List<ItemEntity> items = player.level().getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(4), item -> !item.hasPickUpDelay());
-            for (ItemEntity item : items) {
-                Vec3 delta = player.getBoundingBox().getCenter().subtract(item.getBoundingBox().getCenter()).normalize();
-                item.setDeltaMovement(item.getDeltaMovement().add(delta.scale(0.1f)));
+        List<Entity> items = player.level().getEntitiesOfClass(Entity.class, player.getBoundingBox().inflate(8));
+        Inventory inventory = player.getInventory();
+        Vec3 pos = player.position();
+        for (Entity item : items) {
+            if (item instanceof ItemEntity itemEntity) {
+                boolean place = false;
+                if (!player.isCreative()) {
+                    for (int i = 0; i < inventory.items.size(); i++) {
+                        ItemStack itemStack = inventory.getItem(i);
+                        if (itemStack.isEmpty()) {
+                            place = true;
+                            break;
+                        }
+                        if (itemStack.getCount() < itemStack.getMaxStackSize() && ItemStack.isSameItem(itemStack, itemEntity.getItem())) {
+                            place = true;
+                            break;
+                        }
+                    }
+                } else {
+                    place = true;
+                }
+                if (place) {
+                    itemEntity.setDeltaMovement(Vec3.ZERO);
+                    itemEntity.teleportTo(pos.x, pos.y + 0.1, pos.z);
+                    break;
+                }
+            } else if (item instanceof ExperienceOrb experienceOrb) {
+                player.takeXpDelay = 0;
+                experienceOrb.playerTouch(player);
             }
         }
     }

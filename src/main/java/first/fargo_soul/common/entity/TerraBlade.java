@@ -7,6 +7,7 @@ import first.fargo_soul.common.entity.goal.terrablade.BladePrepGoal;
 import first.fargo_soul.register.FargoSoulItemRegister;
 import first.fargo_soul.register.SummonerAttachmentEntityRegister;
 import first.lyra.api.LyraHelper;
+import first.lyra.common.attachment.AttachmentEntityData;
 import first.lyra.common.attachment.InvincibleData;
 import first.lyra.common.attachment.TargetCache;
 import first.lyra.common.entity.AttachmentEntityType;
@@ -81,16 +82,12 @@ public class TerraBlade extends Minion implements IEntityCollision<TerraBlade> {
 
     @Override
     public void onCollisionAttack(List<HitContext> hitContexts) {
-        float amount = getDamage();
-        if (SoulItemData.isEquipped(getOwner(), FargoSoulItemRegister.SpiritPowerItem)) {
-            amount *= 2;
-        }
         for (HitContext hit : hitContexts) {
             if (this.hitTargets.add(hit.entity())) {
                 InvincibleData.attack(hit.entity())
                         .attacker(getUuid())
                         .damageSource(getDamageSource())
-                        .damageAmount(amount)
+                        .damageAmount(getDamage())
                         .apply();
             }
         }
@@ -170,5 +167,15 @@ public class TerraBlade extends Minion implements IEntityCollision<TerraBlade> {
     @Override
     public AttachmentEntityType<? extends Minion> getType() {
         return SummonerAttachmentEntityRegister.TERRA_BLADE.get();
+    }
+
+    @Override
+    public int getOrder() {
+        return LyraHelper.get(this.owner).getEntityData().get(AttachmentEntityData.Type.ExtraMinion, this.getType()).indexOf(this);
+    }
+
+    @Override
+    public int getSameSize() {
+        return LyraHelper.get(this.owner).getEntityData().get(AttachmentEntityData.Type.ExtraMinion, this.getType()).size();
     }
 }
