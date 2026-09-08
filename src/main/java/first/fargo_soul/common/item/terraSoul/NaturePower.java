@@ -35,7 +35,7 @@ public class NaturePower extends SoulItem {
     public void tick(Player player) {
         List<ChlorophyteOrb> orbs = LyraHelper.get(player).getEntityData().get(AttachmentEntityData.Type.ExtraMinion, SummonerAttachmentEntityRegister.CHLOROPHYTE_ORB.get()).stream().filter(orb -> orb.getKind() == ChlorophyteOrb.NATURE).toList();
         if (orbs.size() < 5) {
-            ChlorophyteOrb orb = new ChlorophyteOrb(ChlorophyteOrb.NATURE, player.getBbWidth() * 1.2f, player.getBbHeight() * 0.25f);
+            ChlorophyteOrb orb = new ChlorophyteOrb(ChlorophyteOrb.NATURE);
             LyraHelper.get(player).add(AttachmentEntityData.Type.ExtraMinion, orb);
         }
     }

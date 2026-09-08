@@ -10,15 +10,31 @@ authors = "${mod_authors}"
 description = '''${mod_description}'''
 [[mixins]]
 config = "${mod_id}.mixins.json"
+
 [[dependencies."${mod_id}"]]
 modId = "neoforge"
 type = "required"
 versionRange = "${neo_version_range}"
 ordering = "NONE"
 side = "BOTH"
+
 [[dependencies."${mod_id}"]]
 modId = "minecraft"
 type = "required"
 versionRange = "${minecraft_version_range}"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies."${mod_id}"]]
+modId = "lyra"
+type = "required"
+versionRange = "[1.21.1.8,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies."${mod_id}"]]
+modId = "curios"
+type = "required"
+versionRange = "*"
 ordering = "NONE"
 side = "BOTH"

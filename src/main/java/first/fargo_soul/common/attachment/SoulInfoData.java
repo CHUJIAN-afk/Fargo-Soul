@@ -37,7 +37,7 @@ public record SoulInfoData(Map<SoulInfoType<?>, SoulInfo> data) implements Attac
         entity.getData(FargoSoulAttachmentRegister.SOUL_INFO_DATA).data().put(soulInfo.getType(), soulInfo);
     }
 
-    public static void removeSoulInfo(Entity entity, Supplier<SoulInfoType<?>> type) {
+    public static <T extends SoulInfo> void removeSoulInfo(Entity entity, Supplier<SoulInfoType<T>> type) {
         entity.getData(FargoSoulAttachmentRegister.SOUL_INFO_DATA).data().remove(type.get());
     }
 

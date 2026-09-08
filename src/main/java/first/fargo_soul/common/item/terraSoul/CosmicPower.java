@@ -80,7 +80,7 @@ public class CosmicPower extends SoulItem {
         for (LivingEntity living : list) {
             InvincibleData.attack(living)
                     .damageSource(player.damageSources().magic())
-                    .damageAmount(player.getMaxHealth() * 3.6f)
+                    .damageAmount(player.getMaxHealth() * 36f)
                     .apply();
         }
         return super.death(player, source, canceled);

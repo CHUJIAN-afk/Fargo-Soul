@@ -9,12 +9,9 @@ import top.theillusivec4.curios.CuriosConstants;
 
 public class FargoSoulItemTagsRegister {
 
-    /** Curios 饰品槽标签，使物品能放入 curio 槽位 */
     public static final TagKey<Item> Curio = register(ResourceLocation.fromNamespaceAndPath(CuriosConstants.MOD_ID, "curio"));
 
-    // 创造模式分类分段特征标签（物品带标签自动归入对应分段）
-    public static final TagKey<Item> SectionBasic = register("sections/basic");
-    public static final TagKey<Item> SectionTerraSoul = register("sections/terra_soul");
+    public static final TagKey<Item> SectionSoul = register("sections/soul");
     public static final TagKey<Item> SectionPower = register("sections/power");
     public static final TagKey<Item> SectionEnchantment = register("sections/enchantment");
 

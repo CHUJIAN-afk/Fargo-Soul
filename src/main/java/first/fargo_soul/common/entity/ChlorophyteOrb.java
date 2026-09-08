@@ -31,19 +31,17 @@ public class ChlorophyteOrb extends Minion implements IEntityCollision<Chlorophy
     private int kind = GREEN;
     private int targetId = -1;
     private float orbitRadius = 0;
-    private float orbitHeight = 1.3f;
+    private float orbitHeight = 0;
     private float laserLength = 0;
 
     public ChlorophyteOrb() {
         super();
     }
 
-    public ChlorophyteOrb(int kind, float orbitRadius, float orbitHeight) {
+    public ChlorophyteOrb(int kind) {
         this();
         setDamage(6);
         this.kind = kind;
-        this.orbitRadius = orbitRadius;
-        this.orbitHeight = orbitHeight;
     }
 
     @Override
@@ -63,6 +61,13 @@ public class ChlorophyteOrb extends Minion implements IEntityCollision<Chlorophy
             if (!equipped) {
                 setRemove();
                 return;
+            }
+            if (kind == GREEN) {
+                orbitRadius = 0;
+                orbitHeight = owner.getBbHeight() + 0.75f;
+            } else {
+                orbitRadius = owner.getBbWidth() + 0.25f;
+                orbitHeight = owner.getBbHeight() / 3;
             }
             PathNode node = getOrbitNode(1f);
             Vec3 pos = node.pos();
@@ -110,7 +115,7 @@ public class ChlorophyteOrb extends Minion implements IEntityCollision<Chlorophy
         double px = Mth.lerp(partialTick, owner.xo, owner.getX());
         double py = Mth.lerp(partialTick, owner.yo, owner.getY());
         double pz = Mth.lerp(partialTick, owner.zo, owner.getZ());
-        Vec3 pos = new Vec3(px, py, pz).add(Math.cos(angle) * orbitRadius, owner.getBbHeight() * orbitHeight, Math.sin(angle) * orbitRadius);
+        Vec3 pos = new Vec3(px, py, pz).add(Math.cos(angle) * orbitRadius, orbitHeight, Math.sin(angle) * orbitRadius);
         return new PathNode(pos, 0, 0, 0);
     }
 
@@ -205,9 +210,5 @@ public class ChlorophyteOrb extends Minion implements IEntityCollision<Chlorophy
 
     public int getKind() {
         return kind;
-    }
-
-    public float getLaserLength() {
-        return laserLength;
     }
 }

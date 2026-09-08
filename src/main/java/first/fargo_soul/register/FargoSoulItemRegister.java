@@ -16,16 +16,13 @@ import first.lyra.common.dataComponent.LyraRarity;
 import first.lyra.register.LyraDataComponentRegister;
 import first.lyra.register.LyraItemRegisterBuilder;
 import net.minecraft.world.item.Item;
-import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.registries.DeferredItem;
-import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Function;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class FargoSoulItemRegister {
-
-    private static final DeferredRegister.Items Register = DeferredRegister.createItems(FargoSoul.MODID);
 
     public static final DeferredItem<TerraSoul> TerraSoulItem =
             register("terra_soul", TerraSoul::new, LyraRarity.Rainbow)
@@ -46,8 +43,8 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(14, " ", "持有者攻击偶尔会向敌人发射月亮并爆炸产生月亮强化焰")
                     .itemLanguageTooltip(15, " ", "增加持有者的移动速度 and 加速度并降低持有者的动量，星尘静滞冷却时间降低至60秒")
                     .itemLanguageTooltip(-1, " ", "“泰拉之主，天地共证”")
-                    .itemTag(FargoSoulItemTagsRegister.SectionTerraSoul)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemTag(FargoSoulItemTagsRegister.SectionSoul)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -60,10 +57,10 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(1, " ", "每秒从世界中汲取1点宇宙能量，最多积累100点宇宙能量")
                     .itemLanguageTooltip(2, " ", "根据积累比例，造成的伤害最多提升80%，受到的伤害最多减少20%")
                     .itemLanguageTooltip(3, " ", "受到伤害时，如果伤害超过你最大生命值的50%，则尝试消耗50宇宙能量使伤害减少50%")
-                    .itemLanguageTooltip(4, " ", "死亡时释放超新星爆炸，对周围敌人造成你最大生命值360%的魔法伤害")
+                    .itemLanguageTooltip(4, " ", "死亡时释放超新星爆炸，对周围敌人造成你最大生命值3600%的魔法伤害")
                     .itemLanguageTooltip(-1, " ", "“自宇宙大爆炸以来就一直存在”")
                     .itemTag(FargoSoulItemTagsRegister.SectionPower)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -81,7 +78,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(9, " ", "日耀之力期间，攻击不会积累日耀能量")
                     .itemLanguageTooltip(-1, " ", "“烫手魔石”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -94,7 +91,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(4, " ", "免疫摔落伤害")
                     .itemLanguageTooltip(-1, " ", "《Drop a draco on 'em》")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -105,7 +102,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "每秒消耗当前10%星云能量为你恢复生命值")
                     .itemLanguageTooltip(-1, " ", "“创生之柱照耀着你”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -116,7 +113,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "时间冻结期间，造成的伤害提升至200%")
                     .itemLanguageTooltip(-1, " ", "“你成为了替身使者”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -127,7 +124,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "在传送位置召唤一个漩涡持续吸引并伤害周围敌人，持续5秒")
                     .itemLanguageTooltip(-1, " ", "“撕裂现实”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -137,7 +134,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(1, " ", "造成的魔法伤害提升提升60%")
                     .itemLanguageTooltip(-1, " ", "“我们爱施放魔法!”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -154,7 +151,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(5, " ", "免疫死亡标记")
                     .itemLanguageTooltip(-1, " ", "“黑暗，更黑暗，还是更黑暗”")
                     .itemTag(FargoSoulItemTagsRegister.SectionPower)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -166,7 +163,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(3, " ", "免疫黑暗")
                     .itemLanguageTooltip(-1, " ", "“十分古老，却非常实用”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -177,7 +174,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "每点伏击能量使伤害提升1%，攻击后清空伏击能量")
                     .itemLanguageTooltip(-1, " ", "“等待正确的时机......”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -188,7 +185,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "冲刺后，赋予你1秒先发至人效果，使下次攻击造成的伤害提升60%并施加水晶碎甲效果，降低目标20点防御力")
                     .itemLanguageTooltip(-1, " ", "“登顶”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -200,7 +197,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(3, " ", "在暗影之赐效果下，有20%概率闪避负面效果，闪避后恢复你12%最大生命值")
                     .itemLanguageTooltip(-1, " ", "“阴影蕴含之物远超其表象”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -211,7 +208,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "对被暗影焰影响的敌人，攻击有5%概率施加2秒死亡标记效果")
                     .itemLanguageTooltip(-1, " ", "“自1902年以来融化的灵魂”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -223,7 +220,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(3, " ", "击杀骷髅或凋零骷髅额外掉落其头颅，并额外掠夺2点死灵能量")
                     .itemLanguageTooltip(-1, "\"Welcome to the Bone Zone\"", "“欢迎来到骸骨领域”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -234,7 +231,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "按下“渗透”键，可以使下一次冲刺后的1秒内免疫一切伤害并可以穿过墙壁，该效果有30秒冷却时间")
                     .itemLanguageTooltip(-1, " ", "“藏匿于墙中的村庄”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -250,7 +247,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(4, " ", "受到的伤害减少，减少值相当于[4+你2%最大生命值]")
                     .itemLanguageTooltip(-1, " ", "“大地赐予它力量”")
                     .itemTag(FargoSoulItemTagsRegister.SectionPower)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -261,7 +258,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "攻击雨中或水中的目标时释放闪电的概率增加20%")
                     .itemLanguageTooltip(-1, " ", "“它的音乐还是电音”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -273,7 +270,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(3, " ", "受到伤害会使额外暴击伤害减半")
                     .itemLanguageTooltip(-1, "\"Crits are back\"", "“暴击回归”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -284,7 +281,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "拾取物品后的5秒内受到的伤害减少20%")
                     .itemLanguageTooltip(-1, " ", "“趁热打铁”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -296,7 +293,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(3, " ", "免疫铅中毒")
                     .itemLanguageTooltip(-1, " ", "“不建议食用”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -307,7 +304,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "反弹伤害后的0.4秒内无敌")
                     .itemLanguageTooltip(-1, " ", "“反射”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -317,7 +314,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(1, " ", "攻击距离提升50%")
                     .itemLanguageTooltip(-1, " ", "“大就是好”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -330,7 +327,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(4, " ", "免疫熔岩伤害")
                     .itemLanguageTooltip(-1, " ", "“大地在呼唤”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -348,7 +345,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(6, " ", "交易价格减少50%")
                     .itemLanguageTooltip(-1, "\"Very hard\"", "“很硬”")
                     .itemTag(FargoSoulItemTagsRegister.SectionPower)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -360,7 +357,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(-1, " ", "“被店主们讨厌的诡计”")
                     .itemLanguageTooltip(-2, " ", "“卑微的开始……”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -370,7 +367,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(1, " ", "产生雪球攻击附近内的敌人，雪球命中时施加寒冷效果，使敌人移动速度减少30%，该效果有5秒冷却时间")
                     .itemLanguageTooltip(-1, " ", "“又冷又酷”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -381,7 +378,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "在冲刺期间受到的伤害减少20%")
                     .itemLanguageTooltip(-1, " ", "“保证钩到你”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -392,7 +389,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "根据腐化值比例，造成的伤害最多提升5，受到的伤害最多减少5%")
                     .itemLanguageTooltip(-1, " ", "“潜力未完全开发”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -403,7 +400,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "攻击受血如泉涌影响的敌人时喷出2~3个伤害性血液，追踪周围其他敌人，该效果有0.5秒冷却时间")
                     .itemLanguageTooltip(-1, " ", "“出奇的干净”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -414,7 +411,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "攻击被涂油影响的敌人时，伤害提升20%并点燃敌人")
                     .itemLanguageTooltip(-1, " ", "“出奇的宁静”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -426,7 +423,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(3, " ", "处于星之光辉影响下，暴击伤害提升40%")
                     .itemLanguageTooltip(-1, " ", "“太少了，太晚了……”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -440,7 +437,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "根据大地能量积累比例，最多提升100%造成伤害，100%攻击速度，5每秒生命恢复，100%护甲")
                     .itemLanguageTooltip(-1, "\"Gaia's blessing shines upon you\"", "“盖亚的祝福照耀着你”")
                     .itemTag(FargoSoulItemTagsRegister.SectionPower)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -451,7 +448,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "免疫浸油")
                     .itemLanguageTooltip(-1, " ", "“真不敢相信这竟然不是钯金”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -464,7 +461,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(4, " ", "在生命流涌效果下，超过最大生命值的恢复会产生伤害性血液，伤害值等同溢出的恢复值，追踪周围其他敌人")
                     .itemLanguageTooltip(-1, " ", "“你感到你的伤口在慢慢愈合”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -475,7 +472,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "攻击使攻击速度额外提升5%，最多额外提升70%，5秒不攻击使额外攻击速度清空")
                     .itemLanguageTooltip(-1, " ", "“你感觉武器的知识渗透进你的脑海中”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -486,7 +483,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "免疫山铜中毒")
                     .itemLanguageTooltip(-1, "\"Nature blesses you\"", "“自然祝福着你”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio).build();
 
     public static final DeferredItem<AdamantiteSoul> AdamantiteSoulItem =
@@ -497,7 +494,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(3, " ", "攻击护甲低于20的敌人时，造成的伤害提升40%，暴击伤害提升80%")
                     .itemLanguageTooltip(-1, "\"Chaos\"", "“混乱”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -511,7 +508,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(5, " ", "低于50%最大生命值时，守护能量的减伤效果翻倍")
                     .itemLanguageTooltip(-1, " ", "“有了绝对防御后，谁还需要躲避呢？”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -526,7 +523,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(3, " ", "受到的伤害降低15点")
                     .itemLanguageTooltip(-1, "\"Travel through every secret corner of the wilderness\"", "“走遍荒野的每一个秘密角落”")
                     .itemTag(FargoSoulItemTagsRegister.SectionPower)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -538,7 +535,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(3, " ", "击杀敌人使你恢复敌人20%最大生命值的生命值")
                     .itemLanguageTooltip(-1, " ", "“你从敌人的鲜血中重生”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -550,7 +547,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(3, " ", "免疫熔岩伤害")
                     .itemLanguageTooltip(-1, "\"They will feel the wrath of Hell\"", "“他们将感受到地狱的愤怒”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -561,7 +558,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "免疫雷电伤害")
                     .itemLanguageTooltip(-1, "\"Come again another day\"", "“改日再来”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -572,7 +569,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "在寒冷群系时，雪球的冷却时间减少60%")
                     .itemLanguageTooltip(-1, " ", "“让我们给这个世界披上一层厚厚的冰衣”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -584,7 +581,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(3, " ", "产生一个跟随持有者的叶绿水晶攻击周围敌人，叶绿水晶会向敌怪发射激光")
                     .itemLanguageTooltip(-1, " ", "“丛林的精华在你周围凝结成晶体”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -595,7 +592,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "击杀敌人后掉落2~4格蘑菇")
                     .itemLanguageTooltip(-1, " ", "“是用真的蘑菇做的！”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -612,7 +609,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(5, " ", "反弹500%伤害，该效果有0.1秒冷却时间")
                     .itemLanguageTooltip(-1, " ", "“罕有生灵敢违背你的意愿”")
                     .itemTag(FargoSoulItemTagsRegister.SectionPower)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -624,7 +621,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(3, " ", "接触花朵时提升2每秒生命恢复")
                     .itemLanguageTooltip(-1, " ", "“根据目前所知的所有航空原理，蜜蜂应该根本不可能会飞”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -637,7 +634,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(4, " ", "攻击时获得1层甲虫力量，最多叠加3层，每层甲虫力量提升30%造成伤害，每秒失去1层甲虫力量")
                     .itemLanguageTooltip(-1, " ", "“你的血管里流淌着看不见的粪便生命”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -648,7 +645,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "踩在成熟的南瓜上时会使南瓜产生爆炸并恢复你5%最大生命值")
                     .itemLanguageTooltip(-1, " ", "“你对南瓜的突发渴望永远不会得到满足”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -658,7 +655,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(1, " ", "提升15%召唤伤害，24点召唤穿透")
                     .itemLanguageTooltip(-1, " ", "“蜘蛛恐惧者？作为惩罚，让他被蜘蛛干掉吧！”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -671,7 +668,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(4, " ", "免疫仙人掌伤害")
                     .itemLanguageTooltip(-1, " ", "“你突然有一种想躲进壳里的冲动”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -686,7 +683,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(3, " ", "额外召唤8柄胜利与誓约之刃，胜利与誓约之刃造成的伤害提升200%")
                     .itemLanguageTooltip(-1, "\"Drifting away like a transcended immortal\"", "“飘飘乎如遗世独立，羽化而登仙”")
                     .itemTag(FargoSoulItemTagsRegister.SectionPower)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -696,7 +693,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(1, " ", "按下“风暴”键召唤禁戒风暴，吸引附近的目标，持续5秒，该效果有30秒冷却时间")
                     .itemLanguageTooltip(-1, " ", "“走路像个埃及人”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -707,7 +704,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "受到治疗时会产生冲击波，击退附近的目标，该效果有1秒冷却时间")
                     .itemLanguageTooltip(-1, " ", "“尽管放马过来”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -717,7 +714,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(1, " ", "召唤胜利与誓约之刃为你而战")
                     .itemLanguageTooltip(-1, " ", "“你有足够的力量驾驭我吗？”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -728,7 +725,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "造成召唤伤害时，施加12秒灵雾迷障效果，减少20%移动速度，10%护甲值")
                     .itemLanguageTooltip(-1, " ", "“Aku Aku!”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -740,7 +737,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(3, " ", "灵魂能量溢出时，每秒消耗所有溢出灵魂能量，召唤一枚追踪灵魂球，灵魂球伤害为溢出灵魂能量*4%最大生命值")
                     .itemLanguageTooltip(-1, " ", "“他们的生命力将毁灭他们自己”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -755,7 +752,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(3, " ", "攻击被迈达斯影响的敌人时，造成的伤害提升80%")
                     .itemLanguageTooltip(-1, "\"Indomitable determination\"", "“坚不可摧的决心”")
                     .itemTag(FargoSoulItemTagsRegister.SectionPower)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -769,7 +766,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(5, " ", "免疫迈达斯")
                     .itemLanguageTooltip(-1, " ", "“有钱能使鬼推磨”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -779,7 +776,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(1, " ", "击杀敌人有20%概率提升500%战利品数量")
                     .itemLanguageTooltip(-1, " ", "“无价之宝”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -790,7 +787,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "周围8格只有一个目标时，造成的伤害提升50%，受到的伤害提升50%")
                     .itemLanguageTooltip(-1, " ", "“你不觉得刺激吗？”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -803,7 +800,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(4, " ", "受到伤害时清空游击层数")
                     .itemLanguageTooltip(-1, " ", "“小红帽，大坏蛋！”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -814,7 +811,7 @@ public class FargoSoulItemRegister {
                     .itemLanguageTooltip(2, " ", "受到的治疗效果提升15%")
                     .itemLanguageTooltip(-1, " ", "“瓦尔哈拉的呼唤”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
-                    .itemModel(LyraItemRegisterBuilder::basicModel)
+                    .itemModel(ItemModelProvider::basicItem)
                     .itemTag(FargoSoulItemTagsRegister.Curio)
                     .build();
 
@@ -823,10 +820,9 @@ public class FargoSoulItemRegister {
     }
 
     public static <T extends Item> LyraItemRegisterBuilder<T> register(String name, Function<Item.Properties, T> function, LyraRarity lyraRarity) {
-        return LyraItemRegisterBuilder.build(Register, name, () -> function.apply(new Item.Properties().stacksTo(1).fireResistant().component(LyraDataComponentRegister.RARITY, lyraRarity)));
+        return FargoSoul.REGISTRIES.build( name, () -> function.apply(new Item.Properties().stacksTo(1).fireResistant().component(LyraDataComponentRegister.RARITY, lyraRarity)));
     }
 
-    public static void register(IEventBus eventBus) {
-        Register.register(eventBus);
+    public static void register() {
     }
 }

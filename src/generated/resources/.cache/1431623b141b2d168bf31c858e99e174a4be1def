@@ -1,4 +1,4 @@
-// 1.21.1	2026-09-05T09:11:02.6822882	Item Models: fargo_soul
+// 1.21.1	2026-09-08T12:29:55.8941994	Item Models: fargo_soul
 7395c6778c1d85064646ca65ed72a3f62f5b85d3 assets/fargo_soul/models/item/adamantite_soul.json
 fdca1a8f292efcc9c113f5d640fcd6128aa49831 assets/fargo_soul/models/item/ancient_holy_soul.json
 c713e4d150bb9c47167798b2884703e0b1e3d832 assets/fargo_soul/models/item/ancient_shadow_soul.json
@@ -7,7 +7,6 @@ c713e4d150bb9c47167798b2884703e0b1e3d832 assets/fargo_soul/models/item/ancient_s
 c77a3d8388f06a2d7cc070b6586655be4353096e assets/fargo_soul/models/item/blaze_soul.json
 41eb4d8ab5e42237d5fe220bcbde1423a6b2afe9 assets/fargo_soul/models/item/cobalt_soul.json
 c7bfa58f0dafa6c4c166e9e521f94da3fa8e8592 assets/fargo_soul/models/item/copper_soul.json
-7791d7390ac52c1ea6503af05bdc2458e7b3185e assets/fargo_soul/models/item/cosmic_crucible.json
 68ac04cf5e815bb7c7c7221c979175b94a0ccada assets/fargo_soul/models/item/cosmic_power.json
 977ef6fa709c36747456132d16fa7d1e875f95b4 assets/fargo_soul/models/item/crimson_soul.json
 1e18a88f5e0465ca72eae32e9b6154b1bfa772e8 assets/fargo_soul/models/item/crystal_assassin_soul.json
@@ -49,7 +48,6 @@ a2572859da8e8c7d6adedd444a7529b453a3d6bd assets/fargo_soul/models/item/pumpkin_s
 3f344cf090c48cb72c968e6a4c530f72bf8bd60e assets/fargo_soul/models/item/rose_wood_soul.json
 350f873baa179a40dfd967d5e193836302ab6411 assets/fargo_soul/models/item/shadow_wood_soul.json
 f9ac2ced7988819ac46241d566fe9ff81870b6fb assets/fargo_soul/models/item/silver_soul.json
-74ac7f6fc9f5658d943e30ff1050c7bf8be2322b assets/fargo_soul/models/item/soul.json
 8ab07bcc702bb7775b148304b7280f7a9a90ddbd assets/fargo_soul/models/item/spider_soul.json
 a1ae9c38d0b4c8122477d0d6727f39e4750dbf8a assets/fargo_soul/models/item/spirit_power.json
 353a83eb7c29d4b31c7cf6951a424003041cc5fd assets/fargo_soul/models/item/stardust_soul.json

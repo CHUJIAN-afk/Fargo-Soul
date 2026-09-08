@@ -18,7 +18,7 @@ public class FargoSoulCreativeModeTabRegister {
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FargoSoulTab = Register.register(FargoSoul.MODID, () -> CreativeModeTab.builder().title(Component.translatable("itemGroup.fargo_soul")).icon(() -> FargoSoulItemRegister.TerraSoulItem.get().getDefaultInstance()).build());
 
-    public static final Section SOUL = new Section(1, FargoSoul.rl("textures/item/banner/default_banner.png"), new AnimBanner(18, 1, 1), FargoSoulItemTagsRegister.SectionTerraSoul);
+    public static final Section SOUL = new Section(1, FargoSoul.rl("textures/item/banner/default_banner.png"), new AnimBanner(18, 1, 1), FargoSoulItemTagsRegister.SectionSoul);
     public static final Section POWER = new Section(2, FargoSoul.rl("textures/item/banner/default_banner.png"), new AnimBanner(18, 1, 1), FargoSoulItemTagsRegister.SectionPower);
     public static final Section ENCHANTMENT = new Section(3, FargoSoul.rl("textures/item/banner/default_banner.png"), new AnimBanner(18, 1, 1), FargoSoulItemTagsRegister.SectionEnchantment);
 

@@ -23,6 +23,8 @@ import java.util.List;
 
 public class StardustSoul extends SoulItem {
 
+    private static int frozenRemaining = -1;
+
     public StardustSoul(Properties properties) {
         super(properties);
     }
@@ -44,25 +46,27 @@ public class StardustSoul extends SoulItem {
 
     @Override
     public void keyHandle(Player player, ResourceLocation key) {
-        if (key.equals(FargoSoul.rl("stardust_soul"))) {
-            Info soulInfo = SoulInfoData.getSoulInfo(player, FargoSoulSoulInfoRegister.STARDUST_SOUL_INFO);
-            if (soulInfo == null && player.getServer() instanceof MinecraftServer server) {
-                ServerTickRateManager serverTickRateManager = server.tickRateManager();
-                if (!serverTickRateManager.isFrozen()) {
-                    soulInfo = new Info();
-                    soulInfo.cooldown = 120 * 20;
-                    SoulInfoData.putSoulInfo(player, soulInfo);
-
-                    serverTickRateManager.setFrozen(true);
-                }
+        if (key.equals(FargoSoul.rl("stardust_soul")) && player.getServer() instanceof MinecraftServer server) {
+            ServerTickRateManager serverTickRateManager = server.tickRateManager();
+            if (!serverTickRateManager.isFrozen()) {
+                Info soulInfo = new Info();
+                soulInfo.cooldown = 120 * 20;
+                SoulInfoData.putSoulInfo(player, soulInfo);
+                serverTickRateManager.setFrozen(true);
+                frozenRemaining = 6 * 20;
             }
+        }
+    }
+
+    public static void serverTick(MinecraftServer server) {
+        if (--frozenRemaining == 0) {
+            server.tickRateManager().setFrozen(false);
         }
     }
 
     public static final class Info extends SoulInfo {
 
         public int cooldown = 0;
-        public boolean deserialize = false;
 
         @Override
         public SoulInfoType<? extends SoulInfo> getType() {
@@ -72,12 +76,6 @@ public class StardustSoul extends SoulItem {
         @Override
         public void tick(LivingEntity living) {
             if (--cooldown <= 0) {
-                if (living.getServer() instanceof MinecraftServer server) {
-                    ServerTickRateManager serverTickRateManager = server.tickRateManager();
-                    if (serverTickRateManager.isFrozen()) {
-                        serverTickRateManager.setFrozen(false);
-                    }
-                }
                 setRemove(true);
             }
         }

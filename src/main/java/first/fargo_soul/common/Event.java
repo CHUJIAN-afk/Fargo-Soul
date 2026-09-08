@@ -5,6 +5,7 @@ import first.fargo_soul.FargoSoul;
 import first.fargo_soul.common.attachment.SoulItemData;
 import first.fargo_soul.common.attachment.SoulTargetCache;
 import first.fargo_soul.common.item.base.ValueModifier;
+import first.fargo_soul.common.item.terraSoul.cosmicPower.StardustSoul;
 import first.fargo_soul.register.FargoSoulAttachmentRegister;
 import first.fargo_soul.register.FargoSoulAttributeRegister;
 import first.fargo_soul.register.FargoSoulMobEffectRegister;
@@ -21,6 +22,7 @@ import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
 import java.util.ArrayList;
@@ -36,6 +38,12 @@ public class Event {
             SoulTargetCache.get(player).tick(player);
             SoulItemData.forEach(player, soulItem -> soulItem.tick(player));
         }
+    }
+
+    /** 星尘魔石:时停恢复由服务器统一驱动,不依赖玩家的实体 tick。 */
+    @SubscribeEvent
+    public static void serverTick(ServerTickEvent.Post event) {
+        StardustSoul.serverTick(event.getServer());
     }
 
     @SubscribeEvent
