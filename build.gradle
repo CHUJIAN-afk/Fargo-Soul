@@ -102,8 +102,8 @@ repositories {
 }
 
 dependencies {
-    implementation "first:Lyra:${lyra_version}"
-    implementation "curse.maven:curios-309927:6529130"
+    api "first:Lyra:${lyra_version}"
+    api "curse.maven:curios-309927:6529130"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
