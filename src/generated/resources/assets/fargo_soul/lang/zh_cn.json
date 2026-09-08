@@ -66,7 +66,7 @@
   "item.fargo_soul.cosmic_power.tooltip.1": "每秒从世界中汲取1点宇宙能量，最多积累100点宇宙能量",
   "item.fargo_soul.cosmic_power.tooltip.2": "根据积累比例，造成的伤害最多提升80%，受到的伤害最多减少20%",
   "item.fargo_soul.cosmic_power.tooltip.3": "受到伤害时，如果伤害超过你最大生命值的50%，则尝试消耗50宇宙能量使伤害减少50%",
-  "item.fargo_soul.cosmic_power.tooltip.4": "死亡时释放超新星爆炸，对周围敌人造成你最大生命值360%的魔法伤害",
+  "item.fargo_soul.cosmic_power.tooltip.4": "死亡时释放超新星爆炸，对周围敌人造成你最大生命值3600%的魔法伤害",
   "item.fargo_soul.crimson_soul": "猩红魔石",
   "item.fargo_soul.crimson_soul.tooltip.-1": "“你从敌人的鲜血中重生”",
   "item.fargo_soul.crimson_soul.tooltip.1": "攻击使敌人爆出2~4个追踪鲜血球，为你恢复3点生命值，每个敌人有0.25秒冷却时间",
