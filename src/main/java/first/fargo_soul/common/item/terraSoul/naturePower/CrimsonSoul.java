@@ -32,10 +32,7 @@ public class CrimsonSoul extends SoulItem {
     public void tick(Player player) {
         if (player.tickCount % 20 == 0) {
             List<LivingEntity> enemies = SoulTargetCache.get(player).getEntitiesInRadius(player.getBoundingBox().getCenter(), 4, null);
-            float amount = player.getMaxHealth() * 0.01f;
-            if (enemies.isEmpty()) {
-                amount += 2;
-            }
+            float amount = player.getMaxHealth() * (enemies.isEmpty() ? 0.03f : 0.01f);
             player.heal(amount);
         }
     }

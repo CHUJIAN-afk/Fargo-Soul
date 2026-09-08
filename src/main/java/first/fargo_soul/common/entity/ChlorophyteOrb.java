@@ -103,8 +103,7 @@ public class ChlorophyteOrb extends Minion implements IEntityCollision<Chlorophy
             return new PathNode(pos, yaw, 0, 0);
         } else {
             float spin = (getTickCount() + partialTick) * 12f % 360f;
-            PathNode node = super.getRenderNode(partialTick);
-            return new PathNode(new Vec3(node.pos().x(), pos.y(), node.pos().z()), spin, 0, 0);
+            return new PathNode(pos, spin, 0, 0);
         }
     }
 

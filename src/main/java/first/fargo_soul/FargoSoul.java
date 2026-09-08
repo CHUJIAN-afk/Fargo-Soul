@@ -34,7 +34,7 @@ public class FargoSoul {
     });
 
     public FargoSoul(IEventBus eventBus) {
-        REGISTRIES.register(eventBus, var -> FargoSoulItemRegister.register());
+        REGISTRIES.register(eventBus, FargoSoulItemRegister::register);
         FargoSoulCreativeModeTabRegister.register(eventBus);
         FargoSoulMobEffectRegister.register(eventBus);
         FargoSoulAttributeRegister.register(eventBus);

@@ -26,7 +26,6 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.registries.DeferredItem;
 
@@ -602,7 +601,7 @@ public class FargoSoulItemRegister {
                     .lootTable(vanilla("entities/zombie"), table -> pool(FargoSoulItemRegister.CrimsonSoulItem, 0.01F))
                     .itemLanguage("Crimson Enchantment", "猩红魔石")
                     .itemLanguageTooltip(1, " ", "攻击使敌人爆出2~4个追踪鲜血球，为你恢复3点生命值，每个敌人有0.25秒冷却时间")
-                    .itemLanguageTooltip(2, " ", "每秒恢复1%最大生命值，周围4格没有敌人时，每秒额外恢复2最大生命值")
+                    .itemLanguageTooltip(2, " ", "每秒恢复1%最大生命值，周围4格没有敌人时，每秒额外恢复2%最大生命值")
                     .itemLanguageTooltip(3, " ", "击杀敌人使你恢复敌人20%最大生命值的生命值")
                     .itemLanguageTooltip(-1, " ", "“你从敌人的鲜血中重生”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
@@ -669,7 +668,7 @@ public class FargoSoulItemRegister {
                     .lootTable(vanilla("entities/zombie"), table -> pool(FargoSoulItemRegister.MushroomSoulItem, 0.01F))
                     .itemLanguage("Mushroom Enchantment", "蘑菇魔石")
                     .itemLanguageTooltip(1, " ", "食用蘑菇煲额外恢复50点生命值")
-                    .itemLanguageTooltip(2, " ", "击杀敌人后掉落2~4格蘑菇")
+                    .itemLanguageTooltip(2, " ", "击杀敌人后掉落2~4个蘑菇")
                     .itemLanguageTooltip(-1, " ", "“是用真的蘑菇做的！”")
                     .itemTag(FargoSoulItemTagsRegister.SectionEnchantment)
                     .itemModel(ItemModelProvider::basicItem)
@@ -939,7 +938,6 @@ public class FargoSoulItemRegister {
 
     private static LootPool pool(ItemLike item, float chance) {
         return LootPool.lootPool()
-                .setRolls(ConstantValue.exactly(1.0F))
                 .add(LootItem.lootTableItem(item)
                              .when(LootItemRandomChanceCondition.randomChance(chance))
                              .when(LootItemKilledByPlayerCondition.killedByPlayer()))
