@@ -91,10 +91,6 @@ public abstract class SoulItem extends Item implements ICurioItem {
     public void eat(Player player, ItemStack food) {
     }
 
-    public boolean renderChildTooltip() {
-        return true;
-    }
-
     public List<Component> getTooltip(ItemStack itemStack, TooltipFlag flags, boolean master) {
         List<Component> list = new ArrayList<>();
         if (master) {
@@ -115,11 +111,9 @@ public abstract class SoulItem extends Item implements ICurioItem {
                 }
                 list.add(translatable);
             }
-            if (renderChildTooltip()) {
-                Set<SoulItem> soulItemList = getSoulItemList();
-                for (SoulItem soulItem : soulItemList) {
-                    list.addAll(soulItem.getTooltip(itemStack, flags, false));
-                }
+            Set<SoulItem> soulItemList = getSoulItemList();
+            for (SoulItem soulItem : soulItemList) {
+                list.addAll(soulItem.getTooltip(itemStack, flags, false));
             }
         } else {
             for (int i = -1; I18n.exists(key + i); i--) {
