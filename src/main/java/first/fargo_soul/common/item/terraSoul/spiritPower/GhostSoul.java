@@ -66,7 +66,10 @@ public class GhostSoul extends SoulItem {
             if (!targets.isEmpty()) {
                 RandomSource random = player.getRandom();
                 LivingEntity chase = targets.get(random.nextInt(targets.size()));
-                GhostOrb orb = new GhostOrb(player.damageSources().playerAttack(player), from, from.offsetRandom(random, 1).subtract(from).normalize().scale(0.5f));
+                GhostOrb orb = new GhostOrb();
+                orb.setDamageSourceSupplier(owner -> owner.damageSources().playerAttack(owner));
+                orb.setPos(from);
+                orb.setVelocity(from.offsetRandom(random, 1).subtract(from).normalize().scale(0.5f));
                 orb.setDamage(overflow * player.getMaxHealth() * 0.04f);
                 orb.setChaseTarget(chase);
                 orb.join(player);

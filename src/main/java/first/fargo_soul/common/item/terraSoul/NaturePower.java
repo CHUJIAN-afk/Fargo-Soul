@@ -7,7 +7,7 @@ import first.fargo_soul.common.item.base.ValueOperation;
 import first.fargo_soul.register.SummonerAttachmentEntityRegister;
 import first.lyra.api.LyraHelper;
 import first.lyra.common.attachment.AttachmentEntityData;
-import first.lyra.common.minion.MinionDamageSource;
+import first.lyra.common.entity.AttachmentEntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -35,14 +35,15 @@ public class NaturePower extends SoulItem {
     public void tick(Player player) {
         List<ChlorophyteOrb> orbs = LyraHelper.get(player).getEntityData().get(AttachmentEntityData.Type.ExtraMinion, SummonerAttachmentEntityRegister.CHLOROPHYTE_ORB.get()).stream().filter(orb -> orb.getKind() == ChlorophyteOrb.NATURE).toList();
         if (orbs.size() < 5) {
-            ChlorophyteOrb orb = new ChlorophyteOrb(ChlorophyteOrb.NATURE);
+            ChlorophyteOrb orb = new ChlorophyteOrb();
+            orb.setKind(ChlorophyteOrb.NATURE);
             LyraHelper.get(player).add(AttachmentEntityData.Type.ExtraMinion, orb);
         }
     }
 
     @Override
     public void attack(@NotNull Player attacker, @NotNull LivingEntity target, @NotNull DamageContainer container, List<ValueModifier> modifiers) {
-        if (container.getSource() instanceof MinionDamageSource damageSource && damageSource.getMinion().getType() == SummonerAttachmentEntityRegister.CHLOROPHYTE_ORB.get()) {
+        if (container.getSource() instanceof AttachmentEntityDamageSource damageSource && damageSource.getAttachmentEntity().getType() == SummonerAttachmentEntityRegister.CHLOROPHYTE_ORB.get()) {
             modifiers.add(new ValueModifier(3, ValueOperation.ADD_MULTIPLIED_BASE));
         }
     }

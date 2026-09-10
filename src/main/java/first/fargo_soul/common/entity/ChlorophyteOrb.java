@@ -7,14 +7,13 @@ import first.fargo_soul.register.SummonerAttachmentEntityRegister;
 import first.lyra.api.LyraHelper;
 import first.lyra.common.attachment.AttachmentEntityData;
 import first.lyra.common.attachment.InvincibleData;
-import first.lyra.common.entity.AttachmentEntity;
-import first.lyra.common.entity.AttachmentEntityType;
 import first.lyra.common.entity.IEntityCollision;
 import first.lyra.common.entity.PathNode;
+import first.lyra.common.entity.SyncFieldDispatcher;
 import first.lyra.common.minion.Minion;
 import first.lyra.common.particle.genericParticle.GenericParticleBuilder;
 import first.lyra.utils.ParticleHelper;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
@@ -35,18 +34,18 @@ public class ChlorophyteOrb extends Minion implements IEntityCollision<Chlorophy
     private float laserLength = 0;
 
     public ChlorophyteOrb() {
-        super();
-    }
-
-    public ChlorophyteOrb(int kind) {
-        this();
+        super(SummonerAttachmentEntityRegister.CHLOROPHYTE_ORB);
         setDamage(6);
-        this.kind = kind;
     }
 
     @Override
-    public AttachmentEntityType<? extends AttachmentEntity> getType() {
-        return SummonerAttachmentEntityRegister.CHLOROPHYTE_ORB.get();
+    protected void registerSyncFields(SyncFieldDispatcher fields) {
+        super.registerSyncFields(fields);
+        fields.field(ByteBufCodecs.INT, () -> kind, value -> kind = value);
+        fields.field(ByteBufCodecs.INT, () -> targetId, value -> targetId = value);
+        fields.field(ByteBufCodecs.FLOAT, () -> orbitRadius, value -> orbitRadius = value);
+        fields.field(ByteBufCodecs.FLOAT, () -> orbitHeight, value -> orbitHeight = value);
+        fields.field(ByteBufCodecs.FLOAT, () -> laserLength, value -> laserLength = value);
     }
 
     @Override
@@ -185,29 +184,15 @@ public class ChlorophyteOrb extends Minion implements IEntityCollision<Chlorophy
         return LyraHelper.get(owner).getEntityData().get(AttachmentEntityData.Type.ExtraMinion, SummonerAttachmentEntityRegister.CHLOROPHYTE_ORB.get()).stream().filter(orb -> orb.kind == this.kind).toList();
     }
 
-    @Override
-    public void writeAdditional(RegistryFriendlyByteBuf buf) {
-        buf.writeInt(kind);
-        buf.writeInt(targetId);
-        buf.writeFloat(orbitRadius);
-        buf.writeFloat(orbitHeight);
-        buf.writeFloat(laserLength);
-    }
-
-    @Override
-    public void readAdditional(RegistryFriendlyByteBuf buf) {
-        kind = buf.readInt();
-        targetId = buf.readInt();
-        orbitRadius = buf.readFloat();
-        orbitHeight = buf.readFloat();
-        laserLength = buf.readFloat();
-    }
-
     public int getTargetId() {
         return targetId;
     }
 
     public int getKind() {
         return kind;
+    }
+
+    public void setKind(int kind) {
+        this.kind = kind;
     }
 }

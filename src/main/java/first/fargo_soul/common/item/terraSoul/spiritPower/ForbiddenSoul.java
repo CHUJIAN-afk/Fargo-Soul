@@ -50,7 +50,9 @@ public class ForbiddenSoul extends SoulItem {
                 Vec3 end = eye.add(player.getLookAngle().scale(64));
                 BlockHitResult hit = player.level().clip(new ClipContext(eye, end, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
                 Vec3 pos = hit.getType() == HitResult.Type.MISS ? eye.add(player.getLookAngle().scale(10)) : hit.getLocation().add(hit.getDirection().getStepX(), hit.getDirection().getStepY(), hit.getDirection().getStepZ());
-                Vortex vortex = new Vortex(player.damageSources().magic(), pos);
+                Vortex vortex = new Vortex();
+                vortex.setDamageSourceSupplier(owner -> owner.damageSources().magic());
+                vortex.setPos(pos);
                 vortex.setDamage(0);
                 vortex.join(player);
             }

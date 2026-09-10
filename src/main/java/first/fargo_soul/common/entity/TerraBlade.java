@@ -10,12 +10,12 @@ import first.lyra.api.LyraHelper;
 import first.lyra.common.attachment.AttachmentEntityData;
 import first.lyra.common.attachment.InvincibleData;
 import first.lyra.common.attachment.TargetCache;
-import first.lyra.common.entity.AttachmentEntityType;
 import first.lyra.common.entity.IEntityCollision;
 import first.lyra.common.entity.PathNode;
+import first.lyra.common.entity.SyncFieldDispatcher;
 import first.lyra.common.minion.Minion;
 import first.lyra.common.minion.MinionGoalSelector;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
@@ -38,8 +38,15 @@ public class TerraBlade extends Minion implements IEntityCollision<TerraBlade> {
     public boolean ancientHolySoul = false;
 
     public TerraBlade() {
-        super();
+        super(SummonerAttachmentEntityRegister.TERRA_BLADE);
         setDamage(8);
+    }
+
+    @Override
+    protected void registerSyncFields(SyncFieldDispatcher fields) {
+        super.registerSyncFields(fields);
+        fields.field(ByteBufCodecs.BOOL, () -> attacking, value -> attacking = value);
+        fields.field(ByteBufCodecs.BOOL, () -> !(getGoalSelector().getCurrentGoal() instanceof BladeIdleGoal), value -> blend = value);
     }
 
     @Override
@@ -121,26 +128,6 @@ public class TerraBlade extends Minion implements IEntityCollision<TerraBlade> {
     }
 
     @Override
-    public void writeAdditional(RegistryFriendlyByteBuf buf) {
-        buf.writeBoolean(attacking);
-        buf.writeBoolean(!(getGoalSelector().getCurrentGoal() instanceof BladeIdleGoal));
-    }
-
-    @Override
-    public void readAdditional(RegistryFriendlyByteBuf buf) {
-        this.attacking = buf.readBoolean();
-        this.blend = buf.readBoolean();
-    }
-
-    public int getColor(float partialTick) {
-        int order = getOrderCache();
-        int total = Math.max(1, getSameSizeCache());
-        float hueShift = ((float) order / total + (owner.tickCount + partialTick) * 0.015f) % 1.0f;
-        float breathFactor = 0.5f + 0.5f * Mth.sin(hueShift * Mth.TWO_PI);
-        return Mth.hsvToRgb(hueShift, 0.75f - 0.35f * breathFactor, 1.0f);
-    }
-
-    @Override
     public PathNode getRenderNode(float partialTick) {
         PathNode renderNode = super.getRenderNode(partialTick);
         return renderNode.lerp(getInterpolatedIdleState(partialTick), Mth.lerp(partialTick, idleBlendO, idleBlend));
@@ -162,11 +149,6 @@ public class TerraBlade extends Minion implements IEntityCollision<TerraBlade> {
         Vec3 playerPos = owner.getPosition(partialTick);
         Vec3 targetPos = playerPos.add(localZ * backX + Math.cos(floatAngle) * 0.075 * rightX, owner.getBbHeight() * 0.6 + Math.sin(floatAngle) * 0.075, localZ * backZ + Math.cos(floatAngle) * 0.075 * rightZ);
         return new PathNode(targetPos, playerYaw - 90, 75 - order * 5f, 100);
-    }
-
-    @Override
-    public AttachmentEntityType<? extends Minion> getType() {
-        return SummonerAttachmentEntityRegister.TERRA_BLADE.get();
     }
 
     @Override

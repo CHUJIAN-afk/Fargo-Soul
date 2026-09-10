@@ -10,7 +10,7 @@ import first.fargo_soul.common.item.base.ValueOperation;
 import first.fargo_soul.register.SummonerAttachmentEntityRegister;
 import first.lyra.api.LyraHelper;
 import first.lyra.common.attachment.AttachmentEntityData;
-import first.lyra.common.minion.MinionDamageSource;
+import first.lyra.common.entity.AttachmentEntityDamageSource;
 import first.lyra.register.LyraAttributeRegister;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.LivingEntity;
@@ -50,7 +50,7 @@ public class SpiritPower extends SoulItem {
 
     @Override
     public void attack(@NotNull Player attacker, @NotNull LivingEntity target, @NotNull DamageContainer container, List<ValueModifier> modifiers) {
-        if (container.getSource() instanceof MinionDamageSource damageSource && damageSource.getMinion().getType() == SummonerAttachmentEntityRegister.TERRA_BLADE.get()) {
+        if (container.getSource() instanceof AttachmentEntityDamageSource damageSource && damageSource.getAttachmentEntity().getType() == SummonerAttachmentEntityRegister.TERRA_BLADE.get()) {
             modifiers.add(new ValueModifier(2, ValueOperation.ADD_MULTIPLIED_BASE));
         }
     }

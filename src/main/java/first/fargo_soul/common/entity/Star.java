@@ -4,8 +4,6 @@ import first.fargo_soul.common.attachment.SoulTargetCache;
 import first.fargo_soul.register.FargoSoulMobEffectRegister;
 import first.fargo_soul.register.SummonerAttachmentEntityRegister;
 import first.lyra.common.attachment.InvincibleData;
-import first.lyra.common.entity.AttachmentEntity;
-import first.lyra.common.entity.AttachmentEntityType;
 import first.lyra.common.entity.IEntityCollision;
 import first.lyra.common.particle.genericParticle.GenericParticleBuilder;
 import first.lyra.common.projectile.Projectile;
@@ -24,20 +22,9 @@ public class Star extends Projectile implements IEntityCollision<Star> {
     private LivingEntity chaseTarget = null;
 
     public Star() {
-        super();
-    }
-
-    public Star(DamageSource damageSource, Vec3 startPos, Vec3 direction) {
-        super(startPos, direction);
-        setDamageSource(damageSource);
+        super(SummonerAttachmentEntityRegister.STAR);
         setDrag(0.8f);
-        setMaxSpeed(5f);
         setMaxLife(100);
-    }
-
-    @Override
-    public AttachmentEntityType<? extends AttachmentEntity> getType() {
-        return SummonerAttachmentEntityRegister.STAR.get();
     }
 
     @Override
@@ -102,7 +89,6 @@ public class Star extends Projectile implements IEntityCollision<Star> {
         super.tick();
     }
 
-    @Override
     public int getTrailDuration() {
         return 12;
     }

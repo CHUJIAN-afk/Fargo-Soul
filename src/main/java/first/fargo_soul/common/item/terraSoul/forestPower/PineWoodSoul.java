@@ -23,7 +23,10 @@ public class PineWoodSoul extends SoulItem {
                 Vec3 pos = player.position().add(0, player.getBoundingBox().getYsize(), 0).offsetRandom(player.getRandom(), 4);
                 LivingEntity target = targets.get(player.getRandom().nextInt(targets.size()));
                 Vec3 dir = target.getBoundingBox().getCenter().subtract(pos).normalize();
-                SnowBall ball = new SnowBall(player.damageSources().playerAttack(player), pos, dir.scale(2));
+                SnowBall ball = new SnowBall();
+                ball.setDamageSourceSupplier(owner -> owner.damageSources().playerAttack(owner));
+                ball.setPos(pos);
+                ball.setVelocity(dir.scale(2));
                 ball.setDamage(6);
                 ball.join(player);
             }

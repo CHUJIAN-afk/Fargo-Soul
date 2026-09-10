@@ -50,7 +50,9 @@ public class CrimsonSoul extends SoulItem {
             RandomSource random = attacker.getRandom();
             int count = 2 + random.nextInt(3);
             for (int i = 0; i < count; i++) {
-                TrackingBlood blood = new TrackingBlood(from, from.offsetRandom(random, 1).subtract(from).normalize().scale(1.5f));
+                TrackingBlood blood = new TrackingBlood();
+                blood.setPos(from);
+                blood.setVelocity(from.offsetRandom(random, 1).subtract(from).normalize().scale(1.5f));
                 blood.join(attacker);
             }
         }

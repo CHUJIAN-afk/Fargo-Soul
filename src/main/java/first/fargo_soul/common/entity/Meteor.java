@@ -3,8 +3,6 @@ package first.fargo_soul.common.entity;
 import first.fargo_soul.common.attachment.SoulTargetCache;
 import first.fargo_soul.register.SummonerAttachmentEntityRegister;
 import first.lyra.common.attachment.InvincibleData;
-import first.lyra.common.entity.AttachmentEntity;
-import first.lyra.common.entity.AttachmentEntityType;
 import first.lyra.common.entity.IBlockCollision;
 import first.lyra.common.entity.IEntityCollision;
 import first.lyra.common.particle.genericParticle.GenericParticleBuilder;
@@ -25,20 +23,9 @@ import java.util.List;
 public class Meteor extends Projectile implements IEntityCollision<Meteor>, IBlockCollision<Meteor> {
 
     public Meteor() {
-        super();
-    }
-
-    public Meteor(DamageSource damageSource, Vec3 startPos, Vec3 direction) {
-        super(startPos, direction);
-        setDamageSource(damageSource);
+        super(SummonerAttachmentEntityRegister.METEOR);
         setDrag(1);
-        setMaxSpeed(2.5f);
         setMaxLife(60);
-    }
-
-    @Override
-    public AttachmentEntityType<? extends AttachmentEntity> getType() {
-        return SummonerAttachmentEntityRegister.METEOR.get();
     }
 
     @Override

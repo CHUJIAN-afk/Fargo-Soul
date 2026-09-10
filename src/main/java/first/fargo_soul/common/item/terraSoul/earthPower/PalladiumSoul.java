@@ -41,7 +41,9 @@ public class PalladiumSoul extends SoulItem {
             RandomSource random = attacker.getRandom();
             int count = 3 + random.nextInt(4);
             for (int i = 0; i < count; i++) {
-                TrackingBlood blood = new TrackingBlood(from, from.offsetRandom(random, 1).subtract(from).normalize().scale(1.5f));
+                TrackingBlood blood = new TrackingBlood();
+                blood.setPos(from);
+                blood.setVelocity(from.offsetRandom(random, 1).subtract(from).normalize().scale(1.5f));
                 blood.join(attacker);
             }
         }
@@ -83,7 +85,10 @@ public class PalladiumSoul extends SoulItem {
                 if (!others.isEmpty()) {
                     RandomSource random = player.getRandom();
                     LivingEntity chase = others.get(random.nextInt(others.size()));
-                    BloodDrop drop = new BloodDrop(player.damageSources().playerAttack(player), from, from.offsetRandom(random, 1).subtract(from).normalize().scale(0.5f));
+                    BloodDrop drop = new BloodDrop();
+                    drop.setDamageSourceSupplier(owner -> owner.damageSources().playerAttack(owner));
+                    drop.setPos(from);
+                    drop.setVelocity(from.offsetRandom(random, 1).subtract(from).normalize().scale(0.5f));
                     drop.setDamage(overflow);
                     drop.setChaseTarget(chase);
                     drop.join(player);

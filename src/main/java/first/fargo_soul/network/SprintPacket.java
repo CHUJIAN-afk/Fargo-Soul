@@ -24,7 +24,8 @@ public record SprintPacket() implements CustomPacketPayload {
         context.enqueueWork(() -> {
             Player player = context.player();
             SoulItemData.forEach(player, soulItem -> soulItem.sprintServer(player));
-            Sprint sprint = new Sprint(player.getBoundingBox().getCenter());
+            Sprint sprint = new Sprint();
+            sprint.setPos(player.getBoundingBox().getCenter());
             sprint.join(player);
         });
     }

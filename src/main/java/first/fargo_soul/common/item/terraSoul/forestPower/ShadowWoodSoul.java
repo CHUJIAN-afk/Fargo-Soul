@@ -56,7 +56,10 @@ public class ShadowWoodSoul extends SoulItem {
                     int count = 2 + random.nextInt(2);
                     for (int i = 0; i < count; i++) {
                         LivingEntity chase = others.get(random.nextInt(others.size()));
-                        BloodDrop drop = new BloodDrop(attacker.damageSources().playerAttack(attacker), from, from.offsetRandom(random, 1).subtract(from).normalize().scale(0.5f));
+                        BloodDrop drop = new BloodDrop();
+                        drop.setDamageSourceSupplier(owner -> owner.damageSources().playerAttack(owner));
+                        drop.setPos(from);
+                        drop.setVelocity(from.offsetRandom(random, 1).subtract(from).normalize().scale(0.5f));
                         drop.setDamage(2);
                         drop.setChaseTarget(chase);
                         drop.join(attacker);

@@ -55,7 +55,10 @@ public class ForestPower extends SoulItem {
             if (!targets.isEmpty()) {
                 LivingEntity target = targets.get(player.getRandom().nextInt(targets.size()));
                 Vec3 dir = target.getBoundingBox().getCenter().subtract(eye).normalize();
-                SnowBall ball = new SnowBall(player.damageSources().playerAttack(player), eye, dir);
+                SnowBall ball = new SnowBall();
+                ball.setDamageSourceSupplier(owner -> owner.damageSources().playerAttack(owner));
+                ball.setPos(eye);
+                ball.setVelocity(dir);
                 ball.setDamage(6);
                 ball.join(player);
             }
@@ -86,7 +89,9 @@ public class ForestPower extends SoulItem {
                 RandomSource random = attacker.getRandom();
                 int count = 3 + random.nextInt(4);
                 for (int i = 0; i < count; i++) {
-                    TrackingBlood blood = new TrackingBlood(from, from.offsetRandom(random, 1).subtract(from).normalize().scale(1.5f));
+                    TrackingBlood blood = new TrackingBlood();
+                    blood.setPos(from);
+                    blood.setVelocity(from.offsetRandom(random, 1).subtract(from).normalize().scale(1.5f));
                     blood.join(attacker);
                 }
             }

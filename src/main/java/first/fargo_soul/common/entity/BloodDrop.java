@@ -2,8 +2,6 @@ package first.fargo_soul.common.entity;
 
 import first.fargo_soul.register.SummonerAttachmentEntityRegister;
 import first.lyra.common.attachment.InvincibleData;
-import first.lyra.common.entity.AttachmentEntity;
-import first.lyra.common.entity.AttachmentEntityType;
 import first.lyra.common.entity.IEntityCollision;
 import first.lyra.common.projectile.Projectile;
 import net.minecraft.world.damagesource.DamageSource;
@@ -19,20 +17,9 @@ public class BloodDrop extends Projectile implements IEntityCollision<BloodDrop>
     private LivingEntity chaseTarget = null;
 
     public BloodDrop() {
-        super();
-    }
-
-    public BloodDrop(DamageSource damageSource, Vec3 startPos, Vec3 direction) {
-        super(startPos, direction);
-        setDamageSource(damageSource);
+        super(SummonerAttachmentEntityRegister.BLOOD_DROP);
         setDrag(0.8f);
-        setMaxSpeed(3.5f);
         setMaxLife(60);
-    }
-
-    @Override
-    public AttachmentEntityType<? extends AttachmentEntity> getType() {
-        return SummonerAttachmentEntityRegister.BLOOD_DROP.get();
     }
 
     @Override
@@ -65,7 +52,7 @@ public class BloodDrop extends Projectile implements IEntityCollision<BloodDrop>
     public void tick() {
         if (!owner.level().isClientSide()) {
             if (chaseTarget != null && chaseTarget.isAlive()) {
-                if (getLife() > 10) {
+                if (getTickCount() > 10) {
                     Vec3 targetCenter = chaseTarget.getBoundingBox().getCenter();
                     applyForce(targetCenter.subtract(getPos()).normalize().scale(0.5));
                 }
@@ -76,7 +63,6 @@ public class BloodDrop extends Projectile implements IEntityCollision<BloodDrop>
         super.tick();
     }
 
-    @Override
     public int getTrailDuration() {
         return 4;
     }

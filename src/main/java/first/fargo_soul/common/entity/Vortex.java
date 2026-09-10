@@ -3,12 +3,9 @@ package first.fargo_soul.common.entity;
 import first.fargo_soul.common.attachment.SoulTargetCache;
 import first.fargo_soul.register.SummonerAttachmentEntityRegister;
 import first.lyra.common.attachment.InvincibleData;
-import first.lyra.common.entity.AttachmentEntity;
-import first.lyra.common.entity.AttachmentEntityType;
 import first.lyra.common.particle.genericParticle.GenericParticleBuilder;
 import first.lyra.common.projectile.Projectile;
 import first.lyra.utils.ParticleHelper;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
@@ -23,20 +20,9 @@ import java.util.List;
 public class Vortex extends Projectile {
 
     public Vortex() {
-        super();
-    }
-
-    public Vortex(DamageSource damageSource, Vec3 pos) {
-        super(pos, null);
-        setDamageSource(damageSource);
+        super(SummonerAttachmentEntityRegister.VORTEX);
         setMaxLife(100);
-        setMaxSpeed(0);
         setDrag(1);
-    }
-
-    @Override
-    public AttachmentEntityType<? extends AttachmentEntity> getType() {
-        return SummonerAttachmentEntityRegister.VORTEX.get();
     }
 
     /**
@@ -53,7 +39,7 @@ public class Vortex extends Projectile {
                 target.hurtMarked = true;
                 InvincibleData.attack(target)
                         .attacker(getUuid())
-                        .damageSource(damageSource)
+                        .damageSource(getDamageSource())
                         .damageAmount(getDamage())
                         .invincibleTime(4)
                         .apply();

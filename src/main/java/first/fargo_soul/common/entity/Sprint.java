@@ -4,8 +4,6 @@ import first.fargo_soul.common.attachment.SoulItemData;
 import first.fargo_soul.common.attachment.SoulTargetCache;
 import first.fargo_soul.common.item.base.SoulItem;
 import first.fargo_soul.register.SummonerAttachmentEntityRegister;
-import first.lyra.common.entity.AttachmentEntity;
-import first.lyra.common.entity.AttachmentEntityType;
 import first.lyra.common.entity.IEntityCollision;
 import first.lyra.common.entity.PathNode;
 import first.lyra.common.projectile.Projectile;
@@ -21,17 +19,8 @@ public class Sprint extends Projectile implements IEntityCollision<Sprint> {
     private final Map<SoulItem, Set<LivingEntity>> hits = new HashMap<>();
 
     public Sprint() {
-        super();
-    }
-
-    public Sprint(Vec3 pos) {
-        super(pos, null);
+        super(SummonerAttachmentEntityRegister.SPRINT);
         setMaxLife(10);
-    }
-
-    @Override
-    public AttachmentEntityType<? extends AttachmentEntity> getType() {
-        return SummonerAttachmentEntityRegister.SPRINT.get();
     }
 
     @Override

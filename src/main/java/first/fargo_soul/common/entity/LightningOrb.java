@@ -3,13 +3,12 @@ package first.fargo_soul.common.entity;
 import first.fargo_soul.common.attachment.SoulTargetCache;
 import first.fargo_soul.register.SummonerAttachmentEntityRegister;
 import first.lyra.common.attachment.InvincibleData;
-import first.lyra.common.entity.AttachmentEntity;
-import first.lyra.common.entity.AttachmentEntityType;
+import first.lyra.common.entity.SyncFieldDispatcher;
 import first.lyra.common.particle.genericParticle.GenericParticleBuilder;
 import first.lyra.common.projectile.Projectile;
 import first.lyra.utils.ParticleHelper;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -20,18 +19,38 @@ import java.util.Set;
 
 public class LightningOrb extends Projectile {
 
+    private static final StreamCodec<RegistryFriendlyByteBuf, Set<Integer>> STREAM_CODEC = StreamCodec.of(
+            (buf, ids) -> {
+                buf.writeVarInt(ids.size());
+                for (Integer id : ids) {
+                    buf.writeVarInt(id);
+                }
+            },
+            buf -> {
+                int size = buf.readVarInt();
+                Set<Integer> ids = new HashSet<>(size);
+                for (int i = 0; i < size; i++) {
+                    ids.add(buf.readVarInt());
+                }
+                return ids;
+            }
+    );
+
     private final Set<Integer> idList = new HashSet<>();
 
     public LightningOrb() {
-        super();
+        super(SummonerAttachmentEntityRegister.LIGHTNING_ORB);
+        setDrag(1f);
+        setMaxLife(40);
     }
 
-    public LightningOrb(DamageSource damageSource, Vec3 startPos, Vec3 direction) {
-        super(startPos, direction);
-        setDamageSource(damageSource);
-        setDrag(1f);
-        setMaxSpeed(1);
-        setMaxLife(40);
+    @Override
+    protected void registerSyncFields(SyncFieldDispatcher fields) {
+        super.registerSyncFields(fields);
+        fields.field(STREAM_CODEC, this::getIdList, value -> {
+            idList.clear();
+            idList.addAll(value);
+        });
     }
 
     @Override
@@ -99,28 +118,6 @@ public class LightningOrb extends Projectile {
                 .speed(0.25)
                 .spread(2)
                 .emit();
-    }
-
-    @Override
-    public AttachmentEntityType<? extends AttachmentEntity> getType() {
-        return SummonerAttachmentEntityRegister.LIGHTNING_ORB.get();
-    }
-
-    @Override
-    public void writeAdditional(RegistryFriendlyByteBuf buf) {
-        buf.writeInt(idList.size());
-        for (Integer id : idList) {
-            buf.writeInt(id);
-        }
-    }
-
-    @Override
-    public void readAdditional(RegistryFriendlyByteBuf buf) {
-        idList.clear();
-        int size = buf.readInt();
-        for (int i = 0; i < size; i++) {
-            idList.add(buf.readInt());
-        }
     }
 
     public Set<Integer> getIdList() {

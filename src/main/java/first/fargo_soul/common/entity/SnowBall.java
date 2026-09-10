@@ -4,8 +4,6 @@ import first.fargo_soul.common.attachment.SoulTargetCache;
 import first.fargo_soul.register.FargoSoulMobEffectRegister;
 import first.fargo_soul.register.SummonerAttachmentEntityRegister;
 import first.lyra.common.attachment.InvincibleData;
-import first.lyra.common.entity.AttachmentEntity;
-import first.lyra.common.entity.AttachmentEntityType;
 import first.lyra.common.entity.IEntityCollision;
 import first.lyra.common.projectile.Projectile;
 import first.lyra.utils.ParticleHelper;
@@ -23,14 +21,8 @@ import java.util.List;
 public class SnowBall extends Projectile implements IEntityCollision<SnowBall> {
 
     public SnowBall() {
-        super();
-    }
-
-    public SnowBall(DamageSource damageSource, Vec3 startPos, Vec3 direction) {
-        super(startPos, direction);
-        setDamageSource(damageSource);
+        super(SummonerAttachmentEntityRegister.SNOW_BALL);
         setDrag(0.97f);
-        setMaxSpeed(1.6f);
         setMaxLife(60);
     }
 
@@ -49,11 +41,6 @@ public class SnowBall extends Projectile implements IEntityCollision<SnowBall> {
                     .emit();
         }
         super.tick();
-    }
-
-    @Override
-    public AttachmentEntityType<? extends AttachmentEntity> getType() {
-        return SummonerAttachmentEntityRegister.SNOW_BALL.get();
     }
 
     @Override

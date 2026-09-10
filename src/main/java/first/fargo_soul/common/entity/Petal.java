@@ -4,8 +4,6 @@ import first.fargo_soul.common.attachment.SoulTargetCache;
 import first.fargo_soul.register.FargoSoulMobEffectRegister;
 import first.fargo_soul.register.SummonerAttachmentEntityRegister;
 import first.lyra.common.attachment.InvincibleData;
-import first.lyra.common.entity.AttachmentEntity;
-import first.lyra.common.entity.AttachmentEntityType;
 import first.lyra.common.entity.IEntityCollision;
 import first.lyra.common.projectile.Projectile;
 import net.minecraft.world.damagesource.DamageSource;
@@ -22,20 +20,9 @@ public class Petal extends Projectile implements IEntityCollision<Petal> {
     private LivingEntity chaseTarget = null;
 
     public Petal() {
-        super();
-    }
-
-    public Petal(DamageSource damageSource, Vec3 startPos, Vec3 direction) {
-        super(startPos, direction);
-        setDamageSource(damageSource);
+        super(SummonerAttachmentEntityRegister.PETAL);
         setDrag(0.8f);
-        setMaxSpeed(3.5f);
         setMaxLife(60);
-    }
-
-    @Override
-    public AttachmentEntityType<? extends AttachmentEntity> getType() {
-        return SummonerAttachmentEntityRegister.PETAL.get();
     }
 
     @Override
@@ -45,7 +32,7 @@ public class Petal extends Projectile implements IEntityCollision<Petal> {
 
     @Override
     public boolean canCollideAttack() {
-        return getLife() > 10;
+        return getTickCount() > 10;
     }
 
     @Override
@@ -75,7 +62,7 @@ public class Petal extends Projectile implements IEntityCollision<Petal> {
     public void tick() {
         if (!owner.level().isClientSide()) {
             if (chaseTarget != null && chaseTarget.isAlive()) {
-                if (getLife() > 10) {
+                if (getTickCount() > 10) {
                     Vec3 targetCenter = chaseTarget.getBoundingBox().getCenter();
                     applyForce(targetCenter.subtract(getPos()).normalize().scale(0.5));
                 }

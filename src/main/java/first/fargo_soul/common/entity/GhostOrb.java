@@ -3,8 +3,6 @@ package first.fargo_soul.common.entity;
 import first.fargo_soul.common.attachment.SoulTargetCache;
 import first.fargo_soul.register.SummonerAttachmentEntityRegister;
 import first.lyra.common.attachment.InvincibleData;
-import first.lyra.common.entity.AttachmentEntity;
-import first.lyra.common.entity.AttachmentEntityType;
 import first.lyra.common.entity.IEntityCollision;
 import first.lyra.common.projectile.Projectile;
 import net.minecraft.world.damagesource.DamageSource;
@@ -20,20 +18,9 @@ public class GhostOrb extends Projectile implements IEntityCollision<GhostOrb> {
     private LivingEntity chaseTarget = null;
 
     public GhostOrb() {
-        super();
-    }
-
-    public GhostOrb(DamageSource damageSource, Vec3 startPos, Vec3 direction) {
-        super(startPos, direction);
-        setDamageSource(damageSource);
+        super(SummonerAttachmentEntityRegister.GHOST_ORB);
         setDrag(0.8f);
-        setMaxSpeed(4f);
         setMaxLife(80);
-    }
-
-    @Override
-    public AttachmentEntityType<? extends AttachmentEntity> getType() {
-        return SummonerAttachmentEntityRegister.GHOST_ORB.get();
     }
 
     @Override
@@ -64,7 +51,7 @@ public class GhostOrb extends Projectile implements IEntityCollision<GhostOrb> {
     public void tick() {
         if (!owner.level().isClientSide()) {
             if (chaseTarget != null && chaseTarget.isAlive()) {
-                if (getLife() > 5) {
+                if (getTickCount() > 5) {
                     Vec3 targetCenter = chaseTarget.getBoundingBox().getCenter();
                     applyForce(targetCenter.subtract(getPos()).normalize().scale(0.6));
                 }
@@ -75,7 +62,6 @@ public class GhostOrb extends Projectile implements IEntityCollision<GhostOrb> {
         super.tick();
     }
 
-    @Override
     public int getTrailDuration() {
         return 8;
     }

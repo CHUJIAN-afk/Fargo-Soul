@@ -49,7 +49,10 @@ public class PearlWoodSoul extends SoulItem {
                 LivingEntity target = targets.get(random.nextInt(targets.size()));
                 Vec3 targetPos = target.getBoundingBox().getCenter();
                 Vec3 pos = targetPos.add(0, 10, 0).offsetRandom(random, 10);
-                Star star = new Star(player.damageSources().playerAttack(player), pos, pos.subtract(targetPos).normalize().scale(1.5f));
+                Star star = new Star();
+                star.setDamageSourceSupplier(owner -> owner.damageSources().playerAttack(owner));
+                star.setPos(pos);
+                star.setVelocity(pos.subtract(targetPos).normalize().scale(1.5f));
                 star.setDamage(8);
                 star.setChaseTarget(target);
                 star.join(player);

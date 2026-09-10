@@ -42,7 +42,10 @@ public class OrichalcumSoul extends SoulItem {
             for (int i = 0; i < count; i++) {
                 Vec3 from = target.getBoundingBox().getCenter().offsetRandom(random, (float) target.getBoundingBox().getSize());
                 Vec3 dir = from.offsetRandom(random, 1).subtract(from).normalize().scale(0.5 + random.nextDouble() * 0.5);
-                Petal petal = new Petal(attacker.damageSources().playerAttack(attacker), from, dir);
+                Petal petal = new Petal();
+                petal.setDamageSourceSupplier(owner -> owner.damageSources().playerAttack(owner));
+                petal.setPos(from);
+                petal.setVelocity(dir);
                 petal.setDamage(container.getOriginalDamage() * 0.5f);
                 petal.setChaseTarget(target);
                 petal.join(attacker);

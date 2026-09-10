@@ -5,8 +5,6 @@ import first.fargo_soul.register.FargoSoulItemRegister;
 import first.fargo_soul.register.SummonerAttachmentEntityRegister;
 import first.lyra.api.LyraHelper;
 import first.lyra.common.attachment.AttachmentEntityData;
-import first.lyra.common.entity.AttachmentEntity;
-import first.lyra.common.entity.AttachmentEntityType;
 import first.lyra.common.entity.PathNode;
 import first.lyra.common.minion.Minion;
 import net.minecraft.util.Mth;
@@ -16,7 +14,7 @@ import net.minecraft.world.phys.Vec3;
 public class ShadowOrb extends Minion {
 
     public ShadowOrb() {
-        super();
+        super(SummonerAttachmentEntityRegister.SHADOW_ORB);
         setSlotCost(0);
     }
 
@@ -70,8 +68,4 @@ public class ShadowOrb extends Minion {
         return 0;
     }
 
-    @Override
-    public AttachmentEntityType<? extends AttachmentEntity> getType() {
-        return SummonerAttachmentEntityRegister.SHADOW_ORB.get();
-    }
 }

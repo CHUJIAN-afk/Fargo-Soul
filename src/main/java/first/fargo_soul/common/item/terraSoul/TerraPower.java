@@ -59,7 +59,10 @@ public class TerraPower extends SoulItem {
                 Vec3 eye = attacker.getEyePosition();
                 for (int i = 0; i < count; i++) {
                     Vec3 dir = eye.add(target.getBoundingBox().getCenter().subtract(eye)).offsetRandom(random, 0.5f).subtract(eye).normalize();
-                    LightningOrb orb = new LightningOrb(attacker.damageSources().lightningBolt(), eye, dir);
+                    LightningOrb orb = new LightningOrb();
+                    orb.setDamageSourceSupplier(owner -> owner.damageSources().lightningBolt());
+                    orb.setPos(eye);
+                    orb.setVelocity(dir);
                     float bonus = attacker.hasEffect(FargoSoulMobEffectRegister.TerraResonance) ? 1.8f : 1.0f;
                     orb.setDamage(4 * bonus);
                     orb.join(attacker);

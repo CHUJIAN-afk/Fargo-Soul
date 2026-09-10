@@ -39,7 +39,10 @@ public class FrostSoul extends SoulItem {
             Vec3 eye = attacker.getEyePosition();
             Vec3 dir = target.getBoundingBox().getCenter().subtract(eye).normalize();
             for (int i = 0; i < 2; i++) {
-                SnowBall ball = new SnowBall(attacker.damageSources().playerAttack(attacker), eye, dir.scale(2));
+                SnowBall ball = new SnowBall();
+                ball.setDamageSourceSupplier(owner -> owner.damageSources().playerAttack(owner));
+                ball.setPos(eye);
+                ball.setVelocity(dir.scale(2));
                 ball.setDamage(5);
                 ball.join(attacker);
             }

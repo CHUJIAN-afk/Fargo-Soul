@@ -6,7 +6,7 @@ import first.fargo_soul.FargoSoul;
 import first.fargo_soul.common.item.base.SoulItem;
 import first.fargo_soul.common.item.base.ValueModifier;
 import first.fargo_soul.register.FargoSoulMobEffectRegister;
-import first.lyra.common.minion.MinionDamageSource;
+import first.lyra.common.entity.AttachmentEntityDamageSource;
 import first.lyra.register.LyraAttributeRegister;
 import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -34,7 +34,7 @@ public class TekeSoul extends SoulItem {
 
     @Override
     public void attack(@NotNull Player attacker, @NotNull LivingEntity target, @NotNull DamageContainer container, List<ValueModifier> modifiers) {
-        if (container.getSource() instanceof MinionDamageSource) {
+        if (container.getSource() instanceof AttachmentEntityDamageSource) {
             target.addEffect(new MobEffectInstance(FargoSoulMobEffectRegister.TekeMist, 240));
         }
     }

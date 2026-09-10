@@ -30,7 +30,10 @@ public class MeteorSoul extends SoulItem {
             Vec3 targetPos = target.getBoundingBox().getCenter();
             Vec3 pos = targetPos.add(0, 8, 0).offsetRandom(attacker.getRandom(), 3);
             Vec3 dir = targetPos.add(0, 0.5f, 0).subtract(pos).normalize();
-            Meteor meteor = new Meteor(attacker.damageSources().playerAttack(attacker), pos, dir);
+            Meteor meteor = new Meteor();
+            meteor.setDamageSourceSupplier(owner -> owner.damageSources().playerAttack(owner));
+            meteor.setPos(pos);
+            meteor.setVelocity(dir);
             meteor.setDamage(container.getOriginalDamage() * 1.33f);
             meteor.join(attacker);
         }

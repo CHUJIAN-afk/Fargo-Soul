@@ -61,7 +61,9 @@ public class VortexSoul extends SoulItem {
                         double adjustZ = pos.getZ() + hitFace.getStepZ();
                         player.teleportTo(adjustX, adjustY, adjustZ);
                         Playable.play(SoundEvents.ENDERMAN_TELEPORT, level, player.position(), player.getSoundSource());
-                        Vortex vortex = new Vortex(player.damageSources().playerAttack(player), new Vec3(adjustX, adjustY, adjustZ));
+                        Vortex vortex = new Vortex();
+                        vortex.setDamageSourceSupplier(owner -> owner.damageSources().playerAttack(owner));
+                        vortex.setPos(new Vec3(adjustX, adjustY, adjustZ));
                         vortex.setDamage(0.5f);
                         vortex.join(player);
                     }

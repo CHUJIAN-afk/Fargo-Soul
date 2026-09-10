@@ -1,8 +1,6 @@
 package first.fargo_soul.common.entity;
 
 import first.fargo_soul.register.SummonerAttachmentEntityRegister;
-import first.lyra.common.entity.AttachmentEntity;
-import first.lyra.common.entity.AttachmentEntityType;
 import first.lyra.common.entity.PathNode;
 import first.lyra.common.projectile.Projectile;
 import net.minecraft.world.phys.Vec3;
@@ -10,19 +8,9 @@ import net.minecraft.world.phys.Vec3;
 public class TrackingBlood extends Projectile {
 
     public TrackingBlood() {
-        super();
-    }
-
-    public TrackingBlood(Vec3 startPos, Vec3 direction) {
-        super(startPos, direction);
+        super(SummonerAttachmentEntityRegister.TRACKING_BLOOD);
         setDrag(0.75f);
-        setMaxSpeed(3.5f);
         setMaxLife(60);
-    }
-
-    @Override
-    public AttachmentEntityType<? extends AttachmentEntity> getType() {
-        return SummonerAttachmentEntityRegister.TRACKING_BLOOD.get();
     }
 
     @Override
