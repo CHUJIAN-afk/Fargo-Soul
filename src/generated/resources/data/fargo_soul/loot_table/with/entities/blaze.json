@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "chance": 0.01,
+              "condition": "minecraft:random_chance"
+            },
+            {
+              "condition": "minecraft:killed_by_player"
+            }
+          ],
+          "name": "fargo_soul:blaze_soul"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "fargo_soul:with/entities/blaze"
+}

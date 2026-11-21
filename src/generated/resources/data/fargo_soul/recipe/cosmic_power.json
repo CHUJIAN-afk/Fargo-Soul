@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "fargo_soul:blaze_soul"
+    },
+    {
+      "item": "fargo_soul:meteor_soul"
+    },
+    {
+      "item": "fargo_soul:nebula_soul"
+    },
+    {
+      "item": "fargo_soul:stardust_soul"
+    },
+    {
+      "item": "fargo_soul:vortex_soul"
+    },
+    {
+      "item": "fargo_soul:wizard_soul"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:cosmic_power"
+  }
+}

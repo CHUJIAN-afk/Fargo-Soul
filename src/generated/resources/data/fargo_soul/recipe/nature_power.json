@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "fargo_soul:crimson_soul"
+    },
+    {
+      "item": "fargo_soul:lava_soul"
+    },
+    {
+      "item": "fargo_soul:rain_cloud_soul"
+    },
+    {
+      "item": "fargo_soul:frost_soul"
+    },
+    {
+      "item": "fargo_soul:green_soul"
+    },
+    {
+      "item": "fargo_soul:mushroom_soul"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "fargo_soul:nature_power"
+  }
+}

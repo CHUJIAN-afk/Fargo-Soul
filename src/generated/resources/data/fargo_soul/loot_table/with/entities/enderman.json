@@ -1,0 +1,82 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "chance": 0.01,
+              "condition": "minecraft:random_chance"
+            },
+            {
+              "condition": "minecraft:killed_by_player"
+            }
+          ],
+          "name": "fargo_soul:stardust_soul"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "chance": 0.01,
+              "condition": "minecraft:random_chance"
+            },
+            {
+              "condition": "minecraft:killed_by_player"
+            }
+          ],
+          "name": "fargo_soul:vortex_soul"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "chance": 0.01,
+              "condition": "minecraft:random_chance"
+            },
+            {
+              "condition": "minecraft:killed_by_player"
+            }
+          ],
+          "name": "fargo_soul:gloomy_soul"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "chance": 0.01,
+              "condition": "minecraft:random_chance"
+            },
+            {
+              "condition": "minecraft:killed_by_player"
+            }
+          ],
+          "name": "fargo_soul:orichalcum_soul"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "fargo_soul:with/entities/enderman"
+}

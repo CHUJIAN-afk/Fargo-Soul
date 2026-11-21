@@ -1,0 +1,21 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "first.fargo_soul.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "refmap": "fargo_soul.refmap.json",
+  "mixins": [
+    "minecraft.MerchantOfferAccessor",
+    "minecraft.CombatRulesMixin",
+    "minecraft.LivingEntityMixin",
+    "minecraft.PlayerMixin",
+    "minecraft.ServerBlockStateBaseMixin",
+    "minecraft.VillagerMixin"
+  ],
+  "client": [
+    "minecraft.ClientBlockStateBaseMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
