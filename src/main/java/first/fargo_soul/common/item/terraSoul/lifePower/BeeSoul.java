@@ -1,6 +1,6 @@
 package first.fargo_soul.common.item.terraSoul.lifePower;
 
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import first.fargo_soul.FargoSoul;
 import first.fargo_soul.common.item.base.SoulItem;
@@ -36,11 +36,10 @@ public class BeeSoul extends SoulItem {
 
     @Override
     public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(Player player) {
-        Multimap<Holder<Attribute>, AttributeModifier> map = HashMultimap.create();
         if (hasFlowerNear(player)) {
-            map.put(LyraAttributeRegister.HealthRegen, new AttributeModifier(FargoSoul.rl("bee_regen"), 2, AttributeModifier.Operation.ADD_VALUE));
+            return ImmutableMultimap.of(LyraAttributeRegister.HealthRegen, new AttributeModifier(FargoSoul.rl("bee_regen"), 2, AttributeModifier.Operation.ADD_VALUE));
         }
-        return map;
+        return ImmutableMultimap.of();
     }
 
     private static boolean hasFlowerNear(Player player) {

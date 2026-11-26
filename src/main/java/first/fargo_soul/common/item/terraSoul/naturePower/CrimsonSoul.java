@@ -1,14 +1,12 @@
 package first.fargo_soul.common.item.terraSoul.naturePower;
 
 import first.fargo_soul.common.attachment.SoulInfoData;
-import first.fargo_soul.common.attachment.SoulItemData;
 import first.fargo_soul.common.attachment.SoulTargetCache;
 import first.fargo_soul.common.entity.TrackingBlood;
 import first.fargo_soul.common.item.base.SoulItem;
 import first.fargo_soul.common.item.base.ValueModifier;
 import first.fargo_soul.common.soulInfo.SoulInfo;
 import first.fargo_soul.common.soulInfo.SoulInfoType;
-import first.fargo_soul.register.FargoSoulItemRegister;
 import first.fargo_soul.register.FargoSoulSoulInfoRegister;
 import first.lyra.api.LyraHelper;
 import first.lyra.common.attachmentEntity.PathNode;
@@ -47,10 +45,10 @@ public class CrimsonSoul extends SoulItem {
 
     @Override
     public void attack(@NotNull Player attacker, @NotNull LivingEntity target, @NotNull DamageContainer container, List<ValueModifier> modifiers) {
-        Info info = SoulInfoData.getSoulInfo(attacker, FargoSoulSoulInfoRegister.CRIMSON_SOUL_INFO);
+        Info info = SoulInfoData.getSoulInfo(target, FargoSoulSoulInfoRegister.CRIMSON_SOUL_INFO);
         if (info == null) {
             info = new Info();
-            SoulInfoData.putSoulInfo(attacker, info);
+            SoulInfoData.putSoulInfo(target, info);
         }
         if (info.cooldown <= 0) {
             info.cooldown = 5;
@@ -83,11 +81,7 @@ public class CrimsonSoul extends SoulItem {
 
         @Override
         public void tick(LivingEntity living) {
-            if (SoulItemData.isEquipped(living, FargoSoulItemRegister.CrimsonSoulItem.get())) {
-                if (cooldown > 0) {
-                    cooldown--;
-                }
-            } else {
+            if (--cooldown <= 0) {
                 setRemove(true);
             }
         }

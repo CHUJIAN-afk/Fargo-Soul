@@ -23,8 +23,7 @@ public class GloomySoul extends SoulItem {
             if (attacker.getRandom().nextFloat() < 0.05f) {
                 target.addEffect(new MobEffectInstance(FargoSoulMobEffectRegister.DeathMark, 40));
             }
-        } else {
-            target.addEffect(new MobEffectInstance(FargoSoulMobEffectRegister.ShadowFire, 200));
         }
+        target.addEffect(new MobEffectInstance(FargoSoulMobEffectRegister.ShadowFire, 200));
     }
 }

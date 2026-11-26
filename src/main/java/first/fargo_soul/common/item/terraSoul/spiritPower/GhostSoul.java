@@ -1,6 +1,6 @@
 package first.fargo_soul.common.item.terraSoul.spiritPower;
 
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import first.fargo_soul.FargoSoul;
 import first.fargo_soul.common.attachment.SoulInfoData;
@@ -43,7 +43,6 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class GhostSoul extends SoulItem {
@@ -54,25 +53,20 @@ public class GhostSoul extends SoulItem {
 
     @Override
     public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(Player player) {
-        Multimap<Holder<Attribute>, AttributeModifier> map = HashMultimap.create();
         Info info = SoulInfoData.getSoulInfo(player, FargoSoulSoulInfoRegister.GHOST_SOUL_INFO);
         if (info != null && info.soul > 0) {
-            map.put(Attributes.MAX_HEALTH, new AttributeModifier(FargoSoul.rl("ghost_soul"), Math.min(info.soul, 100) * 0.02f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+            return ImmutableMultimap.of(Attributes.MAX_HEALTH, new AttributeModifier(FargoSoul.rl("ghost_soul"), Math.min(info.soul, 100) * 0.02f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         }
-        return map;
+        return ImmutableMultimap.of();
     }
 
     @Override
     public void tick(Player player) {
         Info info = SoulInfoData.getSoulInfo(player, FargoSoulSoulInfoRegister.GHOST_SOUL_INFO);
-        if (info == null) {
-            info = new Info();
-            SoulInfoData.putSoulInfo(player, info);
-        }
-        if (info.reviveCd > 0) {
+        if (info != null && info.reviveCd > 0) {
             info.reviveCd--;
         }
-        if (info.soul > 100 && player.tickCount % 20 == 0) {
+        if (info != null && info.soul > 100 && player.tickCount % 20 == 0) {
             float overflow = info.soul - 100;
             info.soul = 100;
             Vec3 from = player.getBoundingBox().getCenter();
@@ -108,9 +102,7 @@ public class GhostSoul extends SoulItem {
             info.soul = 0;
             info.reviveCd = 12000;
             player.setHealth(player.getMaxHealth() * 0.25f);
-            Iterator<MobEffectInstance> iterator = player.getActiveEffects().iterator();
-            while (iterator.hasNext()) {
-                MobEffectInstance effect = iterator.next();
+            for (MobEffectInstance effect : List.copyOf(player.getActiveEffects())) {
                 if (effect.getEffect().value().getCategory() == MobEffectCategory.HARMFUL) {
                     player.removeEffect(effect.getEffect());
                 }

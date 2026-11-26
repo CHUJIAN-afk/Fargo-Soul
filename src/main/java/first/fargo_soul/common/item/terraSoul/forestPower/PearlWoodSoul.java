@@ -59,7 +59,7 @@ public class PearlWoodSoul extends SoulItem {
                 Vec3 pos = targetPos.add(0, 10, 0).offsetRandom(random, 10);
                 Star star = new Star();
                 star.init(new PathNode(pos, 0, 0, 0));
-                star.setVelocity(pos.subtract(targetPos).normalize().scale(1.5f));
+                star.setVelocity(targetPos.subtract(pos).normalize().scale(1.5f));
                 star.setDamage(8);
                 star.setChaseTarget(target);
                 star.setOwner(player);

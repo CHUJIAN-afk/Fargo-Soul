@@ -42,7 +42,7 @@ public class LightningOrbRenderer extends AbstractAttachmentEntityRenderer<Light
                         .branchLength(0f)
                         .radius(0.02f, 0.02f)
                         .color(0x38ffec)
-                        .alpha(0.5f * getAlpha())
+                        .alpha(0.5f * context.color.getAlphaFloat())
                         .render(poseStack, bufferSource, random);
             }
         }
@@ -55,7 +55,7 @@ public class LightningOrbRenderer extends AbstractAttachmentEntityRenderer<Light
                 .layers(3)
                 .sides(6)
                 .color(0x38ffec)
-                .alpha(0.75f)
+                .alpha(0.75f * context.color.getAlphaFloat())
                 .innerRatio(0.5f)
                 .render(poseStack, bufferSource);
     }

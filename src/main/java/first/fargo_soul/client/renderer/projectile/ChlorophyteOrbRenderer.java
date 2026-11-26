@@ -44,7 +44,7 @@ public class ChlorophyteOrbRenderer extends AbstractAttachmentEntityRenderer<Chl
                     .layers(3)
                     .segments(10)
                     .color(0xFF3AFF7A)
-                    .alpha(0.25f)
+                    .alpha(0.25f * context.color.getAlphaFloat())
                     .innerRatio(0.4f)
                     .render(poseStack, bufferSource);
             poseStack.popPose();

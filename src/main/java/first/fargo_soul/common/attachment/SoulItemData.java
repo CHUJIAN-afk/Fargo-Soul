@@ -1,8 +1,14 @@
 package first.fargo_soul.common.attachment;
 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.ImmutableTable;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Table;
+import first.fargo_soul.FargoSoul;
 import first.fargo_soul.common.item.base.SoulItem;
 import first.fargo_soul.common.item.base.ValueModifier;
 import first.fargo_soul.register.FargoSoulAttachmentRegister;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -12,6 +18,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -41,6 +48,8 @@ public class SoulItemData implements AttachmentSyncHandler<SoulItemData>, INBTSe
     private int maxFlyTime = 0;
     private boolean renderLavaFog = true;
     private boolean renderFireOverlay = true;
+    private boolean cleanupLegacyModifiers = true;
+    private Table<Holder<Attribute>, ResourceLocation, AttributeModifier> attributeModifiers = ImmutableTable.of();
 
     public Set<SoulItem> getCache() {
         return cache;
@@ -71,7 +80,8 @@ public class SoulItemData implements AttachmentSyncHandler<SoulItemData>, INBTSe
     }
 
     public static boolean isEquipped(LivingEntity living, ItemLike itemLike) {
-        if (living instanceof Player player && player.isAlive() && itemLike.asItem() instanceof SoulItem soulItem) {
+        if (living instanceof Player player && player.isAlive() && itemLike.asItem() instanceof SoulItem soulItem
+                && player.hasData(FargoSoulAttachmentRegister.SOUL_ITEM_DATA)) {
             SoulItemData data = player.getData(FargoSoulAttachmentRegister.SOUL_ITEM_DATA);
             return data.getCache().contains(soulItem);
         }
@@ -80,7 +90,8 @@ public class SoulItemData implements AttachmentSyncHandler<SoulItemData>, INBTSe
 
     /** 判断玩家是否实际装备了指定魂石（包含被关闭的子魂石），用于防止重复装备。 */
     public static boolean hasEquipped(LivingEntity living, ItemLike itemLike) {
-        if (living instanceof Player player && player.isAlive() && itemLike.asItem() instanceof SoulItem soulItem) {
+        if (living instanceof Player player && player.isAlive() && itemLike.asItem() instanceof SoulItem soulItem
+                && player.hasData(FargoSoulAttachmentRegister.SOUL_ITEM_DATA)) {
             SoulItemData data = player.getData(FargoSoulAttachmentRegister.SOUL_ITEM_DATA);
             return data.getEquipped().contains(soulItem);
         }
@@ -88,56 +99,92 @@ public class SoulItemData implements AttachmentSyncHandler<SoulItemData>, INBTSe
     }
 
     public static void forEach(Player player, Consumer<SoulItem> consumer) {
-        SoulItemData data = player.getData(FargoSoulAttachmentRegister.SOUL_ITEM_DATA);
-        data.getCache().forEach(consumer);
+        if (player.hasData(FargoSoulAttachmentRegister.SOUL_ITEM_DATA)) {
+            player.getData(FargoSoulAttachmentRegister.SOUL_ITEM_DATA).getCache().forEach(consumer);
+        }
     }
 
     public void tick(Player player) {
+        boolean previousCanSprint = canSprint;
+        int previousMaxFlyTime = maxFlyTime;
+        boolean previousRenderLavaFog = renderLavaFog;
+        boolean previousRenderFireOverlay = renderFireOverlay;
         canSprint = false;
         maxFlyTime = 0;
         renderLavaFog = true;
         renderFireOverlay = true;
-        Collection<AttributeInstance> attributes = player.getAttributes().getSyncableAttributes();
-        for (AttributeInstance attribute : attributes) {
-            Set<AttributeModifier> modifiers = attribute.getModifiers();
-            for (AttributeModifier modifier : modifiers) {
-                if (modifier.id().getPath().contains("_volatile")) {
-                    attribute.removeModifier(modifier);
-                }
+        boolean anyFly = false;
+        for (SoulItem soulItem : cache) {
+            if (soulItem.canFly(player)) {
+                anyFly = true;
+                break;
             }
         }
-        boolean anyFly = false;
-        List<ValueModifier> flyModifiers = new ArrayList<>();
+        List<ValueModifier> flyModifiers = anyFly ? new ArrayList<>() : List.of();
+        Table<Holder<Attribute>, ResourceLocation, AttributeModifier> desiredModifiers = ImmutableTable.of();
         for (SoulItem soulItem : cache) {
             if (!canSprint && soulItem.canSprint(player)) {
                 canSprint = true;
             }
-            if (soulItem.canFly(player)) {
-                anyFly = true;
+            if (anyFly) {
+                soulItem.getMaxFlyTime(player, flyModifiers);
             }
-            soulItem.getMaxFlyTime(player, flyModifiers);
             if (renderLavaFog && !soulItem.renderLavaFog(player)) {
                 renderLavaFog = false;
             }
             if (renderFireOverlay && !soulItem.renderFireOverlay(player)) {
                 renderFireOverlay = false;
             }
-            soulItem.getAttributeModifiers(player).forEach((soulAttribute, attributeModifier) -> {
-                AttributeInstance attribute = player.getAttribute(soulAttribute);
-                if (attribute != null) {
-                    AttributeModifier volatileModifier = new AttributeModifier(attributeModifier.id().withSuffix("_volatile"), attributeModifier.amount(), attributeModifier.operation());
-                    if (attribute.hasModifier(volatileModifier.id())) {
-                        attribute.removeModifier(volatileModifier.id());
-                    }
-                    attribute.addPermanentModifier(volatileModifier);
+            Multimap<Holder<Attribute>, AttributeModifier> itemModifiers = soulItem.getAttributeModifiers(player);
+            if (!itemModifiers.isEmpty()) {
+                if (desiredModifiers.isEmpty()) {
+                    desiredModifiers = HashBasedTable.create();
                 }
-            });
+                for (Map.Entry<Holder<Attribute>, AttributeModifier> entry : itemModifiers.entries()) {
+                    desiredModifiers.put(entry.getKey(), entry.getValue().id().withSuffix("_volatile"), entry.getValue());
+                }
+            }
         }
+        if (cleanupLegacyModifiers) {
+            for (AttributeInstance attribute : player.getAttributes().getSyncableAttributes()) {
+                for (AttributeModifier modifier : attribute.getModifiers()) {
+                    ResourceLocation id = modifier.id();
+                    if (id.getNamespace().equals(FargoSoul.MODID) && id.getPath().endsWith("_volatile")) {
+                        attribute.removeModifier(modifier);
+                    }
+                }
+            }
+            cleanupLegacyModifiers = false;
+        }
+        for (Table.Cell<Holder<Attribute>, ResourceLocation, AttributeModifier> entry : attributeModifiers.cellSet()) {
+            if (!desiredModifiers.contains(entry.getRowKey(), entry.getColumnKey())) {
+                AttributeInstance attribute = player.getAttribute(entry.getRowKey());
+                if (attribute != null) {
+                    attribute.removeModifier(entry.getColumnKey());
+                }
+            }
+        }
+        for (Table.Cell<Holder<Attribute>, ResourceLocation, AttributeModifier> entry : desiredModifiers.cellSet()) {
+            AttributeInstance attribute = player.getAttribute(entry.getRowKey());
+            if (attribute != null) {
+                ResourceLocation id = entry.getColumnKey();
+                AttributeModifier modifier = entry.getValue();
+                AttributeModifier current = attribute.getModifier(id);
+                if (current == null || current.amount() != modifier.amount() || current.operation() != modifier.operation()) {
+                    attribute.removeModifier(id);
+                    attribute.addTransientModifier(new AttributeModifier(id, modifier.amount(), modifier.operation()));
+                }
+            }
+        }
+        attributeModifiers = desiredModifiers;
         if (anyFly) {
             player.fallDistance = 0;
             maxFlyTime = (int) ValueModifier.getModifierAfter(100f, flyModifiers);
         }
-        player.syncData(FargoSoulAttachmentRegister.SOUL_ITEM_DATA);
+        if (syncCache || canSprint != previousCanSprint || maxFlyTime != previousMaxFlyTime
+                || renderLavaFog != previousRenderLavaFog || renderFireOverlay != previousRenderFireOverlay) {
+            player.syncData(FargoSoulAttachmentRegister.SOUL_ITEM_DATA);
+        }
         syncCache = false;
     }
 

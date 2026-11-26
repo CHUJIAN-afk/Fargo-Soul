@@ -52,15 +52,16 @@ public class TerraPower extends SoulItem {
     @Override
     public void attack(@NotNull Player attacker, @NotNull LivingEntity target, @NotNull DamageContainer container, List<ValueModifier> modifiers) {
         Info soulInfo = SoulInfoData.getSoulInfo(attacker, FargoSoulSoulInfoRegister.TERRA_POWER_INFO);
-        if (soulInfo == null) {
-            soulInfo = new Info();
-            SoulInfoData.putSoulInfo(attacker, soulInfo);
-        }
-        if (soulInfo.cooldown <= 0) {
+        if (soulInfo == null || soulInfo.cooldown <= 0) {
             int orbCount = LyraHelper.get(attacker).getEntityData().get(SummonerAttachmentEntityRegister.LIGHTNING_ORB.get()).size();
-            float chance = 0.2f + Math.min(orbCount, 5) * 0.08f;
+            boolean resonance = attacker.hasEffect(FargoSoulMobEffectRegister.TerraResonance);
+            float chance = 0.2f + Math.min(orbCount, 5) * 0.08f + (resonance ? 0.2f : 0);
             RandomSource random = attacker.getRandom();
             if (random.nextFloat() < chance) {
+                if (soulInfo == null) {
+                    soulInfo = new Info();
+                    SoulInfoData.putSoulInfo(attacker, soulInfo);
+                }
                 soulInfo.cooldown = (int) (20 * (1 - Math.min(orbCount, 5) * 0.12f));
                 int count = 3 + random.nextInt(4);
                 Vec3 eye = attacker.getEyePosition();
@@ -69,7 +70,7 @@ public class TerraPower extends SoulItem {
                     LightningOrb orb = new LightningOrb();
                     orb.init(new PathNode(eye, dir));
                     orb.setVelocity(dir);
-                    float bonus = attacker.hasEffect(FargoSoulMobEffectRegister.TerraResonance) ? 1.8f : 1.0f;
+                    float bonus = resonance ? 1.8f : 1.0f;
                     orb.setDamage(4 * bonus);
                     orb.setOwner(attacker);
                     LyraHelper.get(attacker).add(orb);
@@ -99,8 +100,8 @@ public class TerraPower extends SoulItem {
         @Override
         public void tick(LivingEntity living) {
             if (SoulItemData.isEquipped(living, FargoSoulItemRegister.TerraPowerItem.get())) {
-                if (cooldown > 0) {
-                    cooldown--;
+                if (--cooldown <= 0) {
+                    setRemove(true);
                 }
             } else {
                 setRemove(true);

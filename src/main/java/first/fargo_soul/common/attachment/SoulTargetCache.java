@@ -2,40 +2,36 @@ package first.fargo_soul.common.attachment;
 
 import first.fargo_soul.register.FargoSoulAttachmentRegister;
 import first.lyra.common.attachment.ImmunityData;
-import it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap;
+import first.lyra.register.LyraAttachmentRegister;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+import net.minecraft.core.SectionPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Targeting;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.IntToDoubleFunction;
 import java.util.function.Predicate;
 
-/**
- * 目标缓存，存储玩家周围的实体列表。
- * <p>
- * 每tick更新一次，所有仆从共享同一份缓存，避免重复查询。
- * 存储为玩家附件，仅服务端使用。
- * </p>
- */
+/** 服务端目标缓存，按需每 tick 更新一次并由仆从共享。 */
 public class SoulTargetCache {
 
     public static SoulTargetCache get(Player player) {
-        return player.getData(FargoSoulAttachmentRegister.SOUL_TARGET_CACHE);
+        SoulTargetCache cache = player.getData(FargoSoulAttachmentRegister.SOUL_TARGET_CACHE);
+        if (cache.level != player.level() || cache.lastTick != player.tickCount) {
+            cache.tick(player);
+        }
+        return cache;
     }
 
-    private final Int2FloatOpenHashMap distanceCache = new Int2FloatOpenHashMap();
     private final Long2ObjectOpenHashMap<List<LivingEntity>> spatialGroups = new Long2ObjectOpenHashMap<>();
-
-    private static long cellKey(Vec3 pos) {
-        return ((long) (Mth.floor(pos.x) >> 4) & 0x3FFFFFFL) << 38 | ((long) (Mth.floor(pos.y) >> 4) & 0x3FFFFFFL) << 12 | ((long) (Mth.floor(pos.z) >> 4) & 0x3FFFFFFL);
-    }
+    private Level level;
+    private int lastTick;
 
     /**
      * 以指定位置和半径查询实体（走空间分组，不做全量遍历），支持过滤条件。
@@ -60,12 +56,12 @@ public class SoulTargetCache {
         for (int cellX = minCellX; cellX <= maxCellX; cellX++) {
             for (int cellY = minCellY; cellY <= maxCellY; cellY++) {
                 for (int cellZ = minCellZ; cellZ <= maxCellZ; cellZ++) {
-                    List<LivingEntity> cell = spatialGroups.get(((long) cellX & 0x3FFFFFFL) << 38 | ((long) cellY & 0x3FFFFFFL) << 12 | ((long) cellZ & 0x3FFFFFFL));
+                    List<LivingEntity> cell = spatialGroups.get(SectionPos.asLong(cellX, cellY, cellZ));
                     if (cell == null) {
                         continue;
                     }
                     for (LivingEntity entity : cell) {
-                        if (entity.getBoundingBox().getCenter().distanceToSqr(pos) <= radiusSq) {
+                        if (entity.isAlive() && entity.getBoundingBox().getCenter().distanceToSqr(pos) <= radiusSq) {
                             if (filter == null || filter.test(entity)) {
                                 result.add(entity);
                             }
@@ -78,8 +74,7 @@ public class SoulTargetCache {
     }
 
     public float getDistance(LivingEntity living1, LivingEntity living2) {
-        int key = living1.getUUID().hashCode() + living2.getUUID().hashCode();
-        return distanceCache.computeIfAbsent(key, (IntToDoubleFunction) (k -> (float) living1.getBoundingBox().getCenter().distanceTo(living2.getBoundingBox().getCenter())));
+        return (float) living1.getBoundingBox().getCenter().distanceTo(living2.getBoundingBox().getCenter());
     }
 
     /**
@@ -89,11 +84,17 @@ public class SoulTargetCache {
      */
     public void tick(Player player) {
         spatialGroups.clear();
-        distanceCache.clear();
+        level = player.level();
+        lastTick = player.tickCount;
+        Vec3 center = player.getBoundingBox().getCenter();
         List<LivingEntity> livingEntityList = player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(128));
         for (LivingEntity livingEntity : livingEntityList) {
-            if (getDistance(player, livingEntity) < 128 && isTarget(player, livingEntity)) {
-                spatialGroups.computeIfAbsent(cellKey(livingEntity.position()), k -> new ArrayList<>()).add(livingEntity);
+            if (isTarget(player, livingEntity)) {
+                Vec3 pos = livingEntity.getBoundingBox().getCenter();
+                if (center.distanceToSqr(pos) < 128 * 128) {
+                    long key = SectionPos.asLong(Mth.floor(pos.x) >> 4, Mth.floor(pos.y) >> 4, Mth.floor(pos.z) >> 4);
+                    spatialGroups.computeIfAbsent(key, k -> new ArrayList<>()).add(livingEntity);
+                }
             }
         }
     }
@@ -106,10 +107,10 @@ public class SoulTargetCache {
             if (target instanceof Targeting targeting && targeting.getTarget() == player) {
                 return true;
             }
-            if (ImmunityData.get(target).isActive(player.getUUID())) {
+            if (target.hasData(LyraAttachmentRegister.ImmunityData) && ImmunityData.get(target).isActive(player.getUUID())) {
                 return true;
             }
-            if (ImmunityData.get(player).isActive(target.getUUID())) {
+            if (player.hasData(LyraAttachmentRegister.ImmunityData) && ImmunityData.get(player).isActive(target.getUUID())) {
                 return true;
             }
         }

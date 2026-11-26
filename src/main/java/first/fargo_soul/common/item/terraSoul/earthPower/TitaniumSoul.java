@@ -1,6 +1,6 @@
 package first.fargo_soul.common.item.terraSoul.earthPower;
 
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import first.fargo_soul.FargoSoul;
 import first.fargo_soul.common.attachment.SoulInfoData;
@@ -35,23 +35,19 @@ public class TitaniumSoul extends SoulItem {
 
     @Override
     public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(Player player) {
-        Multimap<Holder<Attribute>, AttributeModifier> map = HashMultimap.create();
         Info info = SoulInfoData.getSoulInfo(player, FargoSoulSoulInfoRegister.TITANIUM_SOUL_INFO);
         if (info != null && info.guard > 300) {
-            map.put(Attributes.MAX_HEALTH, new AttributeModifier(FargoSoul.rl("titanium_health"), 0.25, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-            map.put(Attributes.ARMOR, new AttributeModifier(FargoSoul.rl("titanium_armor"), 0.5, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+            return ImmutableMultimap.of(
+                    Attributes.MAX_HEALTH, new AttributeModifier(FargoSoul.rl("titanium_health"), 0.25, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
+                    Attributes.ARMOR, new AttributeModifier(FargoSoul.rl("titanium_armor"), 0.5, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         }
-        return map;
+        return ImmutableMultimap.of();
     }
 
     @Override
     public void tick(Player player) {
         Info info = SoulInfoData.getSoulInfo(player, FargoSoulSoulInfoRegister.TITANIUM_SOUL_INFO);
-        if (info == null) {
-            info = new Info();
-            SoulInfoData.putSoulInfo(player, info);
-        }
-        if (info.guard > 0) {
+        if (info != null && info.guard > 0) {
             info.guard = Math.max(0, info.guard - 0.25f);
         }
     }

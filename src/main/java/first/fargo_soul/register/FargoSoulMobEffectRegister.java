@@ -23,7 +23,7 @@ public class FargoSoulMobEffectRegister {
             REGISTER.simple("death_mark", Registries.MOB_EFFECT, () -> new SimpleMobEffectBuilder(MobEffectCategory.HARMFUL, 0xB51F1F)
                     .addAttributeModifier(Attributes.MAX_HEALTH, FargoSoul.rl("death_mark"), -0.2f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
                     .addAttributeModifier(Attributes.ARMOR, FargoSoul.rl("death_mark"), -0.4f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
-                    .addAttributeModifier(Attributes.MOVEMENT_SPEED, FargoSoul.rl("death_mark"), 0.1f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+                    .addAttributeModifier(Attributes.MOVEMENT_SPEED, FargoSoul.rl("death_mark"), -0.1f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
                     .build()
             );
 

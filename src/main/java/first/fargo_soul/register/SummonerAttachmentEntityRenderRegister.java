@@ -1,13 +1,16 @@
 package first.fargo_soul.register;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import first.fargo_soul.FargoSoul;
 import first.fargo_soul.client.renderer.projectile.*;
+import first.lyra.client.render.AbstractAttachmentEntityRenderer;
 import first.lyra.client.render.AttachmentEntityRenderDispatcher;
 import first.lyra.client.render.IAttachmentEntityRenderer;
 import first.lyra.client.render.RenderUtil;
 import first.lyra.client.render.rendererHelper.SphereRendererHelper;
 import first.lyra.common.attachmentEntity.AttachmentEntity;
 import first.lyra.common.attachmentEntity.AttachmentEntityType;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.neoforged.api.distmarker.Dist;
@@ -58,13 +61,18 @@ public class SummonerAttachmentEntityRenderRegister {
     }
 
     private static <T extends AttachmentEntity> IAttachmentEntityRenderer<T> sphereRenderer(float radius, int color) {
-        return (entity, poseStack, bufferSource, partialTick, packedLight, renderNode) -> SphereRendererHelper.builder()
-                .radius(radius)
-                .layers(2)
-                .sides(6)
-                .color(color)
-                .alpha(0.85f)
-                .innerRatio(0.5f)
-                .render(poseStack, bufferSource);
+        return new AbstractAttachmentEntityRenderer<>() {
+            @Override
+            protected void render(PoseStack poseStack, MultiBufferSource bufferSource) {
+                SphereRendererHelper.builder()
+                        .radius(radius)
+                        .layers(2)
+                        .sides(6)
+                        .color(color)
+                        .alpha(0.85f * context.color.getAlphaFloat())
+                        .innerRatio(0.5f)
+                        .render(poseStack, bufferSource);
+            }
+        };
     }
 }

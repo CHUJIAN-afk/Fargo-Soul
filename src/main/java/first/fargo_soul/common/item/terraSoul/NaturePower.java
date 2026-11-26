@@ -33,9 +33,10 @@ public class NaturePower extends SoulItem {
 
     @Override
     public void tick(Player player) {
-        List<ChlorophyteOrb> orbs = LyraHelper.get(player).getEntityData().get(SummonerAttachmentEntityRegister.CHLOROPHYTE_ORB.get()).stream().filter(orb -> orb.getKind() == ChlorophyteOrb.NATURE).toList();
-        if (orbs.size() < 5) {
+        List<ChlorophyteOrb> orbs = LyraHelper.get(player).getEntityData().get(SummonerAttachmentEntityRegister.CHLOROPHYTE_ORB.get());
+        if (orbs.stream().filter(orb -> orb.getKind() == ChlorophyteOrb.NATURE).limit(5).count() < 5) {
             ChlorophyteOrb orb = new ChlorophyteOrb();
+            orb.setOwner(player);
             orb.init(new PathNode(player.position(), player.getLookAngle()));
             orb.setKind(ChlorophyteOrb.NATURE);
             LyraHelper.get(player).add(orb);

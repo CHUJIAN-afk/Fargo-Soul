@@ -1,6 +1,6 @@
 package first.fargo_soul.common.item.terraSoul;
 
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import first.fargo_soul.FargoSoul;
 import first.fargo_soul.common.attachment.SoulInfoData;
@@ -62,12 +62,12 @@ public class LifePower extends SoulItem {
 
     @Override
     public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(Player player) {
-        Multimap<Holder<Attribute>, AttributeModifier> map = HashMultimap.create();
         if (player.hasEffect(FargoSoulMobEffectRegister.Ambrosia)) {
-            map.put(LyraAttributeRegister.SummonDamage, new AttributeModifier(FargoSoul.rl("life_ambrosia"), 2.0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-            map.put(LyraAttributeRegister.HealthRegen, new AttributeModifier(FargoSoul.rl("life_regen"), 5, AttributeModifier.Operation.ADD_VALUE));
+            return ImmutableMultimap.of(
+                    LyraAttributeRegister.SummonDamage, new AttributeModifier(FargoSoul.rl("life_ambrosia"), 2.0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
+                    LyraAttributeRegister.HealthRegen, new AttributeModifier(FargoSoul.rl("life_regen"), 5, AttributeModifier.Operation.ADD_VALUE));
         }
-        return map;
+        return ImmutableMultimap.of();
     }
 
     @Override
@@ -100,7 +100,7 @@ public class LifePower extends SoulItem {
 
         @Override
         public void tick(LivingEntity living) {
-            if (--cooldown < 0) {
+            if (--cooldown <= 0) {
                 setRemove(true);
             }
         }

@@ -1,6 +1,6 @@
 package first.fargo_soul.common.item.terraSoul.willPower;
 
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import first.fargo_soul.FargoSoul;
 import first.fargo_soul.common.item.base.SoulItem;
@@ -26,12 +26,12 @@ public class ValhallaKnightSoul extends SoulItem {
 
     @Override
     public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(Player player) {
-        Multimap<Holder<Attribute>, AttributeModifier> map = HashMultimap.create();
         if (player.getVehicle() != null) {
-            map.put(Attributes.ARMOR, new AttributeModifier(FargoSoul.rl("valhalla_armor"), 0.5, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-            map.put(LyraAttributeRegister.HealthRegen, new AttributeModifier(FargoSoul.rl("valhalla_regen"), 2, AttributeModifier.Operation.ADD_VALUE));
+            return ImmutableMultimap.of(
+                    Attributes.ARMOR, new AttributeModifier(FargoSoul.rl("valhalla_armor"), 0.5, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
+                    LyraAttributeRegister.HealthRegen, new AttributeModifier(FargoSoul.rl("valhalla_regen"), 2, AttributeModifier.Operation.ADD_VALUE));
         }
-        return map;
+        return ImmutableMultimap.of();
     }
 
     @Override

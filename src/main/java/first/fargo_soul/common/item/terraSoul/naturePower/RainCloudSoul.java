@@ -36,11 +36,11 @@ public class RainCloudSoul extends SoulItem {
             modifiers.add(new ValueModifier(-1, ValueOperation.ADD_MULTIPLIED_TOTAL));
         } else if (attacker instanceof LivingEntity living) {
             Info info = SoulInfoData.getSoulInfo(target, FargoSoulSoulInfoRegister.RAIN_CLOUD_SOUL_INFO);
-            if (info == null) {
-                info = new Info();
-                SoulInfoData.putSoulInfo(target, info);
-            }
-            if (info.cooldown <= 0 && target.getRandom().nextFloat() < 0.3f) {
+            if ((info == null || info.cooldown <= 0) && target.getRandom().nextFloat() < 0.3f) {
+                if (info == null) {
+                    info = new Info();
+                    SoulInfoData.putSoulInfo(target, info);
+                }
                 info.cooldown = 40;
                 Vec3 pos = living.getBoundingBox().getCenter();
                 LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(target.level());
@@ -65,8 +65,8 @@ public class RainCloudSoul extends SoulItem {
         @Override
         public void tick(LivingEntity living) {
             if (SoulItemData.isEquipped(living, FargoSoulItemRegister.RainCloudSoulItem.get())) {
-                if (cooldown > 0) {
-                    cooldown--;
+                if (--cooldown <= 0) {
+                    setRemove(true);
                 }
             } else {
                 setRemove(true);

@@ -37,21 +37,22 @@ public class CopperSoul extends SoulItem {
     @Override
     public void attack(@NotNull Player attacker, @NotNull LivingEntity target, @NotNull DamageContainer container, List<ValueModifier> modifiers) {
         Info soulInfo = SoulInfoData.getSoulInfo(attacker, FargoSoulSoulInfoRegister.COPPER_SOUL_INFO);
-        if (soulInfo == null) {
-            soulInfo = new Info();
-            SoulInfoData.putSoulInfo(attacker, soulInfo);
-        }
-        if (soulInfo.cooldown <= 0) {
-            float chance = target.isInWaterOrRain() ? 0.3f : 0.1f;
-            Vec3 eye = attacker.getEyePosition();
+        if (soulInfo == null || soulInfo.cooldown <= 0) {
+            boolean resonance = attacker.hasEffect(FargoSoulMobEffectRegister.TerraResonance);
+            float chance = (target.isInWaterOrRain() ? 0.3f : 0.1f) + (resonance ? 0.2f : 0);
             RandomSource random = attacker.getRandom();
             if (random.nextFloat() < chance) {
+                if (soulInfo == null) {
+                    soulInfo = new Info();
+                    SoulInfoData.putSoulInfo(attacker, soulInfo);
+                }
                 soulInfo.cooldown = 100;
+                Vec3 eye = attacker.getEyePosition();
                 Vec3 dir = eye.add(target.getBoundingBox().getCenter().subtract(eye)).offsetRandom(random, 0.5f).subtract(eye).normalize();
                 LightningOrb orb = new LightningOrb();
                 orb.init(new PathNode(eye, dir));
                 orb.setVelocity(dir);
-                float bonus = attacker.hasEffect(FargoSoulMobEffectRegister.TerraResonance) ? 1.8f : 1.0f;
+                float bonus = resonance ? 1.8f : 1.0f;
                 orb.setDamage(4 * bonus);
                 orb.setOwner(attacker);
                 LyraHelper.get(attacker).add(orb);
@@ -71,8 +72,8 @@ public class CopperSoul extends SoulItem {
         @Override
         public void tick(LivingEntity living) {
             if (SoulItemData.isEquipped(living, FargoSoulItemRegister.CopperSoulItem.get())) {
-                if (cooldown > 0) {
-                    cooldown--;
+                if (--cooldown <= 0) {
+                    setRemove(true);
                 }
             } else {
                 setRemove(true);

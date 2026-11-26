@@ -41,7 +41,7 @@ public class SilverSoul extends SoulItem {
             soulInfo.cooldown = 60;
             soulInfo.invincible = 8;
             attacker.hurt(player.damageSources().playerAttack(player), blockedDamage * 2.0f);
-            player.addEffect(new MobEffectInstance(FargoSoulMobEffectRegister.AmazingMoment, 30));
+            player.addEffect(new MobEffectInstance(FargoSoulMobEffectRegister.AmazingMoment, 20));
         }
     }
 

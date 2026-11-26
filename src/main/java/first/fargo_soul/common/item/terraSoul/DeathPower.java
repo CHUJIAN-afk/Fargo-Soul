@@ -28,6 +28,11 @@ public class DeathPower extends SoulItem {
     }
 
     @Override
+    public boolean canSprint(Player player) {
+        return true;
+    }
+
+    @Override
     public void sprintClient(Player player, List<ValueModifier> modifiers) {
         modifiers.add(new ValueModifier(0.5f, ValueOperation.ADD_MULTIPLIED_BASE));
     }
@@ -46,7 +51,7 @@ public class DeathPower extends SoulItem {
             modifiers.add(new ValueModifier(2, ValueOperation.ADD_MULTIPLIED_BASE));
         }
         if (target.getHealth() < target.getMaxHealth() * 0.12f) {
-            modifiers.add(new ValueModifier(target.getMaxHealth() * 0.25f, ValueOperation.ADD_VALUE));
+            modifiers.add(new ValueModifier((target.getMaxHealth() - target.getHealth()) * 0.25f, ValueOperation.ADD_VALUE));
         }
     }
 

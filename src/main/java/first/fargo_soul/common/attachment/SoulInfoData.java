@@ -30,7 +30,8 @@ public record SoulInfoData(Map<SoulInfoType<?>, SoulInfo> data) implements Attac
     @SuppressWarnings("unchecked")
     @Nullable
     public static <T extends SoulInfo> T getSoulInfo(Entity entity, Supplier<SoulInfoType<T>> type) {
-        return (T) entity.getData(FargoSoulAttachmentRegister.SOUL_INFO_DATA).data().get(type.get());
+        return entity.hasData(FargoSoulAttachmentRegister.SOUL_INFO_DATA)
+                ? (T) entity.getData(FargoSoulAttachmentRegister.SOUL_INFO_DATA).data().get(type.get()) : null;
     }
 
     public static void putSoulInfo(Entity entity, SoulInfo soulInfo) {
@@ -38,12 +39,17 @@ public record SoulInfoData(Map<SoulInfoType<?>, SoulInfo> data) implements Attac
     }
 
     public static <T extends SoulInfo> void removeSoulInfo(Entity entity, Supplier<SoulInfoType<T>> type) {
-        entity.getData(FargoSoulAttachmentRegister.SOUL_INFO_DATA).data().remove(type.get());
+        if (entity.hasData(FargoSoulAttachmentRegister.SOUL_INFO_DATA)
+                && entity.getData(FargoSoulAttachmentRegister.SOUL_INFO_DATA).data().remove(type.get()) != null
+                && !entity.level().isClientSide()) {
+            entity.syncData(FargoSoulAttachmentRegister.SOUL_INFO_DATA);
+        }
     }
 
     @SubscribeEvent
     public static void tick(EntityTickEvent.Post event) {
-        if (event.getEntity() instanceof LivingEntity living) {
+        if (event.getEntity() instanceof LivingEntity living && living.hasData(FargoSoulAttachmentRegister.SOUL_INFO_DATA)
+                && !living.getData(FargoSoulAttachmentRegister.SOUL_INFO_DATA).data().isEmpty()) {
             Map<SoulInfoType<?>, SoulInfo> data = living.getData(FargoSoulAttachmentRegister.SOUL_INFO_DATA).data();
             if (!living.level().isClientSide()){
                 data.values().removeIf(soulInfo -> {
@@ -106,18 +112,7 @@ public record SoulInfoData(Map<SoulInfoType<?>, SoulInfo> data) implements Attac
 
     @Override
     public void write(@NotNull RegistryFriendlyByteBuf registryFriendlyByteBuf, @NotNull SoulInfoData soulInfoData, boolean b) {
-        CompoundTag tag = new CompoundTag();
-        for (Map.Entry<SoulInfoType<?>, SoulInfo> entry : soulInfoData.data().entrySet()) {
-            if (entry.getKey().isClientSide()) {
-                continue;
-            }
-            ResourceLocation key = FargoSoulRegisters.SOUL_INFO_TYPE.getKey(entry.getKey());
-            if (key == null) {
-                continue;
-            }
-            tag.put(key.toString(), entry.getValue().serializeNBT(registryFriendlyByteBuf.registryAccess()));
-        }
-        registryFriendlyByteBuf.writeNbt(tag);
+        registryFriendlyByteBuf.writeNbt(soulInfoData.serializeNBT(registryFriendlyByteBuf.registryAccess()));
     }
 
     @Override

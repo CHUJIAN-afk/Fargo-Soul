@@ -15,7 +15,7 @@ public class BloodDropRenderer extends AbstractAttachmentEntityRenderer<BloodDro
                 .layers(4)
                 .sides(6)
                 .color(0xFFCC2020)
-                .alpha(0.85f * getAlpha())
+                .alpha(0.85f * context.color.getAlphaFloat())
                 .innerRatio(0.5f)
                 .render(poseStack, bufferSource);
     }

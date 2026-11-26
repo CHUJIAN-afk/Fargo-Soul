@@ -41,9 +41,10 @@ public class GreenSoul extends SoulItem {
 
     @Override
     public void tick(Player player) {
-        List<ChlorophyteOrb> orbs = LyraHelper.get(player).getEntityData().get(SummonerAttachmentEntityRegister.CHLOROPHYTE_ORB.get()).stream().filter(orb -> orb.getKind() == ChlorophyteOrb.GREEN).toList();
-        if (orbs.isEmpty()) {
+        List<ChlorophyteOrb> orbs = LyraHelper.get(player).getEntityData().get(SummonerAttachmentEntityRegister.CHLOROPHYTE_ORB.get());
+        if (orbs.stream().noneMatch(orb -> orb.getKind() == ChlorophyteOrb.GREEN)) {
             ChlorophyteOrb orb = new ChlorophyteOrb();
+            orb.setOwner(player);
             orb.init(new PathNode(player.position(), player.getLookAngle()));
             orb.setKind(ChlorophyteOrb.GREEN);
             LyraHelper.get(player).add(orb);

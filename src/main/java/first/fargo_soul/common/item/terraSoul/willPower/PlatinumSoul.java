@@ -23,10 +23,10 @@ public class PlatinumSoul extends SoulItem {
     @Override
     public void kill(Player player, LivingEntity target, DamageSource source) {
         if (player.getRandom().nextFloat() < 0.2f) {
-            Info info = SoulInfoData.getSoulInfo(player, FargoSoulSoulInfoRegister.PLATINUM_SOUL_INFO);
+            Info info = SoulInfoData.getSoulInfo(target, FargoSoulSoulInfoRegister.PLATINUM_SOUL_INFO);
             if (info == null) {
                 info = new Info();
-                SoulInfoData.putSoulInfo(player, info);
+                SoulInfoData.putSoulInfo(target, info);
             }
             info.dropScale = 5;
         }
@@ -34,7 +34,7 @@ public class PlatinumSoul extends SoulItem {
 
     @Override
     public float dropFromLootTableScale(Player attacker, LivingEntity target, float scale) {
-        Info info = SoulInfoData.getSoulInfo(attacker, FargoSoulSoulInfoRegister.PLATINUM_SOUL_INFO);
+        Info info = SoulInfoData.getSoulInfo(target, FargoSoulSoulInfoRegister.PLATINUM_SOUL_INFO);
         if (info != null && info.dropScale > 1) {
             scale *= info.dropScale;
             info.dropScale = 1;
@@ -53,7 +53,7 @@ public class PlatinumSoul extends SoulItem {
 
         @Override
         public void tick(LivingEntity living) {
-            if (!SoulItemData.isEquipped(living, FargoSoulItemRegister.PlatinumSoulItem.get())) {
+            if (dropScale <= 1 || !SoulItemData.isEquipped(living, FargoSoulItemRegister.PlatinumSoulItem.get())) {
                 setRemove(true);
             }
         }

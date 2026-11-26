@@ -106,8 +106,17 @@ public class ChlorophyteOrb extends Minion implements IEntityCollision<Chlorophy
     }
 
     private PathNode getOrbitNode(float partialTick) {
-        int total = Math.max(1, kindTotal());
-        int order = kindOrder();
+        int total = 0;
+        int order = 0;
+        for (ChlorophyteOrb orb : LyraHelper.get(owner).getEntityData().get(SummonerAttachmentEntityRegister.CHLOROPHYTE_ORB.get())) {
+            if (orb.kind == kind) {
+                if (orb == this) {
+                    order = total;
+                }
+                total++;
+            }
+        }
+        total = Math.max(1, total);
         double angle = (owner.tickCount + partialTick) * 0.05 + order * Mth.TWO_PI / total;
         double px = Mth.lerp(partialTick, owner.xo, owner.getX());
         double py = Mth.lerp(partialTick, owner.yo, owner.getY());
@@ -161,20 +170,6 @@ public class ChlorophyteOrb extends Minion implements IEntityCollision<Chlorophy
                     .speed(0.5)
                     .emit();
         }
-    }
-
-    private int kindOrder() {
-        List<ChlorophyteOrb> list = kindList();
-        int i = list.indexOf(this);
-        return Math.max(i, 0);
-    }
-
-    private int kindTotal() {
-        return kindList().size();
-    }
-
-    private List<ChlorophyteOrb> kindList() {
-        return LyraHelper.get(owner).getEntityData().get(SummonerAttachmentEntityRegister.CHLOROPHYTE_ORB.get()).stream().filter(orb -> orb.kind == this.kind).toList();
     }
 
     public int getTargetId() {

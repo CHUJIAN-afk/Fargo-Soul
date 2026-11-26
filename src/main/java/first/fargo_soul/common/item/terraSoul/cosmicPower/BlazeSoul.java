@@ -62,7 +62,7 @@ public class BlazeSoul extends SoulItem {
                 float damageAmount = player.getMaxHealth() * 0.12f;
                 Info soulInfo = SoulInfoData.getSoulInfo(player, FargoSoulSoulInfoRegister.BLAZE_SOUL_INFO);
                 if (soulInfo != null && soulInfo.blazePower > 600) {
-                    damageAmount *= 1.2f;
+                    damageAmount *= 2.2f;
                 }
                 living.igniteForTicks(200);
                 ImmunityData immunityData = ImmunityData.get(living);
@@ -80,7 +80,8 @@ public class BlazeSoul extends SoulItem {
         Info soulInfo = SoulInfoData.getSoulInfo(living, FargoSoulSoulInfoRegister.BLAZE_SOUL_INFO);
         if (soulInfo != null) {
             if (living.tickCount % 20 == 0) {
-                if (soulInfo.blazePower >= 0) {
+                if (soulInfo.blazePower >= 1) {
+                    soulInfo.blazePower--;
                     living.heal(living.getMaxHealth() * 0.01f);
                 }
                 if (soulInfo.blazePower > 900) {
@@ -94,7 +95,7 @@ public class BlazeSoul extends SoulItem {
                     }
                 }
                 if (soulInfo.power) {
-                    soulInfo.blazePower -= 20;
+                    soulInfo.blazePower = Math.max(0, soulInfo.blazePower - 20);
                 }
             }
             if (soulInfo.blazePower > 300 && !LyraHelper.get(living).getEntityData().get(SummonerAttachmentEntityRegister.SPRINT.get()).isEmpty()) {
@@ -133,7 +134,7 @@ public class BlazeSoul extends SoulItem {
         if (!soulInfo.power) {
             soulInfo.blazePower = Math.min(soulInfo.blazePower + originalDamage * 0.15f, soulInfo.maxBlazePower);
         } else {
-            if (soulInfo.blazePower > 0) {
+            if (soulInfo.blazePower >= 50) {
                 soulInfo.blazePower -= 50;
                 modifiers.add(new ValueModifier(3.75f, ValueOperation.ADD_MULTIPLIED_BASE));
                 fireParticle(attacker.level(), target.getBoundingBox().getCenter(), target.getRandom(), 80);
@@ -147,7 +148,9 @@ public class BlazeSoul extends SoulItem {
         if (soulInfo != null) {
             float scale = -((soulInfo.blazePower / soulInfo.maxBlazePower) * (soulInfo.power ? 0.8f : 0.4f));
             modifiers.add(new ValueModifier(scale, ValueOperation.ADD_MULTIPLIED_TOTAL));
-            modifiers.add(new ValueModifier(-target.getMaxHealth() * 0.15f, ValueOperation.ADD_VALUE));
+            if (soulInfo.power) {
+                modifiers.add(new ValueModifier(-target.getMaxHealth() * 0.15f, ValueOperation.ADD_VALUE));
+            }
         }
     }
 

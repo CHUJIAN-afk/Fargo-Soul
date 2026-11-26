@@ -52,11 +52,9 @@ public class CosmicPower extends SoulItem {
     @Override
     public void attack(@NotNull Player attacker, @NotNull LivingEntity target, @NotNull DamageContainer container, List<ValueModifier> modifiers) {
         Info soulInfo = SoulInfoData.getSoulInfo(attacker, FargoSoulSoulInfoRegister.COSMIC_POWER_INFO);
-        if (soulInfo == null) {
-            soulInfo = new Info();
-            SoulInfoData.putSoulInfo(attacker, soulInfo);
+        if (soulInfo != null && soulInfo.cosmicPower > 0) {
+            modifiers.add(new ValueModifier(0.8f * (soulInfo.cosmicPower / soulInfo.maxCosmicPower), ValueOperation.ADD_MULTIPLIED_BASE));
         }
-        modifiers.add(new ValueModifier(0.8f * (soulInfo.cosmicPower / soulInfo.maxCosmicPower), ValueOperation.ADD_VALUE));
     }
 
     @Override

@@ -15,7 +15,7 @@ public class TrackingBloodRenderer extends AbstractAttachmentEntityRenderer<Trac
                 .layers(4)
                 .sides(6)
                 .color(0xFFFF2020)
-                .alpha(0.9f * getAlpha())
+                .alpha(0.9f * context.color.getAlphaFloat())
                 .innerRatio(0.5f)
                 .render(poseStack, bufferSource);
     }

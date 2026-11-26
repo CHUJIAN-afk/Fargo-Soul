@@ -46,15 +46,10 @@ public class ForestPower extends SoulItem {
 
     @Override
     public void tick(Player player) {
-        Info info = SoulInfoData.getSoulInfo(player, FargoSoulSoulInfoRegister.FOREST_POWER_INFO);
-        if (info == null) {
-            info = new Info();
-            SoulInfoData.putSoulInfo(player, info);
-        }
-        if (player.tickCount % 40 == 0) {
-            Vec3 eye = player.getEyePosition();
+        if (player.tickCount % 20 == 0) {
             List<LivingEntity> targets = SoulTargetCache.get(player).getEntitiesInRadius(player.getBoundingBox().getCenter(), 12, null);
-            if (!targets.isEmpty()) {
+            if (player.tickCount % 40 == 0 && !targets.isEmpty()) {
+                Vec3 eye = player.getEyePosition();
                 LivingEntity target = targets.get(player.getRandom().nextInt(targets.size()));
                 Vec3 dir = target.getBoundingBox().getCenter().subtract(eye).normalize();
                 SnowBall ball = new SnowBall();
@@ -64,12 +59,9 @@ public class ForestPower extends SoulItem {
                 ball.setOwner(player);
                 LyraHelper.get(player).add(ball);
             }
-        }
-        if (player.tickCount % 20 == 0) {
-            List<LivingEntity> enemies = SoulTargetCache.get(player).getEntitiesInRadius(player.getBoundingBox().getCenter(), 12, null);
-            for (LivingEntity enemy : enemies) {
-                enemy.addEffect(new MobEffectInstance(MobEffects.WITHER, 200));
-                enemy.addEffect(new MobEffectInstance(FargoSoulMobEffectRegister.Bleeding, 200));
+            for (LivingEntity enemy : targets) {
+                enemy.addEffect(new MobEffectInstance(MobEffects.WITHER, 160));
+                enemy.addEffect(new MobEffectInstance(FargoSoulMobEffectRegister.Bleeding, 160));
             }
         }
     }

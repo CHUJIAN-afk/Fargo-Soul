@@ -14,11 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-/**
- * 远古暗影魔石：攻击时概率施加黑暗；免疫失明。
- * 穿戴时维持至多 3 颗环绕玩家的魔法暗影球（不占仆从栏位），
- * 魔石被卸下后暗影球会自行移除。
- */
+/** 概率施加黑暗，免疫黑暗并维持三颗环绕暗影球。 */
 public class AncientShadowSoul extends SoulItem {
 
     public AncientShadowSoul(Properties properties) {
@@ -47,7 +43,7 @@ public class AncientShadowSoul extends SoulItem {
 
     @Override
     public boolean effectApplicable(Player player, MobEffectInstance effectInstance) {
-        if (effectInstance.is(MobEffects.BLINDNESS)) {
+        if (effectInstance.is(MobEffects.DARKNESS)) {
             return false;
         }
         return super.effectApplicable(player, effectInstance);

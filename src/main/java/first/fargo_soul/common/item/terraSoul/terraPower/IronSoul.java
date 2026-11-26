@@ -33,7 +33,7 @@ public class IronSoul extends SoulItem {
 
     @Override
     public void tick(Player player) {
-        List<Entity> items = player.level().getEntitiesOfClass(Entity.class, player.getBoundingBox().inflate(8));
+        List<Entity> items = player.level().getEntities(player, player.getBoundingBox().inflate(8), entity -> entity instanceof ItemEntity || entity instanceof ExperienceOrb);
         Inventory inventory = player.getInventory();
         Vec3 pos = player.position();
         for (Entity item : items) {
@@ -46,7 +46,7 @@ public class IronSoul extends SoulItem {
                             place = true;
                             break;
                         }
-                        if (itemStack.getCount() < itemStack.getMaxStackSize() && ItemStack.isSameItem(itemStack, itemEntity.getItem())) {
+                        if (itemStack.getCount() < itemStack.getMaxStackSize() && ItemStack.isSameItemSameComponents(itemStack, itemEntity.getItem())) {
                             place = true;
                             break;
                         }

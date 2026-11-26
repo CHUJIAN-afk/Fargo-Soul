@@ -33,15 +33,15 @@ public class PalladiumSoul extends SoulItem {
     @Override
     public void attack(@NotNull Player attacker, @NotNull LivingEntity target, @NotNull DamageContainer container, List<ValueModifier> modifiers) {
         Info info = SoulInfoData.getSoulInfo(attacker, FargoSoulSoulInfoRegister.PALLADIUM_SOUL_INFO);
-        if (info == null) {
-            info = new Info();
-            SoulInfoData.putSoulInfo(attacker, info);
-        }
-        if (info.attackCd <= 0 && attacker.getRandom().nextFloat() < 0.2f) {
+        if ((info == null || info.attackCd <= 0) && attacker.getRandom().nextFloat() < 0.2f) {
+            if (info == null) {
+                info = new Info();
+                SoulInfoData.putSoulInfo(attacker, info);
+            }
             info.attackCd = 40;
             Vec3 from = target.getBoundingBox().getCenter();
             RandomSource random = attacker.getRandom();
-            int count = 3 + random.nextInt(4);
+            int count = 3 + random.nextInt(3);
             for (int i = 0; i < count; i++) {
                 TrackingBlood blood = new TrackingBlood();
                 blood.init(new PathNode(from, 0, 0, 0));
@@ -55,20 +55,18 @@ public class PalladiumSoul extends SoulItem {
     @Override
     public void tick(Player player) {
         Info info = SoulInfoData.getSoulInfo(player, FargoSoulSoulInfoRegister.PALLADIUM_SOUL_INFO);
-        if (info == null) {
-            info = new Info();
-            SoulInfoData.putSoulInfo(player, info);
-        }
-        if (info.attackCd > 0) {
-            info.attackCd--;
-        }
-        if (info.surgeTime > 0) {
-            info.surgeTime--;
-        }
-        if (info.lifePower >= info.maxLifePower) {
-            info.lifePower = 0;
-            info.surgeTime = 200;
-            player.heal(player.getMaxHealth());
+        if (info != null) {
+            if (info.attackCd > 0) {
+                info.attackCd--;
+            }
+            if (info.surgeTime > 0) {
+                info.surgeTime--;
+            }
+            if (info.lifePower >= info.maxLifePower) {
+                info.lifePower = 0;
+                info.surgeTime = 200;
+                player.heal(player.getMaxHealth());
+            }
         }
     }
 

@@ -80,7 +80,7 @@ public class FargoSoulLanguageProvider extends LyraAbstractLanguageProvider {
         lang("item.fargo_soul.meteor_souljei.description.2", "获取：开启下界要塞(15%)", "Found in: Nether Fortress (15%)");
         lang("item.fargo_soul.meteor_soul", "流星魔石", "Meteor Enchantment");
         lang("item.fargo_soul.meteor_soul.lyra_tooltip.1", "按下潜行键大幅增加下落速度", "Press the sneak key to greatly increase falling speed");
-        lang("item.fargo_soul.meteor_soul.lyra_tooltip.2", "根据当前移动速度，造成的伤害最高提升至125%", "Deal up to +125% damage based on current movement speed");
+        lang("item.fargo_soul.meteor_soul.lyra_tooltip.2", "根据当前移动速度，造成的伤害最高提升至125%", "Damage dealt increases to up to 125% based on current movement speed");
         lang("item.fargo_soul.meteor_soul.lyra_tooltip.3", "攻击时有10%概率召唤流星攻击敌人", "10% chance to summon a meteor that strikes enemies on attack");
         lang("item.fargo_soul.meteor_soul.lyra_tooltip.4", "免疫摔落伤害", "Immune to fall damage");
         lang("item.fargo_soul.meteor_soul.lyra_tooltip.-1", "《Drop a draco on 'em》", "\"Drop a draco on 'em\"");
@@ -113,7 +113,7 @@ public class FargoSoulLanguageProvider extends LyraAbstractLanguageProvider {
         lang("item.fargo_soul.death_power.lyra_tooltip.4", "对低于最大生命值12%的敌人，造成的伤害提升，提升值至相当于25%敌人已损生命值", "Against enemies below 12% max HP, deal bonus damage equal to up to 25% of their missing health");
         lang("item.fargo_soul.death_power.lyra_tooltip.5", "免疫死亡标记", "Immune to Death Mark");
         lang("item.fargo_soul.death_power.lyra_tooltip.-1", "“黑暗，更黑暗，还是更黑暗”", "\"Darkness, darker, yet darker\"");
-        lang("item.fargo_soul.ancient_shadow_souljei.description.1", "获取：击杀守卫者(1%)", "Obtained from killing: Warden (1%)");
+        lang("item.fargo_soul.ancient_shadow_souljei.description.1", "获取：击杀监守者(1%)", "Obtained from killing: Warden (1%)");
         lang("item.fargo_soul.ancient_shadow_souljei.description.2", "获取：开启远古城市(20%)", "Found in: Ancient City (20%)");
         lang("item.fargo_soul.ancient_shadow_soul", "远古暗影魔石", "Ancient Shadow Enchantment");
         lang("item.fargo_soul.ancient_shadow_soul.lyra_tooltip.1", "攻击时，有20%概率为目标施加5秒黑暗效果", "20% chance to inflict Darkness for 5 seconds on attack");
@@ -148,7 +148,7 @@ public class FargoSoulLanguageProvider extends LyraAbstractLanguageProvider {
         lang("item.fargo_soul.necromancer_soul", "死灵魔石", "Necromancer Enchantment");
         lang("item.fargo_soul.necromancer_soul.lyra_tooltip.1", "击杀亡灵生物掠夺1点死灵能量，死灵能量最大值为100点", "Killing undead grants 1 Necrotic Energy (max 100)");
         lang("item.fargo_soul.necromancer_soul.lyra_tooltip.2", "死亡时，如果死灵能量达到最大值，则消耗全部死灵能量使你复活，并恢复20%最大生命值", "On death with full Necrotic Energy, spend it all to revive with 20% max HP");
-        lang("item.fargo_soul.necromancer_soul.lyra_tooltip.3", "击杀骷髅或凋零骷髅额外掉落其头颅，并额外掠夺2点死灵能量", "Killing skeletons or wither skeletons may drop their heads and grants 2 extra Necrotic Energy");
+        lang("item.fargo_soul.necromancer_soul.lyra_tooltip.3", "击杀骷髅或凋零骷髅额外掉落其头颅，并额外掠夺2点死灵能量", "Killing skeletons or wither skeletons drops their heads and grants 2 extra Necrotic Energy");
         lang("item.fargo_soul.necromancer_soul.lyra_tooltip.-1", "“欢迎来到骸骨领域”", "\"Welcome to the bone zone\"");
         lang("item.fargo_soul.penetrating_ninja_souljei.description.1", "获取：击杀卫道士(1%)", "Obtained from killing: Vindicator (1%)");
         lang("item.fargo_soul.penetrating_ninja_soul", "渗透忍者魔石", "Penetrating Ninja Enchantment");
@@ -208,7 +208,7 @@ public class FargoSoulLanguageProvider extends LyraAbstractLanguageProvider {
         lang("item.fargo_soul.forest_power", "森林之力", "Forest Power");
         lang("item.fargo_soul.forest_power.lyra_tooltip.1", "生成一个半径12格的光环，每秒向光环的敌人施加8秒凋零和流血效果", "Create a 12-block aura that applies 8s of Wither and Bleeding to enemies each second");
         lang("item.fargo_soul.forest_power.lyra_tooltip.2", "攻击受凋零影响的敌人时，造成的伤害提升8点", "+8 damage against Wither-affected enemies");
-        lang("item.fargo_soul.forest_power.lyra_tooltip.3", "攻击受流血影响的敌人时，使敌人喷出3~6个追踪鲜血球，每个鲜血球恢复你3点生命值。受流血影响的敌人恢复的生命值减少50%", "Attacking Bleeding enemies makes them burst into 3-6 tracking blood orbs that heal 3 HP each; their healing is reduced by 50%");
+        lang("item.fargo_soul.forest_power.lyra_tooltip.3", "攻击受流血影响的敌人时，使敌人喷出3~6个追踪鲜血球，每个鲜血球恢复你3点生命值，该效果有1秒冷却时间。受流血影响的敌人恢复的生命值减少50%", "Attacks on Bleeding enemies release 3-6 tracking blood orbs, each healing you for 3 HP, with a 1-second cooldown. Bleeding reduces healing received by 50%");
         lang("item.fargo_soul.forest_power.lyra_tooltip.4", "在你的头顶产生雪球攻击光环内的敌人，雪球命中时施加寒冷效果，使敌人移动速度减少30%，该效果有2秒冷却时间", "Spawn snowballs above you that hit aura enemies, applying Chill (-30% speed), 2s cooldown");
         lang("item.fargo_soul.forest_power.lyra_tooltip.5", "拾取物品使你在8秒内造成的暴击伤害提升40%", "Picking up an item boosts critical damage by 40% for 8 seconds");
         lang("item.fargo_soul.forest_power.lyra_tooltip.6", "交易价格减少50%", "Trading prices reduced by 50%");
@@ -230,7 +230,7 @@ public class FargoSoulLanguageProvider extends LyraAbstractLanguageProvider {
         lang("item.fargo_soul.rose_wood_soul.lyra_tooltip.-1", "“保证钩到你”", "\"It'll hook you for sure\"");
         lang("item.fargo_soul.ebony_wood_souljei.description.1", "获取：开启林地府邸(10%)", "Found in: Woodland Mansion (10%)");
         lang("item.fargo_soul.ebony_wood_soul", "乌木魔石", "Ebony Wood Enchantment");
-        lang("item.fargo_soul.ebony_wood_soul.lyra_tooltip.1", "产生一个半径6格的腐化光环，每秒从光环内的每个敌人吸取腐化值，最多为250点", "Create a 6-block corruption aura that drains corruption from each enemy per second, up to 250");
+        lang("item.fargo_soul.ebony_wood_soul.lyra_tooltip.1", "产生一个半径6格的腐化光环，每秒从光环内的每个敌人吸取10点腐化值，最多为250点，每秒流失20点腐化值", "Create a 6-block Corruption Aura, gaining 10 Corruption per enemy each second, up to 250, and losing 20 Corruption per second");
         lang("item.fargo_soul.ebony_wood_soul.lyra_tooltip.2", "根据腐化值比例，造成的伤害最多提升5，受到的伤害最多减少5%", "Based on corruption, deal up to +5 damage and reduce damage taken by up to 5%");
         lang("item.fargo_soul.ebony_wood_soul.lyra_tooltip.-1", "“潜力未完全开发”", "\"Potential not yet fully realized\"");
         lang("item.fargo_soul.shadow_wood_souljei.description.1", "获取：开启林地府邸(8%)", "Found in: Woodland Mansion (8%)");
@@ -397,13 +397,13 @@ public class FargoSoulLanguageProvider extends LyraAbstractLanguageProvider {
         lang("item.fargo_soul.ghost_souljei.description.1", "获取：击杀恶魂(1%)", "Obtained from killing: Ghast (1%)");
         lang("item.fargo_soul.ghost_souljei.description.2", "获取：开启地牢(8%)、远古城市(10%)", "Found in: Dungeon (8%), Ancient City (10%)");
         lang("item.fargo_soul.ghost_soul", "幽魂魔石", "Ghost Enchantment");
-        lang("item.fargo_soul.ghost_soul.lyra_tooltip.1", "攻击时夺取1点灵魂能量，最多夺取100点灵魂能量，每点灵魂能量提升2%最大生命值", "Attacks steal 1 Soul Energy (max 100), each granting +2% max HP");
+        lang("item.fargo_soul.ghost_soul.lyra_tooltip.1", "攻击时夺取1点灵魂能量，最多100点灵魂能量参与生命值加成，每点提升2%最大生命值", "Attacks steal 1 Soul Energy, with up to 100 points each granting +2% max HP");
         lang("item.fargo_soul.ghost_soul.lyra_tooltip.2", "灵魂能量达到最大值时，死亡会消耗所有灵魂能量使你复活，恢复你25%最大生命值并清除减益效果，该效果有600秒冷却时间", "At max Soul Energy, death spends it all to revive at 25% HP and clear harmful effects, 600s cooldown");
         lang("item.fargo_soul.ghost_soul.lyra_tooltip.3", "灵魂能量溢出时，每秒消耗所有溢出灵魂能量，召唤一枚追踪灵魂球，灵魂球伤害为溢出灵魂能量*4%最大生命值", "When Soul Energy overflows, each second it summons a tracking soul orb dealing overflow × 4% of your max HP as damage");
         lang("item.fargo_soul.ghost_soul.lyra_tooltip.-1", "“他们的生命力将毁灭他们自己”", "\"Their own vitality will destroy them\"");
         lang("item.fargo_soul.will_power", "意志之力", "Will Power");
         lang("item.fargo_soul.will_power.lyra_tooltip.1", "受到的治疗效果提升25%", "Healing received increased by 25%");
-        lang("item.fargo_soul.will_power.lyra_tooltip.2", "击杀敌人有40%概率提升1600%战利品数量", "Killing enemies has a 40% chance to multiply loot by 1600%");
+        lang("item.fargo_soul.will_power.lyra_tooltip.2", "击杀敌人有40%概率使掉落表战利品数量变为16倍", "Killing enemies has a 40% chance to multiply loot-table drops by 16");
         lang("item.fargo_soul.will_power.lyra_tooltip.3", "攻击被迈达斯影响的敌人时，造成的伤害提升80%", "+80% damage against Midas-affected enemies");
         lang("item.fargo_soul.will_power.lyra_tooltip.-1", "“坚不可摧的决心”", "\"Unbreakable determination\"");
         lang("item.fargo_soul.gold_souljei.description.1", "获取：击杀僵尸猪灵(1%)", "Obtained from killing: Zombified Piglin (1%)");
@@ -418,7 +418,7 @@ public class FargoSoulLanguageProvider extends LyraAbstractLanguageProvider {
         lang("item.fargo_soul.platinum_souljei.description.1", "获取：击杀猪灵蛮兵(1%)", "Obtained from killing: Piglin Brute (1%)");
         lang("item.fargo_soul.platinum_souljei.description.2", "获取：开启堡垒遗迹(10%)、埋藏宝藏(10%)", "Found in: Bastion Treasure (10%), Buried Treasure (10%)");
         lang("item.fargo_soul.platinum_soul", "铂金魔石", "Platinum Enchantment");
-        lang("item.fargo_soul.platinum_soul.lyra_tooltip.1", "击杀敌人有20%概率提升500%战利品数量", "Killing enemies has a 20% chance to multiply loot by 500%");
+        lang("item.fargo_soul.platinum_soul.lyra_tooltip.1", "击杀敌人有20%概率使掉落表战利品数量变为5倍", "Killing enemies has a 20% chance to multiply loot-table drops by 5");
         lang("item.fargo_soul.platinum_soul.lyra_tooltip.-1", "“无价之宝”", "\"Priceless treasure\"");
         lang("item.fargo_soul.gladiator_souljei.description.1", "获取：击杀劫掠兽(1%)", "Obtained from killing: Ravager (1%)");
         lang("item.fargo_soul.gladiator_souljei.description.2", "获取：开启林地府邸(15%)", "Found in: Woodland Mansion (15%)");

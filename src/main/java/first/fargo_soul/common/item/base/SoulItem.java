@@ -1,6 +1,6 @@
 package first.fargo_soul.common.item.base;
 
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import first.fargo_soul.common.attachment.SoulItemData;
 import first.lyra.common.dataComponent.LyraRarity;
@@ -32,7 +32,6 @@ import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -53,7 +52,7 @@ public abstract class SoulItem extends Item implements ICurioItem {
     }
 
     public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(Player player) {
-        return HashMultimap.create();
+        return ImmutableMultimap.of();
     }
 
     public void criticalHit(Player player, LivingEntity target, List<ValueModifier> modifiers) {
@@ -124,7 +123,7 @@ public abstract class SoulItem extends Item implements ICurioItem {
     }
 
     public Set<SoulItem> getSoulItemList() {
-        return new HashSet<>();
+        return Set.of();
     }
 
     public void tick(Player living){
@@ -171,7 +170,7 @@ public abstract class SoulItem extends Item implements ICurioItem {
     }
 
     public List<ItemStack> dropFromLootTableAfter(Player attacker, LivingEntity target) {
-        return new ArrayList<>();
+        return List.of();
     }
 
     public float dropFromLootTableScale(Player attacker, LivingEntity target, float scale) {

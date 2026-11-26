@@ -60,16 +60,16 @@ public class VortexSoul extends SoulItem {
     public void keyHandle(Player player, ResourceLocation key) {
         if (key.equals(FargoSoul.rl("vortex_soul"))) {
             Info info = SoulInfoData.getSoulInfo(player, FargoSoulSoulInfoRegister.VORTEX_SOUL_INFO);
-            if (info == null) {
-                info = new Info();
-                info.cooldown = 20;
-                SoulInfoData.putSoulInfo(player, info);
+            if (info == null || info.cooldown <= 0) {
                 Level level = player.level();
-                ClipContext clipContext = new ClipContext(player.getEyePosition(), player.getEyePosition().add(player.getLookAngle().scale(256)), ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player);
+                ClipContext clipContext = new ClipContext(player.getEyePosition(), player.getEyePosition().add(player.getLookAngle().scale(512)), ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player);
                 HitResult hitResult = player.level().clip(clipContext);
-                if (hitResult instanceof BlockHitResult blockHitResult) {
+                if (hitResult.getType() == HitResult.Type.BLOCK && hitResult instanceof BlockHitResult blockHitResult) {
                     BlockPos pos = blockHitResult.getBlockPos();
                     if (!level.getBlockState(pos).is(Blocks.AIR) && pos.getY() > level.getMinBuildHeight()) {
+                        info = new Info();
+                        info.cooldown = 20 * 20;
+                        SoulInfoData.putSoulInfo(player, info);
                         Direction hitFace = blockHitResult.getDirection();
                         double adjustX = pos.getX() + hitFace.getStepX();
                         double adjustY = pos.getY() + hitFace.getStepY();

@@ -68,18 +68,16 @@ public class GoldSoul extends SoulItem {
     @Override
     public void tick(Player player) {
         Info info = SoulInfoData.getSoulInfo(player, FargoSoulSoulInfoRegister.GOLD_SOUL_INFO);
-        if (info == null) {
-            info = new Info();
-            SoulInfoData.putSoulInfo(player, info);
-        }
-        if (info.cd > 0) {
-            info.cd--;
-        }
-        if (info.active) {
-            if (info.invincible > 0) {
-                info.invincible--;
-            } else if (!tryConsumeGoldIngot(player)) {
-                info.active = false;
+        if (info != null) {
+            if (info.cd > 0) {
+                info.cd--;
+            }
+            if (info.active) {
+                if (info.invincible > 0) {
+                    info.invincible--;
+                } else if (!tryConsumeGoldIngot(player)) {
+                    info.active = false;
+                }
             }
         }
     }

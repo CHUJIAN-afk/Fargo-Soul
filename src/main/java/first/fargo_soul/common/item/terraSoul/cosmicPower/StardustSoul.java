@@ -20,10 +20,12 @@ import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.lang.ref.WeakReference;
 
 public class StardustSoul extends SoulItem {
 
-    private static int frozenRemaining = -1;
+    private static int frozenRemaining;
+    private static WeakReference<MinecraftServer> frozenServer = new WeakReference<>(null);
 
     public StardustSoul(Properties properties) {
         super(properties);
@@ -40,7 +42,7 @@ public class StardustSoul extends SoulItem {
     @Override
     public void attack(@NotNull Player attacker, @NotNull LivingEntity target, @NotNull DamageContainer container, List<ValueModifier> modifiers) {
         if (attacker.getServer() instanceof MinecraftServer server && server.tickRateManager().isFrozen()) {
-            modifiers.add(new ValueModifier(1, ValueOperation.ADD_VALUE));
+            modifiers.add(new ValueModifier(1, ValueOperation.ADD_MULTIPLIED_BASE));
         }
     }
 
@@ -48,19 +50,27 @@ public class StardustSoul extends SoulItem {
     public void keyHandle(Player player, ResourceLocation key) {
         if (key.equals(FargoSoul.rl("stardust_soul")) && player.getServer() instanceof MinecraftServer server) {
             ServerTickRateManager serverTickRateManager = server.tickRateManager();
-            if (!serverTickRateManager.isFrozen()) {
+            Info info = SoulInfoData.getSoulInfo(player, FargoSoulSoulInfoRegister.STARDUST_SOUL_INFO);
+            if (!serverTickRateManager.isFrozen() && (info == null || info.cooldown <= 0)) {
                 Info soulInfo = new Info();
                 soulInfo.cooldown = 120 * 20;
                 SoulInfoData.putSoulInfo(player, soulInfo);
                 serverTickRateManager.setFrozen(true);
+                frozenServer = new WeakReference<>(server);
                 frozenRemaining = 6 * 20;
             }
         }
     }
 
     public static void serverTick(MinecraftServer server) {
-        if (--frozenRemaining == 0) {
-            server.tickRateManager().setFrozen(false);
+        if (frozenServer.get() == server && frozenRemaining > 0) {
+            if (--frozenRemaining == 0) {
+                server.tickRateManager().setFrozen(false);
+                frozenServer.clear();
+            }
+        } else if (frozenRemaining > 0 && frozenServer.get() != server) {
+            frozenRemaining = 0;
+            frozenServer.clear();
         }
     }
 

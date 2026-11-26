@@ -3,7 +3,6 @@ package first.fargo_soul.common;
 
 import first.fargo_soul.FargoSoul;
 import first.fargo_soul.common.attachment.SoulItemData;
-import first.fargo_soul.common.attachment.SoulTargetCache;
 import first.fargo_soul.common.item.base.ValueModifier;
 import first.fargo_soul.common.item.terraSoul.cosmicPower.StardustSoul;
 import first.fargo_soul.register.FargoSoulAttachmentRegister;
@@ -36,7 +35,6 @@ public class Event {
     public static void tick(EntityTickEvent.Post event) {
         if (event.getEntity() instanceof Player player && !player.level().isClientSide()) {
             player.getData(FargoSoulAttachmentRegister.SOUL_ITEM_DATA).tick(player);
-            SoulTargetCache.get(player).tick(player);
             SoulItemData.forEach(player, soulItem -> soulItem.tick(player));
         }
     }
@@ -82,7 +80,11 @@ public class Event {
         Entity attacker = event.getSource().getEntity();
         LivingEntity target = event.getEntity();
         DamageContainer container = event.getContainer();
-        if (!target.level().isClientSide()) {
+        boolean attackerHasSouls = attacker instanceof Player player && player.hasData(FargoSoulAttachmentRegister.SOUL_ITEM_DATA)
+                && !player.getData(FargoSoulAttachmentRegister.SOUL_ITEM_DATA).getCache().isEmpty();
+        boolean targetHasSouls = target instanceof Player player && player.hasData(FargoSoulAttachmentRegister.SOUL_ITEM_DATA)
+                && !player.getData(FargoSoulAttachmentRegister.SOUL_ITEM_DATA).getCache().isEmpty();
+        if (!target.level().isClientSide() && (attackerHasSouls || targetHasSouls)) {
             List<ValueModifier> modifiers = new ArrayList<>();
             if (attacker instanceof Player player) {
                 SoulItemData.forEach(player, soulItem -> soulItem.attack(player, target, container, modifiers));
@@ -102,7 +104,9 @@ public class Event {
     public static void criticalHit(CriticalHitEvent event) {
         Player player = event.getEntity();
         Entity target = event.getTarget();
-        if (!player.level().isClientSide() && event.isCriticalHit() && target instanceof LivingEntity living) {
+        if (!player.level().isClientSide() && event.isCriticalHit() && target instanceof LivingEntity living
+                && player.hasData(FargoSoulAttachmentRegister.SOUL_ITEM_DATA)
+                && !player.getData(FargoSoulAttachmentRegister.SOUL_ITEM_DATA).getCache().isEmpty()) {
             List<ValueModifier> modifiers = new ArrayList<>();
             SoulItemData.forEach(player, soulItem -> soulItem.criticalHit(player, living, modifiers));
             event.setDamageMultiplier(ValueModifier.getModifierAfter(event.getDamageMultiplier(), modifiers));
@@ -123,19 +127,20 @@ public class Event {
         LivingEntity entity = event.getEntity();
         if (!entity.level().isClientSide()) {
             float base = event.getAmount();
-            float[] amount = {base};
-            if (entity instanceof Player player) {
+            float amount = base;
+            if (entity instanceof Player player && player.hasData(FargoSoulAttachmentRegister.SOUL_ITEM_DATA)
+                    && !player.getData(FargoSoulAttachmentRegister.SOUL_ITEM_DATA).getCache().isEmpty()) {
                 List<ValueModifier> modifiers = new ArrayList<>();
                 SoulItemData.forEach(player, soulItem -> soulItem.healAmount(player, base, modifiers));
-                amount[0] = ValueModifier.getModifierAfter(base, modifiers);
+                amount = ValueModifier.getModifierAfter(base, modifiers);
             }
             if (entity.hasEffect(FargoSoulMobEffectRegister.Hemorrhage)) {
-                amount[0] *= 0.3f;
+                amount *= 0.3f;
             }
             if (entity.hasEffect(FargoSoulMobEffectRegister.Bleeding)) {
-                amount[0] *= 0.5f;
+                amount *= 0.5f;
             }
-            event.setAmount(amount[0]);
+            event.setAmount(amount);
         }
     }
 
@@ -164,7 +169,7 @@ public class Event {
                 }
             });
         }
-        if (event.getSource().getEntity() instanceof Player player && !player.level().isClientSide()) {
+        if (!event.isCanceled() && event.getSource().getEntity() instanceof Player player && !player.level().isClientSide()) {
             SoulItemData.forEach(player, soulItem -> soulItem.kill(player, event.getEntity(), event.getSource()));
         }
     }

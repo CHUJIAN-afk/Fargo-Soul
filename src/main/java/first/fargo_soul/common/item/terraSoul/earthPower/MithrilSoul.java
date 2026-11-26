@@ -42,11 +42,7 @@ public class MithrilSoul extends SoulItem {
     @Override
     public void tick(Player player) {
         Info info = SoulInfoData.getSoulInfo(player, FargoSoulSoulInfoRegister.MITHRIL_SOUL_INFO);
-        if (info == null) {
-            info = new Info();
-            SoulInfoData.putSoulInfo(player, info);
-        }
-        if (info.lastAttackTick != 0 && player.tickCount - info.lastAttackTick > 100) {
+        if (info != null && info.lastAttackTick != 0 && player.tickCount - info.lastAttackTick > 100) {
             info.bonus = 0;
         }
     }

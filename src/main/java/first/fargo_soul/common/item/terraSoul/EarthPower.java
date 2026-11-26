@@ -1,6 +1,6 @@
 package first.fargo_soul.common.item.terraSoul;
 
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import first.fargo_soul.FargoSoul;
 import first.fargo_soul.common.attachment.SoulInfoData;
@@ -42,15 +42,15 @@ public class EarthPower extends SoulItem {
 
     @Override
     public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(Player player) {
-        Multimap<Holder<Attribute>, AttributeModifier> map = HashMultimap.create();
         Info info = SoulInfoData.getSoulInfo(player, FargoSoulSoulInfoRegister.EARTH_POWER_INFO);
         float ratio = info != null ? info.energy / info.maxEnergy : 0;
         if (ratio > 0) {
-            map.put(Attributes.ATTACK_SPEED, new AttributeModifier(FargoSoul.rl("earth_speed"), ratio, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-            map.put(Attributes.ARMOR, new AttributeModifier(FargoSoul.rl("earth_armor"), ratio, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-            map.put(LyraAttributeRegister.HealthRegen, new AttributeModifier(FargoSoul.rl("earth_regen"), ratio * 5, AttributeModifier.Operation.ADD_VALUE));
+            return ImmutableMultimap.of(
+                    Attributes.ATTACK_SPEED, new AttributeModifier(FargoSoul.rl("earth_speed"), ratio, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
+                    Attributes.ARMOR, new AttributeModifier(FargoSoul.rl("earth_armor"), ratio, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
+                    LyraAttributeRegister.HealthRegen, new AttributeModifier(FargoSoul.rl("earth_regen"), ratio * 5, AttributeModifier.Operation.ADD_VALUE));
         }
-        return map;
+        return ImmutableMultimap.of();
     }
 
     @Override

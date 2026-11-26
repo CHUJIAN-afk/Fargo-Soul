@@ -29,14 +29,16 @@ public class EbonyWoodSoul extends SoulItem {
 
     @Override
     public void tick(Player player) {
-        Info info = SoulInfoData.getSoulInfo(player, FargoSoulSoulInfoRegister.EBONY_WOOD_SOUL_INFO);
-        if (info == null) {
-            info = new Info();
-            SoulInfoData.putSoulInfo(player, info);
-        }
         if (player.tickCount % 20 == 0) {
             List<LivingEntity> enemies = SoulTargetCache.get(player).getEntitiesInRadius(player.getBoundingBox().getCenter(), 6, null);
-            info.corruption = Math.min(info.maxCorruption, info.corruption + enemies.size() * 10);
+            if (!enemies.isEmpty()) {
+                Info info = SoulInfoData.getSoulInfo(player, FargoSoulSoulInfoRegister.EBONY_WOOD_SOUL_INFO);
+                if (info == null) {
+                    info = new Info();
+                    SoulInfoData.putSoulInfo(player, info);
+                }
+                info.corruption = Math.min(info.maxCorruption, info.corruption + enemies.size() * 10);
+            }
         }
     }
 
